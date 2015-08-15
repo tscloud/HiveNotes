@@ -14,13 +14,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.tscloud.hivenotes.db.MyDBHandler;
+
 public class MainActivity extends AppCompatActivity implements
         NewApiaryFragment.OnNewApiaryFragmentInteractionListener,
         ExistingApiaryFragment.OnExistingApiaryFragmentInteractionListener {
 
     // test
     private static final boolean new_apiary = true;
-    private static final String TAG = "net.tscloud.MainActivity";
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements
     public void onNewApiaryFragmentInteraction(Uri uri) {
         //Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
         Log.d(TAG, "MainActivity.onNewApiaryFragmentInteraction called..." + uri.toString());
+
+        Log.d(TAG, "creating DB");
+        MyDBHandler dbHandler = MyDBHandler.getInstance(this);
 
         Fragment fragment = ExistingApiaryFragment.newInstance("thing1", "thing2");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
