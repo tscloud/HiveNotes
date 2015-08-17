@@ -13,18 +13,38 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/new_apiary_string"
-        android:id="@+id/textNewApiaryApiary"
+        android:id="@+id/textNewApiary"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="151dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_apiary_button_text"
         android:id="@+id/newApiaryButtton"
-        android:layout_below="@+id/textNewApiaryApiary"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_marginBottom="71dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apiary Name:"
+        android:id="@+id/textApiary"
+        android:layout_below="@+id/textNewApiary"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="31dp"
+        android:singleLine="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_alignTop="@+id/textApiary"
+        android:layout_toRightOf="@+id/textNewApiary"
+        android:layout_alignRight="@+id/newApiaryButtton"
+        android:layout_alignEnd="@+id/newApiaryButtton" />
 
 </RelativeLayout>

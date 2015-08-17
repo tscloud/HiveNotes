@@ -15,13 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.MyDBHandler;
+import net.tscloud.hivenotes.db.Profile;
+import net.tscloud.hivenotes.db.ProfileDAO;
 
 public class MainActivity extends AppCompatActivity implements
         NewApiaryFragment.OnNewApiaryFragmentInteractionListener,
-        ExistingApiaryFragment.OnExistingApiaryFragmentInteractionListener {
+        ExistingApiaryFragment.OnExistingApiaryFragmentInteractionListener,
+        NewProfileFragment.OnNewProfileFragmentInteractionListener {
 
     // test
-    private static final boolean new_apiary = true;
+    private boolean new_apiary = true;
     private static final String TAG = "MainActivity";
 
     @Override
@@ -36,10 +39,24 @@ public class MainActivity extends AppCompatActivity implements
 //        TextView abText = (TextView)abView.findViewById(R.id.mytext);
 //        abText.setText("NewHiveNites");
 
+        // read Profile table to see if this is first time thru or whatever
+        Log.d(TAG, "reading Profile table");
+        ProfileDAO profileDAO = new ProfileDAO(this);
+        Profile profile = profileDAO.getProfile();
+        profileDAO.close();
+        if (profile == null) {
+            Log.d(TAG, "No profile");
+            new_apiary = true;
+        }
+        else{
+            Log.d(TAG, "profile name: " + profile.getName());
+            new_apiary = false;
+        }
+
         Fragment fragment;
 
         if (new_apiary) {
-            fragment = NewApiaryFragment.newInstance("thingA", "thingB");
+            fragment = NewProfileFragment.newInstance("thingA", "thingB");
         } else {
             fragment = ExistingApiaryFragment.newInstance("thing1", "thing2");
         }
@@ -74,15 +91,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onNewApiaryFragmentInteraction(Uri uri) {
-        //Toast.makeText(this, uri.toString(), Toast.LENGTH_SHORT).show();
         Log.d(TAG, "MainActivity.onNewApiaryFragmentInteraction called..." + uri.toString());
-
-        Log.d(TAG, "creating DB");
-        MyDBHandler dbHandler = MyDBHandler.getInstance(this);
 
         Fragment fragment = ExistingApiaryFragment.newInstance("thing1", "thing2");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, fragment);
+        ft.replace(R.id.fragment_placeholder, fragment).addToBackStack("tag1");
         ft.commit();
     }
 
@@ -94,5 +107,15 @@ public class MainActivity extends AppCompatActivity implements
         Intent i = new Intent(this,LogEntryActivity.class);
         i.putExtra("fromMain", uri.toString());
         startActivity(i);
+    }
+
+    @Override
+    public void onNewProfileFragmentInteraction(Uri uri) {
+        Log.d(TAG, "MainActivity.onNewProfileFragmentInteraction called..." + uri.toString());
+
+        Fragment fragment = NewApiaryFragment.newInstance("thing1", "thing2");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_placeholder, fragment);
+        ft.commit();
     }
 }

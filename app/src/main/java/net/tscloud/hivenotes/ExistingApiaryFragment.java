@@ -91,10 +91,10 @@ public class ExistingApiaryFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnExistingApiaryFragmentInteractionListener) activity;
+            mListener = (OnExistingApiaryFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnExistingApiaryFragmentInteractionListener");
         }
     }
 

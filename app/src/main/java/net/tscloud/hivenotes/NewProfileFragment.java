@@ -4,21 +4,30 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import net.tscloud.hivenotes.db.Profile;
+import net.tscloud.hivenotes.db.ProfileDAO;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnNewApiaryFragmentInteractionListener} interface
+ * {@link OnNewProfileFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NewApiaryFragment#newInstance} factory method to
+ * Use the {@link NewProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewApiaryFragment extends Fragment {
+public class NewProfileFragment extends Fragment {
+
+    public static final String TAG = "NewProfileFragment";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -28,7 +37,7 @@ public class NewApiaryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnNewApiaryFragmentInteractionListener mListener;
+    private OnNewProfileFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -36,11 +45,11 @@ public class NewApiaryFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NewApiaryFragment.
+     * @return A new instance of fragment NewProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewApiaryFragment newInstance(String param1, String param2) {
-        NewApiaryFragment fragment = new NewApiaryFragment();
+    public static NewProfileFragment newInstance(String param1, String param2) {
+        NewProfileFragment fragment = new NewProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -48,7 +57,7 @@ public class NewApiaryFragment extends Fragment {
         return fragment;
     }
 
-    public NewApiaryFragment() {
+    public NewProfileFragment() {
         // Required empty public constructor
     }
 
@@ -65,14 +74,14 @@ public class NewApiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_new_apiary, container, false);
+        View v = inflater.inflate(R.layout.fragment_new_profile, container, false);
 
         // set button listener
-        final Button b1 = (Button)v.findViewById(R.id.newApiaryButtton);
+        final Button b1 = (Button)v.findViewById(R.id.newProfileButtton);
         b1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                onButtonPressed(Uri.parse("here I am...from New Apiary"));
+                onButtonPressed(Uri.parse("here I am...from New Profile"));
             }
         });
 
@@ -81,8 +90,38 @@ public class NewApiaryFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onNewApiaryFragmentInteraction(uri);
+        // get name and email and put to DB
+        Log.d(TAG, "about to persist profile");
+
+        // neither EditText can be empty
+        EditText nameEdit = (EditText)getView().findViewById(R.id.editTextName);
+        EditText emailEdit = (EditText)getView().findViewById(R.id.editTextEmail);
+        String nameText = nameEdit.getText().toString();
+        String emailText = emailEdit.getText().toString();
+
+        boolean emptyText = false;
+
+        if (nameText.length() == 0){
+            nameEdit.setError("Name cannot be empty");
+            emptyText = true;
+        }
+
+        if (emailText.length() == 0){
+            emailEdit.setError("Email cannot be empty");
+            emptyText = true;
+        }
+
+        if (!emptyText) {
+            ProfileDAO profileDAO = new ProfileDAO(getActivity());
+            Profile profile = profileDAO.createProfile(nameText, emailText);
+            profileDAO.close();
+
+            Log.d(TAG, "Profile Name: " + profile.getName());
+            Log.d(TAG, "Profile Email: " + profile.getEmail());
+
+            if (mListener != null) {
+                mListener.onNewProfileFragmentInteraction(uri);
+            }
         }
     }
 
@@ -90,10 +129,10 @@ public class NewApiaryFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnNewApiaryFragmentInteractionListener)activity;
+            mListener = (OnNewProfileFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnNewApiaryFragmentInteractionListener");
+                    + " must implement OnNewProfileFragmentInteractionListener");
         }
     }
 
@@ -113,9 +152,9 @@ public class NewApiaryFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnNewApiaryFragmentInteractionListener {
+    public interface OnNewProfileFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onNewApiaryFragmentInteraction(Uri uri);
+        public void onNewProfileFragmentInteraction(Uri uri);
     }
 
 }
