@@ -21,7 +21,6 @@ public class ProfileDAO{
     // columns of the Profile table
     public static final String TABLE_PROFILES = "Profile";
     public static final String COLUMN_PROFILE_ID = "_id";
-    public static final String COLUMN_PROFILE_TABLE_ID = "_table_id";
     public static final String COLUMN_PROFILE_NAME = "name";
     public static final String COLUMN_PROFILE_EMAIL = "email";
 
@@ -29,8 +28,7 @@ public class ProfileDAO{
     private SQLiteDatabase mDatabase;
     private MyDBHandler mDbHelper;
     private Context mContext;
-    private String[] mAllColumns = { COLUMN_PROFILE_ID, COLUMN_PROFILE_TABLE_ID,
-            COLUMN_PROFILE_NAME, COLUMN_PROFILE_EMAIL };
+    private String[] mAllColumns = { COLUMN_PROFILE_ID, COLUMN_PROFILE_NAME, COLUMN_PROFILE_EMAIL };
 
     public ProfileDAO(Context context) {
         this.mContext = context;

@@ -21,17 +21,14 @@ public class ApiaryDAO {
     // columns of the Profile table
     public static final String TABLE_APIARY = "Apiary";
     public static final String COLUMN_APIARY_ID = "_id";
-    public static final String COLUMN_APIARY_TABLE_ID = "_table_id";
     public static final String COLUMN_APIARY_PROFILE = "profile";
-    public static final String COLUMN_APIARY_PROFILE_TABLE = "profile_table";
     public static final String COLUMN_APIARY_NAME = "name";
 
     // Database fields
     private SQLiteDatabase mDatabase;
     private MyDBHandler mDbHelper;
     private Context mContext;
-    private String[] mAllColumns = { COLUMN_APIARY_ID, COLUMN_APIARY_TABLE_ID,
-            COLUMN_APIARY_PROFILE, COLUMN_APIARY_PROFILE_TABLE, COLUMN_APIARY_NAME };
+    private String[] mAllColumns = { COLUMN_APIARY_ID, COLUMN_APIARY_PROFILE, COLUMN_APIARY_NAME };
 
     public ApiaryDAO(Context context) {
         this.mContext = context;
@@ -56,10 +53,8 @@ public class ApiaryDAO {
     // --DB access methods--
 
     public Apiary createApiary(String name, String profile) {
-        // Apiary has only one parent (Profile) but we'll pass in an indicator anyway
         ContentValues values = new ContentValues();
         values.put(COLUMN_APIARY_PROFILE, profile);
-        values.put(COLUMN_APIARY_PROFILE_TABLE, Profile.TABLE_ID);
         values.put(COLUMN_APIARY_NAME, name);
         long insertId = mDatabase.insert(TABLE_APIARY, null, values);
         Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,

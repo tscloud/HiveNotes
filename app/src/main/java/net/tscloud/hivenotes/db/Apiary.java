@@ -6,61 +6,41 @@ package net.tscloud.hivenotes.db;
 public class Apiary {
 
     public static final String TAG = "Apiary";
-    // This should be set at runtime so not final
-    public static long TABLE_ID = 0;
 
-    private long mId;
-    private long mTableId;
-    private long mProfile;
-    private long mProfileTable;
-    private String mName;
+    private long id;
+    private long profile;
+    private String name;
 
     public Apiary() {
     }
 
-    public Apiary(String mName, long mProfile, long mProfileTable) {
-        this.mName = mName;
-        this.mProfile = mProfile;
-        this.mProfileTable = mProfileTable;
+    public Apiary(String name, long profile, long profileTable) {
+        this.name = name;
+        this.profile = profile;
+        this.profileTable = profileTable;
     }
 
     public long getId() {
-        return mId;
+        return id;
     }
 
-    public void setId(long mId) {
-        this.mId = mId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public long getProfile() {
-        return mProfile;
+        return profile;
     }
 
-    public void setProfile(long mProfile) {
-        this.mProfile = mProfile;
-    }
-
-    public long getProfileTable() {
-        return mProfileTable;
-    }
-
-    public void setProfileTable(long mProfileTable) {
-        this.mProfileTable = mProfileTable;
-    }
-
-    public long getTableId() {
-        return mTableId;
-    }
-
-    public void setTableId(long mTableId) {
-        this.mTableId = mTableId;
+    public void setProfile(long profile) {
+        this.profile = profile;
     }
 }

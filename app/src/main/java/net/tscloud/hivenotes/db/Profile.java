@@ -8,51 +8,40 @@ import java.io.Serializable;
 public class Profile {
 
     public static final String TAG = "Profile";
-    // This should be set at runtime so not final
-    public static long TABLE_ID = 5;
 
-    private long mId;
-    private long mTableId;
-    private String mName;
-    private String mEmail;
+    private long id;
+    private String name;
+    private String email;
 
     public Profile(){}
 
-    public Profile(String mName, String mEmail) {
-        this.mEmail = mEmail;
-        this.mName = mName;
-    }
-
-    public long getTableId() {
-        return mTableId;
-    }
-
-    public void setTableId(long mTableId) {
-        this.mTableId = mTableId;
+    public Profile(String name, String email) {
+        this.email = email;
+        this.name = name;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public long getId() {
-        return mId;
+        return id;
     }
 
-    public void setId(long mId) {
-        this.mId = mId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
-    public void setEmail(String mEmail) {
-        this.mEmail = mEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }
