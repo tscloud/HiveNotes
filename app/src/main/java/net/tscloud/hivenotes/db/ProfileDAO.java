@@ -76,7 +76,7 @@ public class ProfileDAO{
     public Profile getProfile(){
         // There should be only 1 but we'll select as if there may be more
         List<Profile> listProfile = new ArrayList<Profile>();
-        // Thisis the 1 we'll return --> it'll be the last 1 in the cursor
+        // This is the 1 we'll return --> it'll be the last 1 in the cursor
         Profile profile = null;
 
         Cursor cursor = mDatabase.query(TABLE_PROFILES, mAllColumns, null, null, null, null, null);

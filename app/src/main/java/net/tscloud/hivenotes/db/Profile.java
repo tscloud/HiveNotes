@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class Profile {
 
     public static final String TAG = "Profile";
+    // This should be set at runtime so not final
+    public static long TABLE_ID = 5;
 
     private long mId;
     private long mTableId;
