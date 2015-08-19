@@ -85,10 +85,8 @@ public class ApiaryDAO {
     protected Apiary cursorToApiary(Cursor cursor) {
         Apiary apiary = new Apiary();
         apiary.setId(cursor.getLong(0));
-        apiary.setTableId(cursor.getLong(1));
-        apiary.setProfile(cursor.getLong(2));
-        apiary.setProfileTable(cursor.getLong(3));
-        apiary.setName(cursor.getString(4));
+        apiary.setProfile(cursor.getLong(1));
+        apiary.setName(cursor.getString(2));
 
         return apiary;
     }

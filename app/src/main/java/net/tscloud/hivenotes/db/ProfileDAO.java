@@ -85,7 +85,6 @@ public class ProfileDAO{
                 listProfile.add(profile);
                 cursor.moveToNext();
             }
-
             // make sure to close the cursor
             cursor.close();
         }
@@ -95,9 +94,8 @@ public class ProfileDAO{
     protected Profile cursorToProfile(Cursor cursor) {
         Profile profile = new Profile();
         profile.setId(cursor.getLong(0));
-        profile.setTableId(cursor.getLong(1));
-        profile.setName(cursor.getString(2));
-        profile.setEmail(cursor.getString(3));
+        profile.setName(cursor.getString(1));
+        profile.setEmail(cursor.getString(2));
 
         return profile;
     }

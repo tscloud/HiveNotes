@@ -1,11 +1,14 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,6 +39,9 @@ public class NewProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // original button color
+    private ColorDrawable drawable;
 
     private OnNewProfileFragmentInteractionListener mListener;
 
@@ -78,10 +84,29 @@ public class NewProfileFragment extends Fragment {
 
         // set button listener
         final Button b1 = (Button)v.findViewById(R.id.newProfileButtton);
-        b1.setOnClickListener(new View.OnClickListener(){
+        //b1.setOnClickListener(new View.OnClickListener(){
+        //   @Override
+        //    public void onClick(View v) {
+        //        onButtonPressed(Uri.parse("here I am...from New Profile"), b1);
+        //    }
+        //});
+
+        b1.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                onButtonPressed(Uri.parse("here I am...from New Profile"));
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
+                    // change button background but save original color 1st
+                    drawable = (ColorDrawable)b1.getBackground();
+                    b1.setBackgroundDrawable(new ColorDrawable(Color.GREEN));
+
+                    // call handler
+                    onButtonPressed(Uri.parse("here I am...from New Profile"), b1);
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    b1.setBackgroundDrawable(drawable);
+                }
+                return true;
             }
         });
 
@@ -89,26 +114,28 @@ public class NewProfileFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(Uri uri, Button b) {
         // get name and email and put to DB
         Log.d(TAG, "about to persist profile");
 
-        // neither EditText can be empty
         EditText nameEdit = (EditText)getView().findViewById(R.id.editTextName);
         EditText emailEdit = (EditText)getView().findViewById(R.id.editTextEmail);
         String nameText = nameEdit.getText().toString();
         String emailText = emailEdit.getText().toString();
 
+        // neither EditText can be empty
         boolean emptyText = false;
 
         if (nameText.length() == 0){
             nameEdit.setError("Name cannot be empty");
             emptyText = true;
+            Log.d(TAG, "Uh oh...Name empty");
         }
 
         if (emailText.length() == 0){
             emailEdit.setError("Email cannot be empty");
             emptyText = true;
+            Log.d(TAG, "Uh oh...Name empty");
         }
 
         if (!emptyText) {
@@ -116,8 +143,8 @@ public class NewProfileFragment extends Fragment {
             Profile profile = profileDAO.createProfile(nameText, emailText);
             profileDAO.close();
 
-            Log.d(TAG, "Profile Name: " + profile.getName());
-            Log.d(TAG, "Profile Email: " + profile.getEmail());
+            Log.d(TAG, "Profile Name: " + profile.getName() + " persisted");
+            Log.d(TAG, "Profile Email: " + profile.getEmail() + " persisted");
 
             if (mListener != null) {
                 mListener.onNewProfileFragmentInteraction(uri);

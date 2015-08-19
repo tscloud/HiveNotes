@@ -14,10 +14,9 @@ public class Apiary {
     public Apiary() {
     }
 
-    public Apiary(String name, long profile, long profileTable) {
+    public Apiary(String name, long profile) {
         this.name = name;
         this.profile = profile;
-        this.profileTable = profileTable;
     }
 
     public long getId() {
