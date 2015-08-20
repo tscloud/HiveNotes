@@ -84,13 +84,13 @@ public class NewProfileFragment extends Fragment {
 
         // set button listener
         final Button b1 = (Button)v.findViewById(R.id.newProfileButtton);
-        //b1.setOnClickListener(new View.OnClickListener(){
-        //   @Override
-        //    public void onClick(View v) {
-        //        onButtonPressed(Uri.parse("here I am...from New Profile"), b1);
-        //    }
-        //});
-
+        b1.setOnClickListener(new View.OnClickListener(){
+           @Override
+            public void onClick(View v) {
+                onButtonPressed(Uri.parse("here I am...from New Profile"), b1);
+            }
+        });
+        /*
         b1.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -109,7 +109,7 @@ public class NewProfileFragment extends Fragment {
                 return true;
             }
         });
-
+        */
         return v;
     }
 
