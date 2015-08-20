@@ -20,10 +20,6 @@ public class LogEntry {
     private String queenAge;
     private String honeyStores;
     private String pollenStores;
-    private String temperature;
-    private String rainfall;
-    private String pollenCount;
-    private String pollution;
 
     public String getBroodFrames() {
         return broodFrames;
@@ -89,14 +85,6 @@ public class LogEntry {
         this.larvae = larvae;
     }
 
-    public String getPollenCount() {
-        return pollenCount;
-    }
-
-    public void setPollenCount(String pollenCount) {
-        this.pollenCount = pollenCount;
-    }
-
     public String getPollenStores() {
         return pollenStores;
     }
@@ -113,14 +101,6 @@ public class LogEntry {
         this.population = population;
     }
 
-    public String getPollution() {
-        return pollution;
-    }
-
-    public void setPollution(String pollution) {
-        this.pollution = pollution;
-    }
-
     public String getQueenAge() {
         return queenAge;
     }
@@ -129,28 +109,12 @@ public class LogEntry {
         this.queenAge = queenAge;
     }
 
-    public String getRainfall() {
-        return rainfall;
-    }
-
-    public void setRainfall(String rainfall) {
-        this.rainfall = rainfall;
-    }
-
     public String getTemperament() {
         return temperament;
     }
 
     public void setTemperament(String temperament) {
         this.temperament = temperament;
-    }
-
-    public String getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
     }
 
     public String getVisitDate() {

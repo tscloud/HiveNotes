@@ -30,10 +30,6 @@ public class LogEntryDAO {
     public static final String COLUMN_LOGENTRY_QUEEN_AGE = "queen_age";
     public static final String COLUMN_LOGENTRY_HONEY_STORES = "honey_stores";
     public static final String COLUMN_LOGENTRY_POLLEN_STORES = "pollen_stores";
-    public static final String COLUMN_LOGENTRY_TEMPERATURE = "temperatre";
-    public static final String COLUMN_LOGENTRY_RAINFALL = "rainfall";
-    public static final String COLUMN_LOGENTRY_POLLEN_COUNT = "pollen_count";
-    public static final String COLUMN_LOGENTRY_POLLUTION = "pollution";
 
     // Database fields
     private SQLiteDatabase mDatabase;
@@ -42,9 +38,7 @@ public class LogEntryDAO {
     private String[] mAllColumns = {COLUMN_LOGENTRY_ID, COLUMN_LOGENTRY_HIVE, COLUMN_LOGENTRY_VISIT_DATE,
             COLUMN_LOGENTRY_POPULATION, COLUMN_LOGENTRY_TEMPERAMENT,COLUMN_LOGENTRY_EGGS, COLUMN_LOGENTRY_LARVAE,
             COLUMN_LOGENTRY_CAPPED_BROOD, COLUMN_LOGENTRY_BROOD_FRAMES, COLUMN_LOGENTRY_BROOD_PATTERN,
-            COLUMN_LOGENTRY_QUEEN_AGE, COLUMN_LOGENTRY_HONEY_STORES, COLUMN_LOGENTRY_POLLEN_STORES,
-            COLUMN_LOGENTRY_TEMPERATURE, COLUMN_LOGENTRY_RAINFALL, COLUMN_LOGENTRY_POLLEN_COUNT,
-            COLUMN_LOGENTRY_POLLUTION };
+            COLUMN_LOGENTRY_QUEEN_AGE, COLUMN_LOGENTRY_HONEY_STORES, COLUMN_LOGENTRY_POLLEN_STORES };
 
     public LogEntryDAO(Context context) {
         this.mContext = context;
@@ -86,10 +80,6 @@ public class LogEntryDAO {
         values.put(COLUMN_LOGENTRY_QUEEN_AGE, queenAge);
         values.put(COLUMN_LOGENTRY_HONEY_STORES, honeyStores);
         values.put(COLUMN_LOGENTRY_POLLEN_STORES, pollenStores);
-        values.put(COLUMN_LOGENTRY_TEMPERATURE, temperature);
-        values.put(COLUMN_LOGENTRY_RAINFALL, rainfall);
-        values.put(COLUMN_LOGENTRY_POLLEN_COUNT, pollenCount);
-        values.put(COLUMN_LOGENTRY_POLLUTION, pollution);
         long insertId = mDatabase.insert(TABLE_LOGENTRY, null, values);
         Cursor cursor = mDatabase.query(TABLE_LOGENTRY, mAllColumns,
                 COLUMN_LOGENTRY_ID + " = " + insertId, null, null, null, null);
@@ -131,10 +121,6 @@ public class LogEntryDAO {
         logEntry.setQueenAge(cursor.getString(10));
         logEntry.setHoneyStores(cursor.getString(11));
         logEntry.setPollenStores(cursor.getString(12));
-        logEntry.setTemperature(cursor.getString(13));
-        logEntry.setRainfall(cursor.getString(14));
-        logEntry.setPollenCount(cursor.getString(15));
-        logEntry.setPollution(cursor.getString(16));
 
         return logEntry;
     }
