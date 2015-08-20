@@ -10,18 +10,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import net.tscloud.hivenotes.db.MyDBHandler;
 import net.tscloud.hivenotes.db.Profile;
 import net.tscloud.hivenotes.db.ProfileDAO;
 
 public class MainActivity extends AppCompatActivity implements
-        NewApiaryFragment.OnNewApiaryFragmentInteractionListener,
+        EditApiaryFragment.OnNewApiaryFragmentInteractionListener,
         ExistingApiaryFragment.OnExistingApiaryFragmentInteractionListener,
-        NewProfileFragment.OnNewProfileFragmentInteractionListener {
+        EditProfileFragment.OnNewProfileFragmentInteractionListener {
 
     // test
     private boolean new_apiary = true;
@@ -56,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements
         Fragment fragment;
 
         if (new_apiary) {
-            fragment = NewProfileFragment.newInstance("thingA", "thingB");
+            fragment = EditProfileFragment.newInstance("thingA", "thingB");
         } else {
             fragment = ExistingApiaryFragment.newInstance("thing1", "thing2");
         }
@@ -113,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onNewProfileFragmentInteraction(Uri uri) {
         Log.d(TAG, "MainActivity.onNewProfileFragmentInteraction called..." + uri.toString());
 
-        Fragment fragment = NewApiaryFragment.newInstance("thing1", "thing2");
+        Fragment fragment = EditApiaryFragment.newInstance("thing1", "thing2");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment);
         ft.commit();

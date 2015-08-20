@@ -10,6 +10,7 @@ public class Apiary {
     private long id;
     private long profile;
     private String name;
+    private String postalCode;
 
     public Apiary() {
     }
@@ -42,4 +43,10 @@ public class Apiary {
     public void setProfile(long profile) {
         this.profile = profile;
     }
+
+    public String getPostalCode() {
+        return postalCode; }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode; }
 }

@@ -1,19 +1,16 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Profile;
 import net.tscloud.hivenotes.db.ProfileDAO;
@@ -24,12 +21,12 @@ import net.tscloud.hivenotes.db.ProfileDAO;
  * Activities that contain this fragment must implement the
  * {@link OnNewProfileFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NewProfileFragment#newInstance} factory method to
+ * Use the {@link EditProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewProfileFragment extends Fragment {
+public class EditProfileFragment extends Fragment {
 
-    public static final String TAG = "NewProfileFragment";
+    public static final String TAG = "EditProfileFragment";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,11 +48,11 @@ public class NewProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NewProfileFragment.
+     * @return A new instance of fragment EditProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewProfileFragment newInstance(String param1, String param2) {
-        NewProfileFragment fragment = new NewProfileFragment();
+    public static EditProfileFragment newInstance(String param1, String param2) {
+        EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -63,7 +60,7 @@ public class NewProfileFragment extends Fragment {
         return fragment;
     }
 
-    public NewProfileFragment() {
+    public EditProfileFragment() {
         // Required empty public constructor
     }
 
@@ -80,7 +77,7 @@ public class NewProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_new_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
         // set button listener
         final Button b1 = (Button)v.findViewById(R.id.newProfileButtton);

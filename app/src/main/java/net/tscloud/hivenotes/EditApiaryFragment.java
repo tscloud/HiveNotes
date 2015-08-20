@@ -15,10 +15,10 @@ import android.widget.Button;
  * Activities that contain this fragment must implement the
  * {@link OnNewApiaryFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NewApiaryFragment#newInstance} factory method to
+ * Use the {@link EditApiaryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewApiaryFragment extends Fragment {
+public class EditApiaryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,11 +36,11 @@ public class NewApiaryFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NewApiaryFragment.
+     * @return A new instance of fragment EditApiaryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewApiaryFragment newInstance(String param1, String param2) {
-        NewApiaryFragment fragment = new NewApiaryFragment();
+    public static EditApiaryFragment newInstance(String param1, String param2) {
+        EditApiaryFragment fragment = new EditApiaryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -48,7 +48,7 @@ public class NewApiaryFragment extends Fragment {
         return fragment;
     }
 
-    public NewApiaryFragment() {
+    public EditApiaryFragment() {
         // Required empty public constructor
     }
 
@@ -65,7 +65,7 @@ public class NewApiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_new_apiary, container, false);
+        View v = inflater.inflate(R.layout.fragment_edit_apiary, container, false);
 
         // set button listener
         final Button b1 = (Button)v.findViewById(R.id.newApiaryButtton);
