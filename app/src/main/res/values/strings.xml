@@ -13,12 +13,12 @@
     <string name="frag3_text">fragment #3 - init msg</string>
     <string name="title_activity_main">HiveNotes</string>
     <string name="new_apiary_string">New Apiary</string>
-    <string name="existing_apiary_string">Existing Apiary</string>
+    <string name="esit_apiary_string">Edit Apiary</string>
+    <string name="existing_apiary_string">Home - Apiary List</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="new_apiary_button_text">Save Apiary</string>
     <string name="edit_apiary_button_text">Edit Apiary</string>
+    <string name="apiary_list_text">Apiary List:</string>
     <string name="new_profile_string">New Profile</string>
     <string name="new_profile_button_text">Create Profile</string>
     <string name="new_profile_name_text">Name:</string>

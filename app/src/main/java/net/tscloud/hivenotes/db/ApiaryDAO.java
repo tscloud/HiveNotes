@@ -77,12 +77,30 @@ public class ApiaryDAO {
     public Apiary getApiaryById(long id){
         Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,
                 COLUMN_APIARY_ID + " = ?",
-                new String[] { String.valueOf(id) }, null, null, null);
+                new String[]{String.valueOf(id)}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
 
         return cursorToApiary(cursor);
+    }
+
+    public List<Apiary> getApiaryList(long profileId) {
+        List<Apiary> listApiary = new ArrayList<Apiary>();
+
+        Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns
+                , COLUMN_APIARY_PROFILE + " = ?",
+                new String[] { String.valueOf(profileId) }, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Apiary apiary = cursorToApiary(cursor);
+            listApiary.add(apiary);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return listApiary;
     }
 
     protected Apiary cursorToApiary(Cursor cursor) {

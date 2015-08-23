@@ -94,7 +94,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextNewApiaryPostalCode"
+        android:id="@+id/editTextApiaryPostalCode"
         android:layout_alignTop="@+id/textPostalCode"
         android:layout_alignLeft="@+id/editTextApiaryName"
         android:layout_alignStart="@+id/editTextApiaryName"

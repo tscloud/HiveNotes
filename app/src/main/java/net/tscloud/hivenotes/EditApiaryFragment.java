@@ -4,10 +4,16 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+
+import net.tscloud.hivenotes.db.Apiary;
+import net.tscloud.hivenotes.db.ApiaryDAO;
+import net.tscloud.hivenotes.db.Profile;
 
 
 /**
@@ -19,6 +25,9 @@ import android.widget.Button;
  * create an instance of this fragment.
  */
 public class EditApiaryFragment extends Fragment {
+
+    public static final String TAG = "EditApiaryFragment";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,7 +35,7 @@ public class EditApiaryFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
+    private long mParam2;
 
     private OnNewApiaryFragmentInteractionListener mListener;
 
@@ -35,16 +44,20 @@ public class EditApiaryFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param profile Parameter 2.
      * @return A new instance of fragment EditApiaryFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static EditApiaryFragment newInstance(String param1, String param2) {
+    public static EditApiaryFragment newInstance(String param1, Profile profile) {
+        // Profile object passed in at newInstance create time
+        // but only putting the profileID in the Bundle
+
         EditApiaryFragment fragment = new EditApiaryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(ARG_PARAM2, profile.getId());
+
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -57,13 +70,13 @@ public class EditApiaryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam2 = getArguments().getLong(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_apiary, container, false);
 
@@ -72,7 +85,7 @@ public class EditApiaryFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                onButtonPressed(Uri.parse("here I am...from New Apiary"));
+                onButtonPressed(Uri.parse("here I am...from New Apiary"), mParam2);
             }
         });
 
@@ -80,7 +93,40 @@ public class EditApiaryFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(Uri uri, long profileID) {
+        // get name and email and put to DB
+        Log.d(TAG, "about to persist apiary");
+
+        EditText nameEdit = (EditText)getView().findViewById(R.id.editTextApiaryName);
+        EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
+        String nameText = nameEdit.getText().toString();
+        String postalCodeText = postalCodeEdit.getText().toString();
+
+        // neither EditText can be empty
+        boolean emptyText = false;
+
+        if (nameText.length() == 0){
+            nameEdit.setError("Name cannot be empty");
+            emptyText = true;
+            Log.d(TAG, "Uh oh...Name empty");
+        }
+
+        if (postalCodeText.length() == 0){
+            postalCodeEdit.setError("Email cannot be empty");
+            emptyText = true;
+            Log.d(TAG, "Uh oh...Name empty");
+        }
+
+        if (!emptyText) {
+            ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
+            Apiary apiary = apiaryDAO.createApiary(profileID, nameText, postalCodeText);
+            apiaryDAO.close();
+
+            Log.d(TAG, "Apiary Name: " + apiary.getName() + " persisted");
+            Log.d(TAG, "Apiary Postal Code: " + apiary.getPostalCode() + " persisted");
+
+        }
+
         if (mListener != null) {
             mListener.onNewApiaryFragmentInteraction(uri);
         }

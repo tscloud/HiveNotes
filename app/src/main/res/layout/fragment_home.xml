@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="net.tscloud.hivenotes.HomeFragment">
+
+    <ImageView
+        android:src="@drawable/background_small2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout1"
+        android:weightSum="1"
+        android:layout_above="@+id/editApiaryButton">
+
+        <TextView
+            android:textColor="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome To"
+            android:id="@+id/textWelcome"
+            android:gravity="center" />
+
+        <TextView
+            android:textColor="#FFFFFF"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Hive Notes"
+            android:id="@+id/textHiveNotes"
+            android:layout_gravity="center_horizontal"
+            android:typeface="normal"
+            android:layout_weight="0.18"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:src="@drawable/profile_white_100x100"
+            android:layout_width="137dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.44" />
+
+        <TextView
+            android:textColor="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Profile"
+            android:id="@+id/textCreateEdit"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_apiary_button_text"
+        android:id="@+id/editApiaryButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp" />
+
+</RelativeLayout>

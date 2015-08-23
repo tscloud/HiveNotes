@@ -144,7 +144,7 @@ public class EditProfileFragment extends Fragment {
             Log.d(TAG, "Profile Email: " + profile.getEmail() + " persisted");
 
             if (mListener != null) {
-                mListener.onNewProfileFragmentInteraction(uri);
+                mListener.onNewProfileFragmentInteraction(uri, profile);
             }
         }
     }
@@ -178,7 +178,7 @@ public class EditProfileFragment extends Fragment {
      */
     public interface OnNewProfileFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onNewProfileFragmentInteraction(Uri uri);
+        public void onNewProfileFragmentInteraction(Uri uri, Profile profile);
     }
 
 }
