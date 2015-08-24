@@ -1,5 +1,6 @@
 package net.tscloud.hivenotes;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -113,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "MainActivity.onNewApiaryFragmentInteraction called..." + uri.toString());
 
         //  This is where we want to show apiary list - but we have to reread
-        //    b/c we have added a new one
+        //    b/c we have added a new one <- the right thing to do might be
+        //    to pass the apiary list to avoid a DB read
         getApiaryNames();
 
         Fragment fragment = HomeFragment.newInstance(newProfile, apiaryNameList);
@@ -124,33 +126,32 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onHomeFragmentInteraction(Uri uri) {
-        Log.d(TAG, "MainActivity.onHomeFragmentInteraction called..." + uri.toString());
+    public void onHomeFragmentInteraction(String apiaryName) {
+        Log.d(TAG, "MainActivity.onHomeFragmentInteraction called...Apiary name: " + apiaryName);
 
-        Fragment fragment = null;
-        String fragTag = null;
+        if ((apiaryName == null) || (apiaryName.length() != 0)) {
+            Fragment fragment = null;
+            String fragTag = null;
 
-        if (newProfile){
-            fragment = EditProfileFragment.newInstance("thing1", "thing2");
-            fragTag = "EDIT_PROFILE_FRAG";
+            if (newProfile) {
+                fragment = EditProfileFragment.newInstance("thing1", "thing2");
+                fragTag = "EDIT_PROFILE_FRAG";
+            } else {
+                fragment = EditApiaryFragment.newInstance("thing3", theProfile);
+                fragTag = "EDIT_APIARY_FRAG";
+            }
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, fragment, fragTag).addToBackStack("backstacktag1");
+            ft.commit();
         }
         else {
-            fragment = EditApiaryFragment.newInstance("thing3", theProfile);
-            fragTag = "EDIT_APIARY_FRAG";
+            // IMPORTANT -- this is how we get to LogEntry page viewer
+            // start EditHiveActivity activity
+            Intent i = new Intent(this,EditHiveActivity.class);
+            i.putExtra("apiaryName", apiaryName);
+            startActivity(i);
         }
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, fragment, fragTag).addToBackStack("backstacktag1");
-        ft.commit();
-
-
-
-        /* IMPORTANT -- this is how we get to LogEntry page viewer
-        // start LogEntryActivity activity
-        Intent i = new Intent(this,LogEntryActivity.class);
-        i.putExtra("fromMain", uri.toString());
-        startActivity(i);
-        */
     }
 
     @Override

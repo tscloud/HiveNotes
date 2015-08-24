@@ -99,13 +99,21 @@ public class HomeFragment extends Fragment {
                 tv.setText(aName);
                 tv.setTextColor(Color.WHITE);
                 layout.addView(tv);
+                //add listener
+                tv.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        onApiaryPressed(((TextView)v).getText());
+                    }
+                });
+
             }
             // and set some text
             t1.setText(getResources().getString(R.string.apiary_list_text));
         }
 
         // set button listener
-        b1.setOnClickListener(new View.OnClickListener(){
+        b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onButtonPressed(Uri.parse("here I am...from Edit Apiary"));
@@ -115,10 +123,15 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
-    public void onButtonPressed(Uri uri) {
-
+    private void onApiaryPressed(CharSequence apiaryName) {
         if (mListener != null) {
-            mListener.onHomeFragmentInteraction(uri);
+            mListener.onHomeFragmentInteraction(apiaryName.toString());
+        }
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onHomeFragmentInteraction(null);
         }
     }
 
@@ -151,7 +164,7 @@ public class HomeFragment extends Fragment {
      */
     public interface OnHomeFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onHomeFragmentInteraction(Uri uri);
+        public void onHomeFragmentInteraction(String apiaryName);
     }
 
 }

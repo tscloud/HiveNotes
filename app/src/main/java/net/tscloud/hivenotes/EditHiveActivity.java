@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class LogEntryActivity extends FragmentActivity {
+public class EditHiveActivity extends FragmentActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -34,12 +36,18 @@ public class LogEntryActivity extends FragmentActivity {
     ViewPager mViewPager;
 
     // logcat filter
-    private static final String TAG = "net.tscloud.LogEntry";
+    private static final String TAG = "EditHiveActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_entry);
+        setContentView(R.layout.activity_edit_hive);
+
+        // Get the apiary name from the Intent data
+        Intent intent = getIntent();
+        String apiaryName = intent.getStringExtra("apiaryName");
+
+        Log.d(TAG, "Called w/ apiary name: " + apiaryName);
 
         //List for all out fragments
         List<Fragment> fragments = getFragments();
