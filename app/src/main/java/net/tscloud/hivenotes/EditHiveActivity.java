@@ -18,6 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.tscloud.hivenotes.db.Hive;
+import net.tscloud.hivenotes.db.HiveDAO;
+
 public class EditHiveActivity extends FragmentActivity {
 
     /**
@@ -38,6 +41,9 @@ public class EditHiveActivity extends FragmentActivity {
     // logcat filter
     private static final String TAG = "EditHiveActivity";
 
+    private List<Hive> theHiveList = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +51,21 @@ public class EditHiveActivity extends FragmentActivity {
 
         // Get the apiary name from the Intent data
         Intent intent = getIntent();
-        String apiaryName = intent.getStringExtra("apiaryName");
+        long apiaryKey = intent.getLongExtra("apiaryKey", -1);
 
-        Log.d(TAG, "Called w/ apiary name: " + apiaryName);
+        Log.d(TAG, "Called w/ apiary key: " + apiaryKey);
+
+        if (apiaryKey == -1) {
+            // ACTION MUST BE TAKEN
+            Log.d(TAG, "Apiary BADNESS...>1 apiary w/ the same name");
+        }
+        else {
+            // Get the list of hives
+            Log.d(TAG, "reading Hive table");
+            HiveDAO hiveDAO = new HiveDAO(this);
+            theHiveList = hiveDAO.getHiveList(apiaryKey);
+            hiveDAO.close();
+        }
 
         //List for all out fragments
         List<Fragment> fragments = getFragments();

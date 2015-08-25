@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements
     // may be needed to pass to various Fragments
     private boolean newProfile = true;
     private Profile theProfile = null;
-    private ArrayList<String> apiaryNameList = null;
+    private List<Apiary> theApiaryList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements
         ProfileDAO profileDAO = new ProfileDAO(this);
         theProfile = profileDAO.getProfile();
         profileDAO.close();
+
         if (theProfile == null) {
             Log.d(TAG, "No profile");
             newProfile = true;
@@ -59,12 +60,12 @@ public class MainActivity extends AppCompatActivity implements
 
             // read Apiary table
             // will either show list or add button
-            getApiaryNames();
+            theApiaryList = getApiaryList();
         }
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder,
-                HomeFragment.newInstance(newProfile, apiaryNameList), "HOME_FRAG");//.addToBackStack("backstacktag3");
+                HomeFragment.newInstance(newProfile, getApiaryNames()), "HOME_FRAG");//.addToBackStack("backstacktag3");
         ft.commit();
     }
 
@@ -116,9 +117,9 @@ public class MainActivity extends AppCompatActivity implements
         //  This is where we want to show apiary list - but we have to reread
         //    b/c we have added a new one <- the right thing to do might be
         //    to pass the apiary list to avoid a DB read
-        getApiaryNames();
+        theApiaryList = getApiaryList();
 
-        Fragment fragment = HomeFragment.newInstance(newProfile, apiaryNameList);
+        Fragment fragment = HomeFragment.newInstance(newProfile, getApiaryNames());
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment).addToBackStack("backstacktag2");
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onHomeFragmentInteraction(String apiaryName) {
         Log.d(TAG, "MainActivity.onHomeFragmentInteraction called...Apiary name: " + apiaryName);
 
-        if ((apiaryName == null) || (apiaryName.length() != 0)) {
+        if ((apiaryName == null) || (apiaryName.length() == 0)) {
             Fragment fragment = null;
             String fragTag = null;
 
@@ -146,10 +147,10 @@ public class MainActivity extends AppCompatActivity implements
             ft.commit();
         }
         else {
-            // IMPORTANT -- this is how we get to LogEntry page viewer
+            // IMPORTANT -- this is how we get to EditHiveActivity page viewer
             // start EditHiveActivity activity
             Intent i = new Intent(this,EditHiveActivity.class);
-            i.putExtra("apiaryName", apiaryName);
+            i.putExtra("apiaryKey", getApiaryKey(apiaryName));
             startActivity(i);
         }
     }
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
         // set the instance var w/ the Profile we just made
         theProfile = profile;
 
-        Fragment fragment = HomeFragment.newInstance(newProfile, apiaryNameList);
+        Fragment fragment = HomeFragment.newInstance(newProfile, getApiaryNames());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment);
         ft.commit();
@@ -171,26 +172,59 @@ public class MainActivity extends AppCompatActivity implements
 
     // Utility method to get list of a Profile's apiary names
     //  use instance variables so no args and no return
-    private void getApiaryNames(){
+    private List<Apiary> getApiaryList() {
         // read Apiary table
-        // will either show list or add button
         Log.d(TAG, "reading Apiary table");
         ApiaryDAO apiaryDAO = new ApiaryDAO(this);
         List<Apiary> apiaryList = apiaryDAO.getApiaryList(theProfile.getId());
         apiaryDAO.close();
 
-        if (!apiaryList.isEmpty()){
+        if (!apiaryList.isEmpty()) {
             Log.d(TAG, "found Apiary list");
-
-            // display apiary list on HomeFragment
-            apiaryNameList = new ArrayList<>();
-            for (Apiary a : apiaryList){
-                apiaryNameList.add(a.getName());
-            }
         }
         else {
             Log.d(TAG, "no Apiary list");
+
         }
+
+        return apiaryList;
+    }
+
+    // Utility method to get the list of apiary names from the list of Apiaries
+    private ArrayList<String> getApiaryNames () {
+        ArrayList<String> apiaryNameList  = new ArrayList<String>();
+
+        if ((theApiaryList != null) && (!theApiaryList.isEmpty())) {
+
+            // display apiary list on HomeFragment
+            for (Apiary a : theApiaryList) {
+                apiaryNameList.add(a.getName());
+            }
+        }
+
+        return apiaryNameList;
+    }
+
+    // Utility method to get apiary key from apiary name
+    // A bit of a HACK - should consider putting index on Name in Apiary table
+    private long getApiaryKey(String apiaryName) {
+        long result = -1;
+
+        for (Apiary apiary : theApiaryList) {
+            if (apiary.getName().equals(apiaryName)) {
+                if (result != -1) {
+                    // >1 apiary w/ the same name
+                    // this would bad
+                    Log.d(TAG, "Apiary BADNESS...>1 apiary w/ the same name");
+                    result = -1;
+                    break;
+                }
+                else {
+                    result = apiary.getId();
+                }
+            }
+        }
+        return result;
     }
 
 }

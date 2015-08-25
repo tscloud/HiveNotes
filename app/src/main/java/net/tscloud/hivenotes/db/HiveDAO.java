@@ -7,6 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tscloud on 8/15/15.
  */
@@ -76,12 +79,30 @@ public class HiveDAO {
     public Hive getHiveById(long id){
         Cursor cursor = mDatabase.query(TABLE_HIVE, mAllColumns,
                 COLUMN_HIVE_ID + " = ?",
-                new String[] { String.valueOf(id) }, null, null, null);
+                new String[]{String.valueOf(id)}, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
 
         return cursorToHive(cursor);
+    }
+
+    public List<Hive> getHiveList(long apiaryId) {
+        List<Hive> listHive = new ArrayList<Hive>();
+
+        Cursor cursor = mDatabase.query(TABLE_HIVE, mAllColumns,
+                COLUMN_HIVE_APIARY + " = ?",
+                new String[] { String.valueOf(apiaryId) }, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Hive hive = cursorToHive(cursor);
+            listHive.add(hive);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return listHive;
     }
 
     protected Hive cursorToHive(Cursor cursor) {

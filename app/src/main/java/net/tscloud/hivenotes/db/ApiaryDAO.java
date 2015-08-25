@@ -88,8 +88,8 @@ public class ApiaryDAO {
     public List<Apiary> getApiaryList(long profileId) {
         List<Apiary> listApiary = new ArrayList<Apiary>();
 
-        Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns
-                , COLUMN_APIARY_PROFILE + " = ?",
+        Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,
+                COLUMN_APIARY_PROFILE + " = ?",
                 new String[] { String.valueOf(profileId) }, null, null, null);
 
         cursor.moveToFirst();

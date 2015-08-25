@@ -29,8 +29,8 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private boolean mNewProfile;
-    private ArrayList<String> mApiaryNames;
+    private boolean mNewProfile = false;
+    private ArrayList<String> mApiaryNames = null;
 
     private OnHomeFragmentInteractionListener mListener;
 
@@ -42,7 +42,6 @@ public class HomeFragment extends Fragment {
      * @param apiaryNames
      * @return A new instance of fragment HomeFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(boolean newProfile, ArrayList<String> apiaryNames) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
