@@ -16,7 +16,7 @@ import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.db.Profile;
 import net.tscloud.hivenotes.db.ProfileDAO;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder,
-                HomeFragment.newInstance(newProfile, getApiaryNames()), "HOME_FRAG");//.addToBackStack("backstacktag3");
+                HomeFragment.newInstance(newProfile, getApiaryNameMap()), "HOME_FRAG");//.addToBackStack("backstacktag3");
         ft.commit();
     }
 
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements
         //    to pass the apiary list to avoid a DB read
         theApiaryList = getApiaryList();
 
-        Fragment fragment = HomeFragment.newInstance(newProfile, getApiaryNames());
+        Fragment fragment = HomeFragment.newInstance(newProfile, getApiaryNameMap());
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment).addToBackStack("backstacktag2");
@@ -127,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onHomeFragmentInteraction(String apiaryName) {
-        Log.d(TAG, "MainActivity.onHomeFragmentInteraction called...Apiary name: " + apiaryName);
+    public void onHomeFragmentInteraction(Long apiaryId) {
+        Log.d(TAG, "MainActivity.onHomeFragmentInteraction called...Apiary name: " + apiaryId);
 
-        if ((apiaryName == null) || (apiaryName.length() == 0)) {
+        if (apiaryId == null) {
             Fragment fragment = null;
             String fragTag = null;
 
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements
             // IMPORTANT -- this is how we get to EditHiveActivity page viewer
             // start EditHiveActivity activity
             Intent i = new Intent(this,EditHiveActivity.class);
-            i.putExtra("apiaryKey", getApiaryKey(apiaryName));
+            i.putExtra("apiaryKey", apiaryId);
             startActivity(i);
         }
     }
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
         // set the instance var w/ the Profile we just made
         theProfile = profile;
 
-        Fragment fragment = HomeFragment.newInstance(newProfile, getApiaryNames());
+        Fragment fragment = HomeFragment.newInstance(newProfile, getApiaryNameMap());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment);
         ft.commit();
@@ -184,47 +184,23 @@ public class MainActivity extends AppCompatActivity implements
         }
         else {
             Log.d(TAG, "no Apiary list");
-
         }
 
         return apiaryList;
     }
 
-    // Utility method to get the list of apiary names from the list of Apiaries
-    private ArrayList<String> getApiaryNames () {
-        ArrayList<String> apiaryNameList  = new ArrayList<String>();
+    // Utility method to make a Hashmap of Apiary id -> name
+    private LinkedHashMap<Long, String> getApiaryNameMap() {
+        LinkedHashMap<Long, String> reply = null;
 
         if ((theApiaryList != null) && (!theApiaryList.isEmpty())) {
+            reply  = new LinkedHashMap<>(theApiaryList.size());
 
-            // display apiary list on HomeFragment
             for (Apiary a : theApiaryList) {
-                apiaryNameList.add(a.getName());
+                reply.put(a.getId(), a.getName());
             }
         }
 
-        return apiaryNameList;
+        return reply;
     }
-
-    // Utility method to get apiary key from apiary name
-    // A bit of a HACK - should consider putting index on Name in Apiary table
-    private long getApiaryKey(String apiaryName) {
-        long result = -1;
-
-        for (Apiary apiary : theApiaryList) {
-            if (apiary.getName().equals(apiaryName)) {
-                if (result != -1) {
-                    // >1 apiary w/ the same name
-                    // this would bad
-                    Log.d(TAG, "Apiary BADNESS...>1 apiary w/ the same name");
-                    result = -1;
-                    break;
-                }
-                else {
-                    result = apiary.getId();
-                }
-            }
-        }
-        return result;
-    }
-
 }

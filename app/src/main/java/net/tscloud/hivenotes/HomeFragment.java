@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 
 /**
@@ -25,12 +26,15 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+    private static final String TAG = "HomeFragment";
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
 
     private boolean mNewProfile = false;
-    private ArrayList<String> mApiaryNames = null;
+    private LinkedHashMap<Long, String> mApiaryNameMap = null;
 
     private OnHomeFragmentInteractionListener mListener;
 
@@ -39,15 +43,34 @@ public class HomeFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param newProfile Indicates we need to create a Profile.
-     * @param apiaryNames
+     * @param apiaryNameMap
      * @return A new instance of fragment HomeFragment.
      */
-    public static HomeFragment newInstance(boolean newProfile, ArrayList<String> apiaryNames) {
+    public static HomeFragment newInstance(boolean newProfile, LinkedHashMap<Long, String> apiaryNameMap) {
+        Log.d(TAG, "getting newInstance of HomeFragment");
+
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
+
         args.putBoolean(ARG_PARAM1, newProfile);
-        args.putStringArrayList(ARG_PARAM2, apiaryNames);
+
+        // split the Hashmap of Apiary id -> name => 2 ArrayLists
+        if ((apiaryNameMap != null) && !apiaryNameMap.isEmpty()) {
+            long[] apiaryIds = new long[apiaryNameMap.size()];
+            String[] apiaryNames = new String[apiaryNameMap.size()];
+            int i = 0;
+            for (long id : apiaryNameMap.keySet()) {
+                apiaryIds[i] = id;
+                apiaryNames[i] = apiaryNameMap.get(id);
+                ++i;
+            }
+
+            args.putLongArray(ARG_PARAM2, apiaryIds);
+            args.putStringArray(ARG_PARAM3, apiaryNames);
+        }
+
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -59,8 +82,21 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
             mNewProfile = getArguments().getBoolean(ARG_PARAM1);
-            mApiaryNames = getArguments().getStringArrayList(ARG_PARAM2);
+
+            // reconstitute LinkedHashMap
+            long[] argApiaryIds = getArguments().getLongArray(ARG_PARAM2);
+            String[] argApiaryNames = getArguments().getStringArray(ARG_PARAM3);
+
+            if (!(argApiaryIds == null) && !(argApiaryNames == null)) {
+                // this is onCreate so we know we want to make a new LinkedHashMap
+                mApiaryNameMap = new LinkedHashMap<>(argApiaryIds.length);
+
+                for (int i = 0; i < argApiaryIds.length; i++) {
+                    mApiaryNameMap.put(argApiaryIds[i], argApiaryNames[i]);
+                }
+            }
         }
     }
 
@@ -86,23 +122,24 @@ public class HomeFragment extends Fragment {
         }
 
         // check for list of apiaries and add TextViews as necessary
-        if (!(mApiaryNames == null) && !(mApiaryNames.isEmpty())){
+        if (!(mApiaryNameMap == null) && !(mApiaryNameMap.isEmpty())){
             ViewGroup layout = (ViewGroup) v.findViewById(R.id.linearLayout1);
-            for (String aName : mApiaryNames){
+            for (Long aId : mApiaryNameMap.keySet()){
                 TextView tv = new TextView(getActivity());
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.gravity = Gravity.CENTER;
                 tv.setLayoutParams(layoutParams);
-                tv.setText(aName);
+                tv.setText(mApiaryNameMap.get(aId));
+                tv.setTag(aId);
                 tv.setTextColor(Color.WHITE);
                 layout.addView(tv);
                 //add listener
                 tv.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        onApiaryPressed(((TextView)v).getText());
+                        onApiaryPressed((TextView)v);
                     }
                 });
 
@@ -122,9 +159,9 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
-    private void onApiaryPressed(CharSequence apiaryName) {
+    private void onApiaryPressed(TextView apiaryNameTextView) {
         if (mListener != null) {
-            mListener.onHomeFragmentInteraction(apiaryName.toString());
+            mListener.onHomeFragmentInteraction((Long)apiaryNameTextView.getTag());
         }
     }
 
@@ -163,7 +200,7 @@ public class HomeFragment extends Fragment {
      */
     public interface OnHomeFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onHomeFragmentInteraction(String apiaryName);
+        public void onHomeFragmentInteraction(Long apiaryId);
     }
 
 }
