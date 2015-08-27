@@ -80,9 +80,10 @@ public class EditApiaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_apiary, container, false);
 
-        // set button listener
-        final Button b1 = (Button)v.findViewById(R.id.newApiaryButtton);
-        b1.setOnClickListener(new View.OnClickListener(){
+        // set button listener and text
+        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
+        b1.setText(getResources().getString(R.string.create_apiary_string));
+        b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onButtonPressed(Uri.parse("here I am...from New Apiary"), mParam2);
@@ -112,7 +113,7 @@ public class EditApiaryFragment extends Fragment {
         }
 
         if (postalCodeText.length() == 0){
-            postalCodeEdit.setError("Email cannot be empty");
+            postalCodeEdit.setError("Postal Code cannot be empty");
             emptyText = true;
             Log.d(TAG, "Uh oh...Name empty");
         }
@@ -125,10 +126,9 @@ public class EditApiaryFragment extends Fragment {
             Log.d(TAG, "Apiary Name: " + apiary.getName() + " persisted");
             Log.d(TAG, "Apiary Postal Code: " + apiary.getPostalCode() + " persisted");
 
-        }
-
-        if (mListener != null) {
-            mListener.onNewApiaryFragmentInteraction(uri);
+            if (mListener != null) {
+                mListener.onNewApiaryFragmentInteraction();
+            }
         }
     }
 
@@ -161,7 +161,7 @@ public class EditApiaryFragment extends Fragment {
      */
     public interface OnNewApiaryFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onNewApiaryFragmentInteraction(Uri uri);
+        public void onNewApiaryFragmentInteraction();
     }
 
 }

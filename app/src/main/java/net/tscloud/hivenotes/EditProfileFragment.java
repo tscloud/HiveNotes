@@ -80,7 +80,7 @@ public class EditProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
         // set button listener
-        final Button b1 = (Button)v.findViewById(R.id.newProfileButtton);
+        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
         b1.setOnClickListener(new View.OnClickListener(){
            @Override
             public void onClick(View v) {
@@ -144,7 +144,7 @@ public class EditProfileFragment extends Fragment {
             Log.d(TAG, "Profile Email: " + profile.getEmail() + " persisted");
 
             if (mListener != null) {
-                mListener.onNewProfileFragmentInteraction(uri, profile);
+                mListener.onNewProfileFragmentInteraction(profile);
             }
         }
     }
@@ -178,7 +178,7 @@ public class EditProfileFragment extends Fragment {
      */
     public interface OnNewProfileFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onNewProfileFragmentInteraction(Uri uri, Profile profile);
+        public void onNewProfileFragmentInteraction(Profile profile);
     }
 
 }

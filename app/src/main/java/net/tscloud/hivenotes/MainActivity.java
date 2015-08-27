@@ -1,7 +1,6 @@
 package net.tscloud.hivenotes;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -111,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements
     */
 
     @Override
-    public void onNewApiaryFragmentInteraction(Uri uri) {
-        Log.d(TAG, "MainActivity.onNewApiaryFragmentInteraction called..." + uri.toString());
+    public void onNewApiaryFragmentInteraction() {
+        Log.d(TAG, "MainActivity.onNewApiaryFragmentInteraction called...");
 
         //  This is where we want to show apiary list - but we have to reread
         //    b/c we have added a new one <- the right thing to do might be
@@ -156,8 +155,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onNewProfileFragmentInteraction(Uri uri, Profile profile) {
-        Log.d(TAG, "MainActivity.onNewProfileFragmentInteraction called..." + uri.toString());
+    public void onNewProfileFragmentInteraction(Profile profile) {
+        Log.d(TAG, "MainActivity.onNewProfileFragmentInteraction called...");
 
         // don't need to make a new Profile
         newProfile = false;

@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="net.tscloud.hivenotes.EditApiaryFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/new_apiary_string"
+        android:id="@+id/textNewApiary"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_apiary_name_string"
+        android:id="@+id/textApiary"
+        android:layout_marginTop="36dp"
+        android:singleLine="true"
+        android:layout_below="@+id/textNewApiary"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextApiaryName"
+        android:layout_alignTop="@+id/textApiary"
+        android:layout_toRightOf="@+id/textNewApiary"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/postal_code_string"
+        android:id="@+id/textPostalCode"
+        android:layout_below="@+id/editTextApiaryName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextApiaryPostalCode"
+        android:layout_alignTop="@+id/textPostalCode"
+        android:layout_alignLeft="@+id/editTextApiaryName"
+        android:layout_alignStart="@+id/editTextApiaryName"
+        android:layout_alignRight="@+id/editTextApiaryName"
+        android:layout_alignEnd="@+id/editTextApiaryName" />
+
+    <include
+        android:id="@+id/newApiaryButton"
+        layout="@layout/hive_note_button">
+    </include>
+
+</RelativeLayout>

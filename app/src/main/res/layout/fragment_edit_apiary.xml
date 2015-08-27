@@ -1,11 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="net.tscloud.hivenotes.EditApiaryFragment">
 
     <TextView
@@ -18,87 +19,60 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Button
-        android:background="@android:color/transparent"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/new_apiary_button_text"
-        android:id="@+id/newApiaryButtton"
-        android:layout_marginBottom="49dp"
-        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_below="@+id/textNewApiary"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/linearLayout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/new_apiary_name_string"
-        android:id="@+id/textApiary"
-        android:layout_marginTop="36dp"
-        android:singleLine="true"
-        android:layout_below="@+id/textNewApiary"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/new_apiary_name_string"
+            android:id="@+id/textApiary" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextApiaryName"
-        android:layout_alignTop="@+id/textApiary"
-        android:layout_toRightOf="@+id/textNewApiary"
-        android:layout_alignRight="@+id/newApiaryButtton"
-        android:layout_alignEnd="@+id/newApiaryButtton" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:id="@+id/editTextApiaryName"
+            android:ems="10" />
 
-    <View
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/newApiaryLine1"
-        android:layout_alignTop="@+id/newApiaryButtton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/newApiaryLine2"
-        android:layout_alignBottom="@+id/newApiaryButtton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        android:src="@drawable/plus_icon"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageViewNewApiary"
-        android:contentDescription="@string/create_profile_string"
-        android:clickable="true"
-        android:layout_alignBottom="@+id/newApiaryButtton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/newApiaryButtton" />
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayout2">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/postal_code_string"
-        android:id="@+id/textPostalCode"
-        android:layout_below="@+id/editTextApiaryName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="14dp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/postal_code_string"
+            android:id="@+id/textPostalCode" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextApiaryPostalCode"
-        android:layout_alignTop="@+id/textPostalCode"
-        android:layout_alignLeft="@+id/editTextApiaryName"
-        android:layout_alignStart="@+id/editTextApiaryName"
-        android:layout_alignRight="@+id/editTextApiaryName"
-        android:layout_alignEnd="@+id/editTextApiaryName" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:id="@+id/editTextApiaryPostalCode"
+            android:ems="10" />
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/newProfileButton"
+        layout="@layout/hive_note_button" />
 
 </RelativeLayout>

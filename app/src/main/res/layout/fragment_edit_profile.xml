@@ -59,51 +59,14 @@
         android:id="@+id/editTextEmail"
         android:layout_alignTop="@+id/textEMail"
         android:layout_toRightOf="@+id/textName"
-        android:layout_toEndOf="@+id/textName"
         android:layout_marginLeft="41dp"
         android:layout_marginStart="41dp"
-        android:nextFocusDown="@+id/editTextName" />
+        android:nextFocusDown="@+id/editTextName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-    <Button
-        android:background="@android:color/transparent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/new_profile_button_text"
-        android:id="@+id/newProfileButtton"
-        android:layout_marginBottom="43dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/newApiaryLine1"
-        android:layout_alignEnd="@+id/newApiaryLine1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/newApiaryLine1"
-        android:layout_alignTop="@+id/newProfileButtton"
-        android:layout_centerHorizontal="true" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/newApiaryLine2"
-        android:layout_alignBottom="@+id/newProfileButtton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        android:src="@drawable/plus_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageViewNewProfile"
-        android:layout_below="@+id/newApiaryLine1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/newProfileButtton"
-        android:contentDescription="@string/create_profile_string"
-        android:clickable="true" />
+    <include
+        android:id="@+id/newProfileButton"
+        layout="@layout/hive_note_button" />
 
 </RelativeLayout>
