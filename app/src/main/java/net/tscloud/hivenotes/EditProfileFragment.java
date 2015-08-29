@@ -19,7 +19,7 @@ import net.tscloud.hivenotes.db.ProfileDAO;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnNewProfileFragmentInteractionListener} interface
+ * {@link OnProfileFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link EditProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -40,7 +40,7 @@ public class EditProfileFragment extends Fragment {
     // original button color
     private ColorDrawable drawable;
 
-    private OnNewProfileFragmentInteractionListener mListener;
+    private OnProfileFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -144,7 +144,7 @@ public class EditProfileFragment extends Fragment {
             Log.d(TAG, "Profile Email: " + profile.getEmail() + " persisted");
 
             if (mListener != null) {
-                mListener.onNewProfileFragmentInteraction(profile);
+                mListener.onProfileFragmentInteraction(profile);
             }
         }
     }
@@ -153,10 +153,10 @@ public class EditProfileFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnNewProfileFragmentInteractionListener)activity;
+            mListener = (OnProfileFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnNewProfileFragmentInteractionListener");
+                    + " must implement OnProfileFragmentInteractionListener");
         }
     }
 
@@ -176,9 +176,8 @@ public class EditProfileFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnNewProfileFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onNewProfileFragmentInteraction(Profile profile);
+    public interface OnProfileFragmentInteractionListener {
+        public void onProfileFragmentInteraction(Profile profile);
     }
 
 }

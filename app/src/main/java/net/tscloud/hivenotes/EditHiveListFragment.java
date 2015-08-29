@@ -1,18 +1,24 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import net.tscloud.hivenotes.dummy.DummyContent;
+import net.tscloud.hivenotes.db.Hive;
+import net.tscloud.hivenotes.db.HiveDAO;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -20,21 +26,21 @@ import net.tscloud.hivenotes.dummy.DummyContent;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnEditHiveFragmentInteractionListener}
  * interface.
  */
 public class EditHiveListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
+    private long mApiaryKey;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private List<Hive> theHiveList = null;
+
+    private OnEditHiveFragmentInteractionListener mListener;
 
     /**
      * The fragment's ListView/GridView.
@@ -47,12 +53,13 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      */
     private ListAdapter mAdapter;
 
-    // TODO: Rename and change types of parameters
-    public static EditHiveListFragment newInstance(String param1, String param2) {
+    // logcat filter
+    private static final String TAG = "EditHiveListFragment";
+
+    public static EditHiveListFragment newInstance(long apiaryKey) {
         EditHiveListFragment fragment = new EditHiveListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(ARG_PARAM1, apiaryKey);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,13 +76,17 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mApiaryKey = getArguments().getLong(ARG_PARAM1);
         }
 
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        // Get the list of hives
+        Log.d(TAG, "reading Hive table");
+        HiveDAO hiveDAO = new HiveDAO(getActivity());
+        theHiveList = hiveDAO.getHiveList(mApiaryKey);
+        hiveDAO.close();
+
+        mAdapter = new ArrayAdapter<Hive>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, theHiveList);
     }
 
     @Override
@@ -83,24 +94,44 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_hive, container, false);
 
-        // Set the adapter
+        final Button btnEditHive = (Button)view.findViewById(R.id.hiveNoteButtton);
+
+        // Set the adapter and the EmptyView
         mListView = (AbsListView) view.findViewById(android.R.id.list);
+        mListView.setEmptyView(view.findViewById(android.R.id.empty));
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
 
+        if (theHiveList.isEmpty()) {
+            setEmptyText("No hives yet");
+        }
+
+        // set button listener
+        btnEditHive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEditHiveButtonPressed(Uri.parse("here I am...from Edit Apiary"));
+            }
+        });
         return view;
+    }
+
+    public void onEditHiveButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onEditHiveFragmentInteraction(-1);
+        }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnEditHiveFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnEditHiveFragmentInteractionListener");
         }
     }
 
@@ -113,9 +144,10 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
+
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onEditHiveFragmentInteraction(theHiveList.get(position).getId());
         }
     }
 
@@ -142,9 +174,8 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+    public interface OnEditHiveFragmentInteractionListener {
+        public void onEditHiveFragmentInteraction(long id);
     }
 
 }

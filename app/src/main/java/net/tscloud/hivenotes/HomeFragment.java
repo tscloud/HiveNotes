@@ -107,18 +107,19 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         // set some text
-        final Button b1 = (Button)v.findViewById(R.id.editApiaryButton);
-        final TextView t1 = (TextView)v.findViewById(R.id.textCreateEdit);
+        final Button btnEditApiary = (Button)v.findViewById(R.id.editApiaryButton);
+        final TextView textListApiary = (TextView)v.findViewById(R.id.textCreateEdit);
+        final Button btnDropDB = (Button)v.findViewById(R.id.btnDropDB);
 
         if (mNewProfile){
             String s = getResources().getString(R.string.create_profile_string);
-            b1.setText(s);
-            t1.setText(s);
+            btnEditApiary.setText(s);
+            textListApiary.setText(s);
         }
         else {
             String s = getResources().getString(R.string.new_apiary_string);
-            b1.setText(s);
-            t1.setText(s);
+            btnEditApiary.setText(s);
+            textListApiary.setText(s);
         }
 
         // check for list of apiaries and add TextViews as necessary
@@ -145,14 +146,22 @@ public class HomeFragment extends Fragment {
 
             }
             // and set some text
-            t1.setText(getResources().getString(R.string.apiary_list_text));
+            textListApiary.setText(getResources().getString(R.string.apiary_list_text));
         }
 
         // set button listener
-        b1.setOnClickListener(new View.OnClickListener() {
+        btnEditApiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(Uri.parse("here I am...from Edit Apiary"));
+                onEdirApiaryButtonPressed(Uri.parse("here I am...from Edit Apiary"));
+            }
+        });
+
+        // set button listener
+        btnDropDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDropDBButtonPressed(Uri.parse("here I am...from Edit Apiary"));
             }
         });
 
@@ -161,13 +170,22 @@ public class HomeFragment extends Fragment {
 
     private void onApiaryPressed(TextView apiaryNameTextView) {
         if (mListener != null) {
-            mListener.onHomeFragmentInteraction((Long)apiaryNameTextView.getTag());
+            mListener.onHomeFragmentInteraction((Long)apiaryNameTextView.getTag(), false);
         }
     }
 
-    public void onButtonPressed(Uri uri) {
+    public void onEdirApiaryButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onHomeFragmentInteraction(null);
+            mListener.onHomeFragmentInteraction(null, false);
+        }
+    }
+
+    public void onDropDBButtonPressed(Uri uri) {
+        // FOR TESTING ONLY
+        boolean dbDeleted = getActivity().deleteDatabase("hivenotes_db");
+
+        if (mListener != null) {
+            mListener.onHomeFragmentInteraction(null, dbDeleted);
         }
     }
 
@@ -200,7 +218,7 @@ public class HomeFragment extends Fragment {
      */
     public interface OnHomeFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onHomeFragmentInteraction(Long apiaryId);
+        public void onHomeFragmentInteraction(Long apiaryId, boolean dbDeleted);
     }
 
 }

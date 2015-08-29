@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,10 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.tscloud.hivenotes.db.Hive;
-import net.tscloud.hivenotes.db.HiveDAO;
-
-public class EditHiveActivity extends FragmentActivity {
+public class EditHiveActivity extends AppCompatActivity implements
+        EditHiveListFragment.OnEditHiveFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -41,7 +40,7 @@ public class EditHiveActivity extends FragmentActivity {
     // logcat filter
     private static final String TAG = "EditHiveActivity";
 
-    private List<Hive> theHiveList = null;
+    private long theApiaryKey;
 
 
     @Override
@@ -49,26 +48,22 @@ public class EditHiveActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_hive);
 
+        // Custom Action Bar
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.abs_layout);
+//        View abView = getSupportActionBar().getCustomView();
+//        TextView abText = (TextView)abView.findViewById(R.id.mytext);
+//        abText.setText("NewHiveNites");
+
         // Get the apiary name from the Intent data
         Intent intent = getIntent();
-        long apiaryKey = intent.getLongExtra("apiaryKey", -1);
+        theApiaryKey = intent.getLongExtra("apiaryKey", -1);
 
-        Log.d(TAG, "Called w/ apiary key: " + apiaryKey);
+        Log.d(TAG, "Called w/ apiary key: " + theApiaryKey);
 
-        if (apiaryKey == -1) {
-            // ACTION MUST BE TAKEN
-            Log.d(TAG, "Apiary BADNESS...>1 apiary w/ the same name");
-        }
-        else {
-            // Get the list of hives
-            Log.d(TAG, "reading Hive table");
-            HiveDAO hiveDAO = new HiveDAO(this);
-            theHiveList = hiveDAO.getHiveList(apiaryKey);
-            hiveDAO.close();
-        }
 
         //List for all out fragments
-        List<Fragment> fragments = getFragments();
+        List<Fragment> fragments = getFragments(theApiaryKey);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -79,10 +74,11 @@ public class EditHiveActivity extends FragmentActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
 
-    private List<Fragment> getFragments(){
+    private List<Fragment> getFragments(long argApiaryKey){
         List<Fragment> fList = new ArrayList<Fragment>();
 
-        fList.add(PlaceholderFragment.newInstance("Fragment 1", R.layout.fragment1_log_entry));
+        fList.add(EditHiveListFragment.newInstance(argApiaryKey));
+
         fList.add(PlaceholderFragment.newInstance("Fragment 2", R.layout.fragment2_log_entry));
         fList.add(PlaceholderFragment.newInstance("Fragment 3", R.layout.fragment3_log_entry));
 
@@ -111,6 +107,40 @@ public class EditHiveActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onEditHiveFragmentInteraction(long id) {
+
+        // if id is non-null => we selected something
+        // else we're making a new Hive
+        if (id == -1) {
+            // Do new Hive stuff
+            Log.d(TAG, "Back from EditHiveListFragment: null Hive ID");
+            Intent data = new Intent();
+
+            data.putExtra("showNewHiveScreen", true);
+            data.putExtra("apiaryKey", theApiaryKey);
+
+            setResult(RESULT_OK, data);
+            finish();
+        }
+        else{
+            // Do selected Hive stuff
+            Log.d(TAG, "Back from Edit HiveListFragment: Hive ID:" + id);
+            Intent data = new Intent();
+
+            data.putExtra("showNewHiveScreen", false);
+            data.putExtra("hiveKey", theApiaryKey);
+
+            setResult(RESULT_OK, data);
+            finish();
+        }
+    }
+
+    @Override
+    public void finish() {
+
+        super.finish();
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

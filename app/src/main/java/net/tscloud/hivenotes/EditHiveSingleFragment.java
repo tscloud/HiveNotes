@@ -11,57 +11,52 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import net.tscloud.hivenotes.db.Apiary;
-import net.tscloud.hivenotes.db.ApiaryDAO;
-import net.tscloud.hivenotes.db.Profile;
+import net.tscloud.hivenotes.db.Hive;
+import net.tscloud.hivenotes.db.HiveDAO;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnApiaryFragmentInteractionListener} interface
+ * {@link OnHiveFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link EditApiaryFragment#newInstance} factory method to
+ * Use the {@link EditHiveSingleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditApiaryFragment extends Fragment {
+public class EditHiveSingleFragment extends Fragment {
 
-    public static final String TAG = "EditApiaryFragment";
+    public static final String TAG = "EditHiveSingleFragment";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM_APIARY_KEY = "apiaryKey";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private long mParam2;
+    private long theApiaryKey;
 
-    private OnApiaryFragmentInteractionListener mListener;
+    private OnHiveFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param profile Parameter 2.
-     * @return A new instance of fragment EditApiaryFragment.
+     * @param apiaryKey Parameter 2.
+     * @return A new instance of fragment EditHiveSingleFragment.
      */
-    public static EditApiaryFragment newInstance(String param1, Profile profile) {
+    public static EditHiveSingleFragment newInstance(long apiaryKey) {
         // Profile object passed in at newInstance create time
         // but only putting the profileID in the Bundle
 
-        EditApiaryFragment fragment = new EditApiaryFragment();
+        EditHiveSingleFragment fragment = new EditHiveSingleFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putLong(ARG_PARAM2, profile.getId());
+        args.putLong(ARG_PARAM_APIARY_KEY, apiaryKey);
 
         fragment.setArguments(args);
 
         return fragment;
     }
 
-    public EditApiaryFragment() {
+    public EditHiveSingleFragment() {
         // Required empty public constructor
     }
 
@@ -69,8 +64,7 @@ public class EditApiaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getLong(ARG_PARAM2);
+            theApiaryKey = getArguments().getLong(ARG_PARAM_APIARY_KEY);
         }
     }
 
@@ -78,15 +72,15 @@ public class EditApiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_edit_apiary, container, false);
+        View v = inflater.inflate(R.layout.fragment_edit_single_hive, container, false);
 
         // set button listener and text
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.create_apiary_string));
+        b1.setText(getResources().getString(R.string.create_hive_string));
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(Uri.parse("here I am...from New Apiary"), mParam2);
+                onButtonPressed(Uri.parse("here I am...from New Hive"), theApiaryKey);
             }
         });
 
@@ -94,14 +88,16 @@ public class EditApiaryFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri, long profileID) {
+    public void onButtonPressed(Uri uri, long apiaryID) {
         // get name and email and put to DB
-        Log.d(TAG, "about to persist apiary");
+        Log.d(TAG, "about to persist hive");
 
-        EditText nameEdit = (EditText)getView().findViewById(R.id.editTextApiaryName);
-        EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
+        EditText nameEdit = (EditText)getView().findViewById(R.id.editTextHiveName);
+        EditText speciesEdit = (EditText)getView().findViewById(R.id.editTextHiveSpecies);
+        EditText foundationTypeEdit = (EditText)getView().findViewById(R.id.editTextHiveFoundationType);
         String nameText = nameEdit.getText().toString();
-        String postalCodeText = postalCodeEdit.getText().toString();
+        String speciesText = speciesEdit.getText().toString();
+        String foundationTypeText = speciesEdit.getText().toString();
 
         // neither EditText can be empty
         boolean emptyText = false;
@@ -112,22 +108,23 @@ public class EditApiaryFragment extends Fragment {
             Log.d(TAG, "Uh oh...Name empty");
         }
 
-        if (postalCodeText.length() == 0){
-            postalCodeEdit.setError("Postal Code cannot be empty");
+        if (speciesText.length() == 0){
+            speciesEdit.setError("Species cannot be empty");
             emptyText = true;
-            Log.d(TAG, "Uh oh...Name empty");
+            Log.d(TAG, "Uh oh...Species empty");
         }
 
         if (!emptyText) {
-            ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
-            Apiary apiary = apiaryDAO.createApiary(profileID, nameText, postalCodeText);
-            apiaryDAO.close();
+            HiveDAO hiveDAO = new HiveDAO(getActivity());
+            Hive hive = hiveDAO.createHive(apiaryID, nameText, speciesText, foundationTypeText);
+            hiveDAO.close();
 
-            Log.d(TAG, "Apiary Name: " + apiary.getName() + " persisted");
-            Log.d(TAG, "Apiary Postal Code: " + apiary.getPostalCode() + " persisted");
+            Log.d(TAG, "Hive Name: " + hive.getName() + " persisted");
+            Log.d(TAG, "Hive Species: " + hive.getSpecies() + " persisted");
+            Log.d(TAG, "Hive Foundation Type: " + hive.getFoundationType() + " persisted");
 
             if (mListener != null) {
-                mListener.onApiaryFragmentInteraction();
+                mListener.onHiveFragmentInteraction(theApiaryKey);
             }
         }
     }
@@ -136,10 +133,10 @@ public class EditApiaryFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnApiaryFragmentInteractionListener)activity;
+            mListener = (OnHiveFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnApiaryFragmentInteractionListener");
+                    + " must implement OnHiveFragmentInteractionListener");
         }
     }
 
@@ -159,8 +156,8 @@ public class EditApiaryFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnApiaryFragmentInteractionListener {
-        public void onApiaryFragmentInteraction();
+    public interface OnHiveFragmentInteractionListener {
+        public void onHiveFragmentInteraction(long apiaryId);
     }
 
 }

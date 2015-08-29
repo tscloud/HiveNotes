@@ -25,6 +25,12 @@
     <string name="new_apiary_name_text">Apiary Name:</string>
     <string name="create_profile_string">Create Profile</string>
     <string name="create_apiary_string">Create Apiary</string>
+    <string name="create_hive_string">Create Hive</string>
     <string name="postal_code_string">Postal Code:</string>
     <string name="new_apiary_name_string">Apiary Name:</string>
+    <string name="no_hives_string">No hives yet</string>
+    <string name="new_hive_string">New Hive</string>
+    <string name="hive_name_string">Hive Name:</string>
+    <string name="hive_species_string">Species:</string>
+    <string name="hive_foundation_type_string">Foundation Type:</string>
 </resources>

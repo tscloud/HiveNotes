@@ -1,49 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
 
-
-    <Button
-        android:background="@android:color/transparent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/create_profile_string"
-        android:id="@+id/hiveNoteButtton"
-        android:layout_marginBottom="76dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/hiveNoteLine1"
-        android:layout_alignTop="@+id/hiveNoteButtton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/hiveNoteLine2"
-        android:layout_alignBottom="@+id/hiveNoteButtton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <ImageView
         android:src="@drawable/plus_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.10"
         android:id="@+id/hiveNoteImage"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/hiveNoteButtton"
         android:contentDescription="@string/create_profile_string"
-        android:clickable="true"
-        android:layout_alignTop="@+id/hiveNoteButtton" />
+        android:clickable="true" />
+
+    <Button
+        android:background="@android:color/transparent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.90"
+        android:text="@string/create_profile_string"
+        android:id="@+id/hiveNoteButtton" />
 
 
-</RelativeLayout>
+</LinearLayout>
