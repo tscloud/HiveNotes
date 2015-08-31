@@ -1,7 +1,6 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ import java.util.List;
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnEditHiveFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnEditHiveListFragmentInteractionListener}
  * interface.
  */
 public class EditHiveListFragment extends Fragment implements AbsListView.OnItemClickListener {
@@ -40,7 +40,9 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
 
     private List<Hive> theHiveList = null;
 
-    private OnEditHiveFragmentInteractionListener mListener;
+    String emptyTextMsg = "No hives yet";
+
+    private OnEditHiveListFragmentInteractionListener mListener;
 
     /**
      * The fragment's ListView/GridView.
@@ -80,10 +82,23 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         }
 
         // Get the list of hives
+        // Do it local
+        /*
         Log.d(TAG, "reading Hive table");
         HiveDAO hiveDAO = new HiveDAO(getActivity());
         theHiveList = hiveDAO.getHiveList(mApiaryKey);
         hiveDAO.close();
+        */
+
+        // Do it remote
+        if (mListener != null) {
+            // Note: theHiveList should ever be null as HiveDAO will return empty List
+            theHiveList = mListener.getTheHiveList(mApiaryKey);
+        }
+        else {
+            emptyTextMsg = "no connection to Activity";
+            theHiveList = new ArrayList<Hive>();
+        }
 
         mAdapter = new ArrayAdapter<Hive>(getActivity(),
                 android.R.layout.simple_list_item_1, android.R.id.text1, theHiveList);
@@ -96,7 +111,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
 
         final Button btnEditHive = (Button)view.findViewById(R.id.hiveNoteButtton);
 
-        // Set the adapter and the EmptyView
+        // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         mListView.setEmptyView(view.findViewById(android.R.id.empty));
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
@@ -104,23 +119,28 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
 
+        // Set Empty View
         if (theHiveList.isEmpty()) {
-            setEmptyText("No hives yet");
+            setEmptyText(emptyTextMsg);
         }
+
+        // set button text
+        btnEditHive.setText(getResources().getString(R.string.create_hive_string));
 
         // set button listener
         btnEditHive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEditHiveButtonPressed(Uri.parse("here I am...from Edit Apiary"));
+                onEditHiveButtonPressed();
             }
         });
         return view;
     }
 
-    public void onEditHiveButtonPressed(Uri uri) {
+    public void onEditHiveButtonPressed() {
         if (mListener != null) {
-            mListener.onEditHiveFragmentInteraction(-1);
+            // means we want to make a new Hive
+            mListener.onEditHiveListFragmentInteraction(-1);
         }
     }
 
@@ -128,10 +148,10 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnEditHiveFragmentInteractionListener) activity;
+            mListener = (OnEditHiveListFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnEditHiveFragmentInteractionListener");
+                    + " must implement OnEditHiveListFragmentInteractionListener");
         }
     }
 
@@ -147,7 +167,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
 
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onEditHiveFragmentInteraction(theHiveList.get(position).getId());
+            mListener.onEditHiveListFragmentInteraction(theHiveList.get(position).getId());
         }
     }
 
@@ -174,8 +194,12 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnEditHiveFragmentInteractionListener {
-        public void onEditHiveFragmentInteraction(long id);
+    public interface OnEditHiveListFragmentInteractionListener {
+        // For general interaction - really just the return to the Activity
+        public void onEditHiveListFragmentInteraction(long id);
+
+        // For getting Hive data
+        public List<Hive> getTheHiveList(long anApiaryKey);
     }
 
 }

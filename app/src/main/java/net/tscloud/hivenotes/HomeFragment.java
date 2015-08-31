@@ -2,7 +2,6 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -153,7 +152,7 @@ public class HomeFragment extends Fragment {
         btnEditApiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEdirApiaryButtonPressed(Uri.parse("here I am...from Edit Apiary"));
+                onEdirApiaryButtonPressed();
             }
         });
 
@@ -161,7 +160,7 @@ public class HomeFragment extends Fragment {
         btnDropDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDropDBButtonPressed(Uri.parse("here I am...from Edit Apiary"));
+                onDropDBButtonPressed();
             }
         });
 
@@ -174,13 +173,13 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void onEdirApiaryButtonPressed(Uri uri) {
+    public void onEdirApiaryButtonPressed() {
         if (mListener != null) {
             mListener.onHomeFragmentInteraction(null, false);
         }
     }
 
-    public void onDropDBButtonPressed(Uri uri) {
+    public void onDropDBButtonPressed() {
         // FOR TESTING ONLY
         boolean dbDeleted = getActivity().deleteDatabase("hivenotes_db");
 
@@ -217,7 +216,6 @@ public class HomeFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnHomeFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onHomeFragmentInteraction(Long apiaryId, boolean dbDeleted);
     }
 

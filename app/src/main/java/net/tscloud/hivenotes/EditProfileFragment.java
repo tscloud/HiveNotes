@@ -2,7 +2,6 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,7 +18,7 @@ import net.tscloud.hivenotes.db.ProfileDAO;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnProfileFragmentInteractionListener} interface
+ * {@link OnEditProfileFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link EditProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -40,7 +39,7 @@ public class EditProfileFragment extends Fragment {
     // original button color
     private ColorDrawable drawable;
 
-    private OnProfileFragmentInteractionListener mListener;
+    private OnEditProfileFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -84,7 +83,7 @@ public class EditProfileFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener(){
            @Override
             public void onClick(View v) {
-                onButtonPressed(Uri.parse("here I am...from New Profile"), b1);
+                onButtonPressed(b1);
             }
         });
         /*
@@ -98,7 +97,7 @@ public class EditProfileFragment extends Fragment {
                     b1.setBackgroundDrawable(new ColorDrawable(Color.GREEN));
 
                     // call handler
-                    onButtonPressed(Uri.parse("here I am...from New Profile"), b1);
+                    onButtonPressed(b1);
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     b1.setBackgroundDrawable(drawable);
@@ -111,7 +110,7 @@ public class EditProfileFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri, Button b) {
+    public void onButtonPressed(Button b) {
         // get name and email and put to DB
         Log.d(TAG, "about to persist profile");
 
@@ -144,7 +143,7 @@ public class EditProfileFragment extends Fragment {
             Log.d(TAG, "Profile Email: " + profile.getEmail() + " persisted");
 
             if (mListener != null) {
-                mListener.onProfileFragmentInteraction(profile);
+                mListener.onEditProfileFragmentInteraction(profile);
             }
         }
     }
@@ -153,10 +152,10 @@ public class EditProfileFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnProfileFragmentInteractionListener)activity;
+            mListener = (OnEditProfileFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnProfileFragmentInteractionListener");
+                    + " must implement OnEditProfileFragmentInteractionListener");
         }
     }
 
@@ -176,8 +175,8 @@ public class EditProfileFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnProfileFragmentInteractionListener {
-        public void onProfileFragmentInteraction(Profile profile);
+    public interface OnEditProfileFragmentInteractionListener {
+        public void onEditProfileFragmentInteraction(Profile profile);
     }
 
 }

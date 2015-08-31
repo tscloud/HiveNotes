@@ -75,7 +75,7 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:id="@+id/hiveLine1"
-        android:layout_alignTop="@+id/newApiaryButton"
+        android:layout_above="@+id/newProfileButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

@@ -1,7 +1,6 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,7 +18,7 @@ import net.tscloud.hivenotes.db.Profile;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnApiaryFragmentInteractionListener} interface
+ * {@link OnEditApiaryFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link EditApiaryFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -37,7 +36,7 @@ public class EditApiaryFragment extends Fragment {
     private String mParam1;
     private long mParam2;
 
-    private OnApiaryFragmentInteractionListener mListener;
+    private OnEditApiaryFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -86,7 +85,7 @@ public class EditApiaryFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(Uri.parse("here I am...from New Apiary"), mParam2);
+                onButtonPressed(mParam2);
             }
         });
 
@@ -94,7 +93,7 @@ public class EditApiaryFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri, long profileID) {
+    public void onButtonPressed(long profileID) {
         // get name and email and put to DB
         Log.d(TAG, "about to persist apiary");
 
@@ -127,7 +126,7 @@ public class EditApiaryFragment extends Fragment {
             Log.d(TAG, "Apiary Postal Code: " + apiary.getPostalCode() + " persisted");
 
             if (mListener != null) {
-                mListener.onApiaryFragmentInteraction();
+                mListener.onEditApiaryFragmentInteraction();
             }
         }
     }
@@ -136,10 +135,10 @@ public class EditApiaryFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnApiaryFragmentInteractionListener)activity;
+            mListener = (OnEditApiaryFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnApiaryFragmentInteractionListener");
+                    + " must implement OnEditApiaryFragmentInteractionListener");
         }
     }
 
@@ -159,8 +158,8 @@ public class EditApiaryFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnApiaryFragmentInteractionListener {
-        public void onApiaryFragmentInteraction();
+    public interface OnEditApiaryFragmentInteractionListener {
+        public void onEditApiaryFragmentInteraction();
     }
 
 }

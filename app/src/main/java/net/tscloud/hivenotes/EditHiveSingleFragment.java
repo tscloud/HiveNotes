@@ -1,7 +1,6 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,7 +17,7 @@ import net.tscloud.hivenotes.db.HiveDAO;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnHiveFragmentInteractionListener} interface
+ * {@link OnEditHiveSingleFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link EditHiveSingleFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -34,7 +33,7 @@ public class EditHiveSingleFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private long theApiaryKey;
 
-    private OnHiveFragmentInteractionListener mListener;
+    private OnEditHiveSingleFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -80,7 +79,7 @@ public class EditHiveSingleFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(Uri.parse("here I am...from New Hive"), theApiaryKey);
+                onButtonPressed(theApiaryKey);
             }
         });
 
@@ -88,7 +87,7 @@ public class EditHiveSingleFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri, long apiaryID) {
+    public void onButtonPressed(long apiaryID) {
         // get name and email and put to DB
         Log.d(TAG, "about to persist hive");
 
@@ -124,7 +123,7 @@ public class EditHiveSingleFragment extends Fragment {
             Log.d(TAG, "Hive Foundation Type: " + hive.getFoundationType() + " persisted");
 
             if (mListener != null) {
-                mListener.onHiveFragmentInteraction(theApiaryKey);
+                mListener.onEditHiveSingleFragmentInteraction(theApiaryKey);
             }
         }
     }
@@ -133,10 +132,10 @@ public class EditHiveSingleFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnHiveFragmentInteractionListener)activity;
+            mListener = (OnEditHiveSingleFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnHiveFragmentInteractionListener");
+                    + " must implement OnEditHiveSingleFragmentInteractionListener");
         }
     }
 
@@ -156,8 +155,8 @@ public class EditHiveSingleFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnHiveFragmentInteractionListener {
-        public void onHiveFragmentInteraction(long apiaryId);
+    public interface OnEditHiveSingleFragmentInteractionListener {
+        public void onEditHiveSingleFragmentInteraction(long apiaryId);
     }
 
 }

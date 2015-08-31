@@ -20,10 +20,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        EditApiaryFragment.OnApiaryFragmentInteractionListener,
+        EditApiaryFragment.OnEditApiaryFragmentInteractionListener,
         HomeFragment.OnHomeFragmentInteractionListener,
-        EditProfileFragment.OnProfileFragmentInteractionListener,
-        EditHiveSingleFragment.OnHiveFragmentInteractionListener{
+        EditProfileFragment.OnEditProfileFragmentInteractionListener,
+        EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
 
     private static final String TAG = "MainActivity";
 
@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity implements
             // will either show list or add button
             theApiaryList = getApiaryList();
         }
-        presentHome(newProfile);
+        presentHome();
     }
 
-    private void presentHome(boolean fragNewProfile) {
+    private void presentHome() {
         // Home screen display - may have to do this at other times besides onCreate
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder,
@@ -119,19 +119,15 @@ public class MainActivity extends AppCompatActivity implements
     */
 
     @Override
-    public void onApiaryFragmentInteraction() {
-        Log.d(TAG, "MainActivity.onApiaryFragmentInteraction called...");
+    public void onEditApiaryFragmentInteraction() {
+        Log.d(TAG, "MainActivity.onEditApiaryFragmentInteraction called...");
 
         //  This is where we want to show apiary list - but we have to reread
         //    b/c we have added a new one <- the right thing to do might be
         //    to pass the apiary list to avoid a DB read
         theApiaryList = getApiaryList();
 
-        Fragment fragment = HomeFragment.newInstance(newProfile, getApiaryNameMap());
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, fragment).addToBackStack("backstacktag2");
-        ft.commit();
+        presentHome();
     }
 
     @Override
@@ -143,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements
             // redisplay Home screen
             Toast.makeText(getApplicationContext(), "DB successfully deleted =)",
                     Toast.LENGTH_LONG).show();
-            presentHome(true);
+            presentHome();
         }
         else if (apiaryId == null) {
             Fragment fragment = null;
@@ -172,29 +168,46 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onProfileFragmentInteraction(Profile profile) {
-        Log.d(TAG, "MainActivity.onProfileFragmentInteraction called...");
+    public void onEditProfileFragmentInteraction(Profile profile) {
+        Log.d(TAG, "MainActivity.onEditProfileFragmentInteraction called...");
 
         // don't need to make a new Profile
         newProfile = false;
         // set the instance var w/ the Profile we just made
         theProfile = profile;
 
-        Fragment fragment = HomeFragment.newInstance(newProfile, getApiaryNameMap());
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, fragment);
-        ft.commit();
+        presentHome();
     }
 
     @Override
-    public void onHiveFragmentInteraction(long apiaryId) {
-        Log.d(TAG, "MainActivity.onHiveFragmentInteraction called...");
+    public void onEditHiveSingleFragmentInteraction(long apiaryId) {
+        Log.d(TAG, "MainActivity.onEditHiveSingleFragmentInteraction called...");
 
         // IMPORTANT -- this is how we get to EditHiveActivity page viewer
         // start EditHiveActivity activity
         Intent i = new Intent(this,EditHiveActivity.class);
         i.putExtra("apiaryKey", apiaryId);
+        // we know just added a Hive => make EditHiveActivity reread Hive list
+        i.putExtra("rereadHiveList", true);
         startActivityForResult(i, request_code);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ((requestCode == request_code) && (resultCode == RESULT_OK)) {
+            boolean showNewHiveScreen = data.getExtras().getBoolean("showNewHiveScreen");
+            long apiaryKey = data.getExtras().getLong("apiaryKey");
+
+            if (showNewHiveScreen) {
+                Fragment fragment = EditHiveSingleFragment.newInstance(apiaryKey);
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_placeholder, fragment).addToBackStack("backstacktagB");
+                ft.commit();
+            }
+        }
     }
 
     // Utility method to get list of a Profile's apiary names
@@ -214,24 +227,6 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         return apiaryList;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if ((requestCode == request_code) && (resultCode == RESULT_OK)) {
-            boolean showNewHiveScreen = data.getExtras().getBoolean("showNewHiveScreen");
-            long apiaryKey = data.getExtras().getLong("apiaryKey");
-
-            if (showNewHiveScreen) {
-                Fragment fragment = EditHiveSingleFragment.newInstance(apiaryKey);
-
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_placeholder, fragment).addToBackStack("backstacktagB");
-                ft.commit();
-            }
-        }
     }
 
     // Utility method to make a Hashmap of Apiary id -> name

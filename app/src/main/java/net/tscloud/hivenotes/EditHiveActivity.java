@@ -19,8 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import net.tscloud.hivenotes.db.Hive;
+import net.tscloud.hivenotes.db.HiveDAO;
+
 public class EditHiveActivity extends AppCompatActivity implements
-        EditHiveListFragment.OnEditHiveFragmentInteractionListener {
+        EditHiveListFragment.OnEditHiveListFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -42,6 +45,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     private long theApiaryKey;
 
+    private List<Hive> theHiveList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +59,14 @@ public class EditHiveActivity extends AppCompatActivity implements
 //        TextView abText = (TextView)abView.findViewById(R.id.mytext);
 //        abText.setText("NewHiveNites");
 
-        // Get the apiary name from the Intent data
+        // Get the apiary ket from the Intent data
         Intent intent = getIntent();
         theApiaryKey = intent.getLongExtra("apiaryKey", -1);
+
+        // Maybe rebuild the Hive list
+        if (intent.getBooleanExtra("rereadHiveList", false)) {
+            getTheHiveList(theApiaryKey);
+        }
 
         Log.d(TAG, "Called w/ apiary key: " + theApiaryKey);
 
@@ -108,7 +117,7 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditHiveFragmentInteraction(long id) {
+    public void onEditHiveListFragmentInteraction(long id) {
 
         // if id is non-null => we selected something
         // else we're making a new Hive
@@ -125,6 +134,8 @@ public class EditHiveActivity extends AppCompatActivity implements
         }
         else{
             // Do selected Hive stuff
+            // Don't do this -- show EditHiveSingleFragment w/ proper Hive data for update
+            /*
             Log.d(TAG, "Back from Edit HiveListFragment: Hive ID:" + id);
             Intent data = new Intent();
 
@@ -133,7 +144,21 @@ public class EditHiveActivity extends AppCompatActivity implements
 
             setResult(RESULT_OK, data);
             finish();
+            */
         }
+    }
+
+    @Override
+    public List<Hive> getTheHiveList(long anApiaryKey) {
+        // Read the Hive list for the fragments
+        if ((theHiveList == null) || (theHiveList.isEmpty())) {
+            Log.d(TAG, "reading Hive table");
+            HiveDAO hiveDAO = new HiveDAO(this);
+            theHiveList = hiveDAO.getHiveList(theApiaryKey);
+            hiveDAO.close();
+        }
+
+        return theHiveList;
     }
 
     @Override
