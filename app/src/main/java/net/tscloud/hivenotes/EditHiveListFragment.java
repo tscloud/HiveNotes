@@ -20,18 +20,15 @@ import java.util.List;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnEditHiveListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the OnEditHiveListFragmentInteractionListener
  * interface.
  */
 public class EditHiveListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String APIARY_KEY = "param1";
 
     private long mApiaryKey;
     private String mParam2;
@@ -53,13 +50,12 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      */
     private ListAdapter mAdapter;
 
-    // logcat filter
     private static final String TAG = "EditHiveListFragment";
 
     public static EditHiveListFragment newInstance(long apiaryKey) {
         EditHiveListFragment fragment = new EditHiveListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_PARAM1, apiaryKey);
+        args.putLong(APIARY_KEY, apiaryKey);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,7 +72,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mApiaryKey = getArguments().getLong(ARG_PARAM1);
+            mApiaryKey = getArguments().getLong(APIARY_KEY);
         }
 
         // Get the list of hives
@@ -187,10 +183,6 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnEditHiveListFragmentInteractionListener {
         // For general interaction - really just the return to the Activity

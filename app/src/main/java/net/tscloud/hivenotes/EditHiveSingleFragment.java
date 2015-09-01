@@ -15,22 +15,19 @@ import net.tscloud.hivenotes.db.HiveDAO;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple subclass.
  * Activities that contain this fragment must implement the
- * {@link OnEditHiveSingleFragmentInteractionListener} interface
+ * OnEditHiveSingleFragmentInteractionListener interface
  * to handle interaction events.
- * Use the {@link EditHiveSingleFragment#newInstance} factory method to
+ * Use the EditHiveSingleFragment#newInstance factory method to
  * create an instance of this fragment.
  */
 public class EditHiveSingleFragment extends Fragment {
 
     public static final String TAG = "EditHiveSingleFragment";
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM_APIARY_KEY = "apiaryKey";
+    private static final String APIARY_KEY = "apiaryKey";
 
-    // TODO: Rename and change types of parameters
     private long theApiaryKey;
 
     private OnEditHiveSingleFragmentInteractionListener mListener;
@@ -38,9 +35,6 @@ public class EditHiveSingleFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param apiaryKey Parameter 2.
-     * @return A new instance of fragment EditHiveSingleFragment.
      */
     public static EditHiveSingleFragment newInstance(long apiaryKey) {
         // Profile object passed in at newInstance create time
@@ -48,7 +42,7 @@ public class EditHiveSingleFragment extends Fragment {
 
         EditHiveSingleFragment fragment = new EditHiveSingleFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_PARAM_APIARY_KEY, apiaryKey);
+        args.putLong(APIARY_KEY, apiaryKey);
 
         fragment.setArguments(args);
 
@@ -63,7 +57,7 @@ public class EditHiveSingleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            theApiaryKey = getArguments().getLong(ARG_PARAM_APIARY_KEY);
+            theApiaryKey = getArguments().getLong(APIARY_KEY);
         }
     }
 
@@ -150,10 +144,6 @@ public class EditHiveSingleFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnEditHiveSingleFragmentInteractionListener {
         public void onEditHiveSingleFragmentInteraction(long apiaryId);

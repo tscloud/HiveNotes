@@ -26,21 +26,18 @@ public class EditHiveActivity extends AppCompatActivity implements
         EditHiveListFragment.OnEditHiveListFragmentInteractionListener {
 
     /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     * The PagerAdapter that will provide fragments for each of the
+     * sections. We use a FragmentPagerAdapter derivative, which will
+     * keep every loaded fragment in memory. If this becomes too memory
+     * intensive, it may be best to switch to a FragmentStatePagerAdapter.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
-     * The {@link ViewPager} that will host the section contents.
+     * The ViewPager that will host the section contents.
      */
     ViewPager mViewPager;
 
-    // logcat filter
     private static final String TAG = "EditHiveActivity";
 
     private long theApiaryKey;
@@ -165,7 +162,7 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * A FragmentPagerAdapter that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -238,9 +235,6 @@ public class EditHiveActivity extends AppCompatActivity implements
             String message = getArguments().getString(EXTRA_MESSAGE);
             int fragment_layout = getArguments().getInt(FRAG_LAYOUT);
             View rootView = inflater.inflate(fragment_layout, container, false);
-
-//            TextView messageTextView = (TextView)rootView.findViewById(R.id.section_label1);
-//            messageTextView.setText(message);
 
             return rootView;
         }

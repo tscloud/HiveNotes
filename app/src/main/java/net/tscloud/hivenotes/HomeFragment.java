@@ -17,20 +17,20 @@ import java.util.LinkedHashMap;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple Fragment subclass.
  * Activities that contain this fragment must implement the
- * {@link OnHomeFragmentInteractionListener} interface
+ * OnHomeFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the HomeFragment#newInstance factory method to
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static final String ARG_PARAM3 = "param3";
+    private static final String NEW_PROFILE = "param1";
+    private static final String APIARY_IDS = "param2";
+    private static final String APIARY_NAMES = "param3";
 
     private boolean mNewProfile = false;
     private LinkedHashMap<Long, String> mApiaryNameMap = null;
@@ -40,10 +40,6 @@ public class HomeFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param newProfile Indicates we need to create a Profile.
-     * @param apiaryNameMap
-     * @return A new instance of fragment HomeFragment.
      */
     public static HomeFragment newInstance(boolean newProfile, LinkedHashMap<Long, String> apiaryNameMap) {
         Log.d(TAG, "getting newInstance of HomeFragment");
@@ -51,7 +47,7 @@ public class HomeFragment extends Fragment {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
 
-        args.putBoolean(ARG_PARAM1, newProfile);
+        args.putBoolean(NEW_PROFILE, newProfile);
 
         // split the Hashmap of Apiary id -> name => 2 ArrayLists
         if ((apiaryNameMap != null) && !apiaryNameMap.isEmpty()) {
@@ -64,8 +60,8 @@ public class HomeFragment extends Fragment {
                 ++i;
             }
 
-            args.putLongArray(ARG_PARAM2, apiaryIds);
-            args.putStringArray(ARG_PARAM3, apiaryNames);
+            args.putLongArray(APIARY_IDS, apiaryIds);
+            args.putStringArray(APIARY_NAMES, apiaryNames);
         }
 
         fragment.setArguments(args);
@@ -82,11 +78,11 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
-            mNewProfile = getArguments().getBoolean(ARG_PARAM1);
+            mNewProfile = getArguments().getBoolean(NEW_PROFILE);
 
             // reconstitute LinkedHashMap
-            long[] argApiaryIds = getArguments().getLongArray(ARG_PARAM2);
-            String[] argApiaryNames = getArguments().getStringArray(ARG_PARAM3);
+            long[] argApiaryIds = getArguments().getLongArray(APIARY_IDS);
+            String[] argApiaryNames = getArguments().getStringArray(APIARY_NAMES);
 
             if (!(argApiaryIds == null) && !(argApiaryNames == null)) {
                 // this is onCreate so we know we want to make a new LinkedHashMap
@@ -210,10 +206,6 @@ public class HomeFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnHomeFragmentInteractionListener {
         public void onHomeFragmentInteraction(Long apiaryId, boolean dbDeleted);

@@ -16,44 +16,34 @@ import net.tscloud.hivenotes.db.Profile;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple Fragment subclass.
  * Activities that contain this fragment must implement the
- * {@link OnEditApiaryFragmentInteractionListener} interface
+ * OnEditApiaryFragmentInteractionListener interface
  * to handle interaction events.
- * Use the {@link EditApiaryFragment#newInstance} factory method to
+ * Use the EditApiaryFragment#newInstance factory method to
  * create an instance of this fragment.
  */
 public class EditApiaryFragment extends Fragment {
 
     public static final String TAG = "EditApiaryFragment";
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String PROFILE_ID = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private long mParam2;
+    private long theProfileId;
 
     private OnEditApiaryFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param profile Parameter 2.
-     * @return A new instance of fragment EditApiaryFragment.
      */
-    public static EditApiaryFragment newInstance(String param1, Profile profile) {
+    public static EditApiaryFragment newInstance(Profile profile) {
         // Profile object passed in at newInstance create time
         // but only putting the profileID in the Bundle
 
         EditApiaryFragment fragment = new EditApiaryFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putLong(ARG_PARAM2, profile.getId());
+        args.putLong(PROFILE_ID, profile.getId());
 
         fragment.setArguments(args);
 
@@ -68,8 +58,7 @@ public class EditApiaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getLong(ARG_PARAM2);
+            theProfileId = getArguments().getLong(PROFILE_ID);
         }
     }
 
@@ -85,7 +74,7 @@ public class EditApiaryFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(mParam2);
+                onButtonPressed(theProfileId);
             }
         });
 
@@ -153,10 +142,6 @@ public class EditApiaryFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnEditApiaryFragmentInteractionListener {
         public void onEditApiaryFragmentInteraction();
