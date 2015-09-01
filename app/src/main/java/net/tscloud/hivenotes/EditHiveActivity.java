@@ -63,10 +63,7 @@ public class EditHiveActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         theApiaryKey = intent.getLongExtra("apiaryKey", -1);
 
-        // Maybe rebuild the Hive list
-        if (intent.getBooleanExtra("rereadHiveList", false)) {
-            getTheHiveList(theApiaryKey);
-        }
+        getTheHiveList(theApiaryKey);
 
         Log.d(TAG, "Called w/ apiary key: " + theApiaryKey);
 
@@ -117,11 +114,11 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditHiveListFragmentInteraction(long id) {
+    public void onEditHiveListFragmentInteraction(long hiveId) {
 
         // if id is non-null => we selected something
         // else we're making a new Hive
-        if (id == -1) {
+        if (hiveId == -1) {
             // Do new Hive stuff
             Log.d(TAG, "Back from EditHiveListFragment: null Hive ID");
             Intent data = new Intent();

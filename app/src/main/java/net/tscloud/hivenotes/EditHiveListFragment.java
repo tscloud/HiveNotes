@@ -3,7 +3,6 @@ package net.tscloud.hivenotes;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Hive;
-import net.tscloud.hivenotes.db.HiveDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +107,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_hive, container, false);
 
-        final Button btnEditHive = (Button)view.findViewById(R.id.hiveNoteButtton);
+        final Button btnCreateHive = (Button)view.findViewById(R.id.hiveNoteButtton);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
@@ -125,19 +123,19 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         }
 
         // set button text
-        btnEditHive.setText(getResources().getString(R.string.create_hive_string));
+        btnCreateHive.setText(getResources().getString(R.string.create_hive_string));
 
         // set button listener
-        btnEditHive.setOnClickListener(new View.OnClickListener() {
+        btnCreateHive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEditHiveButtonPressed();
+                onCreateHiveButtonPressed();
             }
         });
         return view;
     }
 
-    public void onEditHiveButtonPressed() {
+    public void onCreateHiveButtonPressed() {
         if (mListener != null) {
             // means we want to make a new Hive
             mListener.onEditHiveListFragmentInteraction(-1);
@@ -196,7 +194,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      */
     public interface OnEditHiveListFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
-        public void onEditHiveListFragmentInteraction(long id);
+        public void onEditHiveListFragmentInteraction(long hiveId);
 
         // For getting Hive data
         public List<Hive> getTheHiveList(long anApiaryKey);

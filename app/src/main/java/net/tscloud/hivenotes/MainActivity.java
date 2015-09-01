@@ -187,8 +187,6 @@ public class MainActivity extends AppCompatActivity implements
         // start EditHiveActivity activity
         Intent i = new Intent(this,EditHiveActivity.class);
         i.putExtra("apiaryKey", apiaryId);
-        // we know just added a Hive => make EditHiveActivity reread Hive list
-        i.putExtra("rereadHiveList", true);
         startActivityForResult(i, request_code);
     }
 
