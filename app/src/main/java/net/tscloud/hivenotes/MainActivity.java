@@ -146,11 +146,11 @@ public class MainActivity extends AppCompatActivity implements
             String fragTag = null;
 
             if (newProfile) {
-                fragment = EditProfileFragment.newInstance("thing1", "thing2");
+                fragment = EditProfileFragment.newInstance();
                 fragTag = "EDIT_PROFILE_FRAG";
             }
             else {
-                fragment = EditApiaryFragment.newInstance("thing3", theProfile);
+                fragment = EditApiaryFragment.newInstance(theProfile);
                 fragTag = "EDIT_APIARY_FRAG";
             }
 
