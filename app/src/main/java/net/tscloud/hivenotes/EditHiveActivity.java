@@ -60,10 +60,10 @@ public class EditHiveActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         theApiaryKey = intent.getLongExtra("apiaryKey", -1);
 
-        getTheHiveList(theApiaryKey);
-
         Log.d(TAG, "Called w/ apiary key: " + theApiaryKey);
 
+        // Get the Hive list
+        theHiveList = getTheHiveList(theApiaryKey);
 
         //List for all out fragments
         List<Fragment> fragments = getFragments(theApiaryKey);
