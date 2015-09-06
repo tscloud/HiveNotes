@@ -69,6 +69,25 @@ public class ApiaryDAO {
         return newApiary;
     }
 
+    public Apiary updateApiary(long id, long profile, String name, String postalCode) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_APIARY_PROFILE, profile);
+        values.put(COLUMN_APIARY_NAME, name);
+        values.put(COLUMN_POSTAL_CODE, postalCode);
+        int rowsUpdated = mDatabase.update(TABLE_APIARY, values, COLUMN_APIARY_ID + "=" + id, null);
+
+        Apiary updatedApiary = null;
+        if (rowsUpdated > 0) {
+            Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,
+                    COLUMN_APIARY_ID + " = " + id, null, null, null, null);
+            cursor.moveToFirst();
+            updatedApiary = cursorToApiary(cursor);
+            cursor.close();
+        }
+
+        return updatedApiary;
+    }
+
     public void deleteApiary(Apiary apiary) {
         long id = apiary.getId();
         mDatabase.delete(TABLE_APIARY, COLUMN_APIARY_ID + " = " + id, null);

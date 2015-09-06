@@ -27,6 +27,12 @@ public class EditProfileFragment extends Fragment {
 
     public static final String TAG = "EditProfileFragment";
 
+    // the fragment initialization parameters
+    private static final String PROFILE_ID = "param1";
+    // and instance var of same - needed?
+    long mProfileID = -1;
+    Profile mProfile;
+
     // original button color
     //private ColorDrawable drawable;
 
@@ -35,11 +41,17 @@ public class EditProfileFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     * @param profileID
      */
-    public static EditProfileFragment newInstance() {
+    public static EditProfileFragment newInstance(long profileID) {
+        Log.d(TAG, "getting newInstance of EditProfileFragment...profileID: " + profileID);
+
         EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
+
+        args.putLong(PROFILE_ID, profileID);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -50,6 +62,17 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mProfileID = getArguments().getLong(PROFILE_ID);
+        }
+
+        if (mProfileID != -1) {
+            if (mListener != null) {
+                // we need to get the Profile
+                mProfile = mListener.deliverProfile();
+            }
+        }
     }
 
     @Override
@@ -59,13 +82,14 @@ public class EditProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
         // set button listener
-        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setOnClickListener(new View.OnClickListener(){
-           @Override
-            public void onClick(View v) {
+        final Button b1 = (Button) v.findViewById(R.id.hiveNoteButtton);
+            b1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 onButtonPressed(b1);
             }
         });
+
         /*
         b1.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -86,10 +110,21 @@ public class EditProfileFragment extends Fragment {
             }
         });
         */
+
+        if (mProfile != null) {
+            // fill the form
+            EditText nameEdit = (EditText)v.findViewById(R.id.editTextName);
+            EditText emailEdit = (EditText)v.findViewById(R.id.editTextEmail);
+
+            nameEdit.setText(mProfile.getName());
+            emailEdit.setText(mProfile.getEmail());
+
+            b1.setText(getResources().getString(R.string.create_profile_string));
+        }
+
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Button b) {
         // get name and email and put to DB
         Log.d(TAG, "about to persist profile");
@@ -152,7 +187,9 @@ public class EditProfileFragment extends Fragment {
      * activity.
      */
     public interface OnEditProfileFragmentInteractionListener {
-        public void onEditProfileFragmentInteraction(Profile profile);
+        void onEditProfileFragmentInteraction(Profile profile);
+
+        Profile deliverProfile();
     }
 
 }

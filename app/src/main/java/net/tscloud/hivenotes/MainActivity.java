@@ -16,7 +16,6 @@ import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.db.Profile;
 import net.tscloud.hivenotes.db.ProfileDAO;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
@@ -30,10 +29,8 @@ public class MainActivity extends AppCompatActivity implements
     // starting EditHiveActivity as subactivity
     private static final int request_code = 5;
 
-    // may be needed to pass to various Fragments
-    private boolean newProfile = true;
-    private Profile theProfile = null;
-    private List<Apiary> theApiaryList = null;
+    private Profile mProfile = null;
+    private List<Apiary> mApiaryList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +46,31 @@ public class MainActivity extends AppCompatActivity implements
 
         // read Profile table to see if this is first time thru
         // also set instance Profile for it may be needed elsewhere
-        Log.d(TAG, "reading Profile table");
-        ProfileDAO profileDAO = new ProfileDAO(this);
-        theProfile = profileDAO.getProfile();
-        profileDAO.close();
+        mProfile = getProfile();
 
-        if (theProfile == null) {
+        if (mProfile == null) {
             Log.d(TAG, "No profile");
-            newProfile = true;
         }
         else{
-            Log.d(TAG, "profile name: " + theProfile.getName());
-            newProfile = false;
+            Log.d(TAG, "profile name: " + mProfile.getName());
 
             // read Apiary table
             // will either show list or add button
-            theApiaryList = getApiaryList();
+            mApiaryList = getApiaryList(mProfile.getId());
         }
         presentHome();
     }
 
     private void presentHome() {
         // Home screen display - may have to do this at other times besides onCreate
+        long fragProfileID = -1;
+        if (mProfile != null) {
+            fragProfileID = mProfile.getId();
+        }
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder,
-                HomeFragment.newInstance(newProfile, getApiaryNameMap()), "HOME_FRAG");//.addToBackStack("backstacktag3");
+                HomeFragment.newInstance(fragProfileID), "HOME_FRAG");//.addToBackStack("backstacktag3");
         ft.commit();
     }
 
@@ -125,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements
         //  This is where we want to show apiary list - but we have to reread
         //    b/c we have added a new one <- the right thing to do might be
         //    to pass the apiary list to avoid a DB read
-        theApiaryList = getApiaryList();
+        mApiaryList = getApiaryList(mProfile.getId());
 
         presentHome();
     }
@@ -139,18 +136,24 @@ public class MainActivity extends AppCompatActivity implements
             // redisplay Home screen
             Toast.makeText(getApplicationContext(), "DB successfully deleted =)",
                     Toast.LENGTH_LONG).show();
+            // clear instance vars
+            mProfile = null;
+            mApiaryList = null;
+
             presentHome();
         }
         else if (apiaryId == null) {
             Fragment fragment = null;
             String fragTag = null;
 
-            if (newProfile) {
-                fragment = EditProfileFragment.newInstance();
+            if (mProfile == null) {
+                // we should ot be able to get here to edit an exiting Profile
+                // so always set profileID = -1
+                fragment = EditProfileFragment.newInstance(-1);
                 fragTag = "EDIT_PROFILE_FRAG";
             }
             else {
-                fragment = EditApiaryFragment.newInstance(theProfile);
+                fragment = EditApiaryFragment.newInstance(mProfile.getId(), -1);
                 fragTag = "EDIT_APIARY_FRAG";
             }
 
@@ -172,21 +175,20 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "MainActivity.onEditProfileFragmentInteraction called...");
 
         // don't need to make a new Profile
-        newProfile = false;
         // set the instance var w/ the Profile we just made
-        theProfile = profile;
+        mProfile = profile;
 
         presentHome();
     }
 
     @Override
-    public void onEditHiveSingleFragmentInteraction(long apiaryId) {
+    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive) {
         Log.d(TAG, "MainActivity.onEditHiveSingleFragmentInteraction called...");
 
         // IMPORTANT -- this is how we get to EditHiveActivity page viewer
         // start EditHiveActivity activity
         Intent i = new Intent(this,EditHiveActivity.class);
-        i.putExtra("apiaryKey", apiaryId);
+        i.putExtra("apiaryKey", hiveID);
         startActivityForResult(i, request_code);
     }
 
@@ -195,48 +197,67 @@ public class MainActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         if ((requestCode == request_code) && (resultCode == RESULT_OK)) {
+            Log.d(TAG, "Returned from requestCode = " + requestCode);
+            /*
             boolean showNewHiveScreen = data.getExtras().getBoolean("showNewHiveScreen");
             long apiaryKey = data.getExtras().getLong("apiaryKey");
 
             if (showNewHiveScreen) {
-                Fragment fragment = EditHiveSingleFragment.newInstance(apiaryKey);
+                Fragment fragment = EditHiveSingleFragment.newInstance(apiaryKey, );
 
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_placeholder, fragment).addToBackStack("backstacktagB");
+                ft.replace(R.id.fragment_placeholder, fragment, "EDIT_HIVE_SINGLE_FRAG").addToBackStack("backstacktagB");
                 ft.commit();
             }
+            */
         }
     }
 
-    // Utility method to get list of a Profile's apiary names
-    //  use instance variables so no args and no return
-    private List<Apiary> getApiaryList() {
+    @Override
+    public Profile deliverProfile() {
+        Profile reply = mProfile;
+
+        if (reply == null) {
+            reply = getProfile();
+        }
+        return reply;
+    }
+
+    @Override
+    public List<Apiary> deliverApiaryList(long aProfileID) {
+        List<Apiary> reply = mApiaryList;
+
+        if ((reply == null) || (reply.isEmpty())) {
+            reply = getApiaryList(aProfileID);
+        }
+
+        return reply;
+    }
+
+    // Utility method to get Profile
+    private Profile getProfile() {
+        // read Profile
+        Log.d(TAG, "reading Profile table");
+        ProfileDAO profileDAO = new ProfileDAO(this);
+        Profile reply = profileDAO.getProfile();
+        profileDAO.close();
+
+        return reply;
+    }
+
+    // Utility method to get list of a Profile's apiary
+    private List<Apiary> getApiaryList(long aProfileID) {
         // read Apiary table
         Log.d(TAG, "reading Apiary table");
         ApiaryDAO apiaryDAO = new ApiaryDAO(this);
-        List<Apiary> apiaryList = apiaryDAO.getApiaryList(theProfile.getId());
+        List<Apiary> reply = apiaryDAO.getApiaryList(aProfileID);
         apiaryDAO.close();
 
-        if (!apiaryList.isEmpty()) {
+        if (!reply.isEmpty()) {
             Log.d(TAG, "found Apiary list");
         }
         else {
             Log.d(TAG, "no Apiary list");
-        }
-
-        return apiaryList;
-    }
-
-    // Utility method to make a Hashmap of Apiary id -> name
-    private LinkedHashMap<Long, String> getApiaryNameMap() {
-        LinkedHashMap<Long, String> reply = null;
-
-        if ((theApiaryList != null) && (!theApiaryList.isEmpty())) {
-            reply  = new LinkedHashMap<>(theApiaryList.size());
-
-            for (Apiary a : theApiaryList) {
-                reply.put(a.getId(), a.getName());
-            }
         }
 
         return reply;

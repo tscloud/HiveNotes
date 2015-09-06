@@ -12,7 +12,8 @@ import android.widget.EditText;
 
 import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
-import net.tscloud.hivenotes.db.Profile;
+
+import java.util.List;
 
 
 /**
@@ -27,24 +28,30 @@ public class EditApiaryFragment extends Fragment {
 
     public static final String TAG = "EditApiaryFragment";
 
-    private static final String PROFILE_ID = "param2";
-
-    private long theProfileId;
+    // the fragment initialization parameters
+    private static final String PROFILE_ID = "param1";
+    private static final String APIARY_ID = "param2";
+    // and instance var of same - needed?
+    private long mProfileID = -1;
+    private long mApiaryID = -1;
+    private Apiary mApiary;
 
     private OnEditApiaryFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     * @param profileID
+     * @param apiaryID
      */
-    public static EditApiaryFragment newInstance(Profile profile) {
-        // Profile object passed in at newInstance create time
-        // but only putting the profileID in the Bundle
+    public static EditApiaryFragment newInstance(long profileID, long apiaryID) {
+        Log.d(TAG, "getting newInstance of EditApiaryFragment...profileID: " + profileID);
 
         EditApiaryFragment fragment = new EditApiaryFragment();
         Bundle args = new Bundle();
-        args.putLong(PROFILE_ID, profile.getId());
 
+        args.putLong(PROFILE_ID, profileID);
+        args.putLong(APIARY_ID, apiaryID);
         fragment.setArguments(args);
 
         return fragment;
@@ -57,8 +64,17 @@ public class EditApiaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            theProfileId = getArguments().getLong(PROFILE_ID);
+            mProfileID = getArguments().getLong(PROFILE_ID);
+            mApiaryID = getArguments().getLong(APIARY_ID);
+        }
+
+        if (mApiaryID != -1) {
+            if (mListener != null) {
+                // we need to get the Apiary
+                mApiary = getApiary(mProfileID);
+            }
         }
     }
 
@@ -74,14 +90,24 @@ public class EditApiaryFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(theProfileId);
+                onButtonPressed(mProfileID);
             }
         });
+
+        if (mApiary != null) {
+            // fill the form
+            EditText nameEdit = (EditText)v.findViewById(R.id.editTextApiaryName);
+            EditText postalCodeEdit = (EditText)v.findViewById(R.id.editTextApiaryPostalCode);
+
+            nameEdit.setText(mApiary.getName());
+            postalCodeEdit.setText(mApiary.getPostalCode());
+
+            b1.setText(getResources().getString(R.string.new_apiary_button_text));
+        }
 
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(long profileID) {
         // get name and email and put to DB
         Log.d(TAG, "about to persist apiary");
@@ -137,6 +163,17 @@ public class EditApiaryFragment extends Fragment {
         mListener = null;
     }
 
+    // Utility method to get Profile
+    private Apiary getApiary(long aApiaryID) {
+        // read Profile
+        Log.d(TAG, "reading Apiary table");
+        ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
+        Apiary reply = apiaryDAO.getApiaryById(aApiaryID);
+        apiaryDAO.close();
+
+        return reply;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -144,7 +181,9 @@ public class EditApiaryFragment extends Fragment {
      * activity.
      */
     public interface OnEditApiaryFragmentInteractionListener {
-        public void onEditApiaryFragmentInteraction();
+        void onEditApiaryFragmentInteraction();
+
+        List<Apiary> deliverApiaryList(long aProfileID);
     }
 
 }

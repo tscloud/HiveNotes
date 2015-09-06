@@ -26,9 +26,13 @@ public class EditHiveSingleFragment extends Fragment {
 
     public static final String TAG = "EditHiveSingleFragment";
 
+    // the fragment initialization parameters
     private static final String APIARY_KEY = "apiaryKey";
-
-    private long theApiaryKey;
+    private static final String HIVE_KEY = "hiveKey";
+    // and instance var of same - needed?
+    private long mApiaryKey;
+    private long mHiveKey;
+    private  Hive mHive;
 
     private OnEditHiveSingleFragmentInteractionListener mListener;
 
@@ -36,14 +40,14 @@ public class EditHiveSingleFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      */
-    public static EditHiveSingleFragment newInstance(long apiaryKey) {
-        // Profile object passed in at newInstance create time
-        // but only putting the profileID in the Bundle
+    public static EditHiveSingleFragment newInstance(long apiaryKey, long hiveKey) {
+        Log.d(TAG, "getting newInstance of EditHiveSingleFragment...");
 
         EditHiveSingleFragment fragment = new EditHiveSingleFragment();
         Bundle args = new Bundle();
-        args.putLong(APIARY_KEY, apiaryKey);
 
+        args.putLong(APIARY_KEY, apiaryKey);
+        args.putLong(HIVE_KEY, hiveKey);
         fragment.setArguments(args);
 
         return fragment;
@@ -53,11 +57,25 @@ public class EditHiveSingleFragment extends Fragment {
         // Required empty public constructor
     }
 
+    // To properly identify a Hive fragment
+    public long getHiveKey() {
+        return mHiveKey;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            theApiaryKey = getArguments().getLong(APIARY_KEY);
+            mApiaryKey = getArguments().getLong(APIARY_KEY);
+            mHiveKey = getArguments().getLong(HIVE_KEY);
+        }
+
+        if (mHiveKey != -1) {
+            if (mListener != null) {
+                // we need to get the Hive
+                mHive = getHive(mHiveKey);
+            }
         }
     }
 
@@ -67,30 +85,47 @@ public class EditHiveSingleFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_single_hive, container, false);
 
-        // set button listener and text
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.create_hive_string));
+
+        if (mHive != null) {
+            b1.setText(getResources().getString(R.string.save_hive_string));
+
+            // fill the form
+            EditText nameEdit = (EditText)v.findViewById(R.id.editTextHiveName);
+            EditText speciesEdit = (EditText)v.findViewById(R.id.editTextHiveSpecies);
+            EditText foundationTypeEdit = (EditText)v.findViewById(R.id.editTextHiveFoundationType);
+
+            nameEdit.setText(mHive.getName());
+            speciesEdit.setText(mHive.getSpecies());
+            foundationTypeEdit.setText(mHive.getFoundationType());
+        }
+        else {
+            b1.setText(getResources().getString(R.string.create_hive_string));
+        }
+
+        // set button listener
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(theApiaryKey);
+                onButtonPressed();
             }
         });
 
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(long apiaryID) {
+    public void onButtonPressed() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist hive");
+
+        boolean lNewHive = false;
 
         EditText nameEdit = (EditText)getView().findViewById(R.id.editTextHiveName);
         EditText speciesEdit = (EditText)getView().findViewById(R.id.editTextHiveSpecies);
         EditText foundationTypeEdit = (EditText)getView().findViewById(R.id.editTextHiveFoundationType);
         String nameText = nameEdit.getText().toString();
         String speciesText = speciesEdit.getText().toString();
-        String foundationTypeText = speciesEdit.getText().toString();
+        String foundationTypeText = foundationTypeEdit.getText().toString();
 
         // neither EditText can be empty
         boolean emptyText = false;
@@ -109,15 +144,27 @@ public class EditHiveSingleFragment extends Fragment {
 
         if (!emptyText) {
             HiveDAO hiveDAO = new HiveDAO(getActivity());
-            Hive hive = hiveDAO.createHive(apiaryID, nameText, speciesText, foundationTypeText);
+            Hive hive;
+            if (mHiveKey == -1) {
+                hive = hiveDAO.createHive(mApiaryKey, nameText, speciesText, foundationTypeText);
+                lNewHive = true;
+            }
+            else {
+                hive = hiveDAO.updateHive(mHiveKey, mApiaryKey, nameText, speciesText, foundationTypeText);
+            }
             hiveDAO.close();
 
-            Log.d(TAG, "Hive Name: " + hive.getName() + " persisted");
-            Log.d(TAG, "Hive Species: " + hive.getSpecies() + " persisted");
-            Log.d(TAG, "Hive Foundation Type: " + hive.getFoundationType() + " persisted");
+            if (hive != null) {
+                Log.d(TAG, "Hive Name: " + hive.getName() + " persisted");
+                Log.d(TAG, "Hive Species: " + hive.getSpecies() + " persisted");
+                Log.d(TAG, "Hive Foundation Type: " + hive.getFoundationType() + " persisted");
+            }
+            else  {
+                Log.d(TAG, "BAD...Hive update failed");
+            }
 
             if (mListener != null) {
-                mListener.onEditHiveSingleFragmentInteraction(theApiaryKey);
+                mListener.onEditHiveSingleFragmentInteraction(hive.getId(), lNewHive);
             }
         }
     }
@@ -139,6 +186,18 @@ public class EditHiveSingleFragment extends Fragment {
         mListener = null;
     }
 
+    // Utility method to get Profile
+    private Hive getHive(long aHiveID) {
+        // read Hive
+        Log.d(TAG, "reading Hive table");
+        HiveDAO hiveDAO = new HiveDAO(getActivity());
+        Hive reply = hiveDAO.getHiveById(aHiveID);
+        hiveDAO.close();
+
+        return reply;
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -146,7 +205,7 @@ public class EditHiveSingleFragment extends Fragment {
      * activity.
      */
     public interface OnEditHiveSingleFragmentInteractionListener {
-        public void onEditHiveSingleFragmentInteraction(long apiaryId);
+        public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive);
     }
 
 }

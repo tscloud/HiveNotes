@@ -31,7 +31,6 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
     private static final String APIARY_KEY = "param1";
 
     private long mApiaryKey;
-    private String mParam2;
 
     private List<Hive> theHiveList = null;
 
@@ -86,8 +85,9 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
 
         // Do it remote
         if (mListener != null) {
-            // Note: theHiveList should ever be null as HiveDAO will return empty List
-            theHiveList = mListener.getTheHiveList(mApiaryKey);
+            // Note: theHiveList should never be null as HiveDAO will return empty List
+            // necessary to unconditionally set reread=true?
+            theHiveList = mListener.deliverHiveList(mApiaryKey, true);
         }
         else {
             emptyTextMsg = "no connection to Activity";
@@ -189,7 +189,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         public void onEditHiveListFragmentInteraction(long hiveId);
 
         // For getting Hive data
-        public List<Hive> getTheHiveList(long anApiaryKey);
+        public List<Hive> deliverHiveList(long anApiaryKey, boolean reread);
     }
 
 }

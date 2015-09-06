@@ -71,6 +71,26 @@ public class HiveDAO {
         return newHive;
     }
 
+    public Hive updateHive(long id, long apiary, String name, String species, String foundationType) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_HIVE_APIARY, apiary);
+        values.put(COLUMN_HIVE_NAME, name);
+        values.put(COLUMN_HIVE_SPECIES, species);
+        values.put(COLUMN_HIVE_FOUNDATION_TYPE, foundationType);
+        int rowsUpdated = mDatabase.update(TABLE_HIVE, values, COLUMN_HIVE_ID + "=" + id, null);
+
+        Hive updatedHive = null;
+        if (rowsUpdated > 0) {
+            Cursor cursor = mDatabase.query(TABLE_HIVE, mAllColumns,
+                    COLUMN_HIVE_ID + " = " + id, null, null, null, null);
+            cursor.moveToFirst();
+            updatedHive = cursorToHive(cursor);
+            cursor.close();
+        }
+
+        return updatedHive;
+    }
+
     public void deleteHive(Hive hive) {
         long id = hive.getId();
         mDatabase.delete(TABLE_HIVE, COLUMN_HIVE_ID + " = " + id, null);

@@ -7,8 +7,8 @@ import java.util.Locale;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +23,8 @@ import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
 
 public class EditHiveActivity extends AppCompatActivity implements
-        EditHiveListFragment.OnEditHiveListFragmentInteractionListener {
+        EditHiveListFragment.OnEditHiveListFragmentInteractionListener,
+        EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
 
     /**
      * The PagerAdapter that will provide fragments for each of the
@@ -40,9 +41,8 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     private static final String TAG = "EditHiveActivity";
 
-    private long theApiaryKey;
-
-    private List<Hive> theHiveList;
+    private long mApiaryKey;
+    private List<Hive> mHiveList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +58,15 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         // Get the apiary ket from the Intent data
         Intent intent = getIntent();
-        theApiaryKey = intent.getLongExtra("apiaryKey", -1);
+        mApiaryKey = intent.getLongExtra("apiaryKey", -1);
 
-        Log.d(TAG, "Called w/ apiary key: " + theApiaryKey);
+        Log.d(TAG, "Called w/ apiary key: " + mApiaryKey);
 
         // Get the Hive list
-        theHiveList = getTheHiveList(theApiaryKey);
+        mHiveList = deliverHiveList(mApiaryKey, false);
 
         //List for all out fragments
-        List<Fragment> fragments = getFragments(theApiaryKey);
+        List<Fragment> fragments = getFragments(mApiaryKey, mHiveList);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -77,13 +77,20 @@ public class EditHiveActivity extends AppCompatActivity implements
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
 
-    private List<Fragment> getFragments(long argApiaryKey){
+    private List<Fragment> getFragments(long aApiaryKey, List<Hive> aHiveList){
         List<Fragment> fList = new ArrayList<Fragment>();
 
-        fList.add(EditHiveListFragment.newInstance(argApiaryKey));
+        fList.add(EditHiveListFragment.newInstance(aApiaryKey));
 
-        fList.add(PlaceholderFragment.newInstance("Fragment 2", R.layout.fragment2_log_entry));
-        fList.add(PlaceholderFragment.newInstance("Fragment 3", R.layout.fragment3_log_entry));
+        for (Hive aHive : aHiveList) {
+            fList.add(EditHiveSingleFragment.newInstance(mApiaryKey, aHive.getId()));
+        }
+
+        // for the last page => put in a blank add Hive frag
+        fList.add(EditHiveSingleFragment.newInstance(mApiaryKey, -1));
+
+        //fList.add(PlaceholderFragment.newInstance("Fragment 2", R.layout.fragment2_log_entry));
+        //fList.add(PlaceholderFragment.newInstance("Fragment 3", R.layout.fragment3_log_entry));
 
         return fList;
     }
@@ -113,18 +120,21 @@ public class EditHiveActivity extends AppCompatActivity implements
     @Override
     public void onEditHiveListFragmentInteraction(long hiveId) {
 
-        // if id is non-null => we selected something
+        // if id is not -1 => we selected something
         // else we're making a new Hive
         if (hiveId == -1) {
             // Do new Hive stuff
+            /*
             Log.d(TAG, "Back from EditHiveListFragment: null Hive ID");
             Intent data = new Intent();
 
             data.putExtra("showNewHiveScreen", true);
-            data.putExtra("apiaryKey", theApiaryKey);
+            data.putExtra("apiaryKey", mApiaryKey);
 
             setResult(RESULT_OK, data);
             finish();
+            */
+            mViewPager.setCurrentItem(mViewPager.getAdapter().getCount() - 1, false);
         }
         else{
             // Do selected Hive stuff
@@ -134,44 +144,90 @@ public class EditHiveActivity extends AppCompatActivity implements
             Intent data = new Intent();
 
             data.putExtra("showNewHiveScreen", false);
-            data.putExtra("hiveKey", theApiaryKey);
+            data.putExtra("hiveKey", mApiaryKey);
 
             setResult(RESULT_OK, data);
             finish();
             */
+            int hivePos = 0;
+            for (int i = 0; i < mHiveList.size(); i++) {
+                if (hiveId == (mHiveList.get(i).getId())) {
+                    hivePos = i;
+                }
+            }
+            // setCurrentItem "1" based?
+            mViewPager.setCurrentItem(hivePos+1, false);
         }
     }
 
     @Override
-    public List<Hive> getTheHiveList(long anApiaryKey) {
+    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive) {
+        // Do some stuff w/ the adapter
+        SectionsPagerAdapter adapter = (SectionsPagerAdapter)mViewPager.getAdapter();
+
+        // reshow the list of Hives
+        Fragment fragAdd = EditHiveListFragment.newInstance(mApiaryKey);
+        adapter.setItem(fragAdd, 0);
+
+        // reshow/add the Hive we've just dealt w/
+        boolean addFrag = true;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            Fragment fragCheck = adapter.getItem(i);
+            if (fragCheck instanceof EditHiveSingleFragment) {
+                if (((EditHiveSingleFragment)fragCheck).getHiveKey() == hiveID) {
+                    addFrag = false;
+                    break;
+                }
+            }
+        }
+
+        if (addFrag) {
+            // just add a blank fragment at the end for Hive adding
+            adapter.addItem(EditHiveSingleFragment.newInstance(mApiaryKey, -1));
+        }
+
+        adapter.notifyDataSetChanged();
+        mViewPager.setCurrentItem(0, false);
+    }
+
+    @Override
+    public List<Hive> deliverHiveList(long anApiaryKey, boolean reread) {
         // Read the Hive list for the fragments
-        if ((theHiveList == null) || (theHiveList.isEmpty())) {
+        if ((mHiveList == null) || (mHiveList.isEmpty()) || reread) {
             Log.d(TAG, "reading Hive table");
             HiveDAO hiveDAO = new HiveDAO(this);
-            theHiveList = hiveDAO.getHiveList(theApiaryKey);
+            mHiveList = hiveDAO.getHiveList(mApiaryKey);
             hiveDAO.close();
         }
 
-        return theHiveList;
-    }
-
-    @Override
-    public void finish() {
-
-        super.finish();
+        return mHiveList;
     }
 
     /**
      * A FragmentPagerAdapter that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         private List<Fragment> fragments;
 
         public SectionsPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
             this.fragments = fragments;
+        }
+
+        public void setItem(Fragment frag, int pos) {
+            this.fragments.set(pos, frag);
+        }
+
+        public void addItem(Fragment frag) {
+            // should always be a blank frag for Hive adding?
+            this.fragments.add(frag);
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         @Override

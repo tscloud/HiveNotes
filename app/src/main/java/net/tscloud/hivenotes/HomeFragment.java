@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.LinkedHashMap;
+import net.tscloud.hivenotes.db.Apiary;
+
+import java.util.List;
 
 
 /**
@@ -27,13 +29,11 @@ import java.util.LinkedHashMap;
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String NEW_PROFILE = "param1";
-    private static final String APIARY_IDS = "param2";
-    private static final String APIARY_NAMES = "param3";
-
-    private boolean mNewProfile = false;
-    private LinkedHashMap<Long, String> mApiaryNameMap = null;
+    // the fragment initialization parameters
+    private static final String PROFILE_ID = "param1";
+    // and instance var of same - needed?
+    long mProfileID = -1;
+    List<Apiary> mApiaryList = null;
 
     private OnHomeFragmentInteractionListener mListener;
 
@@ -41,29 +41,13 @@ public class HomeFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      */
-    public static HomeFragment newInstance(boolean newProfile, LinkedHashMap<Long, String> apiaryNameMap) {
-        Log.d(TAG, "getting newInstance of HomeFragment");
+    public static HomeFragment newInstance(long profileID) {
+        Log.d(TAG, "getting newInstance of HomeFragment...profileID: " + profileID);
 
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
 
-        args.putBoolean(NEW_PROFILE, newProfile);
-
-        // split the Hashmap of Apiary id -> name => 2 ArrayLists
-        if ((apiaryNameMap != null) && !apiaryNameMap.isEmpty()) {
-            long[] apiaryIds = new long[apiaryNameMap.size()];
-            String[] apiaryNames = new String[apiaryNameMap.size()];
-            int i = 0;
-            for (long id : apiaryNameMap.keySet()) {
-                apiaryIds[i] = id;
-                apiaryNames[i] = apiaryNameMap.get(id);
-                ++i;
-            }
-
-            args.putLongArray(APIARY_IDS, apiaryIds);
-            args.putStringArray(APIARY_NAMES, apiaryNames);
-        }
-
+        args.putLong(PROFILE_ID, profileID);
         fragment.setArguments(args);
 
         return fragment;
@@ -77,20 +61,13 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mProfileID = getArguments().getLong(PROFILE_ID);
+        }
 
-            mNewProfile = getArguments().getBoolean(NEW_PROFILE);
-
-            // reconstitute LinkedHashMap
-            long[] argApiaryIds = getArguments().getLongArray(APIARY_IDS);
-            String[] argApiaryNames = getArguments().getStringArray(APIARY_NAMES);
-
-            if (!(argApiaryIds == null) && !(argApiaryNames == null)) {
-                // this is onCreate so we know we want to make a new LinkedHashMap
-                mApiaryNameMap = new LinkedHashMap<>(argApiaryIds.length);
-
-                for (int i = 0; i < argApiaryIds.length; i++) {
-                    mApiaryNameMap.put(argApiaryIds[i], argApiaryNames[i]);
-                }
+        if (mProfileID != -1) {
+            if (mListener != null) {
+                // read apiary list from Activity
+                mApiaryList = mListener.deliverApiaryList(mProfileID);
             }
         }
     }
@@ -106,7 +83,7 @@ public class HomeFragment extends Fragment {
         final TextView textListApiary = (TextView)v.findViewById(R.id.textCreateEdit);
         final Button btnDropDB = (Button)v.findViewById(R.id.btnDropDB);
 
-        if (mNewProfile){
+        if (mProfileID == -1){
             String s = getResources().getString(R.string.create_profile_string);
             btnEditApiary.setText(s);
             textListApiary.setText(s);
@@ -118,17 +95,17 @@ public class HomeFragment extends Fragment {
         }
 
         // check for list of apiaries and add TextViews as necessary
-        if (!(mApiaryNameMap == null) && !(mApiaryNameMap.isEmpty())){
+        if (!(mApiaryList == null) && !(mApiaryList.isEmpty())){
             ViewGroup layout = (ViewGroup) v.findViewById(R.id.linearLayout1);
-            for (Long aId : mApiaryNameMap.keySet()){
+            for (Apiary a : mApiaryList){
                 TextView tv = new TextView(getActivity());
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.gravity = Gravity.CENTER;
                 tv.setLayoutParams(layoutParams);
-                tv.setText(mApiaryNameMap.get(aId));
-                tv.setTag(aId);
+                tv.setText(a.getName());
+                tv.setTag(a.getId());
                 tv.setTextColor(Color.WHITE);
                 layout.addView(tv);
                 //add listener
@@ -148,7 +125,7 @@ public class HomeFragment extends Fragment {
         btnEditApiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEdirApiaryButtonPressed();
+                onEditApiaryButtonPressed();
             }
         });
 
@@ -169,7 +146,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void onEdirApiaryButtonPressed() {
+    public void onEditApiaryButtonPressed() {
         if (mListener != null) {
             mListener.onHomeFragmentInteraction(null, false);
         }
@@ -208,7 +185,9 @@ public class HomeFragment extends Fragment {
      * activity.
      */
     public interface OnHomeFragmentInteractionListener {
-        public void onHomeFragmentInteraction(Long apiaryId, boolean dbDeleted);
+        void onHomeFragmentInteraction(Long apiaryId, boolean dbDeleted);
+
+        List<Apiary> deliverApiaryList(long aProfileID);
     }
 
 }
