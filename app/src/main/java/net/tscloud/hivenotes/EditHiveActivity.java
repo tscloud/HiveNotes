@@ -118,45 +118,55 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditHiveListFragmentInteraction(long hiveId) {
+    public void onEditHiveListFragmentInteraction(long apiaryID, long hiveID, boolean updateApiary) {
 
-        // if id is not -1 => we selected something
-        // else we're making a new Hive
-        if (hiveId == -1) {
-            // Do new Hive stuff
-            /*
-            Log.d(TAG, "Back from EditHiveListFragment: null Hive ID");
-            Intent data = new Intent();
+        if (!updateApiary) {
+            // if id is not -1 => we selected something
+            // else we're making a new Hive
+            if (hiveID == -1) {
+                // Do new Hive stuff
+                /*
+                Log.d(TAG, "Back from EditHiveListFragment: null Hive ID");
+                Intent data = new Intent();
 
-            data.putExtra("showNewHiveScreen", true);
-            data.putExtra("apiaryKey", mApiaryKey);
+                data.putExtra("showNewHiveScreen", true);
+                data.putExtra("apiaryKey", mApiaryKey);
 
-            setResult(RESULT_OK, data);
-            finish();
-            */
-            mViewPager.setCurrentItem(mViewPager.getAdapter().getCount() - 1, false);
-        }
-        else{
-            // Do selected Hive stuff
-            // Don't do this -- show EditHiveSingleFragment w/ proper Hive data for update
-            /*
-            Log.d(TAG, "Back from Edit HiveListFragment: Hive ID:" + id);
-            Intent data = new Intent();
+                setResult(RESULT_OK, data);
+                finish();
+                */
+                mViewPager.setCurrentItem(mViewPager.getAdapter().getCount() - 1, false);
+            } else {
+                // Do selected Hive stuff
+                // Don't do this -- show EditHiveSingleFragment w/ proper Hive data for update
+                /*
+                Log.d(TAG, "Back from Edit HiveListFragment: Hive ID:" + id);
+                Intent data = new Intent();
 
-            data.putExtra("showNewHiveScreen", false);
-            data.putExtra("hiveKey", mApiaryKey);
+                data.putExtra("showNewHiveScreen", false);
+                data.putExtra("hiveKey", mApiaryKey);
 
-            setResult(RESULT_OK, data);
-            finish();
-            */
-            int hivePos = 0;
-            for (int i = 0; i < mHiveList.size(); i++) {
-                if (hiveId == (mHiveList.get(i).getId())) {
-                    hivePos = i;
+                setResult(RESULT_OK, data);
+                finish();
+                */
+                int hivePos = 0;
+                for (int i = 0; i < mHiveList.size(); i++) {
+                    if (hiveID == (mHiveList.get(i).getId())) {
+                        hivePos = i;
+                    }
                 }
+                // setCurrentItem "1" based?
+                mViewPager.setCurrentItem(hivePos + 1, false);
             }
-            // setCurrentItem "1" based?
-            mViewPager.setCurrentItem(hivePos+1, false);
+        }
+        else {
+            Log.d(TAG, "Back from EditHiveListFragment: update Apiary");
+            Intent data = new Intent();
+
+            data.putExtra("apiaryKey", apiaryID);
+
+            setResult(RESULT_OK, data);
+            finish();
         }
     }
 
@@ -169,6 +179,7 @@ public class EditHiveActivity extends AppCompatActivity implements
         Fragment fragAdd = EditHiveListFragment.newInstance(mApiaryKey);
         adapter.setItem(fragAdd, 0);
 
+        /*
         // reshow/add the Hive we've just dealt w/
         boolean addFrag = true;
         for (int i = 0; i < adapter.getCount(); i++) {
@@ -180,8 +191,9 @@ public class EditHiveActivity extends AppCompatActivity implements
                 }
             }
         }
+        */
 
-        if (addFrag) {
+        if (newHive) {
             // just add a blank fragment at the end for Hive adding
             adapter.addItem(EditHiveSingleFragment.newInstance(mApiaryKey, -1));
         }
