@@ -25,6 +25,7 @@
     <string name="new_apiary_name_text">Apiary Name:</string>
     <string name="create_profile_string">Create Profile</string>
     <string name="create_apiary_string">Create Apiary</string>
+    <string name="update_apiary_string">Update Apiary</string>
     <string name="create_hive_string">Create Hive</string>
     <string name="save_hive_string">Save Hive</string>
     <string name="postal_code_string">Postal Code:</string>

@@ -155,6 +155,10 @@ public class EditHiveSingleFragment extends Fragment {
             hiveDAO.close();
 
             if (hive != null) {
+                // Reset Hive instance vars
+                mHive = hive;
+                mHiveKey = hive.getId();
+
                 Log.d(TAG, "Hive Name: " + hive.getName() + " persisted");
                 Log.d(TAG, "Hive Species: " + hive.getSpecies() + " persisted");
                 Log.d(TAG, "Hive Foundation Type: " + hive.getFoundationType() + " persisted");

@@ -198,18 +198,14 @@ public class MainActivity extends AppCompatActivity implements
 
         if ((requestCode == request_code) && (resultCode == RESULT_OK)) {
             Log.d(TAG, "Returned from requestCode = " + requestCode);
-            /*
-            boolean showNewHiveScreen = data.getExtras().getBoolean("showNewHiveScreen");
+
             long apiaryKey = data.getExtras().getLong("apiaryKey");
 
-            if (showNewHiveScreen) {
-                Fragment fragment = EditHiveSingleFragment.newInstance(apiaryKey, );
+            Fragment fragment = EditApiaryFragment.newInstance(mProfile.getId(), apiaryKey);
 
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_placeholder, fragment, "EDIT_HIVE_SINGLE_FRAG").addToBackStack("backstacktagB");
-                ft.commit();
-            }
-            */
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_placeholder, fragment, "EDIT_HIVE_SINGLE_FRAG").addToBackStack("backstacktagB");
+            ft.commit();
         }
     }
 

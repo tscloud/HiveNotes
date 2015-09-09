@@ -5,7 +5,6 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
-
     <ImageView
         android:src="@drawable/plus_icon"
         android:layout_width="0dp"
@@ -22,6 +21,5 @@
         android:layout_weight="0.90"
         android:text="@string/create_profile_string"
         android:id="@+id/hiveNoteButtton" />
-
 
 </LinearLayout>
