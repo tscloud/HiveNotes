@@ -73,7 +73,7 @@ public class EditApiaryFragment extends Fragment {
         if (mApiaryID != -1) {
             if (mListener != null) {
                 // we need to get the Apiary
-                mApiary = getApiary(mProfileID);
+                mApiary = getApiary(mApiaryID);
             }
         }
     }
@@ -112,6 +112,8 @@ public class EditApiaryFragment extends Fragment {
         // get name and email and put to DB
         Log.d(TAG, "about to persist apiary");
 
+        boolean lNewApiary = false;
+
         EditText nameEdit = (EditText)getView().findViewById(R.id.editTextApiaryName);
         EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
         String nameText = nameEdit.getText().toString();
@@ -134,11 +136,23 @@ public class EditApiaryFragment extends Fragment {
 
         if (!emptyText) {
             ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
-            Apiary apiary = apiaryDAO.createApiary(profileID, nameText, postalCodeText);
+            Apiary apiary;
+            if (mApiaryID == -1) {
+                apiary = apiaryDAO.createApiary(profileID, nameText, postalCodeText);
+                lNewApiary = true;
+            }
+            else {
+                apiary = apiaryDAO.updateApiary(mApiaryID, profileID, nameText, postalCodeText);
+            }
             apiaryDAO.close();
 
-            Log.d(TAG, "Apiary Name: " + apiary.getName() + " persisted");
-            Log.d(TAG, "Apiary Postal Code: " + apiary.getPostalCode() + " persisted");
+            if (apiary != null) {
+                Log.d(TAG, "Apiary Name: " + apiary.getName() + " persisted");
+                Log.d(TAG, "Apiary Postal Code: " + apiary.getPostalCode() + " persisted");
+            }
+            else {
+                Log.d(TAG, "BAD...Apiary update failed");
+            }
 
             if (mListener != null) {
                 mListener.onEditApiaryFragmentInteraction();
