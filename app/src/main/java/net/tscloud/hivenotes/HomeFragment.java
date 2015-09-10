@@ -185,8 +185,10 @@ public class HomeFragment extends Fragment {
      * activity.
      */
     public interface OnHomeFragmentInteractionListener {
+        // For general interaction - really just the return to the Activity
         void onHomeFragmentInteraction(Long apiaryId, boolean dbDeleted);
 
+        // For getting Apiary data
         List<Apiary> deliverApiaryList(long aProfileID);
     }
 

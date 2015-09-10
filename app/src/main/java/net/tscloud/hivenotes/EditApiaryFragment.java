@@ -195,8 +195,10 @@ public class EditApiaryFragment extends Fragment {
      * activity.
      */
     public interface OnEditApiaryFragmentInteractionListener {
+        // For general interaction - really just the return to the Activity
         void onEditApiaryFragmentInteraction();
 
+        // For getting Apiary data
         List<Apiary> deliverApiaryList(long aProfileID);
     }
 

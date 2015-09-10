@@ -187,8 +187,10 @@ public class EditProfileFragment extends Fragment {
      * activity.
      */
     public interface OnEditProfileFragmentInteractionListener {
+        // For general interaction - really just the return to the Activity
         void onEditProfileFragmentInteraction(Profile profile);
 
+        // For getting Profile data
         Profile deliverProfile();
     }
 

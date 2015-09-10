@@ -209,6 +209,7 @@ public class EditHiveSingleFragment extends Fragment {
      * activity.
      */
     public interface OnEditHiveSingleFragmentInteractionListener {
+        // For general interaction - really just the return to the Activity
         public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive);
     }
 
