@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
     <TextView
@@ -11,8 +11,8 @@
         android:layout_height="match_parent"
         android:layout_weight="0.90"
         android:text="@string/hello_world"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/hiveEditTextView" />
+        android:id="@+id/hiveEditTextView"
+        android:gravity="center_vertical" />
 
     <ImageView
         android:src="@drawable/feeding_icon"
@@ -23,6 +23,8 @@
         android:contentDescription="@string/create_profile_string"
         android:clickable="true"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@android:color/darker_gray" />
 
     <ImageView
@@ -34,6 +36,8 @@
         android:contentDescription="@string/create_profile_string"
         android:clickable="true"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@android:color/darker_gray" />
 
     <ImageView
@@ -44,6 +48,8 @@
         android:id="@+id/hiveOtherImage"
         android:contentDescription="@string/create_profile_string"
         android:clickable="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@android:color/darker_gray" />
 
 </LinearLayout>

@@ -12,24 +12,23 @@
     <string name="frag2_text">fragment #2 - init msg</string>
     <string name="frag3_text">fragment #3 - init msg</string>
     <string name="title_activity_main">HiveNotes</string>
-    <string name="new_apiary_string">New Apiary</string>
-    <string name="esit_apiary_string">Edit Apiary</string>
-    <string name="existing_apiary_string">Home - Apiary List</string>
 
+    <string name="new_apiary_string">New Apiary</string>
     <string name="new_apiary_button_text">Save Apiary</string>
     <string name="edit_apiary_button_text">Edit Apiary</string>
     <string name="apiary_list_text">Apiary List:</string>
-    <string name="new_profile_string">New Profile</string>
-    <string name="new_profile_name_text">Name:</string>
-    <string name="new_profile_email_text">Email:</string>
-    <string name="new_apiary_name_text">Apiary Name:</string>
-    <string name="create_profile_string">Create Profile</string>
     <string name="create_apiary_string">Create Apiary</string>
     <string name="update_apiary_string">Update Apiary</string>
-    <string name="create_hive_string">Create Hive</string>
-    <string name="save_hive_string">Save Hive</string>
     <string name="postal_code_string">Postal Code:</string>
     <string name="new_apiary_name_string">Apiary Name:</string>
+
+    <string name="new_profile_string">New Profile</string>
+    <string name="create_profile_string">Create Profile</string>
+    <string name="new_profile_name_text">Name:</string>
+    <string name="new_profile_email_text">Email:</string>
+
+    <string name="create_hive_string">Create Hive</string>
+    <string name="save_hive_string">Save Hive</string>
     <string name="no_hives_string">No hives yet</string>
     <string name="new_hive_string">New Hive</string>
     <string name="hive_name_string">Hive Name:</string>
