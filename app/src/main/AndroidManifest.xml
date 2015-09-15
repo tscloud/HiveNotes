@@ -21,6 +21,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LogEntryListActivity"
+            android:label="@string/title_logentry_list" >
+        </activity>
+        <activity
+            android:name=".LogEntryDetailActivity"
+            android:label="@string/title_logentry_detail"
+            android:parentActivityName=".LogEntryListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.tscloud.hivenotes.LogEntryListActivity" />
+        </activity>
     </application>
 
 </manifest>

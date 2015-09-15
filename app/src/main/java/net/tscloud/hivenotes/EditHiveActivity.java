@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
@@ -40,6 +42,9 @@ public class EditHiveActivity extends AppCompatActivity implements
     ViewPager mViewPager;
 
     private static final String TAG = "EditHiveActivity";
+
+    // starting LogEntryListActivity as subactivity
+    private static final int request_code = 5;
 
     private long mApiaryKey;
     private List<Hive> mHiveList;
@@ -115,6 +120,43 @@ public class EditHiveActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /*
+     *Handlers of buttons defined in hive_edit_button, i.e. buttons in each of the list items
+     */
+
+    public void hiveFeedingClickHandler (View v) {
+        Log.d(TAG, "hiveFeedingClickHandler called");
+
+        LinearLayout linLay1 = (LinearLayout)v.getParent();
+        TextView tv = (TextView)linLay1.findViewById(R.id.hiveEditTextView);
+
+        Log.d(TAG, "HiveName: " + tv.getText());
+
+        // IMPORTANT -- this is how we get to LogEntryListActivity log activity
+        // start LogEntryListActivity activity
+        Intent i = new Intent(this,LogEntryListActivity.class);
+        //i.putExtra("apiaryKey", apiaryId);
+        startActivityForResult(i, request_code);
+    }
+
+    public void hiveGeneralClickHandler (View v) {
+        Log.d(TAG, "hiveGeneralClickHandler called");
+
+        LinearLayout linLay1 = (LinearLayout)v.getParent();
+        TextView tv = (TextView)linLay1.findViewById(R.id.hiveEditTextView);
+
+        Log.d(TAG, "HiveName: " + tv.getText());
+    }
+
+    public void hiveOtherClickHandler (View v) {
+        Log.d(TAG, "hiveOtherClickHandler called");
+
+        LinearLayout linLay1 = (LinearLayout)v.getParent();
+        TextView tv = (TextView)linLay1.findViewById(R.id.hiveEditTextView);
+
+        Log.d(TAG, "HiveName: " + tv.getText());
     }
 
     @Override

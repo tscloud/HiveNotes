@@ -34,4 +34,6 @@
     <string name="hive_name_string">Hive Name:</string>
     <string name="hive_species_string">Species:</string>
     <string name="hive_foundation_type_string">Foundation Type:</string>
+    <string name="title_logentry_list">LogEntries</string>
+    <string name="title_logentry_detail">LogEntry Detail</string>
 </resources>

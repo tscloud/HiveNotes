@@ -25,7 +25,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray"
+        android:onClick="hiveFeedingClickHandler"/>
 
     <ImageView
         android:src="@drawable/general_icon"
@@ -38,7 +39,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray"
+        android:onClick="hiveGeneralClickHandler"/>
 
     <ImageView
         android:src="@drawable/other_icon"
@@ -50,6 +52,7 @@
         android:clickable="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray"
+        android:onClick="hiveOtherClickHandler"/>
 
 </LinearLayout>
