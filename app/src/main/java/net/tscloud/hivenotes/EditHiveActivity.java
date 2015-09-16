@@ -161,36 +161,18 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     @Override
     public void onEditHiveListFragmentInteraction(long apiaryID, long hiveID, boolean updateApiary) {
+        Log.d(TAG, "Back from EditHiveListFragment...");
 
         if (!updateApiary) {
             // if id is not -1 => we selected something
             // else we're making a new Hive
             if (hiveID == -1) {
+                Log.d(TAG, "...add new Hive");
                 // Do new Hive stuff
-                /*
-                Log.d(TAG, "Back from EditHiveListFragment: null Hive ID");
-                Intent data = new Intent();
-
-                data.putExtra("showNewHiveScreen", true);
-                data.putExtra("apiaryKey", mApiaryKey);
-
-                setResult(RESULT_OK, data);
-                finish();
-                */
                 mViewPager.setCurrentItem(mViewPager.getAdapter().getCount() - 1, false);
             } else {
+                Log.d(TAG, "...edit existing Hive");
                 // Do selected Hive stuff
-                // Don't do this -- show EditHiveSingleFragment w/ proper Hive data for update
-                /*
-                Log.d(TAG, "Back from Edit HiveListFragment: Hive ID:" + id);
-                Intent data = new Intent();
-
-                data.putExtra("showNewHiveScreen", false);
-                data.putExtra("hiveKey", mApiaryKey);
-
-                setResult(RESULT_OK, data);
-                finish();
-                */
                 int hivePos = 0;
                 for (int i = 0; i < mHiveList.size(); i++) {
                     if (hiveID == (mHiveList.get(i).getId())) {
@@ -202,11 +184,10 @@ public class EditHiveActivity extends AppCompatActivity implements
             }
         }
         else {
-            Log.d(TAG, "Back from EditHiveListFragment: update Apiary");
+            Log.d(TAG, "...update Apiary - return to MainActivity");
+
             Intent data = new Intent();
-
             data.putExtra("apiaryKey", apiaryID);
-
             setResult(RESULT_OK, data);
             finish();
         }
@@ -214,26 +195,14 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     @Override
     public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive) {
+        Log.d(TAG, "Back from EditHiveSingleFragment: update Apiary");
+
         // Do some stuff w/ the adapter
         SectionsPagerAdapter adapter = (SectionsPagerAdapter)mViewPager.getAdapter();
 
         // reshow the list of Hives
         Fragment fragAdd = EditHiveListFragment.newInstance(mApiaryKey);
         adapter.setItem(fragAdd, 0);
-
-        /*
-        // reshow/add the Hive we've just dealt w/
-        boolean addFrag = true;
-        for (int i = 0; i < adapter.getCount(); i++) {
-            Fragment fragCheck = adapter.getItem(i);
-            if (fragCheck instanceof EditHiveSingleFragment) {
-                if (((EditHiveSingleFragment)fragCheck).getHiveKey() == hiveID) {
-                    addFrag = false;
-                    break;
-                }
-            }
-        }
-        */
 
         if (newHive) {
             // just add a blank fragment at the end for Hive adding
@@ -293,7 +262,8 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         @Override
         public int getCount() {
-            return this.fragments.size();
+            // ***** Will this prevent the Pager from going to the last page?
+            return this.fragments.size() - 1;
         }
 
         @Override
