@@ -1,9 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp" android:baselineAligned="false"
-    android:divider="?android:attr/dividerHorizontal" android:orientation="horizontal"
-    android:showDividers="middle" tools:context="net.tscloud.hivenotes.LogEntryListActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:baselineAligned="false"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    android:showDividers="middle"
+    tools:context="net.tscloud.hivenotes.LogEntryListActivity">
 
     <!--
     This layout is a two-pane layout for the LogEntries
@@ -18,11 +23,15 @@
     -->
 
     <fragment android:id="@+id/logentry_list"
-        android:name="net.tscloud.hivenotes.LogEntryListFragment" android:layout_width="0dp"
-        android:layout_height="match_parent" android:layout_weight="1"
+        android:name="net.tscloud.hivenotes.LogEntryListFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         tools:layout="@android:layout/list_content" />
 
-    <FrameLayout android:id="@+id/logentry_detail_container" android:layout_width="0dp"
-        android:layout_height="match_parent" android:layout_weight="3" />
+    <FrameLayout android:id="@+id/logentry_detail_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3" />
 
 </LinearLayout>
