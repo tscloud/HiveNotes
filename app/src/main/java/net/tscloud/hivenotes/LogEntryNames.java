@@ -1,4 +1,4 @@
-package net.tscloud.hivenotes.dummy;
+package net.tscloud.hivenotes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import java.util.Map;
  * <p/>
  * TODO: Replace all uses of this class before publishing your app.
  */
-public class DummyContent {
+public class LogEntryNames {
 
     /**
      * An array of sample (dummy) items.
@@ -25,9 +25,11 @@ public class DummyContent {
 
     static {
         // Add 3 sample items.
-        addItem(new DummyItem("1", "Item 1"));
-        addItem(new DummyItem("2", "Item 2"));
-        addItem(new DummyItem("3", "Item 3"));
+        addItem(new DummyItem("1", "General Notes"));
+        addItem(new DummyItem("2", "Productivity"));
+        addItem(new DummyItem("3", "Pest Management"));
+        addItem(new DummyItem("4", "Feeding"));
+        addItem(new DummyItem("5", "Other"));
     }
 
     private static void addItem(DummyItem item) {

@@ -107,6 +107,7 @@ public class HomeFragment extends Fragment {
                 tv.setText(a.getName());
                 tv.setTag(a.getId());
                 tv.setTextColor(Color.WHITE);
+                tv.setTextSize(25);
                 layout.addView(tv);
                 //add listener
                 tv.setOnClickListener(new View.OnClickListener(){

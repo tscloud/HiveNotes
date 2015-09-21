@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -57,6 +58,8 @@ public class EditHiveActivity extends AppCompatActivity implements
         // Custom Action Bar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.abs_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 //        View abView = getSupportActionBar().getCustomView();
 //        TextView abText = (TextView)abView.findViewById(R.id.mytext);
 //        abText.setText("NewHiveNites");
@@ -133,6 +136,7 @@ public class EditHiveActivity extends AppCompatActivity implements
         TextView tv = (TextView)linLay1.findViewById(R.id.hiveEditTextView);
 
         Log.d(TAG, "HiveName: " + tv.getText());
+        Log.d(TAG, "HiveID: " + tv.getTag());
 
         // IMPORTANT -- this is how we get to LogEntryListActivity log activity
         // start LogEntryListActivity activity
@@ -263,7 +267,8 @@ public class EditHiveActivity extends AppCompatActivity implements
         @Override
         public int getCount() {
             // ***** Will this prevent the Pager from going to the last page?
-            return this.fragments.size() - 1;
+            //return this.fragments.size() - 1;
+            return this.fragments.size();
         }
 
         @Override

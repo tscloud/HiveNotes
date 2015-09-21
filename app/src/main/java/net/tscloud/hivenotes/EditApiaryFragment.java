@@ -74,6 +74,7 @@ public class EditApiaryFragment extends Fragment {
             if (mListener != null) {
                 // we need to get the Apiary
                 mApiary = getApiary(mApiaryID);
+                mProfileID = mApiary.getProfile();
             }
         }
     }
@@ -199,7 +200,7 @@ public class EditApiaryFragment extends Fragment {
         void onEditApiaryFragmentInteraction();
 
         // For getting Apiary data
-        List<Apiary> deliverApiaryList(long aProfileID);
+        //List<Apiary> deliverApiaryList(long aProfileID);
     }
 
 }

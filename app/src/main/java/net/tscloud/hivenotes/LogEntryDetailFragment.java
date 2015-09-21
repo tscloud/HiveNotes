@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.tscloud.hivenotes.dummy.DummyContent;
-
 /**
  * A fragment representing a single LogEntry detail screen.
  * This fragment is either contained in a {@link LogEntryListActivity}
@@ -25,7 +23,7 @@ public class LogEntryDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private LogEntryNames.DummyItem mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,7 +40,7 @@ public class LogEntryDetailFragment extends Fragment {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            mItem = LogEntryNames.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
         }
     }
 

@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import net.tscloud.hivenotes.dummy.DummyContent;
-
 /**
  * A list fragment representing a list of LogEntries. This fragment
  * also supports tablet devices by allowing list items to be given an
@@ -71,11 +69,11 @@ public class LogEntryListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+        setListAdapter(new ArrayAdapter<LogEntryNames.DummyItem>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                DummyContent.ITEMS));
+                LogEntryNames.ITEMS));
     }
 
     @Override
@@ -115,7 +113,7 @@ public class LogEntryListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(LogEntryNames.ITEMS.get(position).id);
     }
 
     @Override
