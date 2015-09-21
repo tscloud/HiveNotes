@@ -77,14 +77,6 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         }
 
         // Get the list of hives
-        // Do it local
-        /*
-        Log.d(TAG, "reading Hive table");
-        HiveDAO hiveDAO = new HiveDAO(getActivity());
-        mHiveList = hiveDAO.getHiveList(mApiaryKey);
-        hiveDAO.close();
-        */
-
         // call Activity method to get Hive list
         if (mListener != null) {
             // Note: mHiveList should never be null as HiveDAO will return empty List
@@ -99,8 +91,9 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         // --Create the Adapter--
         //mAdapter = new ArrayAdapter<Hive>(getActivity(),
         //        android.R.layout.simple_list_item_1, android.R.id.text1, mHiveList);
-        mAdapter = new ArrayAdapter<Hive>(getActivity(),
-                R.layout.hive_edit_button, R.id.hiveEditTextView, mHiveList);
+        //mAdapter = new ArrayAdapter<Hive>(getActivity(),
+        //        R.layout.hive_edit_button, R.id.hiveEditTextView, mHiveList);
+        mAdapter = new HiveListAdapter(getActivity(), mHiveList);
     }
 
     @Override
