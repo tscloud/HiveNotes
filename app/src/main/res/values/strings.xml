@@ -36,4 +36,10 @@
     <string name="hive_foundation_type_string">Foundation Type:</string>
     <string name="title_logentry_list">LogEntries</string>
     <string name="title_logentry_detail">LogEntry Detail</string>
+
+    <string name="general_notes_population_test">Population:</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="general_notes_string">General Notes</string>
 </resources>

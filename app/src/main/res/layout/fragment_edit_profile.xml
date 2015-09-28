@@ -25,7 +25,7 @@
         android:layout_below="@+id/textNewProfile"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayoutName">
 
         <TextView
             android:layout_width="0dp"
@@ -49,10 +49,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/linearLayout"
+        android:layout_below="@+id/linearLayoutName"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayout2">
+        android:id="@+id/linearLayoutEMail">
 
     <TextView
         android:layout_width="0dp"
