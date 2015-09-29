@@ -37,7 +37,14 @@
     <string name="title_logentry_list">LogEntries</string>
     <string name="title_logentry_detail">LogEntry Detail</string>
 
-    <string name="general_notes_population_test">Population:</string>
+    <string name="general_notes_population_text">Population:</string>
+    <string name="general_notes_temperment_text">Temperment:</string>
+    <string name="general_notes_eggs_text">Eggs:</string>
+    <string name="general_notes_larvae_text">Larvae:</string>
+    <string name="general_notes_cappedbrood_text">Capped Brood:</string>
+    <string name="general_notes_broodframes_text">Brood Frames:</string>
+    <string name="general_notes_honeystores_text">Honey Stores:</string>
+    <string name="general_notes_pollenstores_text">Pollen Stores:</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
