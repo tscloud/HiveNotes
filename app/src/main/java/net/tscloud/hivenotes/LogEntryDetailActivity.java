@@ -1,9 +1,11 @@
 package net.tscloud.hivenotes;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
 /**
@@ -15,7 +17,10 @@ import android.view.MenuItem;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link LogEntryDetailFragment}.
  */
-public class LogEntryDetailActivity extends AppCompatActivity {
+public class LogEntryDetailActivity extends AppCompatActivity
+        implements LogGeneralNotesFragment.OnFragmentInteractionListener {
+
+    public static final String TAG = "LogEntryDetailActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +42,22 @@ public class LogEntryDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
+            String argItemId = getIntent().getStringExtra(LogEntryDetailFragment.ARG_ITEM_ID);
+
             Bundle arguments = new Bundle();
-            arguments.putString(LogEntryDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(LogEntryDetailFragment.ARG_ITEM_ID));
-            LogEntryDetailFragment fragment = new LogEntryDetailFragment();
+            arguments.putString(LogEntryDetailFragment.ARG_ITEM_ID, argItemId);
+
+            Fragment fragment;
+
+            switch (argItemId) {
+                case "1":
+                    fragment = new LogGeneralNotesFragment();
+                    break;
+                default:
+                    fragment = new LogEntryDetailFragment();
+                    break;
+            }
+
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.logentry_detail_container, fragment)
@@ -63,5 +80,15 @@ public class LogEntryDetailActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onLogGeneralNotesFragmentInteraction() {
+        Log.d(TAG, "return from LogGeneralNotesFragment...finish LogEntryDetailActivity");
+
+        Intent data = new Intent();
+        //data.putExtra("apiaryKey", apiaryID);
+        setResult(RESULT_OK, data);
+        finish();
     }
 }

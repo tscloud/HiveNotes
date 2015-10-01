@@ -15,7 +15,7 @@
         android:gravity="center_vertical" />
 
     <ImageView
-        android:src="@drawable/feeding_icon"
+        android:src="@drawable/log_round_icon"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.15"
@@ -25,11 +25,11 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@android:color/darker_gray"
         android:onClick="hiveFeedingClickHandler"/>
+    <!--android:background="@android:color/darker_gray" -->
 
     <ImageView
-        android:src="@drawable/general_icon"
+        android:src="@drawable/weather_round_icon"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.15"
@@ -39,11 +39,11 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@android:color/darker_gray"
         android:onClick="hiveGeneralClickHandler"/>
+    <!--android:background="@android:color/darker_gray"-->
 
     <ImageView
-        android:src="@drawable/other_icon"
+        android:src="@drawable/dashboard_round_icon"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.15"
@@ -52,7 +52,7 @@
         android:clickable="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@android:color/darker_gray"
         android:onClick="hiveOtherClickHandler"/>
+    <!--android:background="@android:color/darker_gray"-->
 
 </LinearLayout>

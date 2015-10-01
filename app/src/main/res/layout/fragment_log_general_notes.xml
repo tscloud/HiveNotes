@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="0.30"
             android:text="@string/general_notes_population_text"
             android:id="@+id/textPopulation"
             android:layout_gravity="center_vertical" />
@@ -38,7 +38,8 @@
         <Spinner
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.75"
+            android:layout_weight="0.70"
+            android:entries="@array/population_array"
             android:id="@+id/spinnerPopulation" />
 
     </LinearLayout>
@@ -55,7 +56,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="0.30"
             android:text="@string/general_notes_temperment_text"
             android:id="@+id/textTemperment"
             android:layout_gravity="center_vertical" />
@@ -63,7 +64,8 @@
         <Spinner
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.75"
+            android:layout_weight="0.70"
+            android:entries="@array/temperment_array"
             android:id="@+id/spinnerTemperment" />
     </LinearLayout>
 
@@ -149,7 +151,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="0.35"
             android:text="@string/general_notes_broodframes_text"
             android:id="@+id/textBroodFrames"
             android:layout_gravity="center_vertical" />
@@ -157,7 +159,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.75"
+            android:layout_weight="0.65"
             android:ems="10"
             android:id="@+id/editTextBroodFrames" />
     </LinearLayout>
@@ -174,7 +176,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="0.35"
             android:text="@string/general_notes_honeystores_text"
             android:id="@+id/textHoneyStores"
             android:layout_gravity="center_vertical" />
@@ -182,7 +184,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.75"
+            android:layout_weight="0.65"
             android:ems="10"
             android:id="@+id/editTextHoneyStores" />
     </LinearLayout>
@@ -199,7 +201,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
+            android:layout_weight="0.35"
             android:text="@string/general_notes_pollenstores_text"
             android:id="@+id/textPollenStores"
             android:layout_gravity="center_vertical" />
@@ -207,7 +209,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.75"
+            android:layout_weight="0.65"
             android:ems="10"
             android:id="@+id/editTextPollenStores" />
     </LinearLayout>

@@ -2,7 +2,9 @@ package net.tscloud.hivenotes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 
 /**
@@ -23,6 +25,11 @@ import android.support.v4.app.FragmentActivity;
  */
 public class LogEntryListActivity extends FragmentActivity
         implements LogEntryListFragment.Callbacks {
+
+    public static final String TAG = "LogEntryListActivity";
+
+    // starting LogEntryDetailFragment as subactivity
+    private static final int request_code = 7;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -62,9 +69,21 @@ public class LogEntryListActivity extends FragmentActivity
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
+
             Bundle arguments = new Bundle();
             arguments.putString(LogEntryDetailFragment.ARG_ITEM_ID, id);
-            LogEntryDetailFragment fragment = new LogEntryDetailFragment();
+
+            Fragment fragment = null;
+
+            switch (id) {
+                case "1":
+                    fragment = new LogGeneralNotesFragment();
+                    break;
+                default:
+                    fragment = new LogEntryDetailFragment();
+                    break;
+            }
+
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.logentry_detail_container, fragment)
@@ -75,7 +94,21 @@ public class LogEntryListActivity extends FragmentActivity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, LogEntryDetailActivity.class);
             detailIntent.putExtra(LogEntryDetailFragment.ARG_ITEM_ID, id);
-            startActivity(detailIntent);
+            startActivityForResult(detailIntent, request_code);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ((requestCode == request_code) && (resultCode == RESULT_OK)) {
+            Log.d(TAG, "Returned from requestCode = " + requestCode);
+
+            //long apiaryKey = data.getExtras().getLong("apiaryKey");
+
+        }
+        // Right thing to do? - Yes, if you want to go to the Hive list
+        //finish();
     }
 }

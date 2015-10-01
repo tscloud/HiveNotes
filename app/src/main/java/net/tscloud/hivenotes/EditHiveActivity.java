@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.tscloud.hivenotes.db.Apiary;
+import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
 
@@ -60,15 +62,21 @@ public class EditHiveActivity extends AppCompatActivity implements
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        View abView = getSupportActionBar().getCustomView();
-//        TextView abText = (TextView)abView.findViewById(R.id.mytext);
-//        abText.setText("NewHiveNites");
-
-        // Get the apiary ket from the Intent data
+        // Get the apiary key from the Intent data
         Intent intent = getIntent();
         mApiaryKey = intent.getLongExtra("apiaryKey", -1);
 
         Log.d(TAG, "Called w/ apiary key: " + mApiaryKey);
+
+        // need the Apiary name for the tile bar
+        Log.d(TAG, "reading Apiary table");
+        ApiaryDAO apiaryDAO = new ApiaryDAO(this);
+        Apiary apiaryForName = apiaryDAO.getApiaryById(mApiaryKey);
+        apiaryDAO.close();
+
+        View abView = getSupportActionBar().getCustomView();
+        TextView abText = (TextView)abView.findViewById(R.id.mytext);
+        abText.setText(apiaryForName.getName());
 
         // Get the Hive list
         mHiveList = deliverHiveList(mApiaryKey, false);
