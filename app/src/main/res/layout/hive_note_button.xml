@@ -7,15 +7,17 @@
 
     <ImageView
         android:src="@drawable/plus_icon"
+        android:adjustViewBounds="true"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.10"
         android:id="@+id/hiveNoteImage"
         android:contentDescription="@string/create_profile_string"
+        android:background="@android:color/white"
         android:clickable="true" />
 
     <Button
-        android:background="@android:color/transparent"
+        android:background="@android:color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.90"
