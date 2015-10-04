@@ -2,6 +2,7 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -68,12 +69,14 @@ public class LogEntryListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO: replace with a real list adapter.
+        /*
         setListAdapter(new ArrayAdapter<LogEntryNames.DummyItem>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 LogEntryNames.ITEMS));
+        */
+        setListAdapter(new LogListAdapter(getActivity(), LogEntryNames.ITEMS));
     }
 
     @Override
@@ -85,6 +88,15 @@ public class LogEntryListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //gets rid of separator
+        getListView().setDivider(null);
+        getListView().setDividerHeight(0);
     }
 
     @Override
