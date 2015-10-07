@@ -101,15 +101,6 @@ public class LogEntryListFragment extends ListFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        //gets rid of separator
-        getListView().setDivider(null);
-        getListView().setDividerHeight(0);
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
