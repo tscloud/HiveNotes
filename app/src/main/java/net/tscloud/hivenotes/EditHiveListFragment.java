@@ -99,6 +99,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_hive, container, false);
 
         // must qualify b/c button inside include
