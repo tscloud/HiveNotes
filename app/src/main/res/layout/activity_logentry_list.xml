@@ -4,7 +4,10 @@
     android:name="net.tscloud.hivenotes.LogEntryListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     tools:context="net.tscloud.hivenotes.LogEntryListActivity"
     tools:layout="@android:layout/list_content" />
+
+<!--
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+-->
