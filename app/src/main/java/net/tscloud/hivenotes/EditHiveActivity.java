@@ -149,7 +149,11 @@ public class EditHiveActivity extends AppCompatActivity implements
         // IMPORTANT -- this is how we get to LogEntryListActivity log activity
         // start LogEntryListActivity activity
         Intent i = new Intent(this,LogEntryListActivity.class);
+        /*
+        need to pass the hive id (not the apiary id)
+         */
         //i.putExtra("apiaryKey", apiaryId);
+        i.putExtra("hiveKey", (long)tv.getTag());
         startActivityForResult(i, request_code);
     }
 

@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 
 /**
@@ -23,13 +26,15 @@ import android.util.Log;
  * {@link LogEntryListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class LogEntryListActivity extends FragmentActivity
+public class LogEntryListActivity extends AppCompatActivity
         implements LogEntryListFragment.Callbacks {
 
     public static final String TAG = "LogEntryListActivity";
 
     // starting LogEntryDetailFragment as subactivity
     private static final int request_code = 7;
+
+    private long mHiveKey;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -41,6 +46,15 @@ public class LogEntryListActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logentry_list);
+
+        // Custom Action Bar
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.abs_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Get the apiary key from the Intent data
+        Intent intent = getIntent();
+        mHiveKey = intent.getLongExtra("hiveKey", -1);
 
         if (findViewById(R.id.logentry_detail_container) != null) {
             // The detail container view will be present only in the
@@ -110,5 +124,16 @@ public class LogEntryListActivity extends FragmentActivity
         }
         // Right thing to do? - Yes, if you want to go to the Hive list
         //finish();
+    }
+
+    // Make the Up button perform like the Back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
