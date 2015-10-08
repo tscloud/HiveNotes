@@ -47,7 +47,8 @@ public class EditHiveActivity extends AppCompatActivity implements
     private static final String TAG = "EditHiveActivity";
 
     // starting LogEntryListActivity as subactivity
-    private static final int request_code = 5;
+    private static final int LOG_LIST_REQ_CODE = 1;
+    private static final int LOG_LIST_REQ_CODE = 2;
 
     private long mApiaryKey;
     private List<Hive> mHiveList;
@@ -154,7 +155,7 @@ public class EditHiveActivity extends AppCompatActivity implements
          */
         //i.putExtra("apiaryKey", apiaryId);
         i.putExtra("hiveKey", (long)tv.getTag());
-        startActivityForResult(i, request_code);
+        startActivityForResult(i, LOG_LIST_REQ_CODE);
     }
 
     public void hiveGeneralClickHandler (View v) {

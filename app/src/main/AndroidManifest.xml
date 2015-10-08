@@ -35,7 +35,6 @@
         <activity
             android:name=".LogEntryDetailActivity"
             android:label="@string/title_logentry_detail"
-            android:parentActivityName=".LogEntryListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.tscloud.hivenotes.LogEntryListActivity" />

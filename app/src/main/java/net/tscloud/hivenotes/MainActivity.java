@@ -26,8 +26,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String TAG = "MainActivity";
 
-    // starting EditHiveActivity as subactivity
-    private static final int request_code = 5;
+    // These are the subactivities we'll be going to
+    private static final int PROFILE_REQ_CODE = 1;
+    private static final int APIARY_REQ_CODE = 2;
+    private static final int HIVE_REQ_CODE = 3;
+    private static final int HIVE_SINGLE_REQ_CODE = 4;
 
     private Profile mProfile = null;
     private List<Apiary> mApiaryList = null;
@@ -166,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements
             // start EditHiveActivity activity
             Intent i = new Intent(this,EditHiveActivity.class);
             i.putExtra("apiaryKey", apiaryId);
-            startActivityForResult(i, request_code);
+            startActivityForResult(i, HIVE_REQ_CODE);
         }
     }
 
@@ -189,14 +192,14 @@ public class MainActivity extends AppCompatActivity implements
         // start EditHiveActivity activity
         Intent i = new Intent(this,EditHiveActivity.class);
         i.putExtra("apiaryKey", hiveID);
-        startActivityForResult(i, request_code);
+        startActivityForResult(i, HIVE_REQ_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == request_code) && (resultCode == RESULT_OK)) {
+        if ((requestCode == HIVE_REQ_CODE) && (resultCode == RESULT_OK)) {
             Log.d(TAG, "Returned from requestCode = " + requestCode);
 
             long apiaryKey = data.getExtras().getLong("apiaryKey");

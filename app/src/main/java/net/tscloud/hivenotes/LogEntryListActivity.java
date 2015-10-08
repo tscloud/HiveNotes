@@ -32,7 +32,8 @@ public class LogEntryListActivity extends AppCompatActivity
     public static final String TAG = "LogEntryListActivity";
 
     // starting LogEntryDetailFragment as subactivity
-    private static final int request_code = 7;
+    private static final int LOG_DETAIL_REQ_CODE = 1;
+    private static final int HIVE_SINGLE_REQ_CODE = 2;
 
     private long mHiveKey;
 
@@ -52,9 +53,21 @@ public class LogEntryListActivity extends AppCompatActivity
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get the apiary key from the Intent data
+        // Get the hive key from the Intent data
         Intent intent = getIntent();
         mHiveKey = intent.getLongExtra("hiveKey", -1);
+
+        Log.d(TAG, "Called w/ hive key: " + mHiveKey);
+
+        // need the Hive name for the tile bar
+        Log.d(TAG, "reading Hive table");
+        HiveDAO hiveDAO = new HiveDAO(this);
+        Hive hiveForName = hiveDAO.getHiveById(mHiveKey);
+        hiveDAO.close();
+
+        View abView = getSupportActionBar().getCustomView();
+        TextView abText = (TextView)abView.findViewById(R.id.mytext);
+        abText.setText(hiveForName.getName());
 
         if (findViewById(R.id.logentry_detail_container) != null) {
             // The detail container view will be present only in the
@@ -108,7 +121,7 @@ public class LogEntryListActivity extends AppCompatActivity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, LogEntryDetailActivity.class);
             detailIntent.putExtra(LogEntryDetailFragment.ARG_ITEM_ID, id);
-            startActivityForResult(detailIntent, request_code);
+            startActivityForResult(detailIntent, LOG_DETAIL_REQ_CODE);
         }
     }
 
@@ -116,7 +129,7 @@ public class LogEntryListActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == request_code) && (resultCode == RESULT_OK)) {
+        if ((requestCode == LOG_DETAIL_REQ_CODE) && (resultCode == RESULT_OK)) {
             Log.d(TAG, "Returned from requestCode = " + requestCode);
 
             //long apiaryKey = data.getExtras().getLong("apiaryKey");
