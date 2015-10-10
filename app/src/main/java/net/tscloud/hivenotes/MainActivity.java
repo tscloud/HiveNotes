@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity implements
     private static final int HIVE_REQ_CODE = 3;
     private static final int HIVE_SINGLE_REQ_CODE = 4;
 
+    // Intent data keys
+    public final static String INTENT_PROFILE_KEY = "profileKey";
+    public final static String INTENT_APIARY_KEY = "apiaryKey";
+    public final static String INTENT_HIVE_KEY = "hiveKey";
+    public final static String INTENT_NEW_HIVE = "newHive";
+
     private Profile mProfile = null;
     private List<Apiary> mApiaryList = null;
 
@@ -150,25 +156,22 @@ public class MainActivity extends AppCompatActivity implements
             String fragTag = null;
 
             if (mProfile == null) {
-                // we should ot be able to get here to edit an exiting Profile
-                // so always set profileID = -1
-                fragment = EditProfileFragment.newInstance(-1);
-                fragTag = "EDIT_PROFILE_FRAG";
+                Intent i = new Intent(this,EditProfileActivity.class);
+                i.putExtra(INTENT_PROFILE_KEY, -1);
+                startActivityForResult(i, PROFILE_REQ_CODE);
             }
             else {
-                fragment = EditApiaryFragment.newInstance(mProfile.getId(), -1);
-                fragTag = "EDIT_APIARY_FRAG";
+                Intent i = new Intent(this,EditApiaryActivity.class);
+                i.putExtra(INTENT_PROFILE_KEY, mProfile.getId());
+                i.putExtra(INTENT_APIARY_KEY, -1);
+                startActivityForResult(i, APIARY_REQ_CODE);
             }
-
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_placeholder, fragment, fragTag).addToBackStack("backstacktag1");
-            ft.commit();
         }
         else {
             // IMPORTANT -- this is how we get to EditHiveActivity page viewer
             // start EditHiveActivity activity
             Intent i = new Intent(this,EditHiveActivity.class);
-            i.putExtra("apiaryKey", apiaryId);
+            i.putExtra(INTENT_APIARY_KEY, apiaryId);
             startActivityForResult(i, HIVE_REQ_CODE);
         }
     }
@@ -191,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements
         // IMPORTANT -- this is how we get to EditHiveActivity page viewer
         // start EditHiveActivity activity
         Intent i = new Intent(this,EditHiveActivity.class);
-        i.putExtra("apiaryKey", hiveID);
+        i.putExtra(INTENT_APIARY_KEY, hiveID);
         startActivityForResult(i, HIVE_REQ_CODE);
     }
 
@@ -199,16 +202,42 @@ public class MainActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == HIVE_REQ_CODE) && (resultCode == RESULT_OK)) {
-            Log.d(TAG, "Returned from requestCode = " + requestCode);
+        switch (requestCode) {
+            case (HIVE_REQ_CODE):
+                if (resultCode == RESULT_OK) {
+                    Log.d(TAG, "Returned from requestCode = " + requestCode);
+                    /*
+                    long apiaryKey = data.getExtras().getLong(INTENT_APIARY_KEY);
 
-            long apiaryKey = data.getExtras().getLong("apiaryKey");
+                    Fragment fragment = EditApiaryFragment.newInstance(mProfile.getId(), apiaryKey);
 
-            Fragment fragment = EditApiaryFragment.newInstance(mProfile.getId(), apiaryKey);
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_placeholder, fragment, "EDIT_HIVE_SINGLE_FRAG").addToBackStack("backstacktagB");
+                    ft.commit();
+                    */
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_placeholder, fragment, "EDIT_HIVE_SINGLE_FRAG").addToBackStack("backstacktagB");
-            ft.commit();
+                    presentHome();
+                }
+            case (PROFILE_REQ_CODE):
+                if (resultCode == RESULT_OK) {
+                    Log.d(TAG, "Returned from requestCode = " + requestCode);
+
+                    // read Profile table w/ the key we just got from EditProfileActivity
+                    long profileKey = data.getExtras().getLong(INTENT_PROFILE_KEY);
+                    mProfile = getProfile();
+
+                    presentHome();
+                }
+            case (APIARY_REQ_CODE):
+                if (resultCode == RESULT_OK) {
+                    Log.d(TAG, "Returned from requestCode = " + requestCode);
+                    //  This is where we want to show apiary list - but we have to reread
+                    //    b/c we have added a new one <- the right thing to do might be
+                    //    to pass the apiary list to avoid a DB read
+                    mApiaryList = getApiaryList(mProfile.getId());
+
+                    presentHome();
+                }
         }
     }
 

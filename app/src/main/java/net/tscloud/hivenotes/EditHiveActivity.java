@@ -48,7 +48,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     // starting LogEntryListActivity as subactivity
     private static final int LOG_LIST_REQ_CODE = 1;
-    private static final int LOG_LIST_REQ_CODE = 2;
+    private static final int HIVE_SINGLE_REQ_CODE = 2;
 
     private long mApiaryKey;
     private List<Hive> mHiveList;
@@ -102,12 +102,6 @@ public class EditHiveActivity extends AppCompatActivity implements
         for (Hive aHive : aHiveList) {
             fList.add(EditHiveSingleFragment.newInstance(mApiaryKey, aHive.getId()));
         }
-
-        // for the last page => put in a blank add Hive frag
-        fList.add(EditHiveSingleFragment.newInstance(mApiaryKey, -1));
-
-        //fList.add(PlaceholderFragment.newInstance("Fragment 2", R.layout.fragment2_log_entry));
-        //fList.add(PlaceholderFragment.newInstance("Fragment 3", R.layout.fragment3_log_entry));
 
         return fList;
     }
@@ -186,7 +180,10 @@ public class EditHiveActivity extends AppCompatActivity implements
             if (hiveID == -1) {
                 Log.d(TAG, "...add new Hive");
                 // Do new Hive stuff
-                mViewPager.setCurrentItem(mViewPager.getAdapter().getCount() - 1, false);
+                Intent i = new Intent(this,EditHiveSingleActivity.class);
+                i.putExtra(MainActivity.INTENT_APIARY_KEY, mApiaryKey);
+                i.putExtra(MainActivity.INTENT_HIVE_KEY, -1);
+                startActivityForResult(i, HIVE_SINGLE_REQ_CODE);
             } else {
                 Log.d(TAG, "...edit existing Hive");
                 // Do selected Hive stuff
@@ -228,6 +225,19 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         adapter.notifyDataSetChanged();
         mViewPager.setCurrentItem(0, false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ((requestCode == HIVE_SINGLE_REQ_CODE) && (resultCode == RESULT_OK)) {
+            Log.d(TAG, "Returned from requestCode = " + requestCode);
+
+            // read Profile table w/ the key we just got from EditProfileActivity
+            boolean nwHive = data.getExtras().getBoolean(MainActivity.INTENT_NEW_HIVE);
+
+        }
     }
 
     @Override
