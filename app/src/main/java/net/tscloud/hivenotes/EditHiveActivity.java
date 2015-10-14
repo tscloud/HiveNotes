@@ -49,6 +49,7 @@ public class EditHiveActivity extends AppCompatActivity implements
     // starting LogEntryListActivity as subactivity
     private static final int LOG_LIST_REQ_CODE = 1;
     private static final int HIVE_SINGLE_REQ_CODE = 2;
+    private static final int APIARY_REQ_CODE = 3;
 
     private long mApiaryKey;
     private List<Hive> mHiveList;
@@ -115,22 +116,27 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (item.getItemId() == android.R.id.home) {
+            this.onBackPressed();
             return true;
         }
-
-        return super.onOptionsItemSelected(item);
+        else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     /*
      *Handlers of buttons defined in hive_edit_button, i.e. buttons in each of the list items
      */
+    @Override
+    public void onBackPressed() {
+        if (mViewPager.getCurrentItem() != 0) {
+            mViewPager.setCurrentItem(0, true);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
 
     public void hiveFeedingClickHandler (View v) {
         Log.d(TAG, "hiveFeedingClickHandler called");
@@ -144,11 +150,7 @@ public class EditHiveActivity extends AppCompatActivity implements
         // IMPORTANT -- this is how we get to LogEntryListActivity log activity
         // start LogEntryListActivity activity
         Intent i = new Intent(this,LogEntryListActivity.class);
-        /*
-        need to pass the hive id (not the apiary id)
-         */
-        //i.putExtra("apiaryKey", apiaryId);
-        i.putExtra("hiveKey", (long)tv.getTag());
+        i.putExtra(MainActivity.INTENT_HIVE_KEY, (long)tv.getTag());
         startActivityForResult(i, LOG_LIST_REQ_CODE);
     }
 
@@ -182,7 +184,7 @@ public class EditHiveActivity extends AppCompatActivity implements
                 // Do new Hive stuff
                 Intent i = new Intent(this,EditHiveSingleActivity.class);
                 i.putExtra(MainActivity.INTENT_APIARY_KEY, mApiaryKey);
-                i.putExtra(MainActivity.INTENT_HIVE_KEY, -1);
+                i.putExtra(MainActivity.INTENT_HIVE_KEY, hiveID);
                 startActivityForResult(i, HIVE_SINGLE_REQ_CODE);
             } else {
                 Log.d(TAG, "...edit existing Hive");
@@ -191,6 +193,7 @@ public class EditHiveActivity extends AppCompatActivity implements
                 for (int i = 0; i < mHiveList.size(); i++) {
                     if (hiveID == (mHiveList.get(i).getId())) {
                         hivePos = i;
+                        break;
                     }
                 }
                 // setCurrentItem "1" based?
@@ -198,12 +201,11 @@ public class EditHiveActivity extends AppCompatActivity implements
             }
         }
         else {
-            Log.d(TAG, "...update Apiary - return to MainActivity");
+            Log.d(TAG, "...update Apiary - start intent EditApiaryActivity");
 
-            Intent data = new Intent();
-            data.putExtra("apiaryKey", apiaryID);
-            setResult(RESULT_OK, data);
-            finish();
+            Intent i = new Intent(this, EditApiaryActivity.class);
+            i.putExtra(MainActivity.INTENT_APIARY_KEY, apiaryID);
+            startActivityForResult(i, APIARY_REQ_CODE);
         }
     }
 
@@ -233,10 +235,31 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         if ((requestCode == HIVE_SINGLE_REQ_CODE) && (resultCode == RESULT_OK)) {
             Log.d(TAG, "Returned from requestCode = " + requestCode);
+            Log.d(TAG, "Back from EditHiveSingleActivity");
 
-            // read Profile table w/ the key we just got from EditProfileActivity
-            boolean nwHive = data.getExtras().getBoolean(MainActivity.INTENT_NEW_HIVE);
+            long hiveKey = data.getExtras().getLong(MainActivity.INTENT_HIVE_KEY);
+            boolean newHive = data.getExtras().getBoolean(MainActivity.INTENT_NEW_HIVE);
 
+            // Do some stuff w/ the adapter
+            SectionsPagerAdapter adapter = (SectionsPagerAdapter)mViewPager.getAdapter();
+
+            // reshow the list of Hives
+            Fragment fragAdd = EditHiveListFragment.newInstance(mApiaryKey);
+            adapter.setItem(fragAdd, 0);
+
+            if (newHive) {
+                // just add a blank fragment at the end for Hive adding
+                adapter.addItem(EditHiveSingleFragment.newInstance(mApiaryKey, hiveKey));
+            }
+
+            adapter.notifyDataSetChanged();
+            mViewPager.setCurrentItem(0, false);
+        }
+        else if ((requestCode == APIARY_REQ_CODE) && (resultCode == RESULT_OK)){
+            Log.d(TAG, "Returned from requestCode = " + requestCode);
+            Log.d(TAG, "Back from EditApiaryActivity");
+
+            mViewPager.setCurrentItem(0, false);
         }
     }
 

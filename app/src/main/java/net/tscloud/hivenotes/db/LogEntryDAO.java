@@ -63,10 +63,9 @@ public class LogEntryDAO {
     // --DB access methods--
 
     public LogEntry createLogEntry(long hive, String visitDate, String population, String temperament,
-                                   String eggs, String larvae, String cappedBrood, String broodFrames,
+                                   long eggs, long larvae, long cappedBrood, String broodFrames,
                                    String broodPattern, String queenAge, String honeyStores,
-                                   String pollenStores, String temperature, String rainfall,
-                                   String pollenCount, String pollution) {
+                                   String pollenStores) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRY_HIVE, hive);
         values.put(COLUMN_LOGENTRY_VISIT_DATE, visitDate);
@@ -88,6 +87,38 @@ public class LogEntryDAO {
         cursor.close();
 
         return newLogEntry;
+    }
+
+    public LogEntry updateLogEntry(long id, long hive, String visitDate, String population,
+                                   String temperament, long eggs, long larvae, long cappedBrood,
+                                   String broodFrames, String broodPattern, String queenAge,
+                                   String honeyStores, String pollenStores) {
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LOGENTRY_HIVE, hive);
+        values.put(COLUMN_LOGENTRY_VISIT_DATE, visitDate);
+        values.put(COLUMN_LOGENTRY_POPULATION, population);
+        values.put(COLUMN_LOGENTRY_TEMPERAMENT, temperament);
+        values.put(COLUMN_LOGENTRY_EGGS, eggs);
+        values.put(COLUMN_LOGENTRY_LARVAE, larvae);
+        values.put(COLUMN_LOGENTRY_CAPPED_BROOD, cappedBrood);
+        values.put(COLUMN_LOGENTRY_BROOD_FRAMES, broodFrames);
+        values.put(COLUMN_LOGENTRY_BROOD_PATTERN, broodPattern);
+        values.put(COLUMN_LOGENTRY_QUEEN_AGE, queenAge);
+        values.put(COLUMN_LOGENTRY_HONEY_STORES, honeyStores);
+        values.put(COLUMN_LOGENTRY_POLLEN_STORES, pollenStores);
+        int rowsUpdated = mDatabase.update(TABLE_LOGENTRY, values, COLUMN_LOGENTRY_ID + "=" + id, null);
+
+        LogEntry updatedLogEntry = null;
+        if (rowsUpdated > 0) {
+            Cursor cursor = mDatabase.query(TABLE_LOGENTRY, mAllColumns,
+                    COLUMN_LOGENTRY_ID + " = " + id, null, null, null, null);
+            cursor.moveToFirst();
+            updatedLogEntry = cursorToLogEntry(cursor);
+            cursor.close();
+        }
+
+        return updatedLogEntry;
     }
 
     public void deleteLogEntry(LogEntry logEntry) {
@@ -113,9 +144,9 @@ public class LogEntryDAO {
         logEntry.setVisitDate(cursor.getString(2));
         logEntry.setPopulation(cursor.getString(3));
         logEntry.setTemperament(cursor.getString(4));
-        logEntry.setEggs(cursor.getString(5));
-        logEntry.setLarvae(cursor.getString(6));
-        logEntry.setCappedBrood(cursor.getString(7));
+        logEntry.setEggs(cursor.getLong(5));
+        logEntry.setLarvae(cursor.getLong(6));
+        logEntry.setCappedBrood(cursor.getLong(7));
         logEntry.setBroodFrames(cursor.getString(8));
         logEntry.setBroodPattern(cursor.getString(9));
         logEntry.setQueenAge(cursor.getString(10));

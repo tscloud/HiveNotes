@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
@@ -32,7 +34,7 @@ public class EditHiveSingleFragment extends Fragment {
     // and instance var of same - needed?
     private long mApiaryKey;
     private long mHiveKey;
-    private  Hive mHive;
+    private Hive mHive;
 
     private OnEditHiveSingleFragmentInteractionListener mListener;
 
@@ -72,10 +74,8 @@ public class EditHiveSingleFragment extends Fragment {
         }
 
         if (mHiveKey != -1) {
-            if (mListener != null) {
-                // we need to get the Hive
-                mHive = getHive(mHiveKey);
-            }
+            // we need to get the Hive
+            mHive = getHive(mHiveKey);
         }
     }
 
@@ -93,11 +93,13 @@ public class EditHiveSingleFragment extends Fragment {
             // fill the form
             EditText nameEdit = (EditText)v.findViewById(R.id.editTextHiveName);
             EditText speciesEdit = (EditText)v.findViewById(R.id.editTextHiveSpecies);
-            EditText foundationTypeEdit = (EditText)v.findViewById(R.id.editTextHiveFoundationType);
+            Spinner foundationTypeSpinner = (Spinner)v.findViewById(R.id.spinnerHiveFoundationType);
+            EditText noteEdit = (EditText)v.findViewById(R.id.editTextHiveNote);
 
             nameEdit.setText(mHive.getName());
             speciesEdit.setText(mHive.getSpecies());
-            foundationTypeEdit.setText(mHive.getFoundationType());
+            foundationTypeSpinner.setSelection(((ArrayAdapter) foundationTypeSpinner.getAdapter()).getPosition(mHive.getFoundationType()));
+            noteEdit.setText(mHive.getNote());
         }
         else {
             b1.setText(getResources().getString(R.string.create_hive_string));
@@ -122,10 +124,13 @@ public class EditHiveSingleFragment extends Fragment {
 
         EditText nameEdit = (EditText)getView().findViewById(R.id.editTextHiveName);
         EditText speciesEdit = (EditText)getView().findViewById(R.id.editTextHiveSpecies);
-        EditText foundationTypeEdit = (EditText)getView().findViewById(R.id.editTextHiveFoundationType);
+        Spinner foundationTypeSpinner = (Spinner)getView().findViewById(R.id.spinnerHiveFoundationType);
+        EditText noteEdit = (EditText)getView().findViewById(R.id.editTextHiveNote);
+
         String nameText = nameEdit.getText().toString();
         String speciesText = speciesEdit.getText().toString();
-        String foundationTypeText = foundationTypeEdit.getText().toString();
+        String foundationTypeText = foundationTypeSpinner.getSelectedItem().toString();
+        String noteText = noteEdit.getText().toString();
 
         // neither EditText can be empty
         boolean emptyText = false;
@@ -146,11 +151,11 @@ public class EditHiveSingleFragment extends Fragment {
             HiveDAO hiveDAO = new HiveDAO(getActivity());
             Hive hive;
             if (mHiveKey == -1) {
-                hive = hiveDAO.createHive(mApiaryKey, nameText, speciesText, foundationTypeText);
+                hive = hiveDAO.createHive(mApiaryKey, nameText, speciesText, foundationTypeText, noteText);
                 lNewHive = true;
             }
             else {
-                hive = hiveDAO.updateHive(mHiveKey, mApiaryKey, nameText, speciesText, foundationTypeText);
+                hive = hiveDAO.updateHive(mHiveKey, mApiaryKey, nameText, speciesText, foundationTypeText, noteText);
             }
             hiveDAO.close();
 

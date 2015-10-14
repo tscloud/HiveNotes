@@ -3,7 +3,6 @@ package net.tscloud.hivenotes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -38,7 +37,10 @@ public class LogEntryListActivity extends AppCompatActivity
 
     // starting LogEntryDetailFragment as subactivity
     private static final int LOG_DETAIL_REQ_CODE = 1;
-    private static final int HIVE_SINGLE_REQ_CODE = 2;
+
+    public static String INTENT_ITEM_ID = "itemId";
+    public static String INTENT_HIVE_KEY = "hiveKey";
+    public static String INTENT_LOGENTRY_KEY = "logentryKey";
 
     private long mHiveKey;
 
@@ -60,7 +62,7 @@ public class LogEntryListActivity extends AppCompatActivity
 
         // Get the hive key from the Intent data
         Intent intent = getIntent();
-        mHiveKey = intent.getLongExtra("hiveKey", -1);
+        mHiveKey = intent.getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
 
         Log.d(TAG, "Called w/ hive key: " + mHiveKey);
 
@@ -109,7 +111,8 @@ public class LogEntryListActivity extends AppCompatActivity
 
             switch (id) {
                 case "1":
-                    fragment = new LogGeneralNotesFragment();
+                    // will this always be a new logentry? so pass -1?
+                    fragment = LogGeneralNotesFragment.newInstance(mHiveKey, -1);
                     break;
                 default:
                     fragment = new LogEntryDetailFragment();
@@ -124,9 +127,10 @@ public class LogEntryListActivity extends AppCompatActivity
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            Intent detailIntent = new Intent(this, LogEntryDetailActivity.class);
-            detailIntent.putExtra(LogEntryDetailFragment.ARG_ITEM_ID, id);
-            startActivityForResult(detailIntent, LOG_DETAIL_REQ_CODE);
+            Intent intent = new Intent(this, LogEntryDetailActivity.class);
+            intent.putExtra(INTENT_ITEM_ID, id);
+            intent.putExtra(INTENT_HIVE_KEY, mHiveKey);
+            startActivityForResult(intent, LOG_DETAIL_REQ_CODE);
         }
     }
 
@@ -140,8 +144,6 @@ public class LogEntryListActivity extends AppCompatActivity
             //long apiaryKey = data.getExtras().getLong("apiaryKey");
 
         }
-        // Right thing to do? - Yes, if you want to go to the Hive list
-        //finish();
     }
 
     // Make the Up button perform like the Back button

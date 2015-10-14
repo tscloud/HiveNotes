@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -21,6 +20,9 @@ public class LogEntryDetailActivity extends AppCompatActivity
         implements LogGeneralNotesFragment.OnFragmentInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
+
+    private long mHiveKey;
+    private long mlogentryKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,23 +44,21 @@ public class LogEntryDetailActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            String argItemId = getIntent().getStringExtra(LogEntryDetailFragment.ARG_ITEM_ID);
-
-            Bundle arguments = new Bundle();
-            arguments.putString(LogEntryDetailFragment.ARG_ITEM_ID, argItemId);
+            String argItemId = getIntent().getStringExtra(LogEntryListActivity.INTENT_ITEM_ID);
+            mHiveKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_HIVE_KEY, -1);
+            mlogentryKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_KEY, -1);
 
             Fragment fragment;
 
             switch (argItemId) {
                 case "1":
-                    fragment = new LogGeneralNotesFragment();
+                    fragment = LogGeneralNotesFragment.newInstance(mHiveKey, mlogentryKey);
                     break;
                 default:
                     fragment = new LogEntryDetailFragment();
                     break;
             }
 
-            fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.logentry_detail_container, fragment)
                     .commit();
@@ -67,6 +67,7 @@ public class LogEntryDetailActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        /*
         int id = item.getItemId();
         if (id == android.R.id.home) {
             // This ID represents the Home or Up button. In the case of this
@@ -78,6 +79,15 @@ public class LogEntryDetailActivity extends AppCompatActivity
             //
             NavUtils.navigateUpTo(this, new Intent(this, LogEntryListActivity.class));
             return true;
+        }
+        return super.onOptionsItemSelected(item);
+        */
+
+        // Make the Up button perform like the Back button
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

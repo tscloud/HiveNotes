@@ -34,8 +34,12 @@
     <string name="hive_name_string">Hive Name:</string>
     <string name="hive_species_string">Species:</string>
     <string name="hive_foundation_type_string">Foundation Type:</string>
+
     <string name="title_logentry_list">LogEntries</string>
     <string name="title_logentry_detail">LogEntry Detail</string>
+
+    <string name="create_logentry_string">Create Log Entry</string>
+    <string name="save_logentry_string">Save Log Entry</string>
 
     <string name="general_notes_population_text">Population:</string>
     <string name="general_notes_temperment_text">Temperment:</string>
@@ -47,6 +51,12 @@
     <string name="general_notes_pollenstores_text">Pollen Stores:</string>
 
     <string name="notes_save_text">Save Notes</string>
+
+    <string-array name="foundation_array">
+        <item>Wax</item>
+        <item>Plastic</item>
+        <item>Foundationless Bars</item>
+    </string-array>
 
     <string-array name="population_array">
         <item>Crowded</item>
@@ -68,4 +78,6 @@
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_apiary_edit_profile">EditApiaryActivity</string>
     <string name="title_hive_single_edit_profile">EditHiveSingleActivity</string>
+    <string name="hive_note_string">Notes:</string>
+    <string name="general_notes_date_text">Date:</string>
 </resources>

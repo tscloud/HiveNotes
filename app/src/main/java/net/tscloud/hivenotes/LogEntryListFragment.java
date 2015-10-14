@@ -72,7 +72,7 @@ public class LogEntryListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         /*
-        setListAdapter(new ArrayAdapter<LogEntryNames.DummyItem>(
+        setListAdapter(new ArrayAdapter<LogEntryNames.LogEntryItem>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
@@ -126,7 +126,7 @@ public class LogEntryListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(LogEntryNames.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(LogEntryNames.ITEMS.get(position).getId());
     }
 
     @Override

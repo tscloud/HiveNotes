@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 public class EditHiveSingleActivity extends AppCompatActivity implements
         EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
@@ -42,9 +43,20 @@ public class EditHiveSingleActivity extends AppCompatActivity implements
         Log.d(TAG, "...new Hive - return to EditHiveActivity");
 
         Intent data = new Intent();
-        data.putExtra(MainActivity.INTENT_HIVE_KEY, newHive);
+        data.putExtra(MainActivity.INTENT_HIVE_KEY, hiveID);
         data.putExtra(MainActivity.INTENT_NEW_HIVE, newHive);
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    // Make the Up button perform like the Back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

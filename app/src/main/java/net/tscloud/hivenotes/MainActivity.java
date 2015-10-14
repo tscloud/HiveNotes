@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
+import net.tscloud.hivenotes.db.LogEntryDAO;
 import net.tscloud.hivenotes.db.Profile;
 import net.tscloud.hivenotes.db.ProfileDAO;
 
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements
     private static final int PROFILE_REQ_CODE = 1;
     private static final int APIARY_REQ_CODE = 2;
     private static final int HIVE_REQ_CODE = 3;
-    private static final int HIVE_SINGLE_REQ_CODE = 4;
 
     // Intent data keys
     public final static String INTENT_PROFILE_KEY = "profileKey";
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements
         ft.commit();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -105,24 +104,6 @@ public class MainActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
-
-    /*
-    @Override
-    public void onBackPressed() {
-        Log.d(TAG, "back button pressed");
-
-        // check the fragment that is displayed
-        Fragment myFragment = getSupportFragmentManager().findFragmentByTag("HOME_FRAG");
-
-        if (myFragment != null && myFragment.isVisible()) {
-            // add your code here
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }
-    }
-    */
 
     @Override
     public void onEditApiaryFragmentInteraction() {
@@ -204,19 +185,13 @@ public class MainActivity extends AppCompatActivity implements
 
         switch (requestCode) {
             case (HIVE_REQ_CODE):
-                if (resultCode == RESULT_OK) {
+                if ((resultCode == RESULT_OK) || (resultCode == RESULT_CANCELED)) {
                     Log.d(TAG, "Returned from requestCode = " + requestCode);
-                    /*
-                    long apiaryKey = data.getExtras().getLong(INTENT_APIARY_KEY);
-
-                    Fragment fragment = EditApiaryFragment.newInstance(mProfile.getId(), apiaryKey);
-
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_placeholder, fragment, "EDIT_HIVE_SINGLE_FRAG").addToBackStack("backstacktagB");
-                    ft.commit();
-                    */
+                    // Need to re-read the Apiary list in case there were changes
+                    mApiaryList = getApiaryList(mProfile.getId());
 
                     presentHome();
+                    break;
                 }
             case (PROFILE_REQ_CODE):
                 if (resultCode == RESULT_OK) {
@@ -227,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements
                     mProfile = getProfile();
 
                     presentHome();
+                    break;
                 }
             case (APIARY_REQ_CODE):
                 if (resultCode == RESULT_OK) {

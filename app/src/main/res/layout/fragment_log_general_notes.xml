@@ -22,7 +22,34 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/textGeneralNotes"
+        android:layout_below="@id/textGeneralNotes"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayoutDate">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.30"
+            android:text="@string/general_notes_date_text"
+            android:id="@+id/textDate"
+            android:layout_gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.65"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editTextDate" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearLayoutDate"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/linearLayoutPopulation">
@@ -67,6 +94,7 @@
             android:layout_weight="0.70"
             android:entries="@array/temperment_array"
             android:id="@+id/spinnerTemperment" />
+
     </LinearLayout>
 
     <LinearLayout

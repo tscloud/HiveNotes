@@ -25,13 +25,14 @@ public class HiveDAO {
     public static final String COLUMN_HIVE_NAME = "name";
     public static final String COLUMN_HIVE_SPECIES = "species";
     public static final String COLUMN_HIVE_FOUNDATION_TYPE = "foundation_type";
+    public static final String COLUMN_HIVE_NOTE = "note";
 
     // Database fields
     private SQLiteDatabase mDatabase;
     private MyDBHandler mDbHelper;
     private Context mContext;
     private String[] mAllColumns = {COLUMN_HIVE_ID, COLUMN_HIVE_APIARY, COLUMN_HIVE_NAME,
-            COLUMN_HIVE_SPECIES, COLUMN_HIVE_FOUNDATION_TYPE};
+            COLUMN_HIVE_SPECIES, COLUMN_HIVE_FOUNDATION_TYPE, COLUMN_HIVE_NOTE};
 
     public HiveDAO(Context context) {
         this.mContext = context;
@@ -55,12 +56,13 @@ public class HiveDAO {
 
     // --DB access methods--
 
-    public Hive createHive(long apiary, String name, String species, String foundationType) {
+    public Hive createHive(long apiary, String name, String species, String foundationType, String note) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_HIVE_APIARY, apiary);
         values.put(COLUMN_HIVE_NAME, name);
         values.put(COLUMN_HIVE_SPECIES, species);
         values.put(COLUMN_HIVE_FOUNDATION_TYPE, foundationType);
+        values.put(COLUMN_HIVE_NOTE, note);
         long insertId = mDatabase.insert(TABLE_HIVE, null, values);
         Cursor cursor = mDatabase.query(TABLE_HIVE, mAllColumns,
                 COLUMN_HIVE_ID + " = " + insertId, null, null, null, null);
@@ -71,12 +73,13 @@ public class HiveDAO {
         return newHive;
     }
 
-    public Hive updateHive(long id, long apiary, String name, String species, String foundationType) {
+    public Hive updateHive(long id, long apiary, String name, String species, String foundationType, String note) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_HIVE_APIARY, apiary);
         values.put(COLUMN_HIVE_NAME, name);
         values.put(COLUMN_HIVE_SPECIES, species);
         values.put(COLUMN_HIVE_FOUNDATION_TYPE, foundationType);
+        values.put(COLUMN_HIVE_NOTE, note);
         int rowsUpdated = mDatabase.update(TABLE_HIVE, values, COLUMN_HIVE_ID + "=" + id, null);
 
         Hive updatedHive = null;
@@ -132,6 +135,7 @@ public class HiveDAO {
         hive.setName(cursor.getString(2));
         hive.setSpecies(cursor.getString(3));
         hive.setFoundationType(cursor.getString(4));
+        hive.setNote(cursor.getString(5));
 
         return hive;
     }

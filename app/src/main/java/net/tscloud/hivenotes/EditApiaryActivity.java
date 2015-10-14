@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 public class EditApiaryActivity extends AppCompatActivity implements
         EditApiaryFragment.OnEditApiaryFragmentInteractionListener {
@@ -45,6 +46,16 @@ public class EditApiaryActivity extends AppCompatActivity implements
         //data.putExtra(MainActivity.INTENT_PROFILE_KEY, mProfile.getId());
         setResult(RESULT_OK, data);
         finish();
+    }
 
+    // Make the Up button perform like the Back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -16,23 +16,23 @@ public class LogEntryNames {
     /**
      * An array of sample (dummy) items.
      */
-    public static List<DummyItem> ITEMS = new ArrayList<DummyItem>();
+    public static List<LogEntryItem> ITEMS = new ArrayList<LogEntryItem>();
 
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static Map<String, LogEntryItem> ITEM_MAP = new HashMap<String, LogEntryItem>();
 
     static {
         // Add 3 sample items.
-        addItem(new DummyItem("1", "General Notes"));
-        addItem(new DummyItem("2", "Productivity"));
-        addItem(new DummyItem("3", "Pest Management"));
-        addItem(new DummyItem("4", "Feeding"));
-        addItem(new DummyItem("5", "Other"));
+        addItem(new LogEntryItem("1", "General Notes", "general_icon"));
+        addItem(new LogEntryItem("2", "Productivity", "production_icon"));
+        addItem(new LogEntryItem("3", "Pest Management", "pesticon"));
+        addItem(new LogEntryItem("4", "Feeding", "feeding_icon"));
+        addItem(new LogEntryItem("5", "Other", "other_icon"));
     }
 
-    private static void addItem(DummyItem item) {
+    private static void addItem(LogEntryItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
@@ -40,18 +40,26 @@ public class LogEntryNames {
     /**
      * A dummy item representing a piece of content.
      */
-    public static class DummyItem {
-        public String id;
-        public String content;
+    public static class LogEntryItem {
+        private String id;
+        private String content;
+        private String imageSrc;
 
-        public DummyItem(String id, String content) {
+        public LogEntryItem(String id, String content, String imageSrc) {
             this.id = id;
             this.content = content;
+            this.imageSrc = imageSrc;
         }
 
         @Override
         public String toString() {
             return content;
         }
+
+        public String getId() { return id; }
+
+        public String getContent() { return content; }
+
+        public String getImageSrc() { return imageSrc; }
     }
 }

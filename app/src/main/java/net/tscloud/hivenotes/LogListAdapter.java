@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import net.tscloud.hivenotes.db.LogEntry;
-
 import java.util.List;
 
 /**
@@ -17,12 +15,14 @@ import java.util.List;
  */
 public class LogListAdapter extends BaseAdapter {
 
-    private List<LogEntryNames.DummyItem> mList;
+    private List<LogEntryNames.LogEntryItem> mList;
     private LayoutInflater mLayoutInflater = null;
+    private Activity mContext = null;
 
-    public LogListAdapter(Activity context, List<LogEntryNames.DummyItem> list) {
+    public LogListAdapter(Activity context, List<LogEntryNames.LogEntryItem> list) {
         this.mLayoutInflater = LayoutInflater.from(context);
         this.mList = list;
+        this.mContext = context;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class LogListAdapter extends BaseAdapter {
     }
 
     @Override
-    public LogEntryNames.DummyItem getItem(int position) {
+    public LogEntryNames.LogEntryItem getItem(int position) {
         return mList.get(position);
     }
 
@@ -54,6 +54,7 @@ public class LogListAdapter extends BaseAdapter {
             logTextView = (TextView) convertView.findViewById(R.id.logTextView);
             logImageImageView = (ImageView)convertView.findViewById(R.id.logImage);
             logArrowImageView = (ImageView)convertView.findViewById(R.id.logArrowImage);
+            convertView.setTag(new LogListViewHolder(logTextView, logImageImageView, logArrowImageView));
         } else {
             LogListViewHolder viewHolder = (LogListViewHolder)convertView.getTag();
             logTextView = viewHolder.logTextView;
@@ -61,8 +62,15 @@ public class LogListAdapter extends BaseAdapter {
             logArrowImageView = viewHolder.logArrowImageView;
         }
 
-        LogEntryNames.DummyItem textItem = getItem(position);
-        logTextView.setText(textItem.toString());
+        LogEntryNames.LogEntryItem logEntryItem = getItem(position);
+
+        // set text based on position
+        logTextView.setText(logEntryItem.toString());
+
+        // set image based on position
+        String imageName = logEntryItem.getImageSrc();
+        int imageResource = mContext.getResources().getIdentifier(imageName, "drawable", mContext.getPackageName());
+        logImageImageView.setImageResource(imageResource);
 
         return convertView;
     }

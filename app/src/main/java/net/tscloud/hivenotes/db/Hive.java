@@ -12,6 +12,7 @@ public class Hive {
     private String name;
     private String species;
     private String foundationType;
+    private String note;
 
 
     public long getApiary() {
@@ -53,6 +54,10 @@ public class Hive {
     public void setSpecies(String species) {
         this.species = species;
     }
+
+    public String getNote() { return note; }
+
+    public void setNote(String note) { this.note = note; }
 
     @Override
     public String toString() {

@@ -12,9 +12,9 @@ public class LogEntry {
     private String visitDate;
     private String population;
     private String temperament;
-    private String eggs;
-    private String larvae;
-    private String cappedBrood;
+    private long eggs;
+    private long larvae;
+    private long cappedBrood;
     private String broodFrames;
     private String broodPattern;
     private String queenAge;
@@ -37,19 +37,19 @@ public class LogEntry {
         this.broodPattern = broodPattern;
     }
 
-    public String getCappedBrood() {
+    public long getCappedBrood() {
         return cappedBrood;
     }
 
-    public void setCappedBrood(String cappedBrood) {
+    public void setCappedBrood(long cappedBrood) {
         this.cappedBrood = cappedBrood;
     }
 
-    public String getEggs() {
+    public long getEggs() {
         return eggs;
     }
 
-    public void setEggs(String eggs) {
+    public void setEggs(long eggs) {
         this.eggs = eggs;
     }
 
@@ -77,11 +77,11 @@ public class LogEntry {
         this.id = id;
     }
 
-    public String getLarvae() {
+    public long getLarvae() {
         return larvae;
     }
 
-    public void setLarvae(String larvae) {
+    public void setLarvae(long larvae) {
         this.larvae = larvae;
     }
 

@@ -3,10 +3,20 @@ package net.tscloud.hivenotes;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import net.tscloud.hivenotes.db.LogEntry;
+import net.tscloud.hivenotes.db.LogEntryDAO;
+
+import java.util.Date;
 
 
 /**
@@ -21,14 +31,9 @@ public class LogGeneralNotesFragment extends Fragment {
 
     public static final String TAG = "LogGeneralNotesFragment";
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String HIVE_ID = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private long mHiveID;
-    private String mParam2;
+    private long mLogEntryKey;
+    private LogEntry mLogEntry;
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,15 +42,14 @@ public class LogGeneralNotesFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param hiveID Parameter 1.
-     * @param param2 Parameter 2.
+     * @param logEntryID
      * @return A new instance of fragment LogGeneralNotesFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static LogGeneralNotesFragment newInstance(String hiveID, String param2) {
+    public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryID) {
         LogGeneralNotesFragment fragment = new LogGeneralNotesFragment();
         Bundle args = new Bundle();
-        args.putString(HIVE_ID, hiveID);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(LogEntryListActivity.INTENT_HIVE_KEY, hiveID);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,9 +61,15 @@ public class LogGeneralNotesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mHiveID = getArguments().getLong(HIVE_ID);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
+            mLogEntryKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
+        }
+
+        if (mLogEntryKey != -1) {
+            // we need to get the Hive
+            mLogEntry = getLogEntry(mLogEntryKey);
         }
     }
 
@@ -71,7 +81,41 @@ public class LogGeneralNotesFragment extends Fragment {
 
         // set button listener and text
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.notes_save_text));
+
+        if (mLogEntry != null) {
+            b1.setText(getResources().getString(R.string.create_logentry_string));
+
+            // fill the form
+            EditText dateEdit = (EditText)v.findViewById(R.id.editTextDate);
+            Spinner populationSpinner = (Spinner)v.findViewById(R.id.spinnerPopulation);
+            Spinner temperamentSpinner = (Spinner)v.findViewById(R.id.spinnerTemperment);
+            CheckBox eggsCheck = (CheckBox)v.findViewById(R.id.checkBoxEggs);
+            CheckBox larvaeCheck = (CheckBox)v.findViewById(R.id.checkBoxLarvae);
+            CheckBox cappedBroodCheck = (CheckBox)v.findViewById(R.id.checkBoxCappedBrood);
+            EditText broodFramesEdit = (EditText)v.findViewById(R.id.editTextBroodFrames);
+            EditText honeyStoresEdit = (EditText)v.findViewById(R.id.editTextHoneyStores);
+            EditText pollenStoresEdit = (EditText)v.findViewById(R.id.editTextPollenStores);
+
+            // safe to cast? values in LogEntry table all TEXT
+            dateEdit.setText(mLogEntry.getVisitDate());
+            populationSpinner.setSelection(((ArrayAdapter) populationSpinner.getAdapter()).getPosition(mLogEntry.getPopulation()));
+            temperamentSpinner.setSelection(((ArrayAdapter) temperamentSpinner.getAdapter()).getPosition(mLogEntry.getTemperament()));
+            eggsCheck.setChecked(mLogEntry.getEggs() != 0);
+            larvaeCheck.setChecked(mLogEntry.getLarvae() != 0);
+            cappedBroodCheck.setChecked(mLogEntry.getCappedBrood() != 0);
+            broodFramesEdit.setText(mLogEntry.getBroodFrames());
+            honeyStoresEdit.setText(mLogEntry.getHoneyStores());
+            pollenStoresEdit.setText(mLogEntry.getPollenStores());
+        }
+        else {
+            // default to todays date
+            EditText dateEdit = (EditText)v.findViewById(R.id.editTextDate);
+            dateEdit.setText(new Date().toString());
+
+            b1.setText(getResources().getString(R.string.save_logentry_string));
+        }
+
+        // set button listener
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,8 +126,66 @@ public class LogGeneralNotesFragment extends Fragment {
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(long hiveID) {
+        // get log entry data and put to DB
+        Log.d(TAG, "about to persist logentry");
+
+        boolean lNewLogEntry = false;
+
+        EditText dateEdit = (EditText)getView().findViewById(R.id.editTextDate);
+        Spinner populationSpinner = (Spinner)getView().findViewById(R.id.spinnerPopulation);
+        Spinner temperamentSpinner = (Spinner)getView().findViewById(R.id.spinnerTemperment);
+        CheckBox eggsCheck = (CheckBox)getView().findViewById(R.id.checkBoxEggs);
+        CheckBox larvaeCheck = (CheckBox)getView().findViewById(R.id.checkBoxLarvae);
+        CheckBox cappedBroodCheck = (CheckBox)getView().findViewById(R.id.checkBoxCappedBrood);
+        EditText broodFramesEdit = (EditText)getView().findViewById(R.id.editTextBroodFrames);
+        EditText honeyStoresEdit = (EditText)getView().findViewById(R.id.editTextHoneyStores);
+        EditText pollenStoresEdit = (EditText)getView().findViewById(R.id.editTextPollenStores);
+
+        String dateText = dateEdit.getText().toString();
+        String populationText = populationSpinner.getSelectedItem().toString();
+        String temperamentText = temperamentSpinner.getSelectedItem().toString();
+
+        long eggsValue = eggsCheck.isChecked()?1:0;
+        long larvaeValue = larvaeCheck.isChecked()?1:0;
+        long cappedBroodValue = cappedBroodCheck.isChecked()?1:0;
+
+        String broodFramesText = broodFramesEdit.getText().toString();
+        String honeyStoresText = honeyStoresEdit.getText().toString();
+        String pollenStoresText = pollenStoresEdit.getText().toString();
+
+        // check for required values - are there any?
+        boolean emptyText = false;
+
+        if (!emptyText) {
+            LogEntryDAO logEntryDAO = new LogEntryDAO(getActivity());
+            LogEntry logEntry;
+            if (mLogEntryKey == -1) {
+                logEntry = logEntryDAO.createLogEntry(mHiveID, (new Date()).toString(), populationText,
+                        temperamentText, eggsValue, larvaeValue, cappedBroodValue, broodFramesText, null, null,
+                        honeyStoresText, pollenStoresText);
+                lNewLogEntry = true;
+            }
+            // else --> there is not update method yet in LogEntryDAO
+            else {
+                logEntry = logEntryDAO.updateLogEntry(mLogEntryKey, mHiveID, (new Date()).toString(),
+                        populationText, temperamentText, eggsValue, larvaeValue, cappedBroodValue,
+                        broodFramesText, null, null, honeyStoresText, pollenStoresText);
+            }
+            logEntryDAO.close();
+
+            if (logEntry != null) {
+                // Reset LogEntry instnce vars
+                mLogEntry = logEntry;
+                mLogEntryKey = logEntry.getId();
+
+                Log.d(TAG, "LogEntry Date: " + logEntry.getVisitDate());
+            }
+            else {
+                Log.d(TAG, "BAD...LogEntry update failed");
+            }
+        }
+
         if (mListener != null) {
             mListener.onLogGeneralNotesFragmentInteraction();
         }
@@ -106,6 +208,17 @@ public class LogGeneralNotesFragment extends Fragment {
         mListener = null;
     }
 
+    // Utility method to get Profile
+    LogEntry getLogEntry(long aLogEntryID) {
+        // read log Entry
+        Log.d(TAG, "reading LogEntry table");
+        LogEntryDAO logEntryDAO = new LogEntryDAO(getActivity());
+        LogEntry reply = logEntryDAO.getLogEntryById(aLogEntryID);
+        logEntryDAO.close();
+
+        return reply;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -117,7 +230,6 @@ public class LogGeneralNotesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onLogGeneralNotesFragmentInteraction();
     }
 

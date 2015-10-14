@@ -53,7 +53,7 @@
         android:layout_below="@+id/linearLayoutName"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutEMail">
+        android:id="@+id/linearLayoutSpecies">
 
         <TextView
             android:layout_width="0dp"
