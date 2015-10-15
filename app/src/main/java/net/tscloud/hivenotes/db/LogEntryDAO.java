@@ -22,12 +22,10 @@ public class LogEntryDAO {
     public static final String COLUMN_LOGENTRY_VISIT_DATE = "visit_date";
     public static final String COLUMN_LOGENTRY_POPULATION = "population";
     public static final String COLUMN_LOGENTRY_TEMPERAMENT = "temperament";
-    public static final String COLUMN_LOGENTRY_EGGS = "eggs";
-    public static final String COLUMN_LOGENTRY_LARVAE = "larvae";
-    public static final String COLUMN_LOGENTRY_CAPPED_BROOD = "capped_brood";
+    public static final String COLUMN_LOGENTRY_PESTS_DISEASE = "pests_disease";
     public static final String COLUMN_LOGENTRY_BROOD_FRAMES = "brood_frames";
     public static final String COLUMN_LOGENTRY_BROOD_PATTERN = "brood_pattern";
-    public static final String COLUMN_LOGENTRY_QUEEN_AGE = "queen_age";
+    public static final String COLUMN_LOGENTRY_QUEEN = "queen";
     public static final String COLUMN_LOGENTRY_HONEY_STORES = "honey_stores";
     public static final String COLUMN_LOGENTRY_POLLEN_STORES = "pollen_stores";
 
@@ -36,9 +34,9 @@ public class LogEntryDAO {
     private MyDBHandler mDbHelper;
     private Context mContext;
     private String[] mAllColumns = {COLUMN_LOGENTRY_ID, COLUMN_LOGENTRY_HIVE, COLUMN_LOGENTRY_VISIT_DATE,
-            COLUMN_LOGENTRY_POPULATION, COLUMN_LOGENTRY_TEMPERAMENT,COLUMN_LOGENTRY_EGGS, COLUMN_LOGENTRY_LARVAE,
-            COLUMN_LOGENTRY_CAPPED_BROOD, COLUMN_LOGENTRY_BROOD_FRAMES, COLUMN_LOGENTRY_BROOD_PATTERN,
-            COLUMN_LOGENTRY_QUEEN_AGE, COLUMN_LOGENTRY_HONEY_STORES, COLUMN_LOGENTRY_POLLEN_STORES };
+            COLUMN_LOGENTRY_POPULATION, COLUMN_LOGENTRY_TEMPERAMENT, COLUMN_LOGENTRY_PESTS_DISEASE,
+            COLUMN_LOGENTRY_BROOD_FRAMES, COLUMN_LOGENTRY_BROOD_PATTERN, COLUMN_LOGENTRY_QUEEN,
+            COLUMN_LOGENTRY_HONEY_STORES, COLUMN_LOGENTRY_POLLEN_STORES };
 
     public LogEntryDAO(Context context) {
         this.mContext = context;
@@ -63,20 +61,17 @@ public class LogEntryDAO {
     // --DB access methods--
 
     public LogEntry createLogEntry(long hive, String visitDate, String population, String temperament,
-                                   long eggs, long larvae, long cappedBrood, String broodFrames,
-                                   String broodPattern, String queenAge, String honeyStores,
-                                   String pollenStores) {
+                                   String pestsDisease, int broodFrames, String broodPattern,
+                                   String queen, String honeyStores, String pollenStores) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRY_HIVE, hive);
         values.put(COLUMN_LOGENTRY_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRY_POPULATION, population);
         values.put(COLUMN_LOGENTRY_TEMPERAMENT, temperament);
-        values.put(COLUMN_LOGENTRY_EGGS, eggs);
-        values.put(COLUMN_LOGENTRY_LARVAE, larvae);
-        values.put(COLUMN_LOGENTRY_CAPPED_BROOD, cappedBrood);
+        values.put(COLUMN_LOGENTRY_PESTS_DISEASE, pestsDisease);
         values.put(COLUMN_LOGENTRY_BROOD_FRAMES, broodFrames);
         values.put(COLUMN_LOGENTRY_BROOD_PATTERN, broodPattern);
-        values.put(COLUMN_LOGENTRY_QUEEN_AGE, queenAge);
+        values.put(COLUMN_LOGENTRY_QUEEN, queen);
         values.put(COLUMN_LOGENTRY_HONEY_STORES, honeyStores);
         values.put(COLUMN_LOGENTRY_POLLEN_STORES, pollenStores);
         long insertId = mDatabase.insert(TABLE_LOGENTRY, null, values);
@@ -90,21 +85,19 @@ public class LogEntryDAO {
     }
 
     public LogEntry updateLogEntry(long id, long hive, String visitDate, String population,
-                                   String temperament, long eggs, long larvae, long cappedBrood,
-                                   String broodFrames, String broodPattern, String queenAge,
-                                   String honeyStores, String pollenStores) {
+                                   String temperament, String pestsDisease, int broodFrames,
+                                   String broodPattern, String queen, String honeyStores,
+                                   String pollenStores) {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRY_HIVE, hive);
         values.put(COLUMN_LOGENTRY_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRY_POPULATION, population);
         values.put(COLUMN_LOGENTRY_TEMPERAMENT, temperament);
-        values.put(COLUMN_LOGENTRY_EGGS, eggs);
-        values.put(COLUMN_LOGENTRY_LARVAE, larvae);
-        values.put(COLUMN_LOGENTRY_CAPPED_BROOD, cappedBrood);
+        values.put(COLUMN_LOGENTRY_PESTS_DISEASE, pestsDisease);
         values.put(COLUMN_LOGENTRY_BROOD_FRAMES, broodFrames);
         values.put(COLUMN_LOGENTRY_BROOD_PATTERN, broodPattern);
-        values.put(COLUMN_LOGENTRY_QUEEN_AGE, queenAge);
+        values.put(COLUMN_LOGENTRY_QUEEN, queen);
         values.put(COLUMN_LOGENTRY_HONEY_STORES, honeyStores);
         values.put(COLUMN_LOGENTRY_POLLEN_STORES, pollenStores);
         int rowsUpdated = mDatabase.update(TABLE_LOGENTRY, values, COLUMN_LOGENTRY_ID + "=" + id, null);
@@ -144,14 +137,12 @@ public class LogEntryDAO {
         logEntry.setVisitDate(cursor.getString(2));
         logEntry.setPopulation(cursor.getString(3));
         logEntry.setTemperament(cursor.getString(4));
-        logEntry.setEggs(cursor.getLong(5));
-        logEntry.setLarvae(cursor.getLong(6));
-        logEntry.setCappedBrood(cursor.getLong(7));
-        logEntry.setBroodFrames(cursor.getString(8));
-        logEntry.setBroodPattern(cursor.getString(9));
-        logEntry.setQueenAge(cursor.getString(10));
-        logEntry.setHoneyStores(cursor.getString(11));
-        logEntry.setPollenStores(cursor.getString(12));
+        logEntry.setPestsDisease(cursor.getString(5));
+        logEntry.setBroodFrames(cursor.getInt(6));
+        logEntry.setBroodPattern(cursor.getString(7));
+        logEntry.setQueen(cursor.getString(8));
+        logEntry.setHoneyStores(cursor.getString(9));
+        logEntry.setPollenStores(cursor.getString(10));
 
         return logEntry;
     }

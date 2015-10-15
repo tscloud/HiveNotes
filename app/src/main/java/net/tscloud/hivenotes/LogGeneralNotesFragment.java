@@ -88,31 +88,31 @@ public class LogGeneralNotesFragment extends Fragment {
             // fill the form
             EditText dateEdit = (EditText)v.findViewById(R.id.editTextDate);
             Spinner populationSpinner = (Spinner)v.findViewById(R.id.spinnerPopulation);
-            Spinner temperamentSpinner = (Spinner)v.findViewById(R.id.spinnerTemperment);
-            CheckBox eggsCheck = (CheckBox)v.findViewById(R.id.checkBoxEggs);
-            CheckBox larvaeCheck = (CheckBox)v.findViewById(R.id.checkBoxLarvae);
-            CheckBox cappedBroodCheck = (CheckBox)v.findViewById(R.id.checkBoxCappedBrood);
-            EditText broodFramesEdit = (EditText)v.findViewById(R.id.editTextBroodFrames);
-            EditText honeyStoresEdit = (EditText)v.findViewById(R.id.editTextHoneyStores);
-            EditText pollenStoresEdit = (EditText)v.findViewById(R.id.editTextPollenStores);
+            Spinner temperamentSpinner = (Spinner)v.findViewById(R.id.spinnerTemperament);
+            Spinner pestsDiseaseSpinner = (Spinner)v.findViewById(R.id.spinnerPestsDisease);
+            Spinner broodFramesSpinner = (Spinner)v.findViewById(R.id.spinnerBroodFrames);
+            Spinner broodPatternSpinner = (Spinner)v.findViewById(R.id.spinnerBroodPattern);
+            Spinner queenSpinner = (Spinner)v.findViewById(R.id.spinnerQueen);
+            Spinner honeyStoresSpinner = (Spinner)v.findViewById(R.id.spinnerHoneyStores);
+            Spinner pollenStoresSpinner = (Spinner)v.findViewById(R.id.spinnerPollenStores);
 
             // safe to cast? values in LogEntry table all TEXT
             dateEdit.setText(mLogEntry.getVisitDate());
             populationSpinner.setSelection(((ArrayAdapter) populationSpinner.getAdapter()).getPosition(mLogEntry.getPopulation()));
             temperamentSpinner.setSelection(((ArrayAdapter) temperamentSpinner.getAdapter()).getPosition(mLogEntry.getTemperament()));
-            eggsCheck.setChecked(mLogEntry.getEggs() != 0);
-            larvaeCheck.setChecked(mLogEntry.getLarvae() != 0);
-            cappedBroodCheck.setChecked(mLogEntry.getCappedBrood() != 0);
-            broodFramesEdit.setText(mLogEntry.getBroodFrames());
-            honeyStoresEdit.setText(mLogEntry.getHoneyStores());
-            pollenStoresEdit.setText(mLogEntry.getPollenStores());
+            pestsDiseaseSpinner.setSelection(((ArrayAdapter) pestsDiseaseSpinner.getAdapter()).getPosition(mLogEntry.getPestsDisease()));
+            broodFramesSpinner.setSelection(((ArrayAdapter) broodFramesSpinner.getAdapter()).getPosition(mLogEntry.getBroodFrames()));
+            broodPatternSpinner.setSelection(((ArrayAdapter) broodPatternSpinner.getAdapter()).getPosition(mLogEntry.getBroodPattern()));
+            queenSpinner.setSelection(((ArrayAdapter) queenSpinner.getAdapter()).getPosition(mLogEntry.getQueen()));
+            honeyStoresSpinner.setSelection(((ArrayAdapter) honeyStoresSpinner.getAdapter()).getPosition(mLogEntry.getHoneyStores()));
+            pollenStoresSpinner.setSelection(((ArrayAdapter) pollenStoresSpinner.getAdapter()).getPosition(mLogEntry.getPollenStores()));
         }
         else {
+            b1.setText(getResources().getString(R.string.save_logentry_string));
+
             // default to todays date
             EditText dateEdit = (EditText)v.findViewById(R.id.editTextDate);
             dateEdit.setText(new Date().toString());
-
-            b1.setText(getResources().getString(R.string.save_logentry_string));
         }
 
         // set button listener
@@ -134,25 +134,26 @@ public class LogGeneralNotesFragment extends Fragment {
 
         EditText dateEdit = (EditText)getView().findViewById(R.id.editTextDate);
         Spinner populationSpinner = (Spinner)getView().findViewById(R.id.spinnerPopulation);
-        Spinner temperamentSpinner = (Spinner)getView().findViewById(R.id.spinnerTemperment);
-        CheckBox eggsCheck = (CheckBox)getView().findViewById(R.id.checkBoxEggs);
-        CheckBox larvaeCheck = (CheckBox)getView().findViewById(R.id.checkBoxLarvae);
-        CheckBox cappedBroodCheck = (CheckBox)getView().findViewById(R.id.checkBoxCappedBrood);
-        EditText broodFramesEdit = (EditText)getView().findViewById(R.id.editTextBroodFrames);
-        EditText honeyStoresEdit = (EditText)getView().findViewById(R.id.editTextHoneyStores);
-        EditText pollenStoresEdit = (EditText)getView().findViewById(R.id.editTextPollenStores);
+        Spinner temperamentSpinner = (Spinner)getView().findViewById(R.id.spinnerTemperament);
+        Spinner pestsDiseaseSpinner = (Spinner)getView().findViewById(R.id.spinnerPestsDisease);
+        Spinner broodFramesSpinner = (Spinner)getView().findViewById(R.id.spinnerBroodFrames);
+        Spinner broodPatternSpinner = (Spinner)getView().findViewById(R.id.spinnerBroodPattern);
+        Spinner queenSpinner = (Spinner)getView().findViewById(R.id.spinnerQueen);
+        Spinner honeyStoresSpinner = (Spinner)getView().findViewById(R.id.spinnerHoneyStores);
+        Spinner pollenStoresSpinner = (Spinner)getView().findViewById(R.id.spinnerPollenStores);
 
         String dateText = dateEdit.getText().toString();
         String populationText = populationSpinner.getSelectedItem().toString();
         String temperamentText = temperamentSpinner.getSelectedItem().toString();
+        String pestsDiseaseText = pestsDiseaseSpinner.getSelectedItem().toString();
 
-        long eggsValue = eggsCheck.isChecked()?1:0;
-        long larvaeValue = larvaeCheck.isChecked()?1:0;
-        long cappedBroodValue = cappedBroodCheck.isChecked()?1:0;
+        String broodFramesText = broodFramesSpinner.getSelectedItem().toString();
+        int broodFramesInt = Integer.parseInt(broodFramesText);
 
-        String broodFramesText = broodFramesEdit.getText().toString();
-        String honeyStoresText = honeyStoresEdit.getText().toString();
-        String pollenStoresText = pollenStoresEdit.getText().toString();
+        String broodPatternText = broodPatternSpinner.getSelectedItem().toString();
+        String queenText = queenSpinner.getSelectedItem().toString();
+        String honeyStoresText = honeyStoresSpinner.getSelectedItem().toString();
+        String pollenStoresText = pollenStoresSpinner.getSelectedItem().toString();
 
         // check for required values - are there any?
         boolean emptyText = false;
@@ -162,20 +163,19 @@ public class LogGeneralNotesFragment extends Fragment {
             LogEntry logEntry;
             if (mLogEntryKey == -1) {
                 logEntry = logEntryDAO.createLogEntry(mHiveID, (new Date()).toString(), populationText,
-                        temperamentText, eggsValue, larvaeValue, cappedBroodValue, broodFramesText, null, null,
+                        temperamentText, pestsDiseaseText, broodFramesInt, broodPatternText, queenText,
                         honeyStoresText, pollenStoresText);
                 lNewLogEntry = true;
             }
-            // else --> there is not update method yet in LogEntryDAO
             else {
                 logEntry = logEntryDAO.updateLogEntry(mLogEntryKey, mHiveID, (new Date()).toString(),
-                        populationText, temperamentText, eggsValue, larvaeValue, cappedBroodValue,
-                        broodFramesText, null, null, honeyStoresText, pollenStoresText);
+                        populationText, temperamentText, pestsDiseaseText, broodFramesInt,
+                        broodPatternText, queenText, honeyStoresText, pollenStoresText);
             }
             logEntryDAO.close();
 
             if (logEntry != null) {
-                // Reset LogEntry instnce vars
+                // Reset LogEntry instance vars
                 mLogEntry = logEntry;
                 mLogEntryKey = logEntry.getId();
 

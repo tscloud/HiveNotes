@@ -42,9 +42,10 @@
     <string name="save_logentry_string">Save Log Entry</string>
 
     <string name="general_notes_population_text">Population:</string>
-    <string name="general_notes_temperment_text">Temperment:</string>
-    <string name="general_notes_eggs_text">Eggs:</string>
-    <string name="general_notes_larvae_text">Larvae:</string>
+    <string name="general_notes_temperament_text">Temperament:</string>
+    <string name="general_notes_pestsdisease_text">Pests/Disease:</string>
+    <string name="general_notes_queen_text">Queen:</string>
+    <string name="general_notes_broodpattern_text">Brood Pattern:</string>
     <string name="general_notes_cappedbrood_text">Capped Brood:</string>
     <string name="general_notes_broodframes_text">Brood Frames:</string>
     <string name="general_notes_honeystores_text">Honey Stores:</string>
@@ -64,12 +65,37 @@
         <item>Low</item>
     </string-array>
 
-    <string-array name="temperment_array">
+    <string-array name="temperament_array">
         <item>Happy</item>
         <item>Nasty</item>
         <item>OK</item>
         <item>Standoffish</item>
         <item>Easygoing</item>
+    </string-array>
+
+    <string-array name="queen_array">
+        <item>Queen Right</item>
+        <item>Queen Left</item>
+        <item>Unsure</item>
+        <item>Queen cells present</item>
+    </string-array>
+
+    <string-array name="brood_pattern_array">
+        <item>Good Pattern</item>
+        <item>Fair Pattern</item>
+        <item>Poor Pattern</item>
+    </string-array>
+
+    <string-array name="brood_pests_disease_array">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+    </string-array>
+
+    <string-array name="stores_array">
+        <item>High</item>
+        <item>Average</item>
+        <item>Low</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -12,20 +12,18 @@ public class LogEntry {
     private String visitDate;
     private String population;
     private String temperament;
-    private long eggs;
-    private long larvae;
-    private long cappedBrood;
-    private String broodFrames;
+    private String pestsDisease;
+    private int broodFrames;
     private String broodPattern;
-    private String queenAge;
+    private String queen;
     private String honeyStores;
     private String pollenStores;
 
-    public String getBroodFrames() {
+    public int getBroodFrames() {
         return broodFrames;
     }
 
-    public void setBroodFrames(String broodFrames) {
+    public void setBroodFrames(int broodFrames) {
         this.broodFrames = broodFrames;
     }
 
@@ -37,20 +35,12 @@ public class LogEntry {
         this.broodPattern = broodPattern;
     }
 
-    public long getCappedBrood() {
-        return cappedBrood;
+    public String getPestsDisease() {
+        return pestsDisease;
     }
 
-    public void setCappedBrood(long cappedBrood) {
-        this.cappedBrood = cappedBrood;
-    }
-
-    public long getEggs() {
-        return eggs;
-    }
-
-    public void setEggs(long eggs) {
-        this.eggs = eggs;
+    public void setPestsDisease(String pestsDisease) {
+        this.pestsDisease = pestsDisease;
     }
 
     public long getHive() {
@@ -77,14 +67,6 @@ public class LogEntry {
         this.id = id;
     }
 
-    public long getLarvae() {
-        return larvae;
-    }
-
-    public void setLarvae(long larvae) {
-        this.larvae = larvae;
-    }
-
     public String getPollenStores() {
         return pollenStores;
     }
@@ -101,12 +83,12 @@ public class LogEntry {
         this.population = population;
     }
 
-    public String getQueenAge() {
-        return queenAge;
+    public String getQueen() {
+        return queen;
     }
 
-    public void setQueenAge(String queenAge) {
-        this.queenAge = queenAge;
+    public void setQueen(String queen) {
+        this.queen = queen;
     }
 
     public String getTemperament() {

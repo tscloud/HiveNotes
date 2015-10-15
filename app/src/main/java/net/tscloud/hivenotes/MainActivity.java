@@ -185,6 +185,10 @@ public class MainActivity extends AppCompatActivity implements
 
         switch (requestCode) {
             case (HIVE_REQ_CODE):
+                /*
+                Check for RESULT_CANCELED - happens on back button from called Activity
+                   back button from EditHiveActivity but Apiary may have been updated
+                 */
                 if ((resultCode == RESULT_OK) || (resultCode == RESULT_CANCELED)) {
                     Log.d(TAG, "Returned from requestCode = " + requestCode);
                     // Need to re-read the Apiary list in case there were changes
