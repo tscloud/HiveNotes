@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 /**
- * An activity representing a single LogEntry detail screen. This
+ * An activity representing a single LogEntryGeneral detail screen. This
  * activity is only used on handset devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link LogEntryListActivity}.
@@ -16,8 +16,9 @@ import android.view.MenuItem;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link LogEntryDetailFragment}.
  */
-public class LogEntryDetailActivity extends AppCompatActivity
-        implements LogGeneralNotesFragment.OnFragmentInteractionListener {
+public class LogEntryDetailActivity extends AppCompatActivity implements
+        LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
+        LogProductivityFragment.OnLogProductivityFragmentInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
 
@@ -53,6 +54,9 @@ public class LogEntryDetailActivity extends AppCompatActivity
             switch (argItemId) {
                 case "1":
                     fragment = LogGeneralNotesFragment.newInstance(mHiveKey, mlogentryKey);
+                    break;
+                case "2":
+                    fragment = LogProductivityFragment.newInstance(mHiveKey, mlogentryKey);
                     break;
                 default:
                     fragment = new LogEntryDetailFragment();
@@ -100,5 +104,16 @@ public class LogEntryDetailActivity extends AppCompatActivity
         //data.putExtra("apiaryKey", apiaryID);
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    @Override
+    public void onLogProductivityFragmentInteraction() {
+        Log.d(TAG, "return from LogProductivityFragment...finish LogEntryDetailActivity");
+
+        Intent data = new Intent();
+        //data.putExtra("apiaryKey", apiaryID);
+        setResult(RESULT_OK, data);
+        finish();
+
     }
 }

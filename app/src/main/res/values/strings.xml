@@ -41,6 +41,7 @@
     <string name="create_logentry_string">Create Log Entry</string>
     <string name="save_logentry_string">Save Log Entry</string>
 
+    <string name="general_notes_date_text">Date:</string>
     <string name="general_notes_population_text">Population:</string>
     <string name="general_notes_temperament_text">Temperament:</string>
     <string name="general_notes_pestsdisease_text">Pests/Disease:</string>
@@ -50,6 +51,25 @@
     <string name="general_notes_broodframes_text">Brood Frames:</string>
     <string name="general_notes_honeystores_text">Honey Stores:</string>
     <string name="general_notes_pollenstores_text">Pollen Stores:</string>
+
+    <string name="productivity_honey">Honey</string>
+    <string name="productivity_add_supers">Add Supers:</string>
+    <string name="productivity_remove_supers">Remove Supers:</string>
+    <string name="productivity_extracted_honey">Extracted Honey:</string>
+    <string name="productivity_pollen">Pollen:</string>
+    <string name="productivity_add_trap">Add Trap</string>
+    <string name="productivity_remove_trap">Remove Trap</string>
+    <string name="productivity_pollen_collected">Pollen Collected:</string>
+    <string name="productivity_beeswax_collected">Beeswax Collected:</string>
+
+    <string name="productivity_varroa_mite">Varroa Mite</string>
+    <string name="productivity_small_hive_beetle">Small Hive Beetle</string>
+    <string name="productivity_wax_moth">Wax Moth</string>
+    <string name="productivity_deformed_wing">Deformed Wing</string>
+    <string name="productivity_american_foulbrood">American Foulbrood</string>
+    <string name="productivity_european_foalbrood">European Foulbrood</string>
+    <string name="productivity_chalkbrood">Chalkbrood</string>
+    <string name="productivity_other">Other</string>
 
     <string name="notes_save_text">Save Notes</string>
 
@@ -66,6 +86,9 @@
     </string-array>
 
     <string-array name="temperament_array">
+        <item>Calm</item>
+        <item>Nervous</item>
+        <item>Aggressive</item>
         <item>Happy</item>
         <item>Nasty</item>
         <item>OK</item>
@@ -86,10 +109,16 @@
         <item>Poor Pattern</item>
     </string-array>
 
-    <string-array name="brood_pests_disease_array">
-        <item>A</item>
-        <item>B</item>
-        <item>C</item>
+    <!-- not currently needed -->
+    <string-array name="pests_disease_array">
+        <item>@string/productivity_varroa_mite</item>
+        <item>@string/productivity_small_hive_beetle</item>
+        <item>@string/productivity_wax_moth</item>
+        <item>@string/productivity_deformed_wing</item>
+        <item>@string/productivity_american_foulbrood</item>
+        <item>@string/productivity_european_foalbrood</item>
+        <item>@string/productivity_other</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="stores_array">
@@ -101,9 +130,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="general_notes_string">General Notes</string>
+    <string name="productivity_notes_string">Productivity</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_apiary_edit_profile">EditApiaryActivity</string>
     <string name="title_hive_single_edit_profile">EditHiveSingleActivity</string>
     <string name="hive_note_string">Notes:</string>
-    <string name="general_notes_date_text">Date:</string>
 </resources>

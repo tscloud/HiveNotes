@@ -152,3 +152,223 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="net.tscloud.hivenotes.EditHiveListFragment">
+-----
+.mode column;.headers on;
+
+String honeyAddSupers, String honeyRemoveSupers, float extractedHoney, int addPollenTrap, int removePollenTrap, float pollenColected, float beeswaxColected
+
+values.put(COLUMN_LOGENTRYPRODUCTIVITY_HIVE = hive);
+values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS = honeyAddSupers);
+values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS = honeyRemoveSupers);
+values.put(COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY = extractedHoney);
+values.put(COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP = addPollenTrap);
+values.put(COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP = removePollenTrap);
+values.put(COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED = pollenColected);
+values.put(COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED = beeswaxColected);
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/textHoney"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayoutSupersText">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_add_supers"
+            android:id="@+id/textAddSupers"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_remove_supers"
+            android:id="@+id/textRemoveSupers"
+            android:layout_gravity="center_vertical" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayoutSupersText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayoutHoneySpinners">
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/spinnerAddSupers" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/spinnerRemoveSupers" />
+
+    </LinearLayout>
+-----
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/textPestsDisease"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayoutPestsDisease1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_varroa_mite"
+            android:id="@+id/textVarroaMite"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/checkVarroaMite" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_small_hive_beetle"
+            android:id="@+id/textSmallHiveBeetle"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/checkSmallHiveBeetle" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayoutPestsDisease1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayoutPestsDisease2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_wax_moth"
+            android:id="@+id/textWaxMoth"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/checkWaxMoth" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_deformed_wing"
+            android:id="@+id/textDeformedWing"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/checkDeformedWing" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayoutPestsDisease2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayoutPestsDisease3">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_american_foulbrood"
+            android:id="@+id/textAmericalFoulbrood"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/checkAmericalFoulbrood" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_european_foalbrood"
+            android:id="@+id/textEuropeanFoulbrood"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/checkEuropeanFoulbrood" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayoutPestsDisease3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayoutPestsDisease4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_chalkbrood"
+            android:id="@+id/textChalkbrood"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/checkChalkbrood" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/productivity_other"
+            android:id="@+id/textOther"
+            android:layout_gravity="center_vertical" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:id="@+id/checkOther" />
+
+    </LinearLayout>

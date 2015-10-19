@@ -114,6 +114,10 @@ public class LogEntryListActivity extends AppCompatActivity
                     // will this always be a new logentry? so pass -1?
                     fragment = LogGeneralNotesFragment.newInstance(mHiveKey, -1);
                     break;
+                case "2":
+                    // will this always be a new logentry? so pass -1?
+                    fragment = LogProductivityFragment.newInstance(mHiveKey, -1);
+                    break;
                 default:
                     fragment = new LogEntryDetailFragment();
                     break;

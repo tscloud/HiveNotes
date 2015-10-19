@@ -3,9 +3,9 @@ package net.tscloud.hivenotes.db;
 /**
  * Created by tscloud on 8/20/15.
  */
-public class LogEntry {
+public class LogEntryGeneral {
 
-    public static final String TAG = "LogEntry";
+    public static final String TAG = "LogEntryGeneral";
 
     private long id;
     private long hive;

@@ -27,7 +27,7 @@ public class LogEntryNames {
         // Add 3 sample items.
         addItem(new LogEntryItem("1", "General Notes", "general_icon"));
         addItem(new LogEntryItem("2", "Productivity", "production_icon"));
-        addItem(new LogEntryItem("3", "Pest Management", "pesticon"));
+        addItem(new LogEntryItem("3", "Pest Management", "pest_icon"));
         addItem(new LogEntryItem("4", "Feeding", "feeding_icon"));
         addItem(new LogEntryItem("5", "Other", "other_icon"));
     }
