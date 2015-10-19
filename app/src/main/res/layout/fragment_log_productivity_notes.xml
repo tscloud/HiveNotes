@@ -10,203 +10,204 @@
     tools:context="net.tscloud.hivenotes.LogProductivityNotesFragment">
 
     <TextView
+        android:id="@+id/textProductivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/productivity_notes_string"
-        android:id="@+id/textProductivity"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <TextView
+        android:id="@+id/textHoney"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/productivity_honey"
-        android:id="@+id/textHoney"
         android:layout_below="@+id/textProductivity"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <LinearLayout
+        android:id="@+id/linearLayoutSupersText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textHoney"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutSupersText">
+        android:layout_alignParentEnd="true">
 
         <TextView
+            android:id="@+id/textAddSupers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
             android:text="@string/productivity_add_supers"
-            android:id="@+id/textAddSupers"
             android:layout_gravity="center_vertical" />
 
         <TextView
+            android:id="@+id/textRemoveSupers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
             android:text="@string/productivity_remove_supers"
-            android:id="@+id/textRemoveSupers"
             android:layout_gravity="center_vertical" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutHoneySpinners"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutSupersText"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutHoneySpinners">
+        android:layout_alignParentEnd="true">
 
         <Spinner
+            android:id="@+id/spinnerAddSupers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:id="@+id/spinnerAddSupers" />
+            android:layout_weight="0.50" />
 
         <Spinner
+            android:id="@+id/spinnerRemoveSupers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:id="@+id/spinnerRemoveSupers" />
+            android:layout_weight="0.50" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutExtractedHoney"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutHoneySpinners"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutExtractedHoney">
+        android:layout_alignParentEnd="true">
 
         <TextView
+            android:id="@+id/textExtractedHoney"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
             android:text="@string/productivity_extracted_honey"
-            android:id="@+id/textExtractedHoney"
             android:layout_gravity="center_vertical" />
 
         <EditText
+            android:id="@+id/editTextExtractedHoney"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
             android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/editTextExtractedHoney" />
+            android:ems="10" />
 
     </LinearLayout>
 
     <TextView
+        android:id="@+id/textPollen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/productivity_honey"
-        android:id="@+id/textPollen"
         android:layout_below="@+id/linearLayoutExtractedHoney"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <LinearLayout
+        android:id="@+id/linearLayoutPollen"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textPollen"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutPollen">
+        android:layout_alignParentEnd="true">
 
         <CheckBox
+            android:id="@+id/checkPollenAddTrap"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
-            android:text="@string/productivity_add_trap"
-            android:id="@+id/checkPollenAddTrap" />
+            android:text="@string/productivity_add_trap" />
 
         <CheckBox
+            android:id="@+id/checkPollenRemoveTrap"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
-            android:text="@string/productivity_remove_trap"
-            android:id="@+id/checkPollenRemoveTrap" />
+            android:text="@string/productivity_remove_trap" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutPollenCollected"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutPollen"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutPollenCollected">
+        android:layout_alignParentEnd="true">
 
         <TextView
+            android:id="@+id/textPollenCollected"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.30"
             android:text="@string/productivity_pollen_collected"
-            android:id="@+id/textPollenCollected"
             android:layout_gravity="center_vertical" />
 
         <EditText
+            android:id="@+id/editTextPollenCollected"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.65"
             android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/editTextPollenCollected" />
+            android:ems="10" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutBeeswaxCollected"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutPollenCollected"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutBeeswaxCollected">
+        android:layout_alignParentEnd="true">
 
         <TextView
+            android:id="@+id/textBeeswaxCollected"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.30"
             android:text="@string/productivity_beeswax_collected"
-            android:id="@+id/textBeeswaxCollected"
             android:layout_gravity="center_vertical" />
 
         <EditText
+            android:id="@+id/editTextBeeswaxCollected"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.65"
             android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/editTextBeeswaxCollected" />
+            android:ems="10" />
 
     </LinearLayout>
 
     <View
+        android:id="@+id/hiveLine1"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:id="@+id/hiveLine1"
         android:layout_above="@+id/saveProductivityButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
     <View
+        android:id="@+id/hiveLine2"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:id="@+id/hiveLine2"
+        android:layout_below="@+id/saveProductivityButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
