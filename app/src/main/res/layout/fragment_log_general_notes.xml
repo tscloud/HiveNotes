@@ -349,12 +349,33 @@
             android:layout_weight="0.50"
             android:text="@string/productivity_chalkbrood" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutPestsDisease5"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayoutPestsDisease4"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
         <CheckBox
             android:id="@+id/checkOther"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
             android:text="@string/productivity_other" />
+
+        <EditText
+            android:id="@+id/editTextOther"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.65"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:ems="10" />
 
     </LinearLayout>
 

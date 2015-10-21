@@ -74,18 +74,21 @@
     <string name="notes_save_text">Save Notes</string>
 
     <string-array name="foundation_array">
+        <item></item>
         <item>Wax</item>
         <item>Plastic</item>
         <item>Foundationless Bars</item>
     </string-array>
 
     <string-array name="population_array">
+        <item></item>
         <item>Crowded</item>
         <item>Moderate</item>
         <item>Low</item>
     </string-array>
 
     <string-array name="temperament_array">
+        <item></item>
         <item>Calm</item>
         <item>Nervous</item>
         <item>Aggressive</item>
@@ -97,6 +100,7 @@
     </string-array>
 
     <string-array name="queen_array">
+        <item></item>
         <item>Queen Right</item>
         <item>Queen Left</item>
         <item>Unsure</item>
@@ -104,12 +108,13 @@
     </string-array>
 
     <string-array name="brood_pattern_array">
+        <item></item>
         <item>Good Pattern</item>
         <item>Fair Pattern</item>
         <item>Poor Pattern</item>
     </string-array>
 
-    <!-- not currently needed -->
+    <!-- not currently needed
     <string-array name="pests_disease_array">
         <item>@string/productivity_varroa_mite</item>
         <item>@string/productivity_small_hive_beetle</item>
@@ -120,8 +125,10 @@
         <item>@string/productivity_other</item>
         <item>Other</item>
     </string-array>
+    -->
 
     <string-array name="stores_array">
+        <item></item>
         <item>High</item>
         <item>Average</item>
         <item>Low</item>

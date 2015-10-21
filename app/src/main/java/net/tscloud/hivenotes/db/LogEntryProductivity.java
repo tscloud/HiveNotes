@@ -9,6 +9,7 @@ public class LogEntryProductivity {
 
     private long id;
     private long hive;
+    private String visitDate;
     private String honeyAddSupers;
     private String honeyRemoveSupers;
     private float extractedHoney;
@@ -87,5 +88,13 @@ public class LogEntryProductivity {
 
     public void setRemovePollenTrap(int removePollenTrap) {
         this.removePollenTrap = removePollenTrap;
+    }
+
+    public String getVisitDate() {
+        return visitDate;
+    }
+
+    public void setVisitDate(String visitDate) {
+        this.visitDate = visitDate;
     }
 }

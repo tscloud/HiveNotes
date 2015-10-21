@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import net.tscloud.hivenotes.db.LogEntryGeneral;
+
 /**
  * An activity representing a single LogEntryGeneral detail screen. This
  * activity is only used on handset devices. On tablet-size devices,
@@ -97,11 +99,13 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogGeneralNotesFragmentInteraction() {
+    public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral) {
         Log.d(TAG, "return from LogGeneralNotesFragment...finish LogEntryDetailActivity");
 
         Intent data = new Intent();
-        //data.putExtra("apiaryKey", apiaryID);
+        Bundle bundleData = new Bundle();
+        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_GENERAL_DATA, aLogEntryGeneral);
+        data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
     }

@@ -30,6 +30,7 @@ public class LogEntryNames {
         addItem(new LogEntryItem("3", "Pest Management", "pest_icon"));
         addItem(new LogEntryItem("4", "Feeding", "feeding_icon"));
         addItem(new LogEntryItem("5", "Other", "other_icon"));
+        addItem(new LogEntryItem("6", "Save", "other_icon"));
     }
 
     private static void addItem(LogEntryItem item) {

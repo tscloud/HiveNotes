@@ -19,6 +19,7 @@ public class LogEntryProductivityDAO {
     public static final String TABLE_LOGENTRYPRODUCTIVITY = "LogEntryProductivity";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_ID = "_id";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_HIVE = "hive";
+    public static final String COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE = "visit_date";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS = "honey_add_supers";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS = "honey_remove_supers";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY = "extracted_honey";
@@ -32,10 +33,10 @@ public class LogEntryProductivityDAO {
     private MyDBHandler mDbHelper;
     private Context mContext;
     private String[] mAllColumns = { COLUMN_LOGENTRYPRODUCTIVITY_ID, COLUMN_LOGENTRYPRODUCTIVITY_HIVE,
-            COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS, COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS,
-            COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY, COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP,
-            COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP, COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED,
-            COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED};
+            COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE, COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS,
+            COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS, COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,
+            COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP, COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP,
+            COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED};
 
     public LogEntryProductivityDAO(Context context) {
         this.mContext = context;
@@ -60,18 +61,20 @@ public class LogEntryProductivityDAO {
 
     // --DB access methods--
 
-    public LogEntryProductivity createLogEntry(long hive, String honeyAddSupers, String honeyRemoveSupers,
-                                               float extractedHoney, int addPollenTrap, int removePollenTrap,
-                                               float pollenColected, float beeswaxColected) {
+    public LogEntryProductivity createLogEntry(long hive, String visitDate, String honeyAddSupers,
+                                               String honeyRemoveSupers, float extractedHoney,
+                                               int addPollenTrap, int removePollenTrap,
+                                               float pollenCollected, float beeswaxCollected) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HIVE ,hive);
+        values.put(COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE ,visitDate);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS, honeyAddSupers);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS, honeyRemoveSupers);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,extractedHoney);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP, addPollenTrap);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP, removePollenTrap);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, pollenColected);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED, beeswaxColected);
+        values.put(COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, pollenCollected);
+        values.put(COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED, beeswaxCollected);
         long insertId = mDatabase.insert(TABLE_LOGENTRYPRODUCTIVITY, null, values);
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYPRODUCTIVITY, mAllColumns,
                 COLUMN_LOGENTRYPRODUCTIVITY_ID + " = " + insertId, null, null, null, null);
@@ -82,11 +85,13 @@ public class LogEntryProductivityDAO {
         return newLogEntryProductivity;
     }
 
-    public LogEntryProductivity updateLogEntry(long id, long hive, String honeyAddSupers, String honeyRemoveSupers,
-                                               float extractedHoney, int addPollenTrap, int removePollenTrap,
+    public LogEntryProductivity updateLogEntry(long id, long hive, String visitDate, String honeyAddSupers,
+                                               String honeyRemoveSupers, float extractedHoney,
+                                               int addPollenTrap, int removePollenTrap,
                                                float pollenColected, float beeswaxColected) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_HIVE ,hive);
+        values.put(COLUMN_LOGENTRYPRODUCTIVITY_HIVE, hive);
+        values.put(COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS, honeyAddSupers);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS, honeyRemoveSupers);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,extractedHoney);
@@ -128,13 +133,14 @@ public class LogEntryProductivityDAO {
         LogEntryProductivity logEntryProductivity = new LogEntryProductivity();
         logEntryProductivity.setId(cursor.getLong(0));
         logEntryProductivity.setHive(cursor.getLong(1));
-        logEntryProductivity.setHoneyAddSupers(cursor.getString(2));
-        logEntryProductivity.setHoneyRemoveSupers(cursor.getString(3));
-        logEntryProductivity.setExtractedHoney(cursor.getFloat(4));
-        logEntryProductivity.setAddPollenTrap(cursor.getInt(5));
-        logEntryProductivity.setRemovePollenTrap(cursor.getInt(6));
-        logEntryProductivity.setPollenCollected(cursor.getFloat(7));
-        logEntryProductivity.setBeeswaxCollected(cursor.getFloat(8));
+        logEntryProductivity.setVisitDate(cursor.getString(2));
+        logEntryProductivity.setHoneyAddSupers(cursor.getString(3));
+        logEntryProductivity.setHoneyRemoveSupers(cursor.getString(4));
+        logEntryProductivity.setExtractedHoney(cursor.getFloat(5));
+        logEntryProductivity.setAddPollenTrap(cursor.getInt(6));
+        logEntryProductivity.setRemovePollenTrap(cursor.getInt(7));
+        logEntryProductivity.setPollenCollected(cursor.getFloat(8));
+        logEntryProductivity.setBeeswaxCollected(cursor.getFloat(9));
 
         return logEntryProductivity;
     }

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
+import net.tscloud.hivenotes.db.LogEntryGeneral;
+import net.tscloud.hivenotes.db.LogEntryProductivity;
 
 
 /**
@@ -43,6 +45,12 @@ public class LogEntryListActivity extends AppCompatActivity
     public static String INTENT_LOGENTRY_KEY = "logentryKey";
 
     private long mHiveKey;
+
+    // Need to a reference to each of the Log Entry data objects
+    public static String INTENT_LOGENTRY_GENERAL_DATA = "logentryData";
+    LogEntryGeneral mLogEntryGeneralData;
+    public static String INTENT_LOGENTRY_PRODUCTIVITY_DATA = "logentryData";
+    LogEntryProductivity mLogEntryProductivityData;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -145,8 +153,17 @@ public class LogEntryListActivity extends AppCompatActivity
         if ((requestCode == LOG_DETAIL_REQ_CODE) && (resultCode == RESULT_OK)) {
             Log.d(TAG, "Returned from requestCode = " + requestCode);
 
-            //long apiaryKey = data.getExtras().getLong("apiaryKey");
-
+            Bundle bundleData = data.getExtras();
+            if (bundleData.keySet().contains(INTENT_LOGENTRY_GENERAL_DATA)) {
+                mLogEntryGeneralData =
+                        (LogEntryGeneral)bundleData.getSerializable(INTENT_LOGENTRY_GENERAL_DATA);
+                Log.d(TAG, "received LogEntryGeneral data object");
+            }
+            else if (bundleData.keySet().contains(INTENT_LOGENTRY_PRODUCTIVITY_DATA)) {
+                mLogEntryProductivityData =
+                        (LogEntryProductivity)bundleData.getSerializable(INTENT_LOGENTRY_PRODUCTIVITY_DATA);
+                Log.d(TAG, "received LogEntryProductivity data object");
+            }
         }
     }
 

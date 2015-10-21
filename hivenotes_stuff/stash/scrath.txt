@@ -153,7 +153,8 @@
     android:orientation="vertical"
     tools:context="net.tscloud.hivenotes.EditHiveListFragment">
 -----
-.mode column;.headers on;
+.mode column
+.headers on
 
 String honeyAddSupers, String honeyRemoveSupers, float extractedHoney, int addPollenTrap, int removePollenTrap, float pollenColected, float beeswaxColected
 

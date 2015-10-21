@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
 
+import java.util.Date;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -80,8 +82,8 @@ public class LogProductivityFragment extends Fragment {
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
 
         // setup numeric Spinner values
-        Spinner addSupersSpinner = (Spinner)v.findViewById(R.id.spinnerAddSupers);
-        Spinner removeSupersSpinner = (Spinner)v.findViewById(R.id.spinnerRemoveSupers);
+        final Spinner addSupersSpinner = (Spinner)v.findViewById(R.id.spinnerAddSupers);
+        final Spinner removeSupersSpinner = (Spinner)v.findViewById(R.id.spinnerRemoveSupers);
 
         String [] a = new String[6];
         for (int i=0;i<a.length;++i) {
@@ -98,11 +100,11 @@ public class LogProductivityFragment extends Fragment {
             b1.setText(getResources().getString(R.string.save_logentry_string));
 
             // fill the form
-            EditText extractedHoneyEdit = (EditText)v.findViewById(R.id.editTextExtractedHoney);
-            CheckBox pollenAddTrapCheck = (CheckBox)v.findViewById(R.id.checkPollenAddTrap);
-            CheckBox pollenRemoveTrapCheck = (CheckBox)v.findViewById(R.id.checkPollenRemoveTrap);
-            EditText pollenCollectedEdit = (EditText)v.findViewById(R.id.editTextPollenCollected);
-            EditText beeswaxCollectedEdit = (EditText)v.findViewById(R.id.editTextBeeswaxCollected);
+            final EditText extractedHoneyEdit = (EditText)v.findViewById(R.id.editTextExtractedHoney);
+            final CheckBox pollenAddTrapCheck = (CheckBox)v.findViewById(R.id.checkPollenAddTrap);
+            final CheckBox pollenRemoveTrapCheck = (CheckBox)v.findViewById(R.id.checkPollenRemoveTrap);
+            final EditText pollenCollectedEdit = (EditText)v.findViewById(R.id.editTextPollenCollected);
+            final EditText beeswaxCollectedEdit = (EditText)v.findViewById(R.id.editTextBeeswaxCollected);
 
             addSupersSpinner.setSelection(
                     ((ArrayAdapter) addSupersSpinner.getAdapter()).getPosition(
@@ -137,13 +139,13 @@ public class LogProductivityFragment extends Fragment {
 
         boolean lNewLogEntry = false;
 
-        Spinner addSupersSpinner = (Spinner)getView().findViewById(R.id.spinnerAddSupers);
-        Spinner removeSupersSpinner = (Spinner)getView().findViewById(R.id.spinnerRemoveSupers);
-        EditText extractedHoneyEdit = (EditText)getView().findViewById(R.id.editTextExtractedHoney);
-        CheckBox pollenAddTrapCheck = (CheckBox)getView().findViewById(R.id.checkPollenAddTrap);
-        CheckBox pollenRemoveTrapCheck = (CheckBox)getView().findViewById(R.id.checkPollenRemoveTrap);
-        EditText pollenCollectedEdit = (EditText)getView().findViewById(R.id.editTextPollenCollected);
-        EditText beeswaxCollectedEdit = (EditText)getView().findViewById(R.id.editTextBeeswaxCollected);
+        final Spinner addSupersSpinner = (Spinner)getView().findViewById(R.id.spinnerAddSupers);
+        final Spinner removeSupersSpinner = (Spinner)getView().findViewById(R.id.spinnerRemoveSupers);
+        final EditText extractedHoneyEdit = (EditText)getView().findViewById(R.id.editTextExtractedHoney);
+        final CheckBox pollenAddTrapCheck = (CheckBox)getView().findViewById(R.id.checkPollenAddTrap);
+        final CheckBox pollenRemoveTrapCheck = (CheckBox)getView().findViewById(R.id.checkPollenRemoveTrap);
+        final EditText pollenCollectedEdit = (EditText)getView().findViewById(R.id.editTextPollenCollected);
+        final EditText beeswaxCollectedEdit = (EditText)getView().findViewById(R.id.editTextBeeswaxCollected);
 
         String addSupersText = addSupersSpinner.getSelectedItem().toString();
         String removeSupersText = removeSupersSpinner.getSelectedItem().toString();
@@ -160,15 +162,16 @@ public class LogProductivityFragment extends Fragment {
             LogEntryProductivityDAO logEntryProductivityDAO = new LogEntryProductivityDAO(getActivity());
             LogEntryProductivity logEntryProductivity;
             if (mLogEntryProductivityKey == -1) {
-                logEntryProductivity = logEntryProductivityDAO.createLogEntry(mHiveID, addSupersText,
-                        removeSupersText, extractedHoneyFloat, pollenAddTrapInt, pollenRemoveTrapInt,
-                        pollenCollectedFloat, beeswaxCollectedFloat);
+                logEntryProductivity = logEntryProductivityDAO.createLogEntry(mHiveID, new Date().toString(),
+                        addSupersText, removeSupersText, extractedHoneyFloat, pollenAddTrapInt,
+                        pollenRemoveTrapInt, pollenCollectedFloat, beeswaxCollectedFloat);
                 lNewLogEntry = true;
             }
             else {
                 logEntryProductivity = logEntryProductivityDAO.updateLogEntry(mLogEntryProductivityKey,
-                        mHiveID, addSupersText, removeSupersText, extractedHoneyFloat, pollenAddTrapInt,
-                        pollenRemoveTrapInt, pollenCollectedFloat, beeswaxCollectedFloat);
+                        mHiveID, new Date().toString(), addSupersText, removeSupersText,
+                        extractedHoneyFloat, pollenAddTrapInt, pollenRemoveTrapInt, pollenCollectedFloat,
+                        beeswaxCollectedFloat);
             }
             logEntryProductivityDAO.close();
 

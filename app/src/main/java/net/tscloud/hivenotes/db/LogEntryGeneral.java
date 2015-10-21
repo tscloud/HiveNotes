@@ -1,9 +1,11 @@
 package net.tscloud.hivenotes.db;
 
+import java.io.Serializable;
+
 /**
  * Created by tscloud on 8/20/15.
  */
-public class LogEntryGeneral {
+public class LogEntryGeneral implements Serializable {
 
     public static final String TAG = "LogEntryGeneral";
 
