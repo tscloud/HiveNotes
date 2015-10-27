@@ -38,6 +38,9 @@
     <string name="hive_foundation_type_string">Foundation Type:</string>
 
     <string name="done_string">Done</string>
+    <string name="db_toast_string">"DB successfully deleted =)"</string>
+    <string name="gps_toast_string">Waiting for GPS location...</string>
+    <string name="network_toast_string">Waiting for Network location...</string>
 
     <string name="title_logentry_list">LogEntries</string>
     <string name="title_logentry_detail">LogEntry Detail</string>

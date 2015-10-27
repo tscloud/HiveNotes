@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (dbDeleted){
             // redisplay Home screen
-            Toast.makeText(getApplicationContext(), "DB successfully deleted =)",
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.db_toast_string),
                     Toast.LENGTH_LONG).show();
             // clear instance vars
             mProfile = null;

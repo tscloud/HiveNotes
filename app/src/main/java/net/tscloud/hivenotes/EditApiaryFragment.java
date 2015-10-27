@@ -214,15 +214,8 @@ public class EditApiaryFragment extends Fragment implements LocationListener {
                 if (addresses != null && !addresses.isEmpty()) {
                     Address address = addresses.get(0);
                     // Use the address as needed
-                    float lat = (float)address.getLatitude();
-                    float lon = (float)address.getLongitude();
-                    String message = String.format("From postal code: Latitude: %f, Longitude: %f",
-                            lat, lon);
-                    Log.d(TAG, message);
-                    final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
-                    final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
-                    latitudeEdit.setText(Float.toString(lat));
-                    longitudeEdit.setText(Float.toString(lon));
+                    loadScreenLatLon((float)address.getLatitude(), (float)address.getLongitude(),
+                        "From postal code: ");
                 } else {
                     // Display appropriate message when Geocoder services are not available
                     Log.d(TAG, "no find lat/lon");
@@ -237,24 +230,39 @@ public class EditApiaryFragment extends Fragment implements LocationListener {
             try {
                 mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
                 Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                // make sure location is at least somewhat "fresh"
                 if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
-                    float lat = (float)location.getLatitude();
-                    float lon = (float)location.getLongitude();
-                    String message = String.format("From postal code: Latitude: %f, Longitude: %f",
-                            lat, lon);
-                    Log.d(TAG, message);
-                    final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
-                    final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
-                    latitudeEdit.setText(Float.toString(lat));
-                    longitudeEdit.setText(Float.toString(lon));
+                    loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
+                        "From GPS: ");
                 }
                 else {
+                    // Try GPS
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                     // wait far callback to be called; otherwise get going
                     try {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.gps_toast_string,
+                                Toast.LENGTH_SHORT).show();
+                        //make this configurable
                         Thread.sleep(1000*60); // 1000 milliseconds is one second.
-                    } catch(InterruptedException ex) {
+                    } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
+                    }
+                    String checkLat = ((EditText)getView().findViewById(R.id.editTextApiaryLatitude)).getText;
+                    if ((checkLat == null) || (checkLat.length == 0)) {
+                        mLocationManager.removeUpdates(this);
+                        // Try Network
+                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+                        // wait far callback to be called; otherwise get going
+                        try {
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_toast_string,
+                                    Toast.LENGTH_SHORT).show();
+                            //make this configurable
+                            Thread.sleep(1000*60); // 1000 milliseconds is one second.
+                        } catch (InterruptedException ex) {
+                            Thread.currentThread().interrupt();
+                        }
+                        //necessary for cleanup?
+                        mLocationManager.removeUpdates(this);
                     }
                 }
             }
@@ -267,15 +275,8 @@ public class EditApiaryFragment extends Fragment implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            float lat = (float)location.getLatitude();
-            float lon = (float)location.getLongitude();
-            String message = String.format("From postal code: Latitude: %f, Longitude: %f",
-                    lat, lon);
-            Log.d(TAG, message);
-            final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
-            final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
-            latitudeEdit.setText(Float.toString(lat));
-            longitudeEdit.setText(Float.toString(lon));
+            loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
+                "From " + location.getProvider() + " callback: ");
             try {
                 mLocationManager.removeUpdates(this);
             }
@@ -284,6 +285,15 @@ public class EditApiaryFragment extends Fragment implements LocationListener {
                 Log.d(TAG, "Permission not given for location services");
             }
         }
+    }
+
+    // utility method for loading lat/lon screen fields
+    private void loadScreenLatLon(float aLat, float aLon, String aCaller) {
+        Log.d(TAG, String.format(aCaller + "Lat: %f, Lon: %f", aLat, aLon));
+        final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
+        final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
+        latitudeEdit.setText(Float.toString(lat));
+        longitudeEdit.setText(Float.toString(lon));
     }
 
     @Override
