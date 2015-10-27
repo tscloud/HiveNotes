@@ -13,7 +13,11 @@ import android.widget.TextView;
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
+import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
+import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
+
+import java.util.Date;
 
 
 /**
@@ -32,8 +36,10 @@ import net.tscloud.hivenotes.db.LogEntryProductivity;
  * {@link LogEntryListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class LogEntryListActivity extends AppCompatActivity
-        implements LogEntryListFragment.Callbacks {
+public class LogEntryListActivity extends AppCompatActivity implements
+        LogEntryListFragment.Callbacks,
+        LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
+        LogProductivityFragment.OnLogProductivityFragmentInteractionListener {
 
     public static final String TAG = "LogEntryListActivity";
 
@@ -47,9 +53,9 @@ public class LogEntryListActivity extends AppCompatActivity
     private long mHiveKey;
 
     // Need to a reference to each of the Log Entry data objects
-    public static String INTENT_LOGENTRY_GENERAL_DATA = "logentryData";
+    public static String INTENT_LOGENTRY_GENERAL_DATA = "logentryGeneralData";
     LogEntryGeneral mLogEntryGeneralData;
-    public static String INTENT_LOGENTRY_PRODUCTIVITY_DATA = "logentryData";
+    public static String INTENT_LOGENTRY_PRODUCTIVITY_DATA = "logentryProductivityData";
     LogEntryProductivity mLogEntryProductivityData;
 
     /**
@@ -126,15 +132,21 @@ public class LogEntryListActivity extends AppCompatActivity
                     // will this always be a new logentry? so pass -1?
                     fragment = LogProductivityFragment.newInstance(mHiveKey, -1);
                     break;
+                case "6":
+                    // Save button
+                    updateDB(mLogEntryGeneralData, mLogEntryProductivityData);
+                    break;
                 default:
                     fragment = new LogEntryDetailFragment();
                     break;
             }
 
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.logentry_detail_container, fragment)
-                    .commit();
+            if (fragment != null) {
+                fragment.setArguments(arguments);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.logentry_detail_container, fragment)
+                        .commit();
+            }
 
         } else {
             // In single-pane mode, simply start the detail activity
@@ -147,24 +159,79 @@ public class LogEntryListActivity extends AppCompatActivity
     }
 
     @Override
+    public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral) {
+        Log.d(TAG, "received LogEntryGeneral data object");
+        mLogEntryGeneralData = aLogEntryGeneral;
+    }
+
+    @Override
+    public void onLogProductivityFragmentInteraction(LogEntryProductivity aLogEntryProductivity) {
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if ((requestCode == LOG_DETAIL_REQ_CODE) && (resultCode == RESULT_OK)) {
             Log.d(TAG, "Returned from requestCode = " + requestCode);
 
-            Bundle bundleData = data.getExtras();
-            if (bundleData.keySet().contains(INTENT_LOGENTRY_GENERAL_DATA)) {
-                mLogEntryGeneralData =
-                        (LogEntryGeneral)bundleData.getSerializable(INTENT_LOGENTRY_GENERAL_DATA);
-                Log.d(TAG, "received LogEntryGeneral data object");
+            if (data == null) {
+                Log.d(TAG, "Save button pressed from LogEntryDetailActivity...perform save");
+                updateDB(mLogEntryGeneralData, mLogEntryProductivityData);
             }
-            else if (bundleData.keySet().contains(INTENT_LOGENTRY_PRODUCTIVITY_DATA)) {
-                mLogEntryProductivityData =
-                        (LogEntryProductivity)bundleData.getSerializable(INTENT_LOGENTRY_PRODUCTIVITY_DATA);
-                Log.d(TAG, "received LogEntryProductivity data object");
+            else {
+                Bundle bundleData = data.getExtras();
+                if (bundleData.keySet().contains(INTENT_LOGENTRY_GENERAL_DATA)) {
+                    Log.d(TAG, "received LogEntryGeneral data object");
+                    mLogEntryGeneralData =
+                            (LogEntryGeneral) bundleData.getSerializable(INTENT_LOGENTRY_GENERAL_DATA);
+                } else if (bundleData.keySet().contains(INTENT_LOGENTRY_PRODUCTIVITY_DATA)) {
+                    Log.d(TAG, "received LogEntryProductivity data object");
+                    mLogEntryProductivityData =
+                            (LogEntryProductivity) bundleData.getSerializable(INTENT_LOGENTRY_PRODUCTIVITY_DATA);
+                }
             }
         }
+    }
+
+    private void updateDB(LogEntryGeneral aLogEntryGeneral, LogEntryProductivity aLogEntryProductivity) {
+        // This is the date that will be used for all the VISIT_DATE columns
+        //  set it to Now in case there's nothing from LogEntryGeneral
+        String generalDate = new Date().toString();
+
+        if (aLogEntryGeneral != null) {
+            //assume date is set from LogEttryGeneral?
+            generalDate = aLogEntryGeneral.getVisitDate();
+
+            LogEntryGeneralDAO aLogEntryGeneralDAO = new LogEntryGeneralDAO(this);
+            if (aLogEntryGeneral.getId() == -1) {
+                aLogEntryGeneralDAO.createLogEntry(aLogEntryGeneral);
+            }
+            else {
+                aLogEntryGeneralDAO.updateLogEntry(aLogEntryGeneral);
+            }
+            aLogEntryGeneralDAO.close();
+        }
+
+        if (aLogEntryProductivity != null) {
+            LogEntryProductivityDAO aLogEntryProductivityDAO = new LogEntryProductivityDAO(this);
+            // set VISIT_DATE to value from LogEntryGeneral or Now
+            aLogEntryProductivity.setVisitDate(generalDate);
+
+            if (aLogEntryProductivity.getId() == -1) {
+                aLogEntryProductivityDAO.createLogEntry(aLogEntryProductivity);
+            }
+            else {
+                aLogEntryProductivityDAO.updateLogEntry(aLogEntryProductivity);
+            }
+            aLogEntryProductivityDAO.close();
+        }
+
+        /*
+        finish the Activity?
+         */
+        finish();
     }
 
     // Make the Up button perform like the Back button

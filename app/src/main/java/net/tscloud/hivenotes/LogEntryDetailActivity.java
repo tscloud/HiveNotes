@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import net.tscloud.hivenotes.db.LogEntryGeneral;
+import net.tscloud.hivenotes.db.LogEntryProductivity;
 
 /**
  * An activity representing a single LogEntryGeneral detail screen. This
@@ -51,7 +52,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             mHiveKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_HIVE_KEY, -1);
             mlogentryKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_KEY, -1);
 
-            Fragment fragment;
+            Fragment fragment = null;
 
             switch (argItemId) {
                 case "1":
@@ -60,14 +61,20 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                 case "2":
                     fragment = LogProductivityFragment.newInstance(mHiveKey, mlogentryKey);
                     break;
+                case "6":
+                    // Save button
+                    onSaveButton();
+                    break;
                 default:
                     fragment = new LogEntryDetailFragment();
                     break;
             }
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.logentry_detail_container, fragment)
-                    .commit();
+            if (fragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.logentry_detail_container, fragment)
+                        .commit();
+            }
         }
     }
 
@@ -111,13 +118,21 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogProductivityFragmentInteraction() {
+    public void onLogProductivityFragmentInteraction(LogEntryProductivity aLogEntryProductivity) {
         Log.d(TAG, "return from LogProductivityFragment...finish LogEntryDetailActivity");
 
         Intent data = new Intent();
-        //data.putExtra("apiaryKey", apiaryID);
+        Bundle bundleData = new Bundle();
+        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_PRODUCTIVITY_DATA, aLogEntryProductivity);
+        data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
 
+    }
+
+    private void onSaveButton() {
+        Log.d(TAG, "returning to LogEntryListActivity to perform save");
+        setResult(RESULT_OK);
+        finish();
     }
 }

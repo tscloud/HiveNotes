@@ -21,6 +21,8 @@
     <string name="update_apiary_string">Update Apiary</string>
     <string name="postal_code_string">Postal Code:</string>
     <string name="new_apiary_name_string">Apiary Name:</string>
+    <string name="apiary_latlon">Lat/Lon:</string>
+    <string name="apiary_compute_latlon">Lat/Lon from Postal Code or GPS</string>
 
     <string name="new_profile_string">New Profile</string>
     <string name="create_profile_string">Create Profile</string>
@@ -34,6 +36,8 @@
     <string name="hive_name_string">Hive Name:</string>
     <string name="hive_species_string">Species:</string>
     <string name="hive_foundation_type_string">Foundation Type:</string>
+
+    <string name="done_string">Done</string>
 
     <string name="title_logentry_list">LogEntries</string>
     <string name="title_logentry_detail">LogEntry Detail</string>

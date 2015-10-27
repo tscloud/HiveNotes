@@ -1,6 +1,12 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +19,9 @@ import android.widget.EditText;
 import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -24,7 +33,7 @@ import java.util.List;
  * Use the EditApiaryFragment#newInstance factory method to
  * create an instance of this fragment.
  */
-public class EditApiaryFragment extends Fragment {
+public class EditApiaryFragment extends Fragment implements LocationListener {
 
     public static final String TAG = "EditApiaryFragment";
 
@@ -37,6 +46,9 @@ public class EditApiaryFragment extends Fragment {
     private Apiary mApiary;
 
     private OnEditApiaryFragmentInteractionListener mListener;
+
+    // Used to get location
+    LocationManager mLocationManager;
 
     /**
      * Use this factory method to create a new instance of
@@ -95,13 +107,25 @@ public class EditApiaryFragment extends Fragment {
             }
         });
 
+        final Button bComputeLatLon = (Button)v.findViewById(R.id.buttonComputeLatLon);
+        bComputeLatLon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onComputeLatLonButtonPressed(mProfileID);
+            }
+        });
+
         if (mApiary != null) {
             // fill the form
-            EditText nameEdit = (EditText)v.findViewById(R.id.editTextApiaryName);
-            EditText postalCodeEdit = (EditText)v.findViewById(R.id.editTextApiaryPostalCode);
+            final EditText nameEdit = (EditText)v.findViewById(R.id.editTextApiaryName);
+            final EditText postalCodeEdit = (EditText)v.findViewById(R.id.editTextApiaryPostalCode);
+            final EditText latitudeEdit = (EditText)v.findViewById(R.id.editTextApiaryLatitude);
+            final EditText longitudeEdit = (EditText)v.findViewById(R.id.editTextApiaryLongitude);
 
             nameEdit.setText(mApiary.getName());
             postalCodeEdit.setText(mApiary.getPostalCode());
+            latitudeEdit.setText(Float.toString(mApiary.getLatitude()));
+            longitudeEdit.setText(Float.toString(mApiary.getLongitude()));
 
             b1.setText(getResources().getString(R.string.new_apiary_button_text));
         }
@@ -115,10 +139,25 @@ public class EditApiaryFragment extends Fragment {
 
         boolean lNewApiary = false;
 
-        EditText nameEdit = (EditText)getView().findViewById(R.id.editTextApiaryName);
-        EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
+        final EditText nameEdit = (EditText)getView().findViewById(R.id.editTextApiaryName);
+        final EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
+        final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
+        final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
+
         String nameText = nameEdit.getText().toString();
         String postalCodeText = postalCodeEdit.getText().toString();
+
+        String latitudeString = latitudeEdit.getText().toString();
+        float latitudeFloat = 0;
+        if ((latitudeString != null) && (latitudeString.length() != 0)) {
+            latitudeFloat = Float.parseFloat(latitudeString);
+        }
+
+        String longitudeString = longitudeEdit.getText().toString();
+        float longitudeFloat = 0;
+        if ((longitudeString != null) && (longitudeString.length() != 0)) {
+            longitudeFloat = Float.parseFloat(longitudeString);
+        }
 
         // neither EditText can be empty
         boolean emptyText = false;
@@ -139,11 +178,13 @@ public class EditApiaryFragment extends Fragment {
             ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
             Apiary apiary;
             if (mApiaryID == -1) {
-                apiary = apiaryDAO.createApiary(profileID, nameText, postalCodeText);
+                apiary = apiaryDAO.createApiary(profileID, nameText, postalCodeText, latitudeFloat,
+                        longitudeFloat);
                 lNewApiary = true;
             }
             else {
-                apiary = apiaryDAO.updateApiary(mApiaryID, profileID, nameText, postalCodeText);
+                apiary = apiaryDAO.updateApiary(mApiaryID, profileID, nameText, postalCodeText,
+                        latitudeFloat, longitudeFloat);
             }
             apiaryDAO.close();
 
@@ -159,6 +200,105 @@ public class EditApiaryFragment extends Fragment {
                 mListener.onEditApiaryFragmentInteraction();
             }
         }
+    }
+
+    public void onComputeLatLonButtonPressed(long profileID) {
+        final EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
+        final String postalCodeText = postalCodeEdit.getText().toString();
+
+        if ((postalCodeText != null) && (postalCodeText.length() != 0)) {
+            // use postal code to get lat/lon
+            final Geocoder geocoder= new Geocoder(getActivity());
+            try {
+                List<Address> addresses = geocoder.getFromLocationName(postalCodeText, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    Address address = addresses.get(0);
+                    // Use the address as needed
+                    float lat = (float)address.getLatitude();
+                    float lon = (float)address.getLongitude();
+                    String message = String.format("From postal code: Latitude: %f, Longitude: %f",
+                            lat, lon);
+                    Log.d(TAG, message);
+                    final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
+                    final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
+                    latitudeEdit.setText(Float.toString(lat));
+                    longitudeEdit.setText(Float.toString(lon));
+                } else {
+                    // Display appropriate message when Geocoder services are not available
+                    Log.d(TAG, "no find lat/lon");
+                }
+            } catch (IOException e) {
+                // handle exception
+                Log.d(TAG, "IOException getting loat/log from postal code: " + e.getMessage());
+            }
+        }
+        else {
+            // use GPS to get lat/lon
+            try {
+                mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
+                    float lat = (float)location.getLatitude();
+                    float lon = (float)location.getLongitude();
+                    String message = String.format("From postal code: Latitude: %f, Longitude: %f",
+                            lat, lon);
+                    Log.d(TAG, message);
+                    final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
+                    final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
+                    latitudeEdit.setText(Float.toString(lat));
+                    longitudeEdit.setText(Float.toString(lon));
+                }
+                else {
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                    // wait far callback to be called; otherwise get going
+                    try {
+                        Thread.sleep(1000*60); // 1000 milliseconds is one second.
+                    } catch(InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+            catch (SecurityException e) {
+                Log.d(TAG, "Permission not given for location services");
+            }
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            float lat = (float)location.getLatitude();
+            float lon = (float)location.getLongitude();
+            String message = String.format("From postal code: Latitude: %f, Longitude: %f",
+                    lat, lon);
+            Log.d(TAG, message);
+            final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
+            final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
+            latitudeEdit.setText(Float.toString(lat));
+            longitudeEdit.setText(Float.toString(lon));
+            try {
+                mLocationManager.removeUpdates(this);
+            }
+            catch (SecurityException e) {
+                //should this happen?
+                Log.d(TAG, "Permission not given for location services");
+            }
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     @Override

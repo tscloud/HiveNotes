@@ -11,6 +11,8 @@ public class Apiary {
     private long profile;
     private String name;
     private String postalCode;
+    private float latitude;
+    private float longitude;
 
     public Apiary() {
     }
@@ -49,4 +51,20 @@ public class Apiary {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode; }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
 }

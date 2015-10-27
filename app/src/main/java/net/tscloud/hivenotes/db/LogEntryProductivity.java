@@ -1,9 +1,11 @@
 package net.tscloud.hivenotes.db;
 
+import java.io.Serializable;
+
 /**
  * Created by tscloud on 10/17/15.
  */
-public class LogEntryProductivity {
+public class LogEntryProductivity implements Serializable {
 
     public static final String TAG = "LogEntryProductivity";
 

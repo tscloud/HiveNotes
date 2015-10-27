@@ -84,6 +84,12 @@ public class LogEntryGeneralDAO {
         return newLogEntryGeneral;
     }
 
+    public LogEntryGeneral createLogEntry(LogEntryGeneral aDO) {
+        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getPopulation(), aDO.getTemperament(),
+                aDO.getPestsDisease(), aDO.getBroodFrames(), aDO.getBroodPattern(),aDO.getQueen(),
+                aDO.getHoneyStores(), aDO.getPollenStores());
+    }
+
     public LogEntryGeneral updateLogEntry(long id, long hive, String visitDate, String population,
                                    String temperament, String pestsDisease, int broodFrames,
                                    String broodPattern, String queen, String honeyStores,
@@ -112,6 +118,12 @@ public class LogEntryGeneralDAO {
         }
 
         return updatedLogEntryGeneral;
+    }
+
+    public LogEntryGeneral updateLogEntry(LogEntryGeneral aDO) {
+        return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getPopulation(), aDO.getTemperament(),
+                aDO.getPestsDisease(), aDO.getBroodFrames(), aDO.getBroodPattern(),aDO.getQueen(),
+                aDO.getHoneyStores(), aDO.getPollenStores());
     }
 
     public void deleteLogEntry(LogEntryGeneral logEntryGeneral) {

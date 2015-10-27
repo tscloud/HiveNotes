@@ -85,6 +85,12 @@ public class LogEntryProductivityDAO {
         return newLogEntryProductivity;
     }
 
+    public LogEntryProductivity createLogEntry(LogEntryProductivity aDO) {
+        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getHoneyAddSupers(),
+                aDO.getHoneyRemoveSupers(), aDO.getExtractedHoney(), aDO.getAddPollenTrap(),
+                aDO.getRemovePollenTrap(), aDO.getPollenCollected(), aDO.getBeeswaxCollected());
+    }
+
     public LogEntryProductivity updateLogEntry(long id, long hive, String visitDate, String honeyAddSupers,
                                                String honeyRemoveSupers, float extractedHoney,
                                                int addPollenTrap, int removePollenTrap,
@@ -111,6 +117,12 @@ public class LogEntryProductivityDAO {
         }
 
         return updatedLogEntryProductivity;
+    }
+
+    public LogEntryProductivity updateLogEntry(LogEntryProductivity aDO) {
+        return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getHoneyAddSupers(),
+                aDO.getHoneyRemoveSupers(), aDO.getExtractedHoney(), aDO.getAddPollenTrap(),
+                aDO.getRemovePollenTrap(), aDO.getPollenCollected(), aDO.getBeeswaxCollected());
     }
 
     public void deleteLogEntry(LogEntryProductivity logEntryProductivity) {

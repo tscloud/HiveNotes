@@ -24,13 +24,15 @@ public class ApiaryDAO {
     public static final String COLUMN_APIARY_PROFILE = "profile";
     public static final String COLUMN_APIARY_NAME = "name";
     public static final String COLUMN_POSTAL_CODE = "postal_code";
+    public static final String COLUMN_LATITUDE = "latitude";
+    public static final String COLUMN_LONGITUDE = "longitude";
 
     // Database fields
     private SQLiteDatabase mDatabase;
     private MyDBHandler mDbHelper;
     private Context mContext;
     private String[] mAllColumns = { COLUMN_APIARY_ID, COLUMN_APIARY_PROFILE, COLUMN_APIARY_NAME,
-            COLUMN_POSTAL_CODE };
+            COLUMN_POSTAL_CODE,COLUMN_LATITUDE,COLUMN_LONGITUDE };
 
     public ApiaryDAO(Context context) {
         this.mContext = context;
@@ -54,11 +56,14 @@ public class ApiaryDAO {
 
     // --DB access methods--
 
-    public Apiary createApiary(long profile, String name, String postalCode) {
+    public Apiary createApiary(long profile, String name, String postalCode, float latitude,
+                               float longitude) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_APIARY_PROFILE, profile);
         values.put(COLUMN_APIARY_NAME, name);
         values.put(COLUMN_POSTAL_CODE, postalCode);
+        values.put(COLUMN_LATITUDE, latitude);
+        values.put(COLUMN_LONGITUDE, longitude);
         long insertId = mDatabase.insert(TABLE_APIARY, null, values);
         Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,
                 COLUMN_APIARY_ID + " = " + insertId, null, null, null, null);
@@ -69,11 +74,14 @@ public class ApiaryDAO {
         return newApiary;
     }
 
-    public Apiary updateApiary(long id, long profile, String name, String postalCode) {
+    public Apiary updateApiary(long id, long profile, String name, String postalCode, float latitude,
+                               float longitude) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_APIARY_PROFILE, profile);
         values.put(COLUMN_APIARY_NAME, name);
         values.put(COLUMN_POSTAL_CODE, postalCode);
+        values.put(COLUMN_LATITUDE, latitude);
+        values.put(COLUMN_LONGITUDE, longitude);
         int rowsUpdated = mDatabase.update(TABLE_APIARY, values, COLUMN_APIARY_ID + "=" + id, null);
 
         Apiary updatedApiary = null;
@@ -128,6 +136,8 @@ public class ApiaryDAO {
         apiary.setProfile(cursor.getLong(1));
         apiary.setName(cursor.getString(2));
         apiary.setPostalCode(cursor.getString(3));
+        apiary.setLatitude(cursor.getFloat(4));
+        apiary.setLongitude(cursor.getFloat(5));
 
         return apiary;
     }

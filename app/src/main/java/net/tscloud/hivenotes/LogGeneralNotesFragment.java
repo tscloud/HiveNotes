@@ -81,6 +81,7 @@ public class LogGeneralNotesFragment extends Fragment {
 
         // set button listener and text
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
+        b1.setText(getResources().getString(R.string.done_string));
 
         // enable "Other" EditText only if corresponding CheckBox checked
         final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkOther);
@@ -110,7 +111,6 @@ public class LogGeneralNotesFragment extends Fragment {
         final EditText dateEdit = (EditText)v.findViewById(R.id.editTextDate);
 
         if (mLogEntryGeneral != null) {
-            b1.setText(getResources().getString(R.string.save_logentry_string));
 
             // setup for disease checkboxes
             String diseaseSetDBString = mLogEntryGeneral.getPestsDisease();
@@ -165,8 +165,6 @@ public class LogGeneralNotesFragment extends Fragment {
             otherCheck.setChecked(diseaseSetDBString.contains(otherCheck.getText()));
         }
         else {
-            b1.setText(getResources().getString(R.string.create_logentry_string));
-
             // default to todays date
             dateEdit.setText(new Date().toString());
         }
@@ -311,7 +309,6 @@ public class LogGeneralNotesFragment extends Fragment {
                 mListener.onLogGeneralNotesFragmentInteraction(mLogEntryGeneral);
             }
         }
-
     }
 
     private void onOtherCheckChecked(View v, EditText e) {

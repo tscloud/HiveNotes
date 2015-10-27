@@ -16,8 +16,6 @@ import android.widget.Spinner;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
 
-import java.util.Date;
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -80,6 +78,7 @@ public class LogProductivityFragment extends Fragment {
 
         // set button listener and text
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
+        b1.setText(getResources().getString(R.string.done_string));
 
         // setup numeric Spinner values
         final Spinner addSupersSpinner = (Spinner)v.findViewById(R.id.spinnerAddSupers);
@@ -97,7 +96,6 @@ public class LogProductivityFragment extends Fragment {
         removeSupersSpinner.setAdapter(spinnerArrayAdapter);
 
         if (mLogEntryProductivity != null) {
-            b1.setText(getResources().getString(R.string.save_logentry_string));
 
             // fill the form
             final EditText extractedHoneyEdit = (EditText)v.findViewById(R.id.editTextExtractedHoney);
@@ -117,9 +115,6 @@ public class LogProductivityFragment extends Fragment {
             pollenRemoveTrapCheck.setChecked(mLogEntryProductivity.getRemovePollenTrap()!=0);
             pollenCollectedEdit.setText(Float.toString(mLogEntryProductivity.getPollenCollected()));
             beeswaxCollectedEdit.setText(Float.toString(mLogEntryProductivity.getBeeswaxCollected()));
-        }
-        else {
-            b1.setText(getResources().getString(R.string.create_logentry_string));
         }
 
         // set button listener
@@ -149,27 +144,49 @@ public class LogProductivityFragment extends Fragment {
 
         String addSupersText = addSupersSpinner.getSelectedItem().toString();
         String removeSupersText = removeSupersSpinner.getSelectedItem().toString();
-        float extractedHoneyFloat = Float.parseFloat(extractedHoneyEdit.getText().toString());
+
+        String extractedHoneyString = extractedHoneyEdit.getText().toString();
+        float extractedHoneyFloat = 0;
+        if ((extractedHoneyString != null) && (extractedHoneyString.length() != 0)) {
+            extractedHoneyFloat = Float.parseFloat(extractedHoneyString);
+        }
+
         int pollenAddTrapInt = (pollenAddTrapCheck.isChecked()) ? 1 : 0;
         int pollenRemoveTrapInt = (pollenRemoveTrapCheck.isChecked()) ? 1 : 0;
-        float pollenCollectedFloat = Float.parseFloat(pollenCollectedEdit.getText().toString());
-        float beeswaxCollectedFloat = Float.parseFloat(beeswaxCollectedEdit.getText().toString());
+
+        String pollenCollectedString = pollenCollectedEdit.getText().toString();
+        float pollenCollectedFloat = 0;
+        if ((pollenCollectedString != null) && (pollenCollectedString.length() != 0)) {
+            pollenCollectedFloat = Float.parseFloat(pollenCollectedString);
+        }
+
+        String beeswaxCollectedString = beeswaxCollectedEdit.getText().toString();
+        float beeswaxCollectedFloat = 0;
+        if ((beeswaxCollectedString != null) && (beeswaxCollectedString.length() != 0)) {
+            beeswaxCollectedFloat = Float.parseFloat(beeswaxCollectedString);
+        }
 
         // check for required values - are there any?
         boolean emptyText = false;
 
         if (!emptyText) {
             LogEntryProductivityDAO logEntryProductivityDAO = new LogEntryProductivityDAO(getActivity());
+            if (mLogEntryProductivity == null) {
+                mLogEntryProductivity = new LogEntryProductivity();
+            }
+            /*
             LogEntryProductivity logEntryProductivity;
             if (mLogEntryProductivityKey == -1) {
-                logEntryProductivity = logEntryProductivityDAO.createLogEntry(mHiveID, new Date().toString(),
+                // VISIT_DATE column will be set at DB update time
+                logEntryProductivity = logEntryProductivityDAO.createLogEntry(mHiveID, null,
                         addSupersText, removeSupersText, extractedHoneyFloat, pollenAddTrapInt,
                         pollenRemoveTrapInt, pollenCollectedFloat, beeswaxCollectedFloat);
                 lNewLogEntry = true;
             }
             else {
+                // VISIT_DATE column will be set at DB update time
                 logEntryProductivity = logEntryProductivityDAO.updateLogEntry(mLogEntryProductivityKey,
-                        mHiveID, new Date().toString(), addSupersText, removeSupersText,
+                        mHiveID, null, addSupersText, removeSupersText,
                         extractedHoneyFloat, pollenAddTrapInt, pollenRemoveTrapInt, pollenCollectedFloat,
                         beeswaxCollectedFloat);
             }
@@ -185,10 +202,21 @@ public class LogProductivityFragment extends Fragment {
             else {
                 Log.d(TAG, "BAD...LogEntryProductivity update failed");
             }
-        }
+            */
+            mLogEntryProductivity.setId(mLogEntryProductivityKey);
+            mLogEntryProductivity.setHive(mHiveID);
+            mLogEntryProductivity.setVisitDate(null);
+            mLogEntryProductivity.setHoneyAddSupers(addSupersText);
+            mLogEntryProductivity.setHoneyRemoveSupers(removeSupersText);
+            mLogEntryProductivity.setExtractedHoney(extractedHoneyFloat);
+            mLogEntryProductivity.setAddPollenTrap(pollenAddTrapInt);
+            mLogEntryProductivity.setRemovePollenTrap(pollenRemoveTrapInt);
+            mLogEntryProductivity.setPollenCollected(pollenCollectedFloat);
+            mLogEntryProductivity.setBeeswaxCollected(beeswaxCollectedFloat);
 
-        if (mListener != null) {
-            mListener.onLogProductivityFragmentInteraction();
+            if (mListener != null) {
+                mListener.onLogProductivityFragmentInteraction(mLogEntryProductivity);
+            }
         }
     }
 
@@ -231,7 +259,7 @@ public class LogProductivityFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnLogProductivityFragmentInteractionListener {
-        public void onLogProductivityFragmentInteraction();
+        public void onLogProductivityFragmentInteraction(LogEntryProductivity aLogEntryProductivity);
     }
 
 }
