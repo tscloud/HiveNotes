@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
@@ -222,7 +223,7 @@ public class EditApiaryFragment extends Fragment implements LocationListener {
                 }
             } catch (IOException e) {
                 // handle exception
-                Log.d(TAG, "IOException getting loat/log from postal code: " + e.getMessage());
+                Log.d(TAG, "IOException getting lat/lon from postal code: " + e.getMessage());
             }
         }
         else {
@@ -240,24 +241,25 @@ public class EditApiaryFragment extends Fragment implements LocationListener {
                     mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                     // wait far callback to be called; otherwise get going
                     try {
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.gps_toast_string,
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getResources().getString(R.string.gps_toast_string),
+                                Toast.LENGTH_LONG).show();
                         //make this configurable
-                        Thread.sleep(1000*60); // 1000 milliseconds is one second.
+                        Thread.sleep(1000*5); // 1000 milliseconds is one second.
                     } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
                     }
-                    String checkLat = ((EditText)getView().findViewById(R.id.editTextApiaryLatitude)).getText;
-                    if ((checkLat == null) || (checkLat.length == 0)) {
+                    // if latitude EditText has something => we're done
+                    String checkLat = ((EditText)getView().findViewById(R.id.editTextApiaryLatitude)).getText().toString();
+                    if ((checkLat == null) || (checkLat.length() == 0)) {
                         mLocationManager.removeUpdates(this);
                         // Try Network
                         mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
                         // wait far callback to be called; otherwise get going
                         try {
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_toast_string,
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getResources().getString(R.string.network_toast_string),
+                                    Toast.LENGTH_LONG).show();
                             //make this configurable
-                            Thread.sleep(1000*60); // 1000 milliseconds is one second.
+                            Thread.sleep(1000*5); // 1000 milliseconds is one second.
                         } catch (InterruptedException ex) {
                             Thread.currentThread().interrupt();
                         }
@@ -292,8 +294,8 @@ public class EditApiaryFragment extends Fragment implements LocationListener {
         Log.d(TAG, String.format(aCaller + "Lat: %f, Lon: %f", aLat, aLon));
         final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
         final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
-        latitudeEdit.setText(Float.toString(lat));
-        longitudeEdit.setText(Float.toString(lon));
+        latitudeEdit.setText(Float.toString(aLat));
+        longitudeEdit.setText(Float.toString(aLon));
     }
 
     @Override
