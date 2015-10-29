@@ -9,7 +9,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 
 public class FetchCoordinates extends AsyncTask<String, Integer, String> implements LocationListener {
@@ -43,15 +42,6 @@ public class FetchCoordinates extends AsyncTask<String, Integer, String> impleme
 
     @Override
     protected void onPreExecute() {
-        try {
-            locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, 0, 0,
-                    this);
-        }
-        catch (SecurityException e) {
-            Log.d(TAG, "Permission not given for location services");
-        }
-
         progDialog = new ProgressDialog(user);
         progDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
@@ -59,7 +49,6 @@ public class FetchCoordinates extends AsyncTask<String, Integer, String> impleme
                 FetchCoordinates.this.cancel(true);
             }
         });
-        progDialog.setMessage("Loading...");
         progDialog.setIndeterminate(true);
         progDialog.setCancelable(true);
         progDialog.show();
@@ -69,6 +58,8 @@ public class FetchCoordinates extends AsyncTask<String, Integer, String> impleme
     protected void onCancelled(){
         Log.d(TAG, "Cancelled by user!");
         progDialog.dismiss();
+
+        // be sure to removeUpdates() - onPostExecute() not invoked if onCancelled() is
         try {
             locationManager.removeUpdates(this);
         }
@@ -77,23 +68,49 @@ public class FetchCoordinates extends AsyncTask<String, Integer, String> impleme
         }
     }
 
-    /*
     @Override
     protected void onPostExecute(String result) {
         progDialog.dismiss();
 
-        Toast.makeText(user,
-                "LATITUDE :" + lati + " LONGITUDE :" + longi,
-                Toast.LENGTH_LONG).show();
+        try {
+            locationManager.removeUpdates(this);
+        }
+        catch (SecurityException e) {
+            Log.d(TAG, "Permission not given for location services");
+        }
     }
-    */
 
     @Override
     protected String doInBackground(String... params) {
         try {
-            Thread.sleep(1000*10);
-        } catch (InterruptedException e) {
-            Log.d(TAG, "timeout...");
+            // --GPS--
+            progDialog.setMessage("Trying GPS Provider...");
+
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER, 0, 0,
+                    this);
+
+            Thread.sleep(1000 * 10);
+            // be sure to removeUpdates()
+            locationManager.removeUpdates(this);
+
+            // --Network--
+            progDialog.setMessage("Trying Network Provider...");
+
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER, 0, 0,
+                    this);
+
+            Thread.sleep(1000 * 10);
+            // final removeUpdates() call in onPostExecute()
+            //locationManager.removeUpdates(this);
+        }
+        catch (SecurityException e) {
+            Log.d(TAG, "Permission not given for location services");
+        }
+
+        catch (InterruptedException e) {
+            Log.d(TAG, "doInBackground() Thread.sleep interrupted...");
         }
 
         return null;
@@ -102,12 +119,14 @@ public class FetchCoordinates extends AsyncTask<String, Integer, String> impleme
 
     @Override
     public void onLocationChanged(Location location) {
+        /* final removeUpdates() call in onPostExecute()
         try {
             locationManager.removeUpdates(this);
         }
         catch (SecurityException e) {
             Log.d(TAG, "Permission not given for location services");
         }
+        */
 
         if (location != null) {
             provider = location.getProvider();
