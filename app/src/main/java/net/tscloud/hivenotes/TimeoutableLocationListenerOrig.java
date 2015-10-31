@@ -1,4 +1,4 @@
-package com.amay077.android.location;
+package net.tscloud.hivenotes;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,7 +14,7 @@ import android.os.Bundle;
  *
  * @author amay077 - http://twitter.com/amay077
  */
-public class TimeoutableLocationListener implements LocationListener {
+public class TimeoutableLocationListenerOrig implements LocationListener {
     protected Timer timerTimeout = new Timer();
     protected LocationManager locaMan = null;
 
@@ -25,15 +25,15 @@ public class TimeoutableLocationListener implements LocationListener {
      * @param timeOutMS timeout elapsed (mili seconds)
      * @param timeoutListener if timeout, call onTimeouted method of this.
      */
-    public TimeoutableLocationListener(LocationManager locaMan, long timeOutMS,
-            final TimeoutLisener timeoutListener) {
+    public TimeoutableLocationListenerOrig(LocationManager locaMan, long timeOutMS,
+                                           final TimeoutLisener timeoutListener) {
         this.locaMan  = locaMan;
         timerTimeout.schedule(new TimerTask() {
 
             @Override
             public void run() {
                 if (timeoutListener != null) {
-                    timeoutListener.onTimeouted(TimeoutableLocationListener.this);
+                    timeoutListener.onTimeouted(TimeoutableLocationListenerOrig.this);
                 }
                 stopLocationUpdateAndTimer();
             }

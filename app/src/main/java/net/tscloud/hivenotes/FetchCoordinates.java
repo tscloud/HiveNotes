@@ -8,6 +8,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 
@@ -15,6 +17,8 @@ public class FetchCoordinates extends AsyncTask<String, Integer, String> impleme
     ProgressDialog progDialog = null;
 
     public static final String TAG = "FetchCoordinates";
+    public static final long GPS_TIMOUT = 20000; // 20 sec
+    public static final long NETWORK_TIMOUT = 10000; // 10 sec
 
     private double lati = 0.0;
     private double longi = 0.0;
@@ -51,6 +55,7 @@ public class FetchCoordinates extends AsyncTask<String, Integer, String> impleme
         });
         progDialog.setIndeterminate(true);
         progDialog.setCancelable(true);
+        progDialog.setMessage("Trying GPS Provider...");
         progDialog.show();
     }
 
@@ -81,41 +86,74 @@ public class FetchCoordinates extends AsyncTask<String, Integer, String> impleme
     }
 
     @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+
+        progDialog.setMessage("Trying Network Provider...");
+    }
+
+    @Override
     protected String doInBackground(String... params) {
         try {
             // --GPS--
-            progDialog.setMessage("Trying GPS Provider...");
+            final LocationListener myListener = this;
 
-            locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER, 0, 0,
-                    this);
+            Looper.prepare();
+            final Looper myLooper = Looper.myLooper();
+            final Handler myHandler = new Handler(myLooper);
 
-            Thread.sleep(1000 * 10);
-            // be sure to removeUpdates()
-            locationManager.removeUpdates(this);
+            Log.d(TAG, "about to set GPS thread");
 
-            // --Network--
-            progDialog.setMessage("Trying Network Provider...");
+            locationManager.requestSingleUpdate(
+                    LocationManager.GPS_PROVIDER, myListener, myLooper);
 
-            locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER, 0, 0,
-                    this);
-
-            Thread.sleep(1000 * 10);
-            // final removeUpdates() call in onPostExecute()
-            //locationManager.removeUpdates(this);
+            myHandler.postDelayed(new Runnable() {
+                public void run() {
+                    try {
+                        locationManager.removeUpdates(myListener);
+                        publishProgress();
+                        doNetworkProvider();
+                    } catch (SecurityException e) {
+                        Log.d(TAG, "Permission not given for location services");
+                    }
+                }
+            }, GPS_TIMOUT);
         }
         catch (SecurityException e) {
             Log.d(TAG, "Permission not given for location services");
         }
 
-        catch (InterruptedException e) {
-            Log.d(TAG, "doInBackground() Thread.sleep interrupted...");
-        }
-
         return null;
     }
 
+    private void doNetworkProvider() {
+        try {
+            // --Network--
+            final LocationListener myListener = this;
+
+            Looper.prepare();
+            final Looper myLooper = Looper.myLooper();
+            final Handler myHandler = new Handler(myLooper);
+
+            Log.d(TAG, "about to set Network thread");
+
+            locationManager.requestSingleUpdate(
+                    LocationManager.NETWORK_PROVIDER, myListener, myLooper);
+
+            myHandler.postDelayed(new Runnable() {
+                public void run() {
+                    try {
+                        locationManager.removeUpdates(myListener);
+                    } catch (SecurityException e) {
+                        Log.d(TAG, "Permission not given for location services");
+                    }
+                }
+            }, NETWORK_TIMOUT);
+        }
+        catch (SecurityException e) {
+            Log.d(TAG, "Permission not given for location services");
+        }
+    }
 
     @Override
     public void onLocationChanged(Location location) {

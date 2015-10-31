@@ -244,10 +244,10 @@ public class EditApiaryFragment extends Fragment {
                     }
                     else {
                         // Crank up GPS and/or Network
-                        FetchCoordinates coordGetter = new FetchCoordinates(mLocationManager, getActivity());
-                        coordGetter.execute();
-                        loadScreenLatLon((float)coordGetter.getLati(), (float)coordGetter.getLongi(),
-                                coordGetter.getProvider());
+                        TimeoutableLocationListener tLocListner = new TimeoutableLocationListener(mLocationManager, 1000*5);
+                        tLocListner.execute(null, getActivity());
+                        //loadScreenLatLon((float)tLocListner.mLocation.getLatitude(), (float)tLocListner.mLocation.getLongitude(),
+                        //        tLocListner.mLocation.getProvider());
                     }
                 }
             }
