@@ -1,0 +1,29 @@
+                    // Try GPS
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                    // wait far callback to be called; otherwise get going
+                    try {
+                        Toast.makeText(getActivity(), getResources().getString(R.string.gps_toast_string),
+                                Toast.LENGTH_LONG).show();
+                        //make this configurable
+                        Thread.sleep(1000*5); // 1000 milliseconds is one second.
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                    // if latitude EditText has something => we're done
+                    String checkLat = ((EditText)getView().findViewById(R.id.editTextApiaryLatitude)).getText().toString();
+                    if ((checkLat == null) || (checkLat.length() == 0)) {
+                        mLocationManager.removeUpdates(this);
+                        // Try Network
+                        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+                        // wait far callback to be called; otherwise get going
+                        try {
+                            Toast.makeText(getActivity(), getResources().getString(R.string.network_toast_string),
+                                    Toast.LENGTH_LONG).show();
+                            //make this configurable
+                            Thread.sleep(1000*5); // 1000 milliseconds is one second.
+                        } catch (InterruptedException ex) {
+                            Thread.currentThread().interrupt();
+                        }
+                        //necessary for cleanup?
+                        mLocationManager.removeUpdates(this);
+                    }
