@@ -31,7 +31,8 @@ import java.util.List;
  * Use the EditApiaryFragment#newInstance factory method to
  * create an instance of this fragment.
  */
-public class EditApiaryFragment extends Fragment {
+public class EditApiaryFragment extends Fragment implements
+        TimeoutableLocationListener.LocationTimeoutListener {
 
     public static final String TAG = "EditApiaryFragment";
 
@@ -166,11 +167,13 @@ public class EditApiaryFragment extends Fragment {
             Log.d(TAG, "Uh oh...Name empty");
         }
 
+        /* Postal Code not required - try to get location from GPS/Network if not entered
         if (postalCodeText.length() == 0){
             postalCodeEdit.setError("Postal Code cannot be empty");
             emptyText = true;
-            Log.d(TAG, "Uh oh...Name empty");
+            Log.d(TAG, "Uh oh...Postal Code empty");
         }
+        */
 
         if (!emptyText) {
             ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
@@ -244,8 +247,9 @@ public class EditApiaryFragment extends Fragment {
                     }
                     else {
                         // Crank up GPS and/or Network
-                        TimeoutableLocationListener tLocListner = new TimeoutableLocationListener(mLocationManager, 1000*5);
-                        tLocListner.execute(null, getActivity());
+                        TimeoutableLocationListener tLocListner =
+                                new TimeoutableLocationListener(mLocationManager, 1000*5, this);
+                        tLocListner.execute(getActivity());
                         //loadScreenLatLon((float)tLocListner.mLocation.getLatitude(), (float)tLocListner.mLocation.getLongitude(),
                         //        tLocListner.mLocation.getProvider());
                     }
@@ -266,7 +270,15 @@ public class EditApiaryFragment extends Fragment {
         longitudeEdit.setText(Float.toString(aLon));
     }
 
-    /*
+    @Override
+    public void onLocationTimedout(Location aLocation) {
+        Log.d(TAG, "onLocationTimedout() called");
+        if (aLocation != null) {
+            loadScreenLatLon((float)aLocation.getLatitude(), (float)aLocation.getLongitude(),
+                    aLocation.getProvider());
+        }
+    }
+/*
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
