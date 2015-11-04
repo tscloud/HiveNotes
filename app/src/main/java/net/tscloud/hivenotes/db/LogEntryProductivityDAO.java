@@ -36,7 +36,7 @@ public class LogEntryProductivityDAO {
             COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE, COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS,
             COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS, COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,
             COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP, COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP,
-            COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED};
+            COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED };
 
     public LogEntryProductivityDAO(Context context) {
         this.mContext = context;
@@ -66,8 +66,8 @@ public class LogEntryProductivityDAO {
                                                int addPollenTrap, int removePollenTrap,
                                                float pollenCollected, float beeswaxCollected) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_HIVE ,hive);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE ,visitDate);
+        values.put(COLUMN_LOGENTRYPRODUCTIVITY_HIVE, hive);
+        values.put(COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS, honeyAddSupers);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS, honeyRemoveSupers);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,extractedHoney);
@@ -105,7 +105,8 @@ public class LogEntryProductivityDAO {
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP, removePollenTrap);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, pollenColected);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED, beeswaxColected);
-        int rowsUpdated = mDatabase.update(TABLE_LOGENTRYPRODUCTIVITY, values, COLUMN_LOGENTRYPRODUCTIVITY_ID + "=" + id, null);
+        int rowsUpdated = mDatabase.update(TABLE_LOGENTRYPRODUCTIVITY, values,
+                COLUMN_LOGENTRYPRODUCTIVITY_ID + "=" + id, null);
 
         LogEntryProductivity updatedLogEntryProductivity = null;
         if (rowsUpdated > 0) {
