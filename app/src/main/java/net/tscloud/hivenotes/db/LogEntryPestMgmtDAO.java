@@ -28,6 +28,7 @@ public class LogEntryPestMgmtDAO {
     public static final String COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR = "mites_trtmnt_rmndr";
     public static final String COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD = "screened_bottom_board";
     public static final String COLUMN_LOGENTRYPESTMGMT_OTHER = "other";
+    public static final String COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE = "other_type";
 
     // Database fields
     private SQLiteDatabase mDatabase;
@@ -38,7 +39,7 @@ public class LogEntryPestMgmtDAO {
             COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN_RMNDR, COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP,
             COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT, COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_TYPE,
             COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR, COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD,
-            COLUMN_LOGENTRYPESTMGMT_OTHER };
+            COLUMN_LOGENTRYPESTMGMT_OTHER, COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE };
 
     public LogEntryPestMgmtDAO(Context context) {
         this.mContext = mContext;
@@ -65,7 +66,7 @@ public class LogEntryPestMgmtDAO {
     public LogEntryPestMgmt createLogEntry(long hive, String visitDate, int drone_cell_fndn,
                                            int drone_cell_fndn_rmndr, int small_hive_beetle_trap,
                                            int mites_trtmnt, String mites_trtmnt_type, int mites_trtmnt_rmndr,
-                                           int screened_bottom_board, String other) {
+                                           int screened_bottom_board, int other, String otherType) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPESTMGMT_HIVE, hive);
         values.put(COLUMN_LOGENTRYPESTMGMT_VISIT_DATE, visitDate);
@@ -77,6 +78,7 @@ public class LogEntryPestMgmtDAO {
         values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR, mites_trtmnt_rmndr);
         values.put(COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD, screened_bottom_board);
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER, other);
+        values.put(COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE, otherType);
         long insertId = mDatabase.insert(TABLE_LOGENTRYPESTMGMT, null, values);
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
                 COLUMN_LOGENTRYPESTMGMT_ID + " = " + insertId, null, null, null, null);
@@ -89,7 +91,7 @@ public class LogEntryPestMgmtDAO {
     public LogEntryPestMgmt updateLogEntry(long id, long hive, String visitDate, int drone_cell_fndn,
                                                int drone_cell_fndn_rmndr, int small_hive_beetle_trap,
                                                int mites_trtmnt, String mites_trtmnt_type, int mites_trtmnt_rmndr,
-                                               int screened_bottom_board, String other) {
+                                               int screened_bottom_board, int other, String otherType) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPESTMGMT_HIVE, hive);
         values.put(COLUMN_LOGENTRYPESTMGMT_VISIT_DATE, visitDate);
@@ -101,6 +103,7 @@ public class LogEntryPestMgmtDAO {
         values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR, mites_trtmnt_rmndr);
         values.put(COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD, screened_bottom_board);
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER, other);
+        values.put(COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE, otherType);
         int rowsUpdated = mDatabase.update(TABLE_LOGENTRYPESTMGMT, values,
                 COLUMN_LOGENTRYPESTMGMT_ID + "=" + id, null);
 
@@ -116,6 +119,22 @@ public class LogEntryPestMgmtDAO {
         return updatedLogEntryPestMgmt;
     }
 
+    public void deleteLogEntry(LogEntryPestMgmt logEntryPestMgmt) {
+        long id = logEntryPestMgmt.getId();
+        mDatabase.delete(TABLE_LOGENTRYPESTMGMT, COLUMN_LOGENTRYPESTMGMT_ID + " = " + id, null);
+    }
+
+    public LogEntryPestMgmt getLogEntryById(long id){
+        Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
+                COLUMN_LOGENTRYPESTMGMT_ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        return cursorToLogEntry(cursor);
+    }
+
     protected LogEntryPestMgmt cursorToLogEntry(Cursor cursor) {
         LogEntryPestMgmt logEntryPestMgmt = new LogEntryPestMgmt();
         logEntryPestMgmt.setId(cursor.getLong(0));
@@ -127,7 +146,8 @@ public class LogEntryPestMgmtDAO {
         logEntryPestMgmt.setMitesTrtmnt(cursor.getInt(6));
         logEntryPestMgmt.setMitesTrtmntType(cursor.getString(7));
         logEntryPestMgmt.setMitesTrtmntRmndr(cursor.getInt(8));
-        logEntryPestMgmt.setOther(cursor.getString(9));
+        logEntryPestMgmt.setOther(cursor.getInt(9));
+        logEntryPestMgmt.setOtherType(cursor.getString(9));
 
         return logEntryPestMgmt;
     }

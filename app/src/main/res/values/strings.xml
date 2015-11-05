@@ -78,6 +78,15 @@
     <string name="productivity_chalkbrood">Chalkbrood</string>
     <string name="productivity_other">Other</string>
 
+    <string name="pestmgmt_notes_string">Pest Management</string>
+    <string name="pestmgmt_drone_cell_fndn">Drone Cell Foundation</string>
+    <string name="pestmgmt_small_hive_beetle_trap">Small Hive Beetle Trap</string>
+    <string name="pestmgmt_mites_trtmnt">Mites Treatment</string>
+    <string name="pestmgmt_screened_bottom_board">Screened Bottom Board</string>
+    <string name="pestmgmt_other">Other</string>
+
+    <string name="set_reminder_string">Set/View Reminder</string>
+
     <string name="notes_save_text">Save Notes</string>
 
     <string-array name="foundation_array">

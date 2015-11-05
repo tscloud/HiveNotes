@@ -19,7 +19,8 @@ public class LogEntryPestMgmt implements Serializable {
     private String mitesTrtmntType;
     private int mitesTrtmntRmndr;
     private int screenedBottomBoard;
-    private String other;
+    private int other;
+    private String otherType;
 
     public int getDroneCellFndn() {
         return droneCellFndn;
@@ -77,12 +78,20 @@ public class LogEntryPestMgmt implements Serializable {
         this.mitesTrtmntType = mitesTrtmntType;
     }
 
-    public String getOther() {
+    public int getOther() {
         return other;
     }
 
-    public void setOther(String other) {
+    public void setOther(int other) {
         this.other = other;
+    }
+
+    public String getOtherType() {
+        return otherType;
+    }
+
+    public void setOtherType(String otherType) {
+        this.otherType = otherType;
     }
 
     public int getScreenedBottomBoard() {
