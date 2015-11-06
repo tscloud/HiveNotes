@@ -28,7 +28,7 @@
         android:layout_alignParentEnd="true">
 
         <CheckBox
-            android:id="@+id/textDroneCellFndn"
+            android:id="@+id/checkDroneCellFndn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"

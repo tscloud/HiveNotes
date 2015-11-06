@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import net.tscloud.hivenotes.db.LogEntryGeneral;
+import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 
 /**
@@ -21,7 +22,8 @@ import net.tscloud.hivenotes.db.LogEntryProductivity;
  */
 public class LogEntryDetailActivity extends AppCompatActivity implements
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
-        LogProductivityFragment.OnLogProductivityFragmentInteractionListener {
+        LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
+        LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
 
@@ -60,6 +62,9 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                     break;
                 case "2":
                     fragment = LogProductivityFragment.newInstance(mHiveKey, mlogentryKey);
+                    break;
+                case "3":
+                    fragment = LogPestMgmtFragment.newInstance(mHiveKey, mlogentryKey);
                     break;
                 case "6":
                     // Save button
@@ -127,7 +132,18 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
+    }
 
+    @Override
+    public void onLogPestMgmtFragmentInteraction(LogEntryPestMgmt alogEntryPestMgmt) {
+        Log.d(TAG, "return from LogPestMgmntFragment...finish LogEntryDetailActivity");
+
+        Intent data = new Intent();
+        Bundle bundleData = new Bundle();
+        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_PESTMGMT_DATA, alogEntryPestMgmt);
+        data.putExtras(bundleData);
+        setResult(RESULT_OK, data);
+        finish();
     }
 
     private void onSaveButton() {

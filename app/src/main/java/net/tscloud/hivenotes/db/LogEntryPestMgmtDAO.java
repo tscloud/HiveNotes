@@ -88,6 +88,12 @@ public class LogEntryPestMgmtDAO {
         return newLogEntryPestMgmt;
     }
 
+    public LogEntryPestMgmt createLogEntry(LogEntryPestMgmt aDO) {
+        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getDroneCellFndn(), aDO.getDroneCellFndnRmndr(),
+                aDO.getSmallHiveBeetleTrap(), aDO.getMitesTrtmnt(), aDO.getMitesTrtmntType(), aDO.getMitesTrtmntRmndr(),
+                aDO.getScreenedBottomBoard(), aDO.getOther(), aDO.getOtherType());
+    }
+
     public LogEntryPestMgmt updateLogEntry(long id, long hive, String visitDate, int drone_cell_fndn,
                                                int drone_cell_fndn_rmndr, int small_hive_beetle_trap,
                                                int mites_trtmnt, String mites_trtmnt_type, int mites_trtmnt_rmndr,
@@ -117,6 +123,13 @@ public class LogEntryPestMgmtDAO {
         }
 
         return updatedLogEntryPestMgmt;
+    }
+
+    public LogEntryPestMgmt updateLogEntry(LogEntryPestMgmt aDO) {
+        return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getDroneCellFndn(),
+                aDO.getDroneCellFndnRmndr(), aDO.getSmallHiveBeetleTrap(), aDO.getMitesTrtmnt(),
+                aDO.getMitesTrtmntType(), aDO.getMitesTrtmntRmndr(), aDO.getScreenedBottomBoard(),
+                aDO.getOther(), aDO.getOtherType());
     }
 
     public void deleteLogEntry(LogEntryPestMgmt logEntryPestMgmt) {
