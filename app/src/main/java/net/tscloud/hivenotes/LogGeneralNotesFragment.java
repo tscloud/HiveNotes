@@ -84,7 +84,7 @@ public class LogGeneralNotesFragment extends Fragment {
         b1.setText(getResources().getString(R.string.done_string));
 
         // enable "Other" EditText only if corresponding CheckBox checked
-        final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkOther);
+        final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkPestOther);
         final EditText otherEdit = (EditText)v.findViewById(R.id.editTextOther);
 
         otherCheck.setOnClickListener(new View.OnClickListener() {
@@ -201,7 +201,7 @@ public class LogGeneralNotesFragment extends Fragment {
         final CheckBox americanFoulbroodCheck = (CheckBox)getView().findViewById(R.id.checkAmericalFoulbrood);
         final CheckBox europeanFoulbroodCheck = (CheckBox)getView().findViewById(R.id.checkEuropeanFoulbrood);
         final CheckBox chalkbroodCheck = (CheckBox)getView().findViewById(R.id.checkChalkbrood);
-        final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkOther);
+        final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkPestOther);
         final EditText otherEdit = (EditText)getView().findViewById(R.id.editTextOther);
 
         String dateText = dateEdit.getText().toString();

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
+import net.tscloud.hivenotes.db.LogEntryFeeding;
+import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
@@ -42,7 +44,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
         LogEntryListFragment.Callbacks,
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
-        LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener {
+        LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener,
+        LogFeedingFragent.OnLogFeedingFragmentInteractionListener {
 
     public static final String TAG = "LogEntryListActivity";
 
@@ -62,6 +65,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
     LogEntryProductivity mLogEntryProductivityData;
     public static String INTENT_LOGENTRY_PESTMGMT_DATA = "logentryPestMGMTData";
     LogEntryPestMgmt mLogEntryPestMgmtData;
+    public static String INTENT_LOGENTRY_FEEDING_DATA = "logentryFeedingData";
+    LogEntryFeeding mLogEntryFeedingData;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -141,9 +146,14 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     // will this always be a new logentry? so pass -1?
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, -1);
                     break;
+                case "4":
+                    // will this always be a new logentry? so pass -1?
+                    fragment = LogFeedingFragent.newInstance(mHiveKey, -1);
+                    break;
                 case "6":
                     // Save button
-                    updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData);
+                    updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
+                            mLogEntryFeedingData);
                     break;
                 default:
                     fragment = new LogEntryDetailFragment();
@@ -186,6 +196,12 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding) {
+        Log.d(TAG, "received LogEntryFeeding data object");
+        mLogEntryFeedingData = aLogEntryFeeding;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -194,7 +210,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             if (data == null) {
                 Log.d(TAG, "Save button pressed from LogEntryDetailActivity...perform save");
-                updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData);
+                updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
+                        mLogEntryFeedingData);
             }
             else {
                 Bundle bundleData = data.getExtras();
@@ -210,13 +227,17 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     Log.d(TAG, "received LogEntryPestMgmt data object");
                     mLogEntryPestMgmtData =
                             (LogEntryPestMgmt) bundleData.getSerializable(INTENT_LOGENTRY_PESTMGMT_DATA);
+                } else if (bundleData.keySet().contains(INTENT_LOGENTRY_FEEDING_DATA)) {
+                    Log.d(TAG, "received LogEntryFeeding data object");
+                    mLogEntryFeedingData =
+                            (LogEntryFeeding) bundleData.getSerializable(INTENT_LOGENTRY_FEEDING_DATA);
                 }
             }
         }
     }
 
     private void updateDB(LogEntryGeneral aLogEntryGeneral, LogEntryProductivity aLogEntryProductivity,
-                          LogEntryPestMgmt aLogEntryPestMgmt) {
+                          LogEntryPestMgmt aLogEntryPestMgmt, LogEntryFeeding aLogEntryFeeding) {
         // This is the date that will be used for all the VISIT_DATE columns
         //  set it to Now in case there's nothing from LogEntryGeneral
         String generalDate = new Date().toString();
@@ -261,6 +282,20 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 aLogEntryPestMgmtDAO.updateLogEntry(aLogEntryPestMgmt);
             }
             aLogEntryPestMgmtDAO.close();
+        }
+
+        if (aLogEntryFeeding != null) {
+            LogEntryFeedingDAO aLogEntryFeedingDAO = new LogEntryFeedingDAO(this);
+            // set VISIT_DATE to value from LogEntryGeneral or Now
+            aLogEntryFeeding.setVisitDate(generalDate);
+
+            if (aLogEntryFeeding.getId() == -1) {
+                aLogEntryFeedingDAO.createLogEntry(aLogEntryFeeding);
+            }
+            else {
+                aLogEntryFeedingDAO.updateLogEntry(aLogEntryFeeding);
+            }
+            aLogEntryFeedingDAO.close();
         }
 
         /*

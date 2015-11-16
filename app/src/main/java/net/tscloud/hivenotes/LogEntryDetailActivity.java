@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
@@ -23,7 +24,8 @@ import net.tscloud.hivenotes.db.LogEntryProductivity;
 public class LogEntryDetailActivity extends AppCompatActivity implements
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
-        LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener {
+        LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener,
+        LogFeedingFragent.OnLogFeedingFragmentInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
 
@@ -65,6 +67,9 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                     break;
                 case "3":
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, mlogentryKey);
+                    break;
+                case "4":
+                    fragment = LogFeedingFragent.newInstance(mHiveKey, mlogentryKey);
                     break;
                 case "6":
                     // Save button
@@ -141,6 +146,18 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
         bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_PESTMGMT_DATA, alogEntryPestMgmt);
+        data.putExtras(bundleData);
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override
+    public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding) {
+        Log.d(TAG, "return from LogFeedingFragment...finish LogEntryDetailActivity");
+
+        Intent data = new Intent();
+        Bundle bundleData = new Bundle();
+        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA, aLogEntryFeeding);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();

@@ -87,7 +87,7 @@ public class LogPestMgmtFragment extends Fragment {
             final CheckBox mitesTrtmntCheck = (CheckBox)v.findViewById(R.id.checkMitesTrtmnt);
             final EditText mitesTrtmntEdit = (EditText)v.findViewById(R.id.editTextMitesTrtmnt);
             final CheckBox screenedBottomBoardCheck = (CheckBox)v.findViewById(R.id.checkScreenedBottomBoard);
-            final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkOther);
+            final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkPestOther);
             final EditText otherEdit = (EditText)v.findViewById(R.id.editTextOther);
 
             droneCellFndnCheck.setChecked(mLogEntryPestMgmt.getDroneCellFndn() != 0);
@@ -121,8 +121,8 @@ public class LogPestMgmtFragment extends Fragment {
         final CheckBox mitesTrtmntCheck = (CheckBox)getView().findViewById(R.id.checkMitesTrtmnt);
         final EditText mitesTrtmntEdit = (EditText)getView().findViewById(R.id.editTextMitesTrtmnt);
         final CheckBox screenedBottomBoardCheck = (CheckBox)getView().findViewById(R.id.checkScreenedBottomBoard);
-        final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkOther);
-        final EditText otherEdit = (EditText)getView().findViewById(R.id.editTextOther);
+        final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkPestOther);
+        final EditText otherEdit = (EditText)getView().findViewById(R.id.editTextPestOther);
 
         int droneCellFndnInt = (droneCellFndnCheck.isChecked()) ? 1 : 0;
         int smallHiveBeetleTrapInt = (smallHiveBeetleTrapCheck.isChecked()) ? 1 : 0;
@@ -134,10 +134,6 @@ public class LogPestMgmtFragment extends Fragment {
         int otherInt = (otherCheck.isChecked()) ? 1 : 0;
 
         String otherString = otherEdit.getText().toString();
-
-        if (mListener != null) {
-            mListener.onLogPestMgmtFragmentInteraction(mLogEntryPestMgmt);
-        }
 
         boolean emptyText = false;
 
@@ -151,7 +147,7 @@ public class LogPestMgmtFragment extends Fragment {
 
         if (otherCheck.isChecked()) {
             if ((otherString == null) || (otherString.length() == 0)) {
-                mitesTrtmntEdit.setError("Other Treatment cannot be empty");
+                otherEdit.setError("Other Treatment cannot be empty");
                 emptyText = true;
                 Log.d(TAG, "Uh oh...Other Treatment empty");
             }
@@ -173,6 +169,11 @@ public class LogPestMgmtFragment extends Fragment {
             mLogEntryPestMgmt.setScreenedBottomBoard(screenedBottomBoardInt);
             mLogEntryPestMgmt.setOther(otherInt);
             mLogEntryPestMgmt.setOtherType(otherString);
+
+            if (mListener != null) {
+                mListener.onLogPestMgmtFragmentInteraction(mLogEntryPestMgmt);
+            }
+
         }
     }
 

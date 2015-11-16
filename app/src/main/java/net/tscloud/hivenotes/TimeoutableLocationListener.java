@@ -17,6 +17,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * Kernel derived from work of below author - drastically changed
+ *
  * TimeoutableLocationListner is implementation of LocationListener.
  * If onLocationChanged isn't called within XX mili seconds, automatically remove listener.
  *

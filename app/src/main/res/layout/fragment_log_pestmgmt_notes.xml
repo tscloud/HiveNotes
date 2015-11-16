@@ -95,7 +95,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.65"
-            android:inputType="numberDecimal"
             android:ems="10" />
 
         <Button
@@ -126,7 +125,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutOther"
+        android:id="@+id/linearLayoutPestOther"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -135,7 +134,7 @@
         android:layout_alignParentEnd="true">
 
         <CheckBox
-            android:id="@+id/checkOther"
+            android:id="@+id/checkPestOther"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
@@ -145,19 +144,18 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutOtherText"
+        android:id="@+id/linearLayoutPestOtherText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutOther"
+        android:layout_below="@id/linearLayoutPestOther"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
         <EditText
-            android:id="@+id/editOther"
+            android:id="@+id/editTextPestOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
             android:ems="10" />
 
     </LinearLayout>

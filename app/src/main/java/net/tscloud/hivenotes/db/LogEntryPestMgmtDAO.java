@@ -42,7 +42,7 @@ public class LogEntryPestMgmtDAO {
             COLUMN_LOGENTRYPESTMGMT_OTHER, COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE };
 
     public LogEntryPestMgmtDAO(Context context) {
-        this.mContext = mContext;
+        this.mContext = context;
         mDbHelper = MyDBHandler.getInstance(context);
         // open the database
         try {

@@ -373,3 +373,41 @@ values.put(COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED = beeswaxColected);
             android:id="@+id/checkOther" />
 
     </LinearLayout>
+
+    'drone_cell_fndn' integer,
+    'drone_cell_fndn_rmndr' integer,
+    'small_hive_beetle_trap' integer,
+    'mites_trtmnt' integer,
+    'mites_trtmnt_type' text,
+    'mites_trtmnt_rmndr' integer,
+    'screened_bottom_board' integer,
+    'other' text
+
+ COLUMN_LOGENTRYPESTMGMT_ID, COLUMN_LOGENTRYPESTMGMT_HIVE, COLUMN_LOGENTRYPESTMGMT_VISIT_DATE, COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN, COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN_RMNDR, COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP, COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT, COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_TYPE, COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR, COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD, COLUMN_LOGENTRYPESTMGMT_OTHER
+
+    values.put(COLUMN_LOGENTRYPESTMGMT_HIVE, hive);
+    values.put(COLUMN_LOGENTRYPESTMGMT_VISIT_DATE, visitDate);
+    values.put(COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN, drone_cell_fndn);
+    values.put(COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN_RMNDR, drone_cell_fndn_rmndr);
+    values.put(COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP, small_hive_beetle_trap);
+    values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT, mites_trtmnt);
+    values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_TYPE, mites_trtmnt_type);
+    values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR, mites_trtmnt_rmndr);
+    values.put(COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD, screened_bottom_board);
+    values.put(COLUMN_LOGENTRYPESTMGMT_OTHER, other);
+
+COLUMN_TABLE_LOGENTRYFEEDING_ID, COLUMN_TABLE_LOGENTRYFEEDING_HIVE, COLUMN_TABLE_LOGENTRYFEEDING_VISIT_DATE, COLUMN_TABLE_LOGENTRYFEEDING_ONE_ONE_SUGAR_WATER, COLUMN_TABLE_LOGENTRYFEEDING_ONE_TWO_SUGAR_WATER, COLUMN_TABLE_LOGENTRYFEEDING_POLLEN_PATTY, COLUMN_TABLE_LOGENTRYFEEDING_OTHER, COLUMN_TABLE_LOGENTRYFEEDING_OTHER_TYPE
+
+long hive, String visitDate, int oneOneSugarWater, int twoOneSugarWater, int pollenPatty, int other, int otherType
+
+    values.put(COLUMN_TABLE_LOGENTRYFEEDING_HIVE, hive);
+    values.put(COLUMN_TABLE_LOGENTRYFEEDING_VISIT_DATE, visit_date);
+    values.put(COLUMN_TABLE_LOGENTRYFEEDING_ONE_ONE_SUGAR_WATER, one_one_sugar_water);
+    values.put(COLUMN_TABLE_LOGENTRYFEEDING_ONE_TWO_SUGAR_WATER, one_two_sugar_water);
+    values.put(COLUMN_TABLE_LOGENTRYFEEDING_POLLEN_PATTY, pollen_patty);
+    values.put(COLUMN_TABLE_LOGENTRYFEEDING_OTHER, other);
+    values.put(COLUMN_TABLE_LOGENTRYFEEDING_OTHER_TYPE, other_type);
+
+        logEntryFeeding.setId(cursor.getLong(0));
+        logEntryFeeding.setHive(cursor.getLong(1));
+        logEntryFeeding.setVisitDate(cursor.getString(2));
