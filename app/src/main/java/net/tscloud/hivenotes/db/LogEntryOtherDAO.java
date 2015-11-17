@@ -1,6 +1,8 @@
 package net.tscloud.hivenotes.db;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -57,11 +59,11 @@ public class LogEntryOtherDAO {
                                  int swarmRmndr, int splitHiveRmndr) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYOTHER_HIVE, hive);
-        values.put(COLUMN_LOGENTRYOTHER_VISIT_DATE, visit_date);
+        values.put(COLUMN_LOGENTRYOTHER_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRYOTHER_REQUEEN, requeen);
-        values.put(COLUMN_LOGENTRYOTHER_REQUEEN_RMNDR, requeen_rmndr);
-        values.put(COLUMN_LOGENTRYOTHER_SWARM_RMNDR, swarm_rmndr);
-        values.put(COLUMN_LOGENTRYOTHER_SPLIT_HIVE_RMNDR, split_hive_rmndr);
+        values.put(COLUMN_LOGENTRYOTHER_REQUEEN_RMNDR, requeenRmndr);
+        values.put(COLUMN_LOGENTRYOTHER_SWARM_RMNDR, swarmRmndr);
+        values.put(COLUMN_LOGENTRYOTHER_SPLIT_HIVE_RMNDR, splitHiveRmndr);
         long insertId = mDatabase.insert(TABLE_LOGENTRYOTHER, null, values);
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYOTHER, mAllColumns,
                 COLUMN_LOGENTRYOTHER_ID + " = " + insertId, null, null, null, null);
@@ -74,18 +76,18 @@ public class LogEntryOtherDAO {
 
     public LogEntryOther createLogEntry(LogEntryOther aDO) {
         return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getRequeen(), aDO.getRequeenRmndr(),
-                aDO.getSplitHiveRmndr(), aDO.getSwarmRmndr())
+                aDO.getSplitHiveRmndr(), aDO.getSwarmRmndr());
     }
 
     public LogEntryOther updateLogEntry(long id, long hive, String visitDate, String requeen, int requeenRmndr,
                                  int swarmRmndr, int splitHiveRmndr) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYOTHER_HIVE, hive);
-        values.put(COLUMN_LOGENTRYOTHER_VISIT_DATE, visit_date);
+        values.put(COLUMN_LOGENTRYOTHER_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRYOTHER_REQUEEN, requeen);
-        values.put(COLUMN_LOGENTRYOTHER_REQUEEN_RMNDR, requeen_rmndr);
-        values.put(COLUMN_LOGENTRYOTHER_SWARM_RMNDR, swarm_rmndr);
-        values.put(COLUMN_LOGENTRYOTHER_SPLIT_HIVE_RMNDR, split_hive_rmndr);
+        values.put(COLUMN_LOGENTRYOTHER_REQUEEN_RMNDR, requeenRmndr);
+        values.put(COLUMN_LOGENTRYOTHER_SWARM_RMNDR, swarmRmndr);
+        values.put(COLUMN_LOGENTRYOTHER_SPLIT_HIVE_RMNDR, splitHiveRmndr);
         int rowsUpdated = mDatabase.update(TABLE_LOGENTRYOTHER, values, COLUMN_LOGENTRYOTHER_ID + "=" + id, null);
 
         LogEntryOther updatedLogEntryOther = null;
@@ -102,7 +104,7 @@ public class LogEntryOtherDAO {
 
     public LogEntryOther updateLogEntry(LogEntryOther aDO) {
         return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getRequeen(), aDO.getRequeenRmndr(),
-                aDO.getSplitHiveRmndr(), aDO.getSwarmRmndr())
+                aDO.getSplitHiveRmndr(), aDO.getSwarmRmndr());
     }
 
     public void deleteLogEntry(LogEntryOther logEntryOther) {
@@ -123,15 +125,15 @@ public class LogEntryOtherDAO {
 
     protected LogEntryOther cursorToLogEntry(Cursor cursor) {
         LogEntryOther logEntryOther = new LogEntryOther();
-        LogEntryOther.setId(cursor.getLong(0));
-        LogEntryOther.setHive(cursor.getLong(1));
-        LogEntryOther.setVisitDate(cursor.getString(2));
-        LogEntryOther.setRequeen(cursor.getString(3));
-        LogEntryOther.setRequeenRmndr(cursor.getLong(4));
-        LogEntryOther.setSplitHiveRmndr(cursor.getLong(5));
-        LogEntryOther.setSwarmRmndr(cursor.getLong(6));
+        logEntryOther.setId(cursor.getLong(0));
+        logEntryOther.setHive(cursor.getLong(1));
+        logEntryOther.setVisitDate(cursor.getString(2));
+        logEntryOther.setRequeen(cursor.getString(3));
+        logEntryOther.setRequeenRmndr(cursor.getInt(4));
+        logEntryOther.setSplitHiveRmndr(cursor.getInt(5));
+        logEntryOther.setSwarmRmndr(cursor.getInt(6));
 
-        return LogEntryOther;
+        return logEntryOther;
     }
 }
  
