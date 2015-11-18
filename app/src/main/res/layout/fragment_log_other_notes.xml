@@ -8,4 +8,141 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="net.tscloud.hivenotes.LogOtherFragment">
 
+    <TextView
+        android:id="@+id/textOtherTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/other_notes_string"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/textRequeen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/other_requeen"
+        android:layout_below="@+id/textOtherTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRequeen"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/textRequeen"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <Spinner
+            android:id="@+id/spinnerRequeen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:entries="@array/requeen_array"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRequeenRmndr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayoutRequeen"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/textRequeenRmndr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/other_requeen_rmndr"
+            android:layout_gravity="center_vertical"/>
+
+        <Button
+            android:id="@+id/buttonRequeenRmndr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_reminder_string" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textSwarm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/other_swarm"
+        android:layout_below="@+id/linearLayoutRequeenRmndr"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSwarmRmndr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/textSwarm"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/textSwarmRmndr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/other_swarm_rmndr"
+            android:layout_gravity="center_vertical"/>
+
+        <Button
+            android:id="@+id/buttonSwarmRmndr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_reminder_string" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textSplitHive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/other_split_hive"
+        android:layout_below="@+id/linearLayoutSwarmRmndr"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSplitHiveRmndr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/textSplitHive"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/textSplitHiveRmndr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/other_split_hive_rmndr"
+            android:layout_gravity="center_vertical"/>
+
+        <Button
+            android:id="@+id/buttonSplitHiveRmndr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_reminder_string" />
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/saveOtherButton"
+        layout="@layout/hive_note_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

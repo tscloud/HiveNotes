@@ -4,45 +4,49 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+
+import net.tscloud.hivenotes.db.LogEntryOther;
+import net.tscloud.hivenotes.db.LogEntryOtherDAO;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LogOtherFragment.OnFragmentInteractionListener} interface
+ * {@link OnLogOtherFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link LogOtherFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class LogOtherFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public static final String TAG = "LogOtherFragment";
 
-    private OnFragmentInteractionListener mListener;
+    private long mHiveID;
+    private long mLogEntryOtherKey;
+    private LogEntryOther mLogEntryOther;
+
+    private OnLogOtherFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param hiveID Parameter 1.
+     * @param logEntryID Parameter 2.
      * @return A new instance of fragment LogOtherFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static LogOtherFragment newInstance(String param1, String param2) {
+    public static LogOtherFragment newInstance(long hiveID, long logEntryID) {
         LogOtherFragment fragment = new LogOtherFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putLong(LogEntryListActivity.INTENT_HIVE_KEY, hiveID);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,9 +58,15 @@ public class LogOtherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
+            mLogEntryOtherKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
+        }
+
+        if (mLogEntryOtherKey != -1) {
+            // we need to get the Hive
+            mLogEntryOther = getLogEntry(mLogEntryOtherKey);
         }
     }
 
@@ -64,24 +74,62 @@ public class LogOtherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log_other_notes, container, false);
+        View v = inflater.inflate(R.layout.fragment_log_other_notes, container, false);
+
+        // set button listener and text
+        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
+        b1.setText(getResources().getString(R.string.done_string));
+
+        if (mLogEntryOther != null) {
+
+            // fill the form
+            final Spinner requeenSpinner = (Spinner)v.findViewById(R.id.spinnerRequeen);
+
+            requeenSpinner.setSelection(
+                    ((ArrayAdapter) requeenSpinner.getAdapter()).getPosition(
+                            mLogEntryOther.getRequeen()));
+        }
+
+        // set button listener
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonPressed(mHiveID);
+            }
+        });
+
+        return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void onButtonPressed(long hiveID) {
+        // get log entry data and put to DB
+        Log.d(TAG, "about to persist logentry");
+
+        boolean lNewLogEntry = false;
+
+        final Spinner requeenSpinner = (Spinner)getView().findViewById(R.id.spinnerRequeen);
+
+        String requeenText = requeenSpinner.getSelectedItem().toString();
+
+        // check for required values - are there any?
+        boolean emptyText = false;
+
+       if (!emptyText) {
+
+           if (mListener != null) {
+               mListener.onLogOtherFragmentInteraction(mLogEntryOther);
+           }
+       }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnLogOtherFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnLogOtherFragmentInteractionListener");
         }
     }
 
@@ -89,6 +137,17 @@ public class LogOtherFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    // Utility method to get Profile
+    LogEntryOther getLogEntry(long aLogEntryID) {
+        // read log Entry
+        Log.d(TAG, "reading LogEntryPestMgmt table");
+        LogEntryOtherDAO logEntryOtherDAO = new LogEntryOtherDAO(getActivity());
+        LogEntryOther reply = logEntryOtherDAO.getLogEntryById(aLogEntryID);
+        logEntryOtherDAO.close();
+
+        return reply;
     }
 
     /**
@@ -101,9 +160,9 @@ public class LogOtherFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnLogOtherFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther);
     }
 
 }
