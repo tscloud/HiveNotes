@@ -16,6 +16,8 @@ import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
+import net.tscloud.hivenotes.db.LogEntryOther;
+import net.tscloud.hivenotes.db.LogEntryOtherDAO;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
@@ -45,7 +47,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
         LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener,
-        LogFeedingFragent.OnLogFeedingFragmentInteractionListener {
+        LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
+        LogOtherFragment.OnLogOtherFragmentInteractionListener {
 
     public static final String TAG = "LogEntryListActivity";
 
@@ -67,6 +70,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
     LogEntryPestMgmt mLogEntryPestMgmtData;
     public static String INTENT_LOGENTRY_FEEDING_DATA = "logentryFeedingData";
     LogEntryFeeding mLogEntryFeedingData;
+    public static String INTENT_LOGENTRY_OTHER_DATA = "logentryOtherData";
+    LogEntryOther mLogEntryOtherData;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -148,12 +153,16 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     break;
                 case "4":
                     // will this always be a new logentry? so pass -1?
-                    fragment = LogFeedingFragent.newInstance(mHiveKey, -1);
+                    fragment = LogFeedingFragment.newInstance(mHiveKey, -1);
+                    break;
+                case "5":
+                    // will this always be a new logentry? so pass -1?
+                    fragment = LogOtherFragment.newInstance(mHiveKey, -1);
                     break;
                 case "6":
                     // Save button
                     updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
-                            mLogEntryFeedingData);
+                            mLogEntryFeedingData, mLogEntryOtherData);
                     break;
                 default:
                     fragment = new LogEntryDetailFragment();
@@ -202,6 +211,12 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther) {
+        Log.d(TAG, "received LogEntryOther data object");
+        mLogEntryOtherData = aLogEntryOther;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -211,7 +226,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             if (data == null) {
                 Log.d(TAG, "Save button pressed from LogEntryDetailActivity...perform save");
                 updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
-                        mLogEntryFeedingData);
+                        mLogEntryFeedingData, mLogEntryOtherData);
             }
             else {
                 Bundle bundleData = data.getExtras();
@@ -231,13 +246,17 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     Log.d(TAG, "received LogEntryFeeding data object");
                     mLogEntryFeedingData =
                             (LogEntryFeeding) bundleData.getSerializable(INTENT_LOGENTRY_FEEDING_DATA);
+                } else if (bundleData.keySet().contains(INTENT_LOGENTRY_OTHER_DATA)) {
+                    Log.d(TAG, "received LogEntryOther data object");
+                    mLogEntryOtherData =
+                            (LogEntryOther) bundleData.getSerializable(INTENT_LOGENTRY_OTHER_DATA);
                 }
             }
         }
     }
 
     private void updateDB(LogEntryGeneral aLogEntryGeneral, LogEntryProductivity aLogEntryProductivity,
-                          LogEntryPestMgmt aLogEntryPestMgmt, LogEntryFeeding aLogEntryFeeding) {
+                          LogEntryPestMgmt aLogEntryPestMgmt, LogEntryFeeding aLogEntryFeeding, LogEntryOther aLogEntryOther) {
         // This is the date that will be used for all the VISIT_DATE columns
         //  set it to Now in case there's nothing from LogEntryGeneral
         String generalDate = new Date().toString();
@@ -296,6 +315,20 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 aLogEntryFeedingDAO.updateLogEntry(aLogEntryFeeding);
             }
             aLogEntryFeedingDAO.close();
+        }
+
+        if (aLogEntryOther != null) {
+            LogEntryOtherDAO aLogEntryOtherDAO = new LogEntryOtherDAO(this);
+            // set VISIT_DATE to value from LogEntryGeneral or Now
+            aLogEntryOther.setVisitDate(generalDate);
+
+            if (aLogEntryOther.getId() == -1) {
+                aLogEntryOtherDAO.createLogEntry(aLogEntryOther);
+            }
+            else {
+                aLogEntryOtherDAO.updateLogEntry(aLogEntryOther);
+            }
+            aLogEntryOtherDAO.close();
         }
 
         /*

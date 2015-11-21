@@ -1,7 +1,6 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,14 +18,14 @@ import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LogFeedingFragent.OnLogFeedingFragmentInteractionListener} interface
+ * {@link LogFeedingFragment.OnLogFeedingFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LogFeedingFragent#newInstance} factory method to
+ * Use the {@link LogFeedingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogFeedingFragent extends Fragment {
+public class LogFeedingFragment extends Fragment {
 
-    public static final String TAG = "LogFeedingFragent";
+    public static final String TAG = "LogFeedingFragment";
 
     private long mHiveID;
     private long mLogEntryFeedingKey;
@@ -40,10 +39,10 @@ public class LogFeedingFragent extends Fragment {
      *
      * @param hiveID Parameter 1.
      * @param logEntryID Parameter 2.
-     * @return A new instance of fragment LogFeedingFragent.
+     * @return A new instance of fragment LogFeedingFragment.
      */
-    public static LogFeedingFragent newInstance(long hiveID, long logEntryID) {
-        LogFeedingFragent fragment = new LogFeedingFragent();
+    public static LogFeedingFragment newInstance(long hiveID, long logEntryID) {
+        LogFeedingFragment fragment = new LogFeedingFragment();
         Bundle args = new Bundle();
         args.putLong(LogEntryListActivity.INTENT_HIVE_KEY, hiveID);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
@@ -51,7 +50,7 @@ public class LogFeedingFragent extends Fragment {
         return fragment;
     }
 
-    public LogFeedingFragent() {
+    public LogFeedingFragment() {
         // Required empty public constructor
     }
 

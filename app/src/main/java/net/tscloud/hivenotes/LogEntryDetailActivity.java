@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
+import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 
@@ -25,7 +26,8 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
         LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener,
-        LogFeedingFragent.OnLogFeedingFragmentInteractionListener {
+        LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
+        LogOtherFragment.OnLogOtherFragmentInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
 
@@ -69,7 +71,10 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, mlogentryKey);
                     break;
                 case "4":
-                    fragment = LogFeedingFragent.newInstance(mHiveKey, mlogentryKey);
+                    fragment = LogFeedingFragment.newInstance(mHiveKey, mlogentryKey);
+                    break;
+                case "5":
+                    fragment = LogOtherFragment.newInstance(mHiveKey, mlogentryKey);
                     break;
                 case "6":
                     // Save button
@@ -158,6 +163,18 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
         bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA, aLogEntryFeeding);
+        data.putExtras(bundleData);
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    @Override
+    public void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther) {
+        Log.d(TAG, "return from LogOtherFragment...finish LogEntryDetailActivity");
+
+        Intent data = new Intent();
+        Bundle bundleData = new Bundle();
+        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_OTHER_DATA, aLogEntryOther);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();

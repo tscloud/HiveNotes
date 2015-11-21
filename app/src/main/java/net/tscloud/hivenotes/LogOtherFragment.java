@@ -115,6 +115,15 @@ public class LogOtherFragment extends Fragment {
         boolean emptyText = false;
 
        if (!emptyText) {
+           LogEntryOtherDAO logEntryOtherDAO = new LogEntryOtherDAO(getActivity());
+           if (mLogEntryOther == null) {
+               mLogEntryOther = new LogEntryOther();
+           }
+
+           mLogEntryOther.setId(mLogEntryOtherKey);
+           mLogEntryOther.setHive(mHiveID);
+           mLogEntryOther.setVisitDate(null);
+           mLogEntryOther.setRequeen(requeenText);
 
            if (mListener != null) {
                mListener.onLogOtherFragmentInteraction(mLogEntryOther);

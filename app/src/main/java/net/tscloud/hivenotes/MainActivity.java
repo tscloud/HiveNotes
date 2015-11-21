@@ -137,13 +137,13 @@ public class MainActivity extends AppCompatActivity implements
 
             if (mProfile == null) {
                 Intent i = new Intent(this,EditProfileActivity.class);
-                i.putExtra(INTENT_PROFILE_KEY, -1);
+                i.putExtra(INTENT_PROFILE_KEY, (long)-1);
                 startActivityForResult(i, PROFILE_REQ_CODE);
             }
             else {
                 Intent i = new Intent(this,EditApiaryActivity.class);
                 i.putExtra(INTENT_PROFILE_KEY, mProfile.getId());
-                i.putExtra(INTENT_APIARY_KEY, -1);
+                i.putExtra(INTENT_APIARY_KEY, (long)-1);
                 startActivityForResult(i, APIARY_REQ_CODE);
             }
         }
