@@ -17,6 +17,7 @@ import android.widget.EditText;
 
 import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
+import net.tscloud.hivenotes.helper.TimeoutableLocationListener;
 
 import java.io.IOException;
 import java.util.Calendar;

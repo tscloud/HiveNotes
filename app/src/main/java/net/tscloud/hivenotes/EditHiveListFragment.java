@@ -3,18 +3,17 @@ package net.tscloud.hivenotes;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Hive;
+import net.tscloud.hivenotes.helper.HiveListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

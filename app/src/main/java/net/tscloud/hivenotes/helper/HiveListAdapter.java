@@ -1,4 +1,4 @@
-package net.tscloud.hivenotes;
+package net.tscloud.hivenotes.helper;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.tscloud.hivenotes.R;
 import net.tscloud.hivenotes.db.Hive;
 
 import java.util.List;

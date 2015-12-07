@@ -411,3 +411,5 @@ long hive, String visitDate, int oneOneSugarWater, int twoOneSugarWater, int pol
         logEntryFeeding.setId(cursor.getLong(0));
         logEntryFeeding.setHive(cursor.getLong(1));
         logEntryFeeding.setVisitDate(cursor.getString(2));
+
+ COLUMN_LOGENTRYOTHER_ID, COLUMN_LOGENTRYOTHER_HIVE, COLUMN_LOGENTRYOTHER_VISIT_DATE, COLUMN_LOGENTRYOTHER_REQUEEN, COLUMN_LOGENTRYOTHER_REQUEEN_RMNDR, COLUMN_LOGENTRYOTHER_SWARM_RMNDR, COLUMN_LOGENTRYOTHER_SPLIT_HIVE_RMNDR

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import net.tscloud.hivenotes.helper.LogEntryNames;
+
 /**
  * A fragment representing a single LogEntryGeneral detail screen.
  * This fragment is either contained in a {@link LogEntryListActivity}

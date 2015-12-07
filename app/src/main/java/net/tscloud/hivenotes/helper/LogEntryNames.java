@@ -1,4 +1,4 @@
-package net.tscloud.hivenotes;
+package net.tscloud.hivenotes.helper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

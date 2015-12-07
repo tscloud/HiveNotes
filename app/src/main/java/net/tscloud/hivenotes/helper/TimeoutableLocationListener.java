@@ -1,4 +1,4 @@
-package net.tscloud.hivenotes;
+package net.tscloud.hivenotes.helper;
 
 import android.app.ProgressDialog;
 import android.content.Context;

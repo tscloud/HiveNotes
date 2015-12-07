@@ -2,13 +2,14 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import net.tscloud.hivenotes.helper.LogEntryNames;
+import net.tscloud.hivenotes.helper.LogListAdapter;
 
 /**
  * A list fragment representing a list of LogEntries. This fragment
