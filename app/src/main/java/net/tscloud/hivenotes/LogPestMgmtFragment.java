@@ -10,9 +10,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.android.datetimepicker.date.DatePickerDialog;
+import com.android.datetimepicker.time.RadialPickerLayout;
+import com.android.datetimepicker.time.TimePickerDialog;
 
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -23,9 +33,17 @@ import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
  * Use the {@link LogPestMgmtFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogPestMgmtFragment extends Fragment {
+public class LogPestMgmtFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     public static final String TAG = "LogPestMgmtFragment";
+
+    // for reminders
+    private static final String TIME_PATTERN = "HH:mm";
+    Calendar calendar = Calendar.getInstance();
+    DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    TextView lblDroneCellFndnRmndr;
+    TextView lblMitesTrtmntRmndr;
 
     private long mHiveID;
     private long mLogEntryPestMgmtKey;
@@ -76,8 +94,17 @@ public class LogPestMgmtFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_log_pestmgmt_notes, container, false);
 
         // set button listener and text
-        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.done_string));
+        final Button btnHiveNote = (Button)v.findViewById(R.id.hiveNoteButtton);
+        btnHiveNote.setText(getResources().getString(R.string.done_string));
+
+        // set up reminder buttons
+        final Button btnSetDrone = (Button)v.findViewById(R.id.buttonDroneCellFndn);
+        final Button btnSetMites = (Button)v.findViewById(R.id.buttonMitesTrtmnt);
+
+        lblDroneCellFndnRmndr = (TextView)v.findViewById(R.id.textViewDroneCellFndnRmndr);
+        lblMitesTrtmntRmndr = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
+
+        update();
 
         if (mLogEntryPestMgmt != null) {
 
@@ -100,17 +127,36 @@ public class LogPestMgmtFragment extends Fragment {
         }
 
         // set button listener
-        b1.setOnClickListener(new View.OnClickListener() {
+        btnHiveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(mHiveID);
+                onHiveNoteButtonPressed(mHiveID);
+            }
+        });
+
+        btnSetDrone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSetDroneButtonPressed(mHiveID);
+            }
+        });
+
+        btnSetMites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSetMitesButtonPressed(mHiveID);
             }
         });
 
         return v;
     }
 
-    public void onButtonPressed(long hiveID) {
+    private void update() {
+        lblDroneCellFndnRmndr.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+        lblMitesTrtmntRmndr.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+    }
+
+    public void onHiveNoteButtonPressed(long hiveID) {
         // get log entry data and put to DB
         Log.d(TAG, "about to persist logentry");
 
@@ -175,6 +221,27 @@ public class LogPestMgmtFragment extends Fragment {
             }
 
         }
+    }
+
+    public void onSetDroneButtonPressed(long hiveID) {
+        DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show(getChildFragmentManager(), "datePicker");
+    }
+
+    public void onSetMitesButtonPressed(long hiveID) {
+
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        calendar.set(year, monthOfYear, dayOfMonth);
+        update();
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        update();
     }
 
     @Override
