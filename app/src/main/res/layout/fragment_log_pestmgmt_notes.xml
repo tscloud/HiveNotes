@@ -35,6 +35,24 @@
             android:text="@string/pestmgmt_drone_cell_fndn"
             android:layout_gravity="center_vertical" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutDroneCellFndnRmndr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayoutDroneCellFndn"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/textViewDroneCellFndnRmndr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.65"
+            android:ems="10" />
+
         <Button
             android:id="@+id/buttonDroneCellFndn"
             android:layout_width="wrap_content"
@@ -48,7 +66,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/linearLayoutDroneCellFndn"
+        android:layout_below="@+id/linearLayoutDroneCellFndnRmndr"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
@@ -79,10 +97,17 @@
             android:text="@string/pestmgmt_mites_trtmnt"
             android:layout_gravity="center_vertical" />
 
+        <EditText
+            android:id="@+id/editTextMitesTrtmnt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.65"
+            android:ems="10" />
+
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayoutMitesTrtmntEdit"
+        android:id="@+id/linearLayoutMitesTrtmntRmndr"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -90,8 +115,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
-        <EditText
-            android:id="@+id/editTextMitesTrtmnt"
+        <TextView
+            android:id="@+id/textViewMitesTrtmntRmndr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.65"
@@ -110,7 +135,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutMitesTrtmntEdit"
+        android:layout_below="@id/linearLayoutMitesTrtmntRmndr"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
@@ -140,17 +165,6 @@
             android:layout_weight="0.50"
             android:text="@string/pestmgmt_other"
             android:layout_gravity="center_vertical" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutPestOtherText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutPestOther"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
 
         <EditText
             android:id="@+id/editTextPestOther"
