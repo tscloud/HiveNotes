@@ -59,22 +59,28 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             mlogentryKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_KEY, -1);
 
             Fragment fragment = null;
+            String fragTag = null;
 
             switch (argItemId) {
                 case "1":
                     fragment = LogGeneralNotesFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragTag = "LOG_GENERAL_FRAG";
                     break;
                 case "2":
                     fragment = LogProductivityFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragTag = "LOG_PRODUCTIVITY_FRAG";
                     break;
                 case "3":
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragTag = "LOG_PEST_FRAG";
                     break;
                 case "4":
                     fragment = LogFeedingFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragTag = "LOG_FEEDING_FRAG";
                     break;
                 case "5":
                     fragment = LogOtherFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragTag = "LOG_OTHER_FRAG";
                     break;
                 case "6":
                     // Save button
@@ -87,7 +93,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
             if (fragment != null) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.logentry_detail_container, fragment)
+                        .add(R.id.logentry_detail_container, fragment, fragTag)
                         .commit();
             }
         }

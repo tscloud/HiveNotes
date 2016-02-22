@@ -64,8 +64,8 @@ public class LogEntryPestMgmtDAO {
     // --DB access methods--
 
     public LogEntryPestMgmt createLogEntry(long hive, String visitDate, int drone_cell_fndn,
-                                           int drone_cell_fndn_rmndr, int small_hive_beetle_trap,
-                                           int mites_trtmnt, String mites_trtmnt_type, int mites_trtmnt_rmndr,
+                                           long drone_cell_fndn_rmndr, int small_hive_beetle_trap,
+                                           int mites_trtmnt, String mites_trtmnt_type, long mites_trtmnt_rmndr,
                                            int screened_bottom_board, int other, String otherType) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPESTMGMT_HIVE, hive);
@@ -95,8 +95,8 @@ public class LogEntryPestMgmtDAO {
     }
 
     public LogEntryPestMgmt updateLogEntry(long id, long hive, String visitDate, int drone_cell_fndn,
-                                               int drone_cell_fndn_rmndr, int small_hive_beetle_trap,
-                                               int mites_trtmnt, String mites_trtmnt_type, int mites_trtmnt_rmndr,
+                                               long drone_cell_fndn_rmndr, int small_hive_beetle_trap,
+                                               int mites_trtmnt, String mites_trtmnt_type, long mites_trtmnt_rmndr,
                                                int screened_bottom_board, int other, String otherType) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPESTMGMT_HIVE, hive);

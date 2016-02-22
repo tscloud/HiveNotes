@@ -1,6 +1,7 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,10 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 
 /**
@@ -32,6 +42,11 @@ public class LogPestMgmtFragment extends Fragment {
     private LogEntryPestMgmt mLogEntryPestMgmt;
 
     private OnLogPestMgmntFragmentInteractionListener mListener;
+
+    // time/date formatters
+    private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    private String TIME_PATTERN = "HH:mm";
+    private SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
 
     /**
      * Use this factory method to create a new instance of
@@ -58,6 +73,9 @@ public class LogPestMgmtFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Do I need this ?!
+        this.setRetainInstance(true);
+
         if (getArguments() != null) {
             mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
             mLogEntryPestMgmtKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
@@ -75,9 +93,18 @@ public class LogPestMgmtFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log_pestmgmt_notes, container, false);
 
-        // set button listener and text
-        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.done_string));
+        // set button listeners and text
+        final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
+        hiveNoteBtn.setText(getResources().getString(R.string.done_string));
+
+        final Button droneCellFndnBtn = (Button)v.findViewById(R.id.buttonDroneCellFndn);
+        final Button mitesTrtmntBtn = (Button)v.findViewById(R.id.buttonMitesTrtmnt);
+
+        // labels for showing reminder time; be sure to init the tag as this is what goes inti the DB
+        final TextView droneCellFndnRmndrText = (TextView)v.findViewById(R.id.textViewDroneCellFndnRmndr);
+        droneCellFndnRmndrText.setTag((long)0);
+        final TextView mitesTrtmntRmndrText = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
+        mitesTrtmntRmndrText.setTag((long)0);
 
         if (mLogEntryPestMgmt != null) {
 
@@ -97,20 +124,43 @@ public class LogPestMgmtFragment extends Fragment {
             screenedBottomBoardCheck.setChecked(mLogEntryPestMgmt.getScreenedBottomBoard() != 0);
             otherCheck.setChecked(mLogEntryPestMgmt.getOther() != 0);
             otherEdit.setText(mLogEntryPestMgmt.getOtherType());
+
+            //do Reminders
+            Calendar calendar = Calendar.getInstance();
+
+            calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndr());
+            droneCellFndnRmndrText.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+
+            calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndr());
+            mitesTrtmntRmndrText.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
         }
 
-        // set button listener
-        b1.setOnClickListener(new View.OnClickListener() {
+        // set button listeners
+        hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(mHiveID);
+                onHiveNoteButtonPressed(mHiveID);
+            }
+        });
+
+        droneCellFndnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReminderPressed(droneCellFndnRmndrText);
+            }
+        });
+
+        mitesTrtmntBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReminderPressed(mitesTrtmntRmndrText);
             }
         });
 
         return v;
     }
 
-    public void onButtonPressed(long hiveID) {
+    public void onHiveNoteButtonPressed(long hiveID) {
         // get log entry data and put to DB
         Log.d(TAG, "about to persist logentry");
 
@@ -123,6 +173,8 @@ public class LogPestMgmtFragment extends Fragment {
         final CheckBox screenedBottomBoardCheck = (CheckBox)getView().findViewById(R.id.checkScreenedBottomBoard);
         final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkPestOther);
         final EditText otherEdit = (EditText)getView().findViewById(R.id.editTextPestOther);
+        final TextView droneCellFndnRmndrText = (TextView)getView().findViewById(R.id.textViewDroneCellFndnRmndr);
+        final TextView mitesTrtmntRmndrText = (TextView)getView().findViewById(R.id.textViewMitesTrtmntRmndr);
 
         int droneCellFndnInt = (droneCellFndnCheck.isChecked()) ? 1 : 0;
         int smallHiveBeetleTrapInt = (smallHiveBeetleTrapCheck.isChecked()) ? 1 : 0;
@@ -134,6 +186,10 @@ public class LogPestMgmtFragment extends Fragment {
         int otherInt = (otherCheck.isChecked()) ? 1 : 0;
 
         String otherString = otherEdit.getText().toString();
+
+        // Get the times in millis from the TextView tag
+        long droneCellFndnRmndrLong = (long)droneCellFndnRmndrText.getTag();
+        long mitesTrtmntRmndrLong = (long)mitesTrtmntRmndrText.getTag();
 
         boolean emptyText = false;
 
@@ -169,12 +225,51 @@ public class LogPestMgmtFragment extends Fragment {
             mLogEntryPestMgmt.setScreenedBottomBoard(screenedBottomBoardInt);
             mLogEntryPestMgmt.setOther(otherInt);
             mLogEntryPestMgmt.setOtherType(otherString);
+            mLogEntryPestMgmt.setDroneCellFndnRmndr(droneCellFndnRmndrLong);
+            mLogEntryPestMgmt.setMitesTrtmntRmndr(mitesTrtmntRmndrLong);
 
             if (mListener != null) {
                 mListener.onLogPestMgmtFragmentInteraction(mLogEntryPestMgmt);
             }
-
         }
+    }
+
+    public void onReminderPressed(final TextView timeLbl) {
+
+        Log.d(TAG, "onReminderPressed");
+
+        final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+
+        dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DatePicker datePicker = (DatePicker)dialogView.findViewById(R.id.date_picker);
+                TimePicker timePicker = (TimePicker)dialogView.findViewById(R.id.time_picker);
+
+                Calendar calendar = new GregorianCalendar(datePicker.getYear(),
+                        datePicker.getMonth(),
+                        datePicker.getDayOfMonth(),
+                        timePicker.getCurrentHour(),
+                        timePicker.getCurrentMinute());
+
+                long time = calendar.getTimeInMillis();
+                Log.d(TAG, "Time picked: " + time);
+
+                // label has a human readable value; tag has millis value for DB
+                timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+                timeLbl.setTag(time);
+
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setView(dialogView);
+        alertDialog.show();
+    }
+
+    public void onMitesTrtmnButtonPressed(final TextView timeLbl) {
+
     }
 
     @Override

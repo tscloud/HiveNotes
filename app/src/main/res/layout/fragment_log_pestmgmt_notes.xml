@@ -51,6 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.65"
+            android:text="No reminder set"
             android:ems="10" />
 
         <Button
@@ -120,6 +121,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.65"
+            android:text="No reminder set"
             android:ems="10" />
 
         <Button

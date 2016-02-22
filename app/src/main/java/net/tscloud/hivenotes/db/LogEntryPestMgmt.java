@@ -13,11 +13,11 @@ public class LogEntryPestMgmt implements Serializable {
     private long hive;
     private String visitDate;
     private int droneCellFndn;
-    private int droneCellFndnRmndr;
+    private long droneCellFndnRmndr;
     private int smallHiveBeetleTrap;
     private int mitesTrtmnt;
     private String mitesTrtmntType;
-    private int mitesTrtmntRmndr;
+    private long mitesTrtmntRmndr;
     private int screenedBottomBoard;
     private int other;
     private String otherType;
@@ -30,11 +30,11 @@ public class LogEntryPestMgmt implements Serializable {
         this.droneCellFndn = droneCellFndn;
     }
 
-    public int getDroneCellFndnRmndr() {
+    public long getDroneCellFndnRmndr() {
         return droneCellFndnRmndr;
     }
 
-    public void setDroneCellFndnRmndr(int droneCellFndnRmndr) {
+    public void setDroneCellFndnRmndr(long droneCellFndnRmndr) {
         this.droneCellFndnRmndr = droneCellFndnRmndr;
     }
 
@@ -62,11 +62,11 @@ public class LogEntryPestMgmt implements Serializable {
         this.mitesTrtmnt = mitesTrtmnt;
     }
 
-    public int getMitesTrtmntRmndr() {
+    public long getMitesTrtmntRmndr() {
         return mitesTrtmntRmndr;
     }
 
-    public void setMitesTrtmntRmndr(int mitesTrtmntRmndr) {
+    public void setMitesTrtmntRmndr(long mitesTrtmntRmndr) {
         this.mitesTrtmntRmndr = mitesTrtmntRmndr;
     }
 
