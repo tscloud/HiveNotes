@@ -129,10 +129,16 @@ public class LogPestMgmtFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
 
             calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndr());
-            droneCellFndnRmndrText.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+            String droneDate = dateFormat.format(calendar.getTime());
+            String droneTime = timeFormat.format(calendar.getTime());
+            String droneDateTime = droneDate + ' ' + droneTime;
+            droneCellFndnRmndrText.setText(droneDateTime);
 
             calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndr());
-            mitesTrtmntRmndrText.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+            String mitesDate = dateFormat.format(calendar.getTime());
+            String mitesTime = timeFormat.format(calendar.getTime());
+            String mitesDateTime = mitesDate + ' ' + mitesTime;
+            mitesTrtmntRmndrText.setText(mitesDateTime);
         }
 
         // set button listeners
