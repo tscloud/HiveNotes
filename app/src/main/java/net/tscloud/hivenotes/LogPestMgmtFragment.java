@@ -73,17 +73,25 @@ public class LogPestMgmtFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Do I need this ?!
-        this.setRetainInstance(true);
+        // populate dataobject from Bundle
+        if (savedInstanceState != null) {
+            mLogEntryPestMgmt = new LogEntryPestMgmt();
+            mLogEntryPestMgmt.visitDate = savedInstanceState.getString("visitDate");
+            mLogEntryPestMgmt.droneCellFndn = savedInstanceState.getInt("droneCellFndn");
+            mLogEntryPestMgmt.droneCellFndnRmndr = savedInstanceState.getLong("droneCellFndnRmndr");
+            mLogEntryPestMgmt.smallHiveBeetleTrap = savedInstanceState.getInt("smallHiveBeetleTrap");
+            mLogEntryPestMgmt.mitesTrtmnt = savedInstanceState.getInt("mitesTrtmnt");
+            mLogEntryPestMgmt.mitesTrtmntType = savedInstanceState.getInt("mitesTrtmntType");
+            mLogEntryPestMgmt.mitesTrtmntRmndr = savedInstanceState.getLong("mitesTrtmntRmndr");
+            mLogEntryPestMgmt.screenedBottomBoard = savedInstanceState.getInt("screenedBottomBoard");
+            mLogEntryPestMgmt.other = savedInstanceState.getInt("other");
+            mLogEntryPestMgmt.otherType = savedInstanceState.getString("otherType");
+        }
 
+        // save off arguments
         if (getArguments() != null) {
             mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
             mLogEntryPestMgmtKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
-
-        if (mLogEntryPestMgmtKey != -1) {
-            // we need to get the Hive
-            mLogEntryPestMgmt = getLogEntry(mLogEntryPestMgmtKey);
         }
     }
 
@@ -100,11 +108,19 @@ public class LogPestMgmtFragment extends Fragment {
         final Button droneCellFndnBtn = (Button)v.findViewById(R.id.buttonDroneCellFndn);
         final Button mitesTrtmntBtn = (Button)v.findViewById(R.id.buttonMitesTrtmnt);
 
-        // labels for showing reminder time; be sure to init the tag as this is what goes inti the DB
+        // labels for showing reminder time; be sure to init the tag as this is what goes into the DB
         final TextView droneCellFndnRmndrText = (TextView)v.findViewById(R.id.textViewDroneCellFndnRmndr);
         droneCellFndnRmndrText.setTag((long)0);
         final TextView mitesTrtmntRmndrText = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
         mitesTrtmntRmndrText.setTag((long)0);
+
+        // Pest Mgmt log entry my have something in it either already poulated or populated from Bundle
+        // if not => we need to get the Pest Mgmt log entry
+        if (mLogEntryPestMgmt != null) {
+            if (mLogEntryPestMgmtKey != -1) {
+                mLogEntryPestMgmt = getLogEntry(mLogEntryPestMgmtKey);
+            }
+        }
 
         if (mLogEntryPestMgmt != null) {
 
@@ -293,6 +309,23 @@ public class LogPestMgmtFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // save off values potentially entered from screen
+        outState.putString("visitDate", mLogEntryPestMgmt.visitDate);
+        outState.putInt("droneCellFndn", mLogEntryPestMgmt.droneCellFndn);
+        outState.putLong("droneCellFndnRmndr", mLogEntryPestMgmt.droneCellFndnRmndr);
+        outState.putInt("smallHiveBeetleTrap", mLogEntryPestMgmt.smallHiveBeetleTrap);
+        outState.putInt("mitesTrtmnt", mLogEntryPestMgmt.mitesTrtmnt);
+        outState.putInt("mitesTrtmntType", mLogEntryPestMgmt.mitesTrtmntType);
+        outState.putLong("mitesTrtmntRmndr", mLogEntryPestMgmt.mitesTrtmntRmndr);
+        outState.putInt("screenedBottomBoard", mLogEntryPestMgmt.screenedBottomBoard);
+        outState.putInt("other", mLogEntryPestMgmt.other);
+        outState.putString("otherType", mLogEntryPestMgmt.otherType);
+
+        super.onSaveInstanceState(outState);
     }
 
     // Utility method to get Profile
