@@ -290,10 +290,6 @@ public class LogPestMgmtFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void onMitesTrtmnButtonPressed(final TextView timeLbl) {
-
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -314,16 +310,18 @@ public class LogPestMgmtFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
-        outState.putString("visitDate", mLogEntryPestMgmt.visitDate);
-        outState.putInt("droneCellFndn", mLogEntryPestMgmt.droneCellFndn);
-        outState.putLong("droneCellFndnRmndr", mLogEntryPestMgmt.droneCellFndnRmndr);
-        outState.putInt("smallHiveBeetleTrap", mLogEntryPestMgmt.smallHiveBeetleTrap);
-        outState.putInt("mitesTrtmnt", mLogEntryPestMgmt.mitesTrtmnt);
-        outState.putInt("mitesTrtmntType", mLogEntryPestMgmt.mitesTrtmntType);
-        outState.putLong("mitesTrtmntRmndr", mLogEntryPestMgmt.mitesTrtmntRmndr);
-        outState.putInt("screenedBottomBoard", mLogEntryPestMgmt.screenedBottomBoard);
-        outState.putInt("other", mLogEntryPestMgmt.other);
-        outState.putString("otherType", mLogEntryPestMgmt.otherType);
+        if (mLogEntryPestMgmt != null) {
+            outState.putString("visitDate", mLogEntryPestMgmt.visitDate);
+            outState.putInt("droneCellFndn", mLogEntryPestMgmt.droneCellFndn);
+            outState.putLong("droneCellFndnRmndr", mLogEntryPestMgmt.droneCellFndnRmndr);
+            outState.putInt("smallHiveBeetleTrap", mLogEntryPestMgmt.smallHiveBeetleTrap);
+            outState.putInt("mitesTrtmnt", mLogEntryPestMgmt.mitesTrtmnt);
+            outState.putInt("mitesTrtmntType", mLogEntryPestMgmt.mitesTrtmntType);
+            outState.putLong("mitesTrtmntRmndr", mLogEntryPestMgmt.mitesTrtmntRmndr);
+            outState.putInt("screenedBottomBoard", mLogEntryPestMgmt.screenedBottomBoard);
+            outState.putInt("other", mLogEntryPestMgmt.other);
+            outState.putString("otherType", mLogEntryPestMgmt.otherType);
+        }
 
         super.onSaveInstanceState(outState);
     }
