@@ -93,7 +93,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
             if (fragment != null) {
                 getSupportFragmentManager().beginTransaction()
-                        .addToBackStack(null)
+                        //.addToBackStack(null)
                         .add(R.id.logentry_detail_container, fragment, fragTag)
                         .commit();
             }

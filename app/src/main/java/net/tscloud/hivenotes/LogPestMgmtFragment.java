@@ -76,16 +76,16 @@ public class LogPestMgmtFragment extends Fragment {
         // populate dataobject from Bundle
         if (savedInstanceState != null) {
             mLogEntryPestMgmt = new LogEntryPestMgmt();
-            mLogEntryPestMgmt.visitDate = savedInstanceState.getString("visitDate");
-            mLogEntryPestMgmt.droneCellFndn = savedInstanceState.getInt("droneCellFndn");
-            mLogEntryPestMgmt.droneCellFndnRmndr = savedInstanceState.getLong("droneCellFndnRmndr");
-            mLogEntryPestMgmt.smallHiveBeetleTrap = savedInstanceState.getInt("smallHiveBeetleTrap");
-            mLogEntryPestMgmt.mitesTrtmnt = savedInstanceState.getInt("mitesTrtmnt");
-            mLogEntryPestMgmt.mitesTrtmntType = savedInstanceState.getInt("mitesTrtmntType");
-            mLogEntryPestMgmt.mitesTrtmntRmndr = savedInstanceState.getLong("mitesTrtmntRmndr");
-            mLogEntryPestMgmt.screenedBottomBoard = savedInstanceState.getInt("screenedBottomBoard");
-            mLogEntryPestMgmt.other = savedInstanceState.getInt("other");
-            mLogEntryPestMgmt.otherType = savedInstanceState.getString("otherType");
+            mLogEntryPestMgmt.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryPestMgmt.setDroneCellFndn(savedInstanceState.getInt("droneCellFndn"));
+            mLogEntryPestMgmt.setDroneCellFndnRmndr(savedInstanceState.getLong("droneCellFndnRmndr"));
+            mLogEntryPestMgmt.setSmallHiveBeetleTrap(savedInstanceState.getInt("smallHiveBeetleTrap"));
+            mLogEntryPestMgmt.setMitesTrtmnt(savedInstanceState.getInt("mitesTrtmnt"));
+            mLogEntryPestMgmt.setMitesTrtmntType(savedInstanceState.getString("mitesTrtmntType"));
+            mLogEntryPestMgmt.setMitesTrtmntRmndr(savedInstanceState.getLong("mitesTrtmntRmndr"));
+            mLogEntryPestMgmt.setScreenedBottomBoard(savedInstanceState.getInt("screenedBottomBoard"));
+            mLogEntryPestMgmt.setOther(savedInstanceState.getInt("other"));
+            mLogEntryPestMgmt.setOtherType(savedInstanceState.getString("otherType"));
         }
 
         // save off arguments
@@ -114,9 +114,9 @@ public class LogPestMgmtFragment extends Fragment {
         final TextView mitesTrtmntRmndrText = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
         mitesTrtmntRmndrText.setTag((long)0);
 
-        // Pest Mgmt log entry my have something in it either already poulated or populated from Bundle
+        // Pest Mgmt log entry my have something in it either already populated or populated from Bundle
         // if not => we need to get the Pest Mgmt log entry
-        if (mLogEntryPestMgmt != null) {
+        if (mLogEntryPestMgmt == null) {
             if (mLogEntryPestMgmtKey != -1) {
                 mLogEntryPestMgmt = getLogEntry(mLogEntryPestMgmtKey);
             }
@@ -311,16 +311,16 @@ public class LogPestMgmtFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
         if (mLogEntryPestMgmt != null) {
-            outState.putString("visitDate", mLogEntryPestMgmt.visitDate);
-            outState.putInt("droneCellFndn", mLogEntryPestMgmt.droneCellFndn);
-            outState.putLong("droneCellFndnRmndr", mLogEntryPestMgmt.droneCellFndnRmndr);
-            outState.putInt("smallHiveBeetleTrap", mLogEntryPestMgmt.smallHiveBeetleTrap);
-            outState.putInt("mitesTrtmnt", mLogEntryPestMgmt.mitesTrtmnt);
-            outState.putInt("mitesTrtmntType", mLogEntryPestMgmt.mitesTrtmntType);
-            outState.putLong("mitesTrtmntRmndr", mLogEntryPestMgmt.mitesTrtmntRmndr);
-            outState.putInt("screenedBottomBoard", mLogEntryPestMgmt.screenedBottomBoard);
-            outState.putInt("other", mLogEntryPestMgmt.other);
-            outState.putString("otherType", mLogEntryPestMgmt.otherType);
+            outState.putString("visitDate", mLogEntryPestMgmt.getVisitDate());
+            outState.putInt("droneCellFndn", mLogEntryPestMgmt.getDroneCellFndn());
+            outState.putLong("droneCellFndnRmndr", mLogEntryPestMgmt.getDroneCellFndnRmndr());
+            outState.putInt("smallHiveBeetleTrap", mLogEntryPestMgmt.getSmallHiveBeetleTrap());
+            outState.putInt("mitesTrtmnt", mLogEntryPestMgmt.getMitesTrtmnt());
+            outState.putString("mitesTrtmntType", mLogEntryPestMgmt.getMitesTrtmntType());
+            outState.putLong("mitesTrtmntRmndr", mLogEntryPestMgmt.getMitesTrtmntRmndr());
+            outState.putInt("screenedBottomBoard", mLogEntryPestMgmt.getScreenedBottomBoard());
+            outState.putInt("other", mLogEntryPestMgmt.getOther());
+            outState.putString("otherType", mLogEntryPestMgmt.getOtherType());
         }
 
         super.onSaveInstanceState(outState);
@@ -350,5 +350,4 @@ public class LogPestMgmtFragment extends Fragment {
     public interface OnLogPestMgmntFragmentInteractionListener {
         public void onLogPestMgmtFragmentInteraction(LogEntryPestMgmt alogEntryPestMgmt);
     }
-
 }
