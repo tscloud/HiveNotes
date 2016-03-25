@@ -115,7 +115,7 @@ public class LogPestMgmtFragment extends Fragment {
         final TextView mitesTrtmntRmndrText = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
         mitesTrtmntRmndrText.setTag((long)0);
 
-        // Pest Mgmt log entry may have something in it either already populated or populated from Bundle
+        // log entry may have something in it either already populated or populated from Bundle
         // if not => 1st check the Activity for previously entered data, if not => potentially read DB
         if (mLogEntryPestMgmt == null) {
             try {

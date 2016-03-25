@@ -59,14 +59,20 @@ public class LogOtherFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // populate dataobject from Bundle
+        if (savedInstanceState != null) {
+            mLogEntryOther = new LogEntryPestMgmt();
+            mLogEntryOther.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryOther.setRequeen(savedInstanceState.getInt("requeen"));
+            mLogEntryOther.setRequeenRmndr(savedInstanceState.getLong("requeenRmndr"));
+            mLogEntryOther.setSwarmRmndr(savedInstanceState.getInt("swarmRmndr"));
+            mLogEntryOther.setSplitHiveRmndr(savedInstanceState.getInt("splitHiveRmndr"));
+        }
+
+        // save off arguments
         if (getArguments() != null) {
             mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
             mLogEntryOtherKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
-
-        if (mLogEntryOtherKey != -1) {
-            // we need to get the Hive
-            mLogEntryOther = getLogEntry(mLogEntryOtherKey);
         }
     }
 
@@ -79,6 +85,24 @@ public class LogOtherFragment extends Fragment {
         // set button listener and text
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
         b1.setText(getResources().getString(R.string.done_string));
+
+        // log entry may have something in it either already populated or populated from Bundle
+        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
+        if (mLogEntryOther == null) {
+            try {
+                mLogEntryOther = (LogEntryPestMgmt)mListener.getPreviousLogData();
+            }
+            catch (ClassCastException e) {
+                // Log the exception but continue w/ NO previous log data
+                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
+                mLogEntryOther = null;
+            }
+            if (mLogEntryOther == null) {
+                if (mLogEntryOtherKey != -1) {
+                    mLogEntryOther = getLogEntry(mLogEntryOtherKey);
+                }
+            }
+        }
 
         if (mLogEntryOther != null) {
 
@@ -146,6 +170,20 @@ public class LogOtherFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // save off values potentially entered from screen
+        if (mLogEntryOther != null) {
+            outState.putString("visitDate", mLogEntryOther.getVisitDate());
+            outState.putInt("requeen", mLogEntryOther.getRequeen());
+            outState.putLong("requeenRmndr", mLogEntryOther.getRequeenRmndr());
+            outState.putInt("swarmRmndr", mLogEntryOther.getSwarmRmndr());
+            outState.putInt("splitHiveRmndr", mLogEntryOther.getSplitHiveRmndr());
+        }
+
+        super.onSaveInstanceState(outState);
     }
 
     // Utility method to get Profile

@@ -62,16 +62,25 @@ public class LogGeneralNotesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // populate dataobject from Bundle
+        if (savedInstanceState != null) {
+            mLogEntryGeneral = new LogEntryGeneral();
+            mLogEntryGeneral.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryGeneral.setPopulation(savedInstanceState.getInt("population"));
+            mLogEntryGeneral.setTemperament(savedInstanceState.getLong("temperament"));
+            mLogEntryGeneral.setPestsDisease(savedInstanceState.getInt("pestsDisease"));
+            mLogEntryGeneral.setBroodFrames(savedInstanceState.getInt("broodFrames"));
+            mLogEntryGeneral.setBroodPattern(savedInstanceState.getString("broodPattern"));
+            mLogEntryGeneral.setQueen(savedInstanceState.getLong("queen"));
+            mLogEntryGeneral.setHoneyStores(savedInstanceState.getInt("honeyStores"));
+            mLogEntryGeneral.setPollenStores(savedInstanceState.getInt("pollenStores"));
+        }
+
+        // save off arguments
         if (getArguments() != null) {
             mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
             mLogEntryGeneralKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
         }
-
-        if (mLogEntryGeneralKey != -1) {
-            // we need to get the Hive
-            mLogEntryGeneral = getLogEntry(mLogEntryGeneralKey);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,6 +118,24 @@ public class LogGeneralNotesFragment extends Fragment {
 
         // date must be set if we are performing update
         final EditText dateEdit = (EditText)v.findViewById(R.id.editTextDate);
+
+        // log entry may have something in it either already populated or populated from Bundle
+        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
+        if (mLogEntryGeneral == null) {
+            try {
+                mLogEntryGeneral = (LogEntryGeneral)mListener.getPreviousLogData();
+            }
+            catch (ClassCastException e) {
+                // Log the exception but continue w/ NO previous log data
+                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
+                mLogEntryGeneral = null;
+            }
+            if (mLogEntryGeneral == null) {
+                if (mLogEntryGeneralKey != -1) {
+                    mLogEntryGeneral = getLogEntry(mLogEntryGeneralKey);
+                }
+            }
+        }
 
         if (mLogEntryGeneral != null) {
 
@@ -344,6 +371,24 @@ public class LogGeneralNotesFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // save off values potentially entered from screen
+        if (mLogEntryGeneral != null) {
+            outState.putString("visitDate", mLogEntryGeneral.getVisitDate());
+            outState.putInt("population", mLogEntryGeneral.getPopulation());
+            outState.putLong("temperament", mLogEntryGeneral.getTemperament());
+            outState.putInt("pestsDisease", mLogEntryGeneral.getPestsDisease());
+            outState.putInt("broodFrames", mLogEntryGeneral.getBroodFrames());
+            outState.putString("broodPattern", mLogEntryGeneral.getBroodPattern());
+            outState.putLong("queen", mLogEntryGeneral.getQueen());
+            outState.putInt("honeyStores", mLogEntryGeneral.getHoneyStores());
+            outState.putInt("pollenStores", mLogEntryGeneral.getpollenStores());
+        }
+
+        super.onSaveInstanceState(outState);
+    }
+
     // Utility method to get Profile
     LogEntryGeneral getLogEntry(long aLogEntryID) {
         // read log Entry
@@ -367,6 +412,7 @@ public class LogGeneralNotesFragment extends Fragment {
      */
     public interface OnLogGeneralNotesFragmentInteractionListener {
         public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
+        HiveNotesLogDO getPreviousLogData();
     }
 
 }

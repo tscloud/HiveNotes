@@ -59,14 +59,23 @@ public class LogProductivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // populate dataobject from Bundle
+        if (savedInstanceState != null) {
+            mLogEntryProductivity = new LogEntryProductivity();
+            mLogEntryProductivity.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryProductivity.setHoneyAddSupers(savedInstanceState.getInt("honeyAddSupers"));
+            mLogEntryProductivity.setHoneyRemoveSupers(savedInstanceState.getLong("honeyRemoveSupers"));
+            mLogEntryProductivity.setExtractedHoney(savedInstanceState.getInt("extractedHoney"));
+            mLogEntryProductivity.setAddPollenTrap(savedInstanceState.getInt("addPollenTrap"));
+            mLogEntryProductivity.setRemovePollenTrap(savedInstanceState.getString("removePollenTrap"));
+            mLogEntryProductivity.setPollenCollected(savedInstanceState.getLong("pollenCollected"));
+            mLogEntryProductivity.setBeeswaxCollected(savedInstanceState.getInt("beeswaxCollected"));
+        }
+
+        // save off arguments
         if (getArguments() != null) {
             mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
             mLogEntryProductivityKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
-
-        if (mLogEntryProductivityKey != -1) {
-            // we need to get the Hive
-            mLogEntryProductivity = getLogEntry(mLogEntryProductivityKey);
         }
     }
 
@@ -94,6 +103,24 @@ public class LogProductivityFragment extends Fragment {
 
         addSupersSpinner.setAdapter(spinnerArrayAdapter);
         removeSupersSpinner.setAdapter(spinnerArrayAdapter);
+
+        // log entry may have something in it either already populated or populated from Bundle
+        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
+        if (mLogEntryProductivity == null) {
+            try {
+                mLogEntryProductivity = (LogEntryPestMgmt)mListener.getPreviousLogData();
+            }
+            catch (ClassCastException e) {
+                // Log the exception but continue w/ NO previous log data
+                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
+                mLogEntryProductivity = null;
+            }
+            if (mLogEntryProductivity == null) {
+                if (mLogEntryProductivityKey != -1) {
+                    mLogEntryProductivity = getLogEntry(mLogEntryProductivityKey);
+                }
+            }
+        }
 
         if (mLogEntryProductivity != null) {
 
@@ -235,6 +262,23 @@ public class LogProductivityFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // save off values potentially entered from screen
+        if (mLogEntryProductivity != null) {
+            outState.putString("visitDate", mLogEntryProductivity.getVisitDate());
+            outState.putInt("honeyAddSupers", mLogEntryProductivity.getHoneyAddSupers());
+            outState.putLong("honeyRemoveSupers", mLogEntryProductivity.getHoneyRemoveSupers());
+            outState.putInt("extractedHoney", mLogEntryProductivity.getExtractedHoney());
+            outState.putInt("addPollenTrap", mLogEntryProductivity.getAddPollenTrap());
+            outState.putString("removePollenTrap", mLogEntryProductivity.getRemovePollenTrap());
+            outState.putLong("pollenCollected", mLogEntryProductivity.getPollenCollected());
+            outState.putInt("beeswaxCollected", mLogEntryProductivity.getBeeswaxCollected());
+        }
+
+        super.onSaveInstanceState(outState);
     }
 
     // Utility method to get Profile

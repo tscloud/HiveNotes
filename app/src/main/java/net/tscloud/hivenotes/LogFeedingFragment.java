@@ -58,14 +58,21 @@ public class LogFeedingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // populate dataobject from Bundle
+        if (savedInstanceState != null) {
+            mLogEntryFeeding = new LogEntryFeeding();
+            mLogEntryFeeding.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryFeeding.setOneOneSugarWater(savedInstanceState.getInt("oneOneSugarWater"));
+            mLogEntryFeeding.setTwoOneSugarWater(savedInstanceState.getLong("twoOneSugarWater"));
+            mLogEntryFeeding.setPollenPatty(savedInstanceState.getInt("pollenPatty"));
+            mLogEntryFeeding.setOther(savedInstanceState.getInt("other"));
+            mLogEntryFeeding.setOtherType(savedInstanceState.getString("otherType"));
+        }
+
+        // save off arguments
         if (getArguments() != null) {
             mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
             mLogEntryFeedingKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
-
-        if (mLogEntryFeedingKey != -1) {
-            // we need to get the Hive
-            mLogEntryFeeding = getLogEntry(mLogEntryFeedingKey);
         }
     }
 
@@ -78,6 +85,23 @@ public class LogFeedingFragment extends Fragment {
         // set button listener and text
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
         b1.setText(getResources().getString(R.string.done_string));
+
+        // log entry may have something in it either already populated or populated from Bundle
+        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
+        if (mLogEntryFeeding == null) {
+            try {
+                mLogEntryFeeding = (LogEntryPestMgmt)mListener.getPreviousLogData();
+            }
+            catch (ClassCastException e) {
+                // Log the exception but continue w/ NO previous log data
+                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
+                mLogEntryFeeding = null;
+            }
+            if (mLogEntryFeeding == null) {
+                if (mLogEntryFeedingKey != -1) {
+                    mLogEntryFeeding = getLogEntry(mLogEntryFeedingKey);
+                }
+            }
 
         if (mLogEntryFeeding != null) {
 
@@ -167,6 +191,21 @@ public class LogFeedingFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // save off values potentially entered from screen
+        if (mLogEntryFeeding != null) {
+            outState.putString("visitDate", mLogEntryFeeding.getVisitDate());
+            outState.putInt("oneOneSugarWater", mLogEntryFeeding.getOneOneSugarWater());
+            outState.putLong("twoOneSugarWater", mLogEntryFeeding.getTwoOneSugarWater());
+            outState.putInt("pollenPatty", mLogEntryFeeding.getPollenPatty());
+            outState.putInt("other", mLogEntryFeeding.getOther());
+            outState.putString("otherType", mLogEntryFeeding.getOtherType());
+        }
+
+        super.onSaveInstanceState(outState);
     }
 
     // Utility method to get Profile
