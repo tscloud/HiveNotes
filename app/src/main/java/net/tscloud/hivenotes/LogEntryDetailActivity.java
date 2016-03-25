@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryOther;
@@ -34,6 +35,9 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     private long mHiveKey;
     private long mlogentryKey;
 
+    // This is what gets returned on call to get getPreviousLogData()
+    private HiveNotesLogDO mPreviousLogData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,15 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             String argItemId = getIntent().getStringExtra(LogEntryListActivity.INTENT_ITEM_ID);
             mHiveKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_HIVE_KEY, -1);
             mlogentryKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_KEY, -1);
+
+            try {
+                mPreviousLogData = (HiveNotesLogDO)getIntent().getSerializableExtra(LogEntryListActivity.INTENT_PREVIOUS_DATA);
+            }
+            catch (ClassCastException e) {
+                // Log the exception but continue w/ NO previous log data
+                Log.e(TAG, "*** Bad Previous Log Data passed in ***", e);
+                mPreviousLogData = null;
+            }
 
             Fragment fragment = null;
             String fragTag = null;
@@ -125,6 +138,11 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public HiveNotesLogDO getPreviousLogData() {
+        return mPreviousLogData;
     }
 
     @Override

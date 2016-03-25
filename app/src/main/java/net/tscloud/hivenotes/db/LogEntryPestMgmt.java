@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by tscloud on 11/3/15.
  */
-public class LogEntryPestMgmt implements Serializable {
+public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
 
     public static final String TAG = "LogEntryPestMgmt";
 
@@ -38,18 +38,22 @@ public class LogEntryPestMgmt implements Serializable {
         this.droneCellFndnRmndr = droneCellFndnRmndr;
     }
 
+    @Override
     public long getHive() {
         return hive;
     }
 
+    @Override
     public void setHive(long hive) {
         this.hive = hive;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public void setId(long id) {
         this.id = id;
     }

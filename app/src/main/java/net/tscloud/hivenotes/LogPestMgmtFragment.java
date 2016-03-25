@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
 
@@ -114,11 +115,21 @@ public class LogPestMgmtFragment extends Fragment {
         final TextView mitesTrtmntRmndrText = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
         mitesTrtmntRmndrText.setTag((long)0);
 
-        // Pest Mgmt log entry my have something in it either already populated or populated from Bundle
-        // if not => we need to get the Pest Mgmt log entry
+        // Pest Mgmt log entry may have something in it either already populated or populated from Bundle
+        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
         if (mLogEntryPestMgmt == null) {
-            if (mLogEntryPestMgmtKey != -1) {
-                mLogEntryPestMgmt = getLogEntry(mLogEntryPestMgmtKey);
+            try {
+                mLogEntryPestMgmt = (LogEntryPestMgmt)mListener.getPreviousLogData();
+            }
+            catch (ClassCastException e) {
+                // Log the exception but continue w/ NO previous log data
+                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
+                mLogEntryPestMgmt = null;
+            }
+            if (mLogEntryPestMgmt == null) {
+                if (mLogEntryPestMgmtKey != -1) {
+                    mLogEntryPestMgmt = getLogEntry(mLogEntryPestMgmtKey);
+                }
             }
         }
 
@@ -131,7 +142,7 @@ public class LogPestMgmtFragment extends Fragment {
             final EditText mitesTrtmntEdit = (EditText)v.findViewById(R.id.editTextMitesTrtmnt);
             final CheckBox screenedBottomBoardCheck = (CheckBox)v.findViewById(R.id.checkScreenedBottomBoard);
             final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkPestOther);
-            final EditText otherEdit = (EditText)v.findViewById(R.id.editTextOther);
+            final EditText otherEdit = (EditText)v.findViewById(R.id.editTextPestOther);
 
             droneCellFndnCheck.setChecked(mLogEntryPestMgmt.getDroneCellFndn() != 0);
             smallHiveBeetleTrapCheck.setChecked(mLogEntryPestMgmt.getSmallHiveBeetleTrap() != 0);
@@ -144,17 +155,22 @@ public class LogPestMgmtFragment extends Fragment {
             //do Reminders
             Calendar calendar = Calendar.getInstance();
 
-            calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndr());
-            String droneDate = dateFormat.format(calendar.getTime());
-            String droneTime = timeFormat.format(calendar.getTime());
-            String droneDateTime = droneDate + ' ' + droneTime;
-            droneCellFndnRmndrText.setText(droneDateTime);
+            //don't set if 0 ==> means it's not set
+            if (mLogEntryPestMgmt.getDroneCellFndnRmndr() != 0) {
+                calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndr());
+                String droneDate = dateFormat.format(calendar.getTime());
+                String droneTime = timeFormat.format(calendar.getTime());
+                String droneDateTime = droneDate + ' ' + droneTime;
+                droneCellFndnRmndrText.setText(droneDateTime);
+            }
 
-            calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndr());
-            String mitesDate = dateFormat.format(calendar.getTime());
-            String mitesTime = timeFormat.format(calendar.getTime());
-            String mitesDateTime = mitesDate + ' ' + mitesTime;
-            mitesTrtmntRmndrText.setText(mitesDateTime);
+            if (mLogEntryPestMgmt.getMitesTrtmntRmndr() != 0) {
+                calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndr());
+                String mitesDate = dateFormat.format(calendar.getTime());
+                String mitesTime = timeFormat.format(calendar.getTime());
+                String mitesDateTime = mitesDate + ' ' + mitesTime;
+                mitesTrtmntRmndrText.setText(mitesDateTime);
+            }
         }
 
         // set button listeners
@@ -348,6 +364,7 @@ public class LogPestMgmtFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnLogPestMgmntFragmentInteractionListener {
-        public void onLogPestMgmtFragmentInteraction(LogEntryPestMgmt alogEntryPestMgmt);
+        void onLogPestMgmtFragmentInteraction(LogEntryPestMgmt alogEntryPestMgmt);
+        HiveNotesLogDO getPreviousLogData();
     }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
+import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
@@ -72,6 +73,10 @@ public class LogEntryListActivity extends AppCompatActivity implements
     LogEntryFeeding mLogEntryFeedingData;
     public static String INTENT_LOGENTRY_OTHER_DATA = "logentryOtherData";
     LogEntryOther mLogEntryOtherData;
+
+    // This is what gets returned on call to get getPreviousLogData()
+    public static String INTENT_PREVIOUS_DATA = "logentryPreviousData";
+    private HiveNotesLogDO mPreviousLogData;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -140,24 +145,24 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             switch (id) {
                 case "1":
-                    // will this always be a new logentry? so pass -1?
                     fragment = LogGeneralNotesFragment.newInstance(mHiveKey, -1);
+                    mPreviousLogData = mLogEntryGeneralData;
                     break;
                 case "2":
-                    // will this always be a new logentry? so pass -1?
                     fragment = LogProductivityFragment.newInstance(mHiveKey, -1);
+                    mPreviousLogData = mLogEntryProductivityData;
                     break;
                 case "3":
-                    // will this always be a new logentry? so pass -1?
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, -1);
+                    mPreviousLogData = mLogEntryPestMgmtData;
                     break;
                 case "4":
-                    // will this always be a new logentry? so pass -1?
                     fragment = LogFeedingFragment.newInstance(mHiveKey, -1);
+                    mPreviousLogData = mLogEntryFeedingData;
                     break;
                 case "5":
-                    // will this always be a new logentry? so pass -1?
                     fragment = LogOtherFragment.newInstance(mHiveKey, -1);
+                    mPreviousLogData = mLogEntryOtherData;
                     break;
                 case "6":
                     // Save button
@@ -178,10 +183,30 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
         } else {
             // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
+            // w/ the selected item ID.
             Intent intent = new Intent(this, LogEntryDetailActivity.class);
             intent.putExtra(INTENT_ITEM_ID, id);
             intent.putExtra(INTENT_HIVE_KEY, mHiveKey);
+            /*
+            Need to pass an appropriate DO so it can potentially be accessed by fragment
+             */
+            switch (id) {
+                case "1":
+                    intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryGeneralData);
+                    break;
+                case "2":
+                    intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryProductivityData);
+                    break;
+                case "3":
+                    intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryPestMgmtData);
+                    break;
+                case "4":
+                    intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryFeedingData);
+                    break;
+                case "5":
+                    intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryOtherData);
+                    break;
+            }
             startActivityForResult(intent, LOG_DETAIL_REQ_CODE);
         }
     }
@@ -253,6 +278,11 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 }
             }
         }
+    }
+
+    @Override
+    public HiveNotesLogDO getPreviousLogData() {
+        return mPreviousLogData;
     }
 
     private void updateDB(LogEntryGeneral aLogEntryGeneral, LogEntryProductivity aLogEntryProductivity,
