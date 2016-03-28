@@ -55,8 +55,8 @@ public class LogEntryOtherDAO {
 
     // --DB access methods--
 
-    public LogEntryOther createLogEntry(long hive, String visitDate, String requeen, int requeenRmndr,
-                                 int swarmRmndr, int splitHiveRmndr) {
+    public LogEntryOther createLogEntry(long hive, String visitDate, String requeen, long requeenRmndr,
+                                 long swarmRmndr, long splitHiveRmndr) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYOTHER_HIVE, hive);
         values.put(COLUMN_LOGENTRYOTHER_VISIT_DATE, visitDate);
@@ -79,8 +79,8 @@ public class LogEntryOtherDAO {
                 aDO.getSplitHiveRmndr(), aDO.getSwarmRmndr());
     }
 
-    public LogEntryOther updateLogEntry(long id, long hive, String visitDate, String requeen, int requeenRmndr,
-                                 int swarmRmndr, int splitHiveRmndr) {
+    public LogEntryOther updateLogEntry(long id, long hive, String visitDate, String requeen, long requeenRmndr,
+                                 long swarmRmndr, long splitHiveRmndr) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYOTHER_HIVE, hive);
         values.put(COLUMN_LOGENTRYOTHER_VISIT_DATE, visitDate);

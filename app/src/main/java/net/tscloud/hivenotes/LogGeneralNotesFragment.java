@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
 
@@ -66,14 +67,14 @@ public class LogGeneralNotesFragment extends Fragment {
         if (savedInstanceState != null) {
             mLogEntryGeneral = new LogEntryGeneral();
             mLogEntryGeneral.setVisitDate(savedInstanceState.getString("visitDate"));
-            mLogEntryGeneral.setPopulation(savedInstanceState.getInt("population"));
-            mLogEntryGeneral.setTemperament(savedInstanceState.getLong("temperament"));
-            mLogEntryGeneral.setPestsDisease(savedInstanceState.getInt("pestsDisease"));
+            mLogEntryGeneral.setPopulation(savedInstanceState.getString("population"));
+            mLogEntryGeneral.setTemperament(savedInstanceState.getString("temperament"));
+            mLogEntryGeneral.setPestsDisease(savedInstanceState.getString("pestsDisease"));
             mLogEntryGeneral.setBroodFrames(savedInstanceState.getInt("broodFrames"));
             mLogEntryGeneral.setBroodPattern(savedInstanceState.getString("broodPattern"));
-            mLogEntryGeneral.setQueen(savedInstanceState.getLong("queen"));
-            mLogEntryGeneral.setHoneyStores(savedInstanceState.getInt("honeyStores"));
-            mLogEntryGeneral.setPollenStores(savedInstanceState.getInt("pollenStores"));
+            mLogEntryGeneral.setQueen(savedInstanceState.getString("queen"));
+            mLogEntryGeneral.setHoneyStores(savedInstanceState.getString("honeyStores"));
+            mLogEntryGeneral.setPollenStores(savedInstanceState.getString("pollenStores"));
         }
 
         // save off arguments
@@ -81,6 +82,7 @@ public class LogGeneralNotesFragment extends Fragment {
             mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
             mLogEntryGeneralKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
         }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,8 +91,8 @@ public class LogGeneralNotesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_log_general_notes, container, false);
 
         // set button listener and text
-        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.done_string));
+        final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
+        hiveNoteBtn.setText(getResources().getString(R.string.done_string));
 
         // enable "Other" EditText only if corresponding CheckBox checked
         final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkPestOther);
@@ -168,7 +170,7 @@ public class LogGeneralNotesFragment extends Fragment {
                             mLogEntryGeneral.getTemperament()));
             broodFramesSpinner.setSelection(
                     ((ArrayAdapter) broodFramesSpinner.getAdapter()).getPosition(
-                            mLogEntryGeneral.getBroodFrames()));
+                            Integer.toString(mLogEntryGeneral.getBroodFrames())));
             broodPatternSpinner.setSelection(
                     ((ArrayAdapter) broodPatternSpinner.getAdapter()).getPosition(
                             mLogEntryGeneral.getBroodPattern()));
@@ -197,7 +199,7 @@ public class LogGeneralNotesFragment extends Fragment {
         }
 
         // set button listener
-        b1.setOnClickListener(new View.OnClickListener() {
+        hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onButtonPressed();
@@ -294,32 +296,7 @@ public class LogGeneralNotesFragment extends Fragment {
             if (mLogEntryGeneral == null) {
                 mLogEntryGeneral = new LogEntryGeneral();
             }
-            /*
-            LogEntryGeneral logEntryGeneral;
-            if (mLogEntryGeneralKey == -1) {
-                logEntryGeneral = logEntryGeneralDAO.createLogEntry(mHiveID, dateText, populationText,
-                        temperamentText, pestsDiseaseTextBuf.toString().replaceAll(" ,$", ""),
-                        broodFramesInt, broodPatternText, queenText, honeyStoresText, pollenStoresText);
-                lNewLogEntry = true;
-            }
-            else {
-                logEntryGeneral = logEntryGeneralDAO.updateLogEntry(mLogEntryGeneralKey, mHiveID, dateText,
-                        populationText, temperamentText, pestsDiseaseTextBuf.toString().replaceAll(" ,$", ""),
-                        broodFramesInt, broodPatternText, queenText, honeyStoresText, pollenStoresText);
-            }
-            logEntryGeneralDAO.close();
 
-            if (logEntryGeneral != null) {
-                // Reset LogEntryGeneral instance vars
-                mLogEntryGeneral = logEntryGeneral;
-                mLogEntryGeneralKey = logEntryGeneral.getId();
-
-                Log.d(TAG, "LogEntryGeneral Date: " + logEntryGeneral.getVisitDate());
-            }
-            else {
-                Log.d(TAG, "BAD...LogEntryGeneral update failed");
-            }
-            */
             mLogEntryGeneral.setId(mLogEntryGeneralKey);
             mLogEntryGeneral.setHive(mHiveID);
             mLogEntryGeneral.setVisitDate(dateText);
@@ -376,14 +353,14 @@ public class LogGeneralNotesFragment extends Fragment {
         // save off values potentially entered from screen
         if (mLogEntryGeneral != null) {
             outState.putString("visitDate", mLogEntryGeneral.getVisitDate());
-            outState.putInt("population", mLogEntryGeneral.getPopulation());
-            outState.putLong("temperament", mLogEntryGeneral.getTemperament());
-            outState.putInt("pestsDisease", mLogEntryGeneral.getPestsDisease());
+            outState.putString("population", mLogEntryGeneral.getPopulation());
+            outState.putString("temperament", mLogEntryGeneral.getTemperament());
+            outState.putString("pestsDisease", mLogEntryGeneral.getPestsDisease());
             outState.putInt("broodFrames", mLogEntryGeneral.getBroodFrames());
             outState.putString("broodPattern", mLogEntryGeneral.getBroodPattern());
-            outState.putLong("queen", mLogEntryGeneral.getQueen());
-            outState.putInt("honeyStores", mLogEntryGeneral.getHoneyStores());
-            outState.putInt("pollenStores", mLogEntryGeneral.getpollenStores());
+            outState.putString("queen", mLogEntryGeneral.getQueen());
+            outState.putString("honeyStores", mLogEntryGeneral.getHoneyStores());
+            outState.putString("pollenStores", mLogEntryGeneral.getPollenStores());
         }
 
         super.onSaveInstanceState(outState);
@@ -411,7 +388,7 @@ public class LogGeneralNotesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnLogGeneralNotesFragmentInteractionListener {
-        public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
+        void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
         HiveNotesLogDO getPreviousLogData();
     }
 

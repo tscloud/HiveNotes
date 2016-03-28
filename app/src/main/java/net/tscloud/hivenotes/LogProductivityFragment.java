@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import net.tscloud.hivenotes.db.HiveNotesLogDO;
+import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
 
@@ -63,11 +65,11 @@ public class LogProductivityFragment extends Fragment {
         if (savedInstanceState != null) {
             mLogEntryProductivity = new LogEntryProductivity();
             mLogEntryProductivity.setVisitDate(savedInstanceState.getString("visitDate"));
-            mLogEntryProductivity.setHoneyAddSupers(savedInstanceState.getInt("honeyAddSupers"));
-            mLogEntryProductivity.setHoneyRemoveSupers(savedInstanceState.getLong("honeyRemoveSupers"));
+            mLogEntryProductivity.setHoneyAddSupers(savedInstanceState.getString("honeyAddSupers"));
+            mLogEntryProductivity.setHoneyRemoveSupers(savedInstanceState.getString("honeyRemoveSupers"));
             mLogEntryProductivity.setExtractedHoney(savedInstanceState.getInt("extractedHoney"));
             mLogEntryProductivity.setAddPollenTrap(savedInstanceState.getInt("addPollenTrap"));
-            mLogEntryProductivity.setRemovePollenTrap(savedInstanceState.getString("removePollenTrap"));
+            mLogEntryProductivity.setRemovePollenTrap(savedInstanceState.getInt("removePollenTrap"));
             mLogEntryProductivity.setPollenCollected(savedInstanceState.getLong("pollenCollected"));
             mLogEntryProductivity.setBeeswaxCollected(savedInstanceState.getInt("beeswaxCollected"));
         }
@@ -108,7 +110,7 @@ public class LogProductivityFragment extends Fragment {
         // if not => 1st check the Activity for previously entered data, if not => potentially read DB
         if (mLogEntryProductivity == null) {
             try {
-                mLogEntryProductivity = (LogEntryPestMgmt)mListener.getPreviousLogData();
+                mLogEntryProductivity = (LogEntryProductivity)mListener.getPreviousLogData();
             }
             catch (ClassCastException e) {
                 // Log the exception but continue w/ NO previous log data
@@ -269,13 +271,13 @@ public class LogProductivityFragment extends Fragment {
         // save off values potentially entered from screen
         if (mLogEntryProductivity != null) {
             outState.putString("visitDate", mLogEntryProductivity.getVisitDate());
-            outState.putInt("honeyAddSupers", mLogEntryProductivity.getHoneyAddSupers());
-            outState.putLong("honeyRemoveSupers", mLogEntryProductivity.getHoneyRemoveSupers());
-            outState.putInt("extractedHoney", mLogEntryProductivity.getExtractedHoney());
+            outState.putString("honeyAddSupers", mLogEntryProductivity.getHoneyAddSupers());
+            outState.putString("honeyRemoveSupers", mLogEntryProductivity.getHoneyRemoveSupers());
+            outState.putFloat("extractedHoney", mLogEntryProductivity.getExtractedHoney());
             outState.putInt("addPollenTrap", mLogEntryProductivity.getAddPollenTrap());
-            outState.putString("removePollenTrap", mLogEntryProductivity.getRemovePollenTrap());
-            outState.putLong("pollenCollected", mLogEntryProductivity.getPollenCollected());
-            outState.putInt("beeswaxCollected", mLogEntryProductivity.getBeeswaxCollected());
+            outState.putInt("removePollenTrap", mLogEntryProductivity.getRemovePollenTrap());
+            outState.putFloat("pollenCollected", mLogEntryProductivity.getPollenCollected());
+            outState.putFloat("beeswaxCollected", mLogEntryProductivity.getBeeswaxCollected());
         }
 
         super.onSaveInstanceState(outState);
@@ -304,6 +306,7 @@ public class LogProductivityFragment extends Fragment {
      */
     public interface OnLogProductivityFragmentInteractionListener {
         public void onLogProductivityFragmentInteraction(LogEntryProductivity aLogEntryProductivity);
+        HiveNotesLogDO getPreviousLogData();
     }
 
 }

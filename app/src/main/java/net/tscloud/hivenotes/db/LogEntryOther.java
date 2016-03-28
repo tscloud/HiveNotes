@@ -13,9 +13,9 @@ public class LogEntryOther implements Serializable, HiveNotesLogDO {
     private long hive;
     private String visitDate;
     private String requeen;
-    private int requeenRmndr;
-    private int swarmRmndr;
-    private int splitHiveRmndr;
+    private long requeenRmndr;
+    private long swarmRmndr;
+    private long splitHiveRmndr;
 
     @Override
     public long getHive() {
@@ -45,27 +45,27 @@ public class LogEntryOther implements Serializable, HiveNotesLogDO {
         this.requeen = requeen;
     }
 
-    public int getRequeenRmndr() {
+    public long getRequeenRmndr() {
         return requeenRmndr;
     }
 
-    public void setRequeenRmndr(int requeenRmndr) {
+    public void setRequeenRmndr(long requeenRmndr) {
         this.requeenRmndr = requeenRmndr;
     }
 
-    public int getSplitHiveRmndr() {
+    public long getSplitHiveRmndr() {
         return splitHiveRmndr;
     }
 
-    public void setSplitHiveRmndr(int splitHiveRmndr) {
+    public void setSplitHiveRmndr(long splitHiveRmndr) {
         this.splitHiveRmndr = splitHiveRmndr;
     }
 
-    public int getSwarmRmndr() {
+    public long getSwarmRmndr() {
         return swarmRmndr;
     }
 
-    public void setSwarmRmndr(int swarmRmndr) {
+    public void setSwarmRmndr(long swarmRmndr) {
         this.swarmRmndr = swarmRmndr;
     }
 

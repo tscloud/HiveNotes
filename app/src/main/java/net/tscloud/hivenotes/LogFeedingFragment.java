@@ -11,8 +11,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
+import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 
 
 /**
@@ -63,7 +65,7 @@ public class LogFeedingFragment extends Fragment {
             mLogEntryFeeding = new LogEntryFeeding();
             mLogEntryFeeding.setVisitDate(savedInstanceState.getString("visitDate"));
             mLogEntryFeeding.setOneOneSugarWater(savedInstanceState.getInt("oneOneSugarWater"));
-            mLogEntryFeeding.setTwoOneSugarWater(savedInstanceState.getLong("twoOneSugarWater"));
+            mLogEntryFeeding.setTwoOneSugarWater(savedInstanceState.getInt("twoOneSugarWater"));
             mLogEntryFeeding.setPollenPatty(savedInstanceState.getInt("pollenPatty"));
             mLogEntryFeeding.setOther(savedInstanceState.getInt("other"));
             mLogEntryFeeding.setOtherType(savedInstanceState.getString("otherType"));
@@ -90,9 +92,8 @@ public class LogFeedingFragment extends Fragment {
         // if not => 1st check the Activity for previously entered data, if not => potentially read DB
         if (mLogEntryFeeding == null) {
             try {
-                mLogEntryFeeding = (LogEntryPestMgmt)mListener.getPreviousLogData();
-            }
-            catch (ClassCastException e) {
+                mLogEntryFeeding = (LogEntryFeeding) mListener.getPreviousLogData();
+            } catch (ClassCastException e) {
                 // Log the exception but continue w/ NO previous log data
                 Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
                 mLogEntryFeeding = null;
@@ -102,17 +103,20 @@ public class LogFeedingFragment extends Fragment {
                     mLogEntryFeeding = getLogEntry(mLogEntryFeedingKey);
                 }
             }
+        }
 
         if (mLogEntryFeeding != null) {
 
             // fill the form
             final CheckBox oneOneSugarCheck = (CheckBox)v.findViewById(R.id.checkOneOneSugar);
             final CheckBox twoOneSugarCheck = (CheckBox)v.findViewById(R.id.checkTwoOneSugar);
+            final CheckBox pollenPattyCheck = (CheckBox)v.findViewById(R.id.checkPollenPatty);
             final CheckBox feedingOtherCheck = (CheckBox)v.findViewById(R.id.checkFeedingOther);
             final EditText feedingOtherEdit = (EditText)v.findViewById(R.id.editTextFeedingOther);
 
             oneOneSugarCheck.setChecked(mLogEntryFeeding.getOneOneSugarWater() != 0);
             twoOneSugarCheck.setChecked(mLogEntryFeeding.getTwoOneSugarWater() != 0);
+            pollenPattyCheck.setChecked(mLogEntryFeeding.getPollenPatty() != 0);
             feedingOtherCheck.setChecked(mLogEntryFeeding.getOther() != 0);
             feedingOtherEdit.setText(mLogEntryFeeding.getOtherType());
         }
@@ -136,11 +140,13 @@ public class LogFeedingFragment extends Fragment {
 
         final CheckBox oneOneSugarCheck = (CheckBox)getView().findViewById(R.id.checkOneOneSugar);
         final CheckBox twoOneSugarCheck = (CheckBox)getView().findViewById(R.id.checkTwoOneSugar);
+        final CheckBox pollenPattyCheck = (CheckBox)getView().findViewById(R.id.checkPollenPatty);
         final CheckBox feedingOtherCheck = (CheckBox)getView().findViewById(R.id.checkFeedingOther);
         final EditText feedingOtherEdit = (EditText)getView().findViewById(R.id.editTextFeedingOther);
 
         int oneOneSugarInt = (oneOneSugarCheck.isChecked()) ? 1 : 0;
         int twoOneSugarInt = (twoOneSugarCheck.isChecked()) ? 1 : 0;
+        int pollenPattyInt = (pollenPattyCheck.isChecked()) ? 1 : 0;
         int feedingOtherInt = (feedingOtherCheck.isChecked()) ? 1 : 0;
 
         String feedingOtherString = feedingOtherEdit.getText().toString();
@@ -166,6 +172,7 @@ public class LogFeedingFragment extends Fragment {
             mLogEntryFeeding.setVisitDate(null);
             mLogEntryFeeding.setOneOneSugarWater(oneOneSugarInt);
             mLogEntryFeeding.setTwoOneSugarWater(twoOneSugarInt);
+            mLogEntryFeeding.setPollenPatty(pollenPattyInt);
             mLogEntryFeeding.setOther(feedingOtherInt);
             mLogEntryFeeding.setOtherType(feedingOtherString);
 
@@ -230,6 +237,7 @@ public class LogFeedingFragment extends Fragment {
      */
     public interface OnLogFeedingFragmentInteractionListener {
         public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding);
+        HiveNotesLogDO getPreviousLogData();
     }
 
 }

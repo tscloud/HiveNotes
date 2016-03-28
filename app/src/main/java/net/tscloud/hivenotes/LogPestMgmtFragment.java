@@ -229,6 +229,7 @@ public class LogPestMgmtFragment extends Fragment {
         long droneCellFndnRmndrLong = (long)droneCellFndnRmndrText.getTag();
         long mitesTrtmntRmndrLong = (long)mitesTrtmntRmndrText.getTag();
 
+        // check for required values - are there any?
         boolean emptyText = false;
 
         if (mitesTrtmntCheck.isChecked()) {

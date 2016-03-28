@@ -56,7 +56,8 @@ public class HiveListAdapter extends BaseAdapter {
             hiveFeedingImageView = (ImageView) convertView.findViewById(R.id.hiveFeedingImage);
             hiveGeneralImageView = (ImageView) convertView.findViewById(R.id.hiveGeneralImage);
             hiveOtherImageView = (ImageView) convertView.findViewById(R.id.hiveOtherImage);
-            convertView.setTag(new HiveListViewHolder(hiveTextView, hiveFeedingImageView, hiveGeneralImageView, hiveOtherImageView));
+            convertView.setTag(new HiveListViewHolder(hiveTextView, hiveFeedingImageView,
+                    hiveGeneralImageView, hiveOtherImageView));
         } else {
             HiveListViewHolder viewHolder = (HiveListViewHolder) convertView.getTag();
             hiveTextView = viewHolder.hiveEditView;
@@ -80,7 +81,8 @@ public class HiveListAdapter extends BaseAdapter {
         public final ImageView hiveGeneralImageView;
         public final ImageView hiveOtherImageView;
 
-        public HiveListViewHolder(TextView hiveEditView, ImageView hiveFeedingImageView, ImageView hiveGeneralImageView, ImageView hiveOtherImageView) {
+        public HiveListViewHolder(TextView hiveEditView, ImageView hiveFeedingImageView,
+                                  ImageView hiveGeneralImageView, ImageView hiveOtherImageView) {
             this.hiveEditView = hiveEditView;
             this.hiveFeedingImageView = hiveFeedingImageView;
             this.hiveGeneralImageView = hiveGeneralImageView;

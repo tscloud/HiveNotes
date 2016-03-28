@@ -1,7 +1,7 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,10 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
+import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryOtherDAO;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 
 /**
@@ -33,6 +43,11 @@ public class LogOtherFragment extends Fragment {
     private LogEntryOther mLogEntryOther;
 
     private OnLogOtherFragmentInteractionListener mListener;
+
+    // time/date formatters
+    private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    private String TIME_PATTERN = "HH:mm";
+    private SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
 
     /**
      * Use this factory method to create a new instance of
@@ -61,12 +76,12 @@ public class LogOtherFragment extends Fragment {
 
         // populate dataobject from Bundle
         if (savedInstanceState != null) {
-            mLogEntryOther = new LogEntryPestMgmt();
+            mLogEntryOther = new LogEntryOther();
             mLogEntryOther.setVisitDate(savedInstanceState.getString("visitDate"));
-            mLogEntryOther.setRequeen(savedInstanceState.getInt("requeen"));
+            mLogEntryOther.setRequeen(savedInstanceState.getString("requeen"));
             mLogEntryOther.setRequeenRmndr(savedInstanceState.getLong("requeenRmndr"));
-            mLogEntryOther.setSwarmRmndr(savedInstanceState.getInt("swarmRmndr"));
-            mLogEntryOther.setSplitHiveRmndr(savedInstanceState.getInt("splitHiveRmndr"));
+            mLogEntryOther.setSwarmRmndr(savedInstanceState.getLong("swarmRmndr"));
+            mLogEntryOther.setSplitHiveRmndr(savedInstanceState.getLong("splitHiveRmndr"));
         }
 
         // save off arguments
@@ -83,14 +98,26 @@ public class LogOtherFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_log_other_notes, container, false);
 
         // set button listener and text
-        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.done_string));
+        final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
+        hiveNoteBtn.setText(getResources().getString(R.string.done_string));
+
+        final Button requeenRmndrBtn = (Button)v.findViewById(R.id.buttonRequeenRmndr);
+        final Button swarmRmndrBtn = (Button)v.findViewById(R.id.buttonSwarmRmndr);
+        final Button splitHiveRmndrBtn = (Button)v.findViewById(R.id.buttonSplitHiveRmndr);
+
+        // labels for showing reminder time; be sure to init the tag as this is what goes into the DB
+        final TextView requeenRmndrText = (TextView)v.findViewById(R.id.textRequeenRmndr);
+        requeenRmndrText.setTag((long)0);
+        final TextView swarmRmndrText = (TextView)v.findViewById(R.id.textSwarmRmndr);
+        swarmRmndrText.setTag((long)0);
+        final TextView splitHiveRmndrText = (TextView)v.findViewById(R.id.textSplitHiveRmndr);
+        splitHiveRmndrText.setTag((long)0);
 
         // log entry may have something in it either already populated or populated from Bundle
         // if not => 1st check the Activity for previously entered data, if not => potentially read DB
         if (mLogEntryOther == null) {
             try {
-                mLogEntryOther = (LogEntryPestMgmt)mListener.getPreviousLogData();
+                mLogEntryOther = (LogEntryOther)mListener.getPreviousLogData();
             }
             catch (ClassCastException e) {
                 // Log the exception but continue w/ NO previous log data
@@ -112,28 +139,84 @@ public class LogOtherFragment extends Fragment {
             requeenSpinner.setSelection(
                     ((ArrayAdapter) requeenSpinner.getAdapter()).getPosition(
                             mLogEntryOther.getRequeen()));
+            //do Reminders
+            Calendar calendar = Calendar.getInstance();
+
+            //don't set if 0 ==> means it's not set
+            if (mLogEntryOther.getRequeenRmndr() != 0) {
+                calendar.setTimeInMillis(mLogEntryOther.getRequeenRmndr());
+                String droneDate = dateFormat.format(calendar.getTime());
+                String droneTime = timeFormat.format(calendar.getTime());
+                String droneDateTime = droneDate + ' ' + droneTime;
+                requeenRmndrText.setText(droneDateTime);
+            }
+
+            if (mLogEntryOther.getSwarmRmndr() != 0) {
+                calendar.setTimeInMillis(mLogEntryOther.getSwarmRmndr());
+                String mitesDate = dateFormat.format(calendar.getTime());
+                String mitesTime = timeFormat.format(calendar.getTime());
+                String mitesDateTime = mitesDate + ' ' + mitesTime;
+                swarmRmndrText.setText(mitesDateTime);
+            }
+
+            if (mLogEntryOther.getSplitHiveRmndr() != 0) {
+                calendar.setTimeInMillis(mLogEntryOther.getSplitHiveRmndr());
+                String mitesDate = dateFormat.format(calendar.getTime());
+                String mitesTime = timeFormat.format(calendar.getTime());
+                String mitesDateTime = mitesDate + ' ' + mitesTime;
+                splitHiveRmndrText.setText(mitesDateTime);
+            }
         }
 
-        // set button listener
-        b1.setOnClickListener(new View.OnClickListener() {
+        // set button listeners
+        hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(mHiveID);
+                onHiveButtonPressed(mHiveID);
+            }
+        });
+
+        requeenRmndrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReminderPressed(requeenRmndrText);
+            }
+        });
+
+        swarmRmndrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReminderPressed(swarmRmndrText);
+            }
+        });
+
+        splitHiveRmndrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReminderPressed(splitHiveRmndrText);
             }
         });
 
         return v;
     }
 
-    public void onButtonPressed(long hiveID) {
+    public void onHiveButtonPressed(long hiveID) {
         // get log entry data and put to DB
         Log.d(TAG, "about to persist logentry");
 
         boolean lNewLogEntry = false;
 
         final Spinner requeenSpinner = (Spinner)getView().findViewById(R.id.spinnerRequeen);
+        final TextView requeenRmndrText = (TextView)getView().findViewById(R.id.textRequeenRmndr);
+        final TextView swarmRmndrText = (TextView)getView().findViewById(R.id.textSwarmRmndr);
+        final TextView splitHiveRmndrText = (TextView)getView().findViewById(R.id.textSplitHiveRmndr);
 
         String requeenText = requeenSpinner.getSelectedItem().toString();
+
+        // Get the times in millis from the TextView tag
+        long requeenRmndrLong = (long)requeenRmndrText.getTag();
+        long swarmRmndrLong = (long)swarmRmndrText.getTag();
+        long splitHiveRmndrLong = (long)splitHiveRmndrText.getTag();
 
         // check for required values - are there any?
         boolean emptyText = false;
@@ -148,11 +231,48 @@ public class LogOtherFragment extends Fragment {
            mLogEntryOther.setHive(mHiveID);
            mLogEntryOther.setVisitDate(null);
            mLogEntryOther.setRequeen(requeenText);
+           mLogEntryOther.setRequeenRmndr(requeenRmndrLong);
+           mLogEntryOther.setSwarmRmndr(swarmRmndrLong);
+           mLogEntryOther.setSplitHiveRmndr(splitHiveRmndrLong);
 
            if (mListener != null) {
                mListener.onLogOtherFragmentInteraction(mLogEntryOther);
            }
        }
+    }
+
+    public void onReminderPressed(final TextView timeLbl) {
+
+        Log.d(TAG, "onReminderPressed");
+
+        final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+
+        dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DatePicker datePicker = (DatePicker)dialogView.findViewById(R.id.date_picker);
+                TimePicker timePicker = (TimePicker)dialogView.findViewById(R.id.time_picker);
+
+                Calendar calendar = new GregorianCalendar(datePicker.getYear(),
+                        datePicker.getMonth(),
+                        datePicker.getDayOfMonth(),
+                        timePicker.getCurrentHour(),
+                        timePicker.getCurrentMinute());
+
+                long time = calendar.getTimeInMillis();
+                Log.d(TAG, "Time picked: " + time);
+
+                // label has a human readable value; tag has millis value for DB
+                timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+                timeLbl.setTag(time);
+
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setView(dialogView);
+        alertDialog.show();
     }
 
     @Override
@@ -177,10 +297,10 @@ public class LogOtherFragment extends Fragment {
         // save off values potentially entered from screen
         if (mLogEntryOther != null) {
             outState.putString("visitDate", mLogEntryOther.getVisitDate());
-            outState.putInt("requeen", mLogEntryOther.getRequeen());
+            outState.putString("requeen", mLogEntryOther.getRequeen());
             outState.putLong("requeenRmndr", mLogEntryOther.getRequeenRmndr());
-            outState.putInt("swarmRmndr", mLogEntryOther.getSwarmRmndr());
-            outState.putInt("splitHiveRmndr", mLogEntryOther.getSplitHiveRmndr());
+            outState.putLong("swarmRmndr", mLogEntryOther.getSwarmRmndr());
+            outState.putLong("splitHiveRmndr", mLogEntryOther.getSplitHiveRmndr());
         }
 
         super.onSaveInstanceState(outState);
@@ -208,8 +328,8 @@ public class LogOtherFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnLogOtherFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther);
+        void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther);
+        HiveNotesLogDO getPreviousLogData();
     }
 
 }
