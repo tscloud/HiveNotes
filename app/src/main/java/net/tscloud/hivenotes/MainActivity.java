@@ -117,18 +117,28 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onHomeFragmentInteraction(Long apiaryId, boolean dbDeleted) {
+    public void onHomeFragmentInteraction(Long apiaryId, boolean deleteDB) {
         Log.d(TAG, "MainActivity.onHomeFragmentInteraction called...Apiary name: " + apiaryId);
 
 
-        if (dbDeleted){
-            // redisplay Home screen
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.db_toast_string),
-                    Toast.LENGTH_LONG).show();
+        if (deleteDB){
+            // FOR TESTING ONLY
+            boolean dbDeleted = this.deleteDatabase("hivenotes_db");
+
+            String delString;
+            if (dbDeleted) {
+                delString = getResources().getString(R.string.db_toast_string);
+            }
+            else {
+                delString = getResources().getString(R.string.db_toast_string_neg);
+            }
+
+            Toast.makeText(getApplicationContext(), delString, Toast.LENGTH_LONG).show();
             // clear instance vars
             mProfile = null;
             mApiaryList = null;
 
+            // redisplay Home screen
             presentHome();
         }
         else if (apiaryId == null) {
