@@ -154,11 +154,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void onDropDBButtonPressed() {
-        // FOR TESTING ONLY
-        boolean dbDeleted = getActivity().deleteDatabase("hivenotes_db");
-
         if (mListener != null) {
-            mListener.onHomeFragmentInteraction(null, dbDeleted);
+            mListener.onHomeFragmentInteraction(null, true);
         }
     }
 
@@ -187,7 +184,7 @@ public class HomeFragment extends Fragment {
      */
     public interface OnHomeFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
-        void onHomeFragmentInteraction(Long apiaryId, boolean dbDeleted);
+        void onHomeFragmentInteraction(Long apiaryId, boolean deleteDB);
 
         // For getting Apiary data
         List<Apiary> deliverApiaryList(long aProfileID);

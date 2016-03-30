@@ -39,6 +39,7 @@
 
     <string name="done_string">Done</string>
     <string name="db_toast_string">"DB successfully deleted =)"</string>
+    <string name="db_toast_string_neg">"DB NOT deleted =("</string>
     <string name="gps_toast_string">Waiting for GPS location…</string>
     <string name="network_toast_string">Waiting for Network location…</string>
 

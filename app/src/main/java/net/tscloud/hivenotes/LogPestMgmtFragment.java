@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
+import net.tscloud.hivenotes.helper.HiveCalendar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -299,6 +300,10 @@ public class LogPestMgmtFragment extends Fragment {
                 // label has a human readable value; tag has millis value for DB
                 timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
                 timeLbl.setTag(time);
+
+                // Let's do some Calendar stuff
+                HiveCalendar calendarHelper = new HiveCalendar(getActivity());
+                calendarHelper.listCalendars();
 
                 alertDialog.dismiss();
             }
