@@ -43,6 +43,8 @@ public class HiveCalendar {
                                     CalendarContract.Calendars._ID + " ASC");
 
             if (calCursor.moveToFirst()) {
+                Log.d(TAG, "Calendar" + id);
+                Log.d(TAG, "--------" + id);
                 do {
                     long id = calCursor.getLong(0);
                     String displayName = calCursor.getString(1);
@@ -58,6 +60,19 @@ public class HiveCalendar {
 
     private void createCalendar() {
 
+    }
+
+    public calendarIntent(Bundle eventData) {
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+        intent.setType("vnd.android.cursor.item/event");
+
+        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventData.getLong("time"));
+        intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false);
+
+        intent.putExtra(Events.TITLE, eventData.getString("title"));
+        intent.putExtra(Events.DESCRIPTION, eventData.getString("desc"));
+
+        startActivity(intent);
     }
 
 }

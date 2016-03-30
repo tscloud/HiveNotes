@@ -185,14 +185,14 @@ public class LogPestMgmtFragment extends Fragment {
         droneCellFndnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onReminderPressed(droneCellFndnRmndrText);
+                onReminderPressed(droneCellFndnRmndrText, droneCellFndnCheck.getText());
             }
         });
 
         mitesTrtmntBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onReminderPressed(mitesTrtmntRmndrText);
+                onReminderPressed(mitesTrtmntRmndrText, mitesTrtmntCheck.getText());
             }
         });
 
@@ -274,7 +274,7 @@ public class LogPestMgmtFragment extends Fragment {
         }
     }
 
-    public void onReminderPressed(final TextView timeLbl) {
+    public void onReminderPressed(final TextView timeLbl, String eventTitle) {
 
         Log.d(TAG, "onReminderPressed");
 
@@ -304,6 +304,10 @@ public class LogPestMgmtFragment extends Fragment {
                 // Let's do some Calendar stuff
                 HiveCalendar calendarHelper = new HiveCalendar(getActivity());
                 calendarHelper.listCalendars();
+                Bundle data = new Bundle();
+                data.putLong("time", time);
+                data.putString("title", eventTitle);
+                data.putString("desc", "HiveNotes Task");
 
                 alertDialog.dismiss();
             }
