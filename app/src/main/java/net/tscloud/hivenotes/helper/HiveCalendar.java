@@ -66,11 +66,13 @@ public class HiveCalendar {
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.item/event");
 
-        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventData.getLong("time"));
-        intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false);
+        if (eventData != null) {
+            intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventData.getLong("time"));
+            intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false);
 
-        intent.putExtra(Events.TITLE, eventData.getString("title"));
-        intent.putExtra(Events.DESCRIPTION, eventData.getString("desc"));
+            intent.putExtra(Events.TITLE, eventData.getString("title"));
+            intent.putExtra(Events.DESCRIPTION, eventData.getString("desc"));
+        }
 
         startActivity(intent);
     }

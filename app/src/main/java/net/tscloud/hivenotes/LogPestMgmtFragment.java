@@ -303,11 +303,17 @@ public class LogPestMgmtFragment extends Fragment {
 
                 // Let's do some Calendar stuff
                 HiveCalendar calendarHelper = new HiveCalendar(getActivity());
+
                 calendarHelper.listCalendars();
-                Bundle data = new Bundle();
+
+                Bundle data = null;
+                /* do not pass data to get a blank Calendar intent
+                data = new Bundle();
                 data.putLong("time", time);
                 data.putString("title", eventTitle);
                 data.putString("desc", "HiveNotes Task");
+                */
+                calendarHelper.calendarIntent(data);
 
                 alertDialog.dismiss();
             }
