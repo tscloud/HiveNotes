@@ -185,16 +185,31 @@ public class LogPestMgmtFragment extends Fragment {
         droneCellFndnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onReminderPressed(droneCellFndnRmndrText, droneCellFndnCheck.getText());
+                onReminderPressed(droneCellFndnRmndrText);
             }
         });
 
         mitesTrtmntBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onReminderPressed(mitesTrtmntRmndrText, mitesTrtmntCheck.getText());
+                onReminderPressed(mitesTrtmntRmndrText);
             }
         });
+
+        /*
+        --Let's do some Calendar stuff--
+         */
+        HiveCalendar.listCalendars(getActivity());
+
+        Bundle data = null;
+        /* do not pass data to get a blank Calendar intent */
+        data = new Bundle();
+        data.putLong("time", (long)droneCellFndnRmndrText.getTag());
+        data.putString("title", droneCellFndnRmndrText.getText().toString());
+        data.putString("desc", "HiveNotes Task");
+
+        // pass null if we just want to launch the Intent w/ no predefined data
+        HiveCalendar.calendarIntent(getActivity(), null);
 
         return v;
     }
@@ -274,7 +289,7 @@ public class LogPestMgmtFragment extends Fragment {
         }
     }
 
-    public void onReminderPressed(final TextView timeLbl, String eventTitle) {
+    public void onReminderPressed(final TextView timeLbl) {
 
         Log.d(TAG, "onReminderPressed");
 
@@ -300,20 +315,6 @@ public class LogPestMgmtFragment extends Fragment {
                 // label has a human readable value; tag has millis value for DB
                 timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
                 timeLbl.setTag(time);
-
-                // Let's do some Calendar stuff
-                HiveCalendar calendarHelper = new HiveCalendar(getActivity());
-
-                calendarHelper.listCalendars();
-
-                Bundle data = null;
-                /* do not pass data to get a blank Calendar intent
-                data = new Bundle();
-                data.putLong("time", time);
-                data.putString("title", eventTitle);
-                data.putString("desc", "HiveNotes Task");
-                */
-                calendarHelper.calendarIntent(data);
 
                 alertDialog.dismiss();
             }
