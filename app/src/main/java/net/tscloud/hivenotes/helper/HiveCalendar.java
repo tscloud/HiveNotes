@@ -24,6 +24,7 @@ public class HiveCalendar {
     private static final String CALENDAR_NAME = "HiveNotes Calendar";
     /**The main/basic URI for the android calendars table*/
     private static final Uri CAL_URI = CalendarContract.Calendars.CONTENT_URI;
+    private static long CAL_ID;
 
     /*
     Static methods used for creating Calendar -- Thank You Derek Bekoe
@@ -63,7 +64,15 @@ public class HiveCalendar {
         final ContentValues cv = buildNewCalContentValues();
         Uri calUri = buildCalUri();
         //insert the calendar into the database
-        cr.insert(calUri, cv);
+        Uri newUri = cr.insert(calUri, cv);
+        CAL_ID = Long.parseLong(newUri.getLastPathSegment());
+    }
+
+    /**Permanently deletes our calendar from database (along with all events)*/
+    public static void deleteCalendar(Context aCtx) {
+        ContentResolver cr = aCtx.getContentResolver();
+        Uri calUri = ContentUris.withAppendedId(buildCalUri(), CAL_ID);
+        cr.delete(calUri, null, null);
     }
 
     /*
@@ -72,14 +81,19 @@ public class HiveCalendar {
      */
     public static void calendarIntent(Context aCtx, Bundle eventData) {
         Intent intent = new Intent(Intent.ACTION_INSERT);
-        intent.setType("vnd.android.cursor.item/event");
 
         if (eventData != null) {
+            // do I want to do setType or...
+            intent.setType("vnd.android.cursor.item/event");
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventData.getLong("time"));
             intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false);
 
             intent.putExtra(CalendarContract.Events.TITLE, eventData.getString("title"));
             intent.putExtra(CalendarContract.Events.DESCRIPTION, eventData.getString("desc"));
+        }
+        else {
+            // ...setData???
+            intent.setData(CalendarContract.Events.CONTENT_URI);
         }
 
         aCtx.startActivity(intent);
