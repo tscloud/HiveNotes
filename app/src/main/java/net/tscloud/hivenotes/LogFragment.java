@@ -1,13 +1,20 @@
 package net.tscloud.hivenotes;
 
+import android.support.v4.app.Fragment;
+import android.util.Log;
+
+import net.tscloud.hivenotes.db.HiveNotesLogDO;
+
 public abstract class LogFragment extends Fragment {
 
-    private abstract HiveNotesLogDO getLogEntryDO();
-    private abstract void setLogEntryDO(HiveNotesLogDO do);
+    public static final String TAG = "LogFragment";
 
-    private abstract long getLogEntryKey();
+    abstract HiveNotesLogDO getLogEntryDO();
+    abstract void setLogEntryDO(HiveNotesLogDO dataObj);
 
-    private abstract HiveNotesLogDO getLogEntryFromDB(long key);
+    abstract long getLogEntryKey();
+
+    abstract HiveNotesLogDO getLogEntryFromDB(long key);
 
     protected void getLogEntry(PreviousLogDataProvider aListener) {
         // log entry may have something in it either already populated or populated from Bundle
