@@ -299,12 +299,15 @@ public class LogPestMgmtFragment extends Fragment {
 
                 // label has a human readable value; tag has millis value for DB
                 timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
-                timeLbl.setTag(time);
+                //timeLbl.setTag(time);
 
                 /*
                 --Let's do some Calendar stuff--
                  */
-                HiveCalendar.addEntryPublic(getActivity(), time);
+                long eventId = HiveCalendar.addEntryPublic(getActivity(), time, "Title", "Desc", "Loc");
+
+                // tag really has Event ID of Event we just created
+                timeLbl.setTag(eventId);
 
                 alertDialog.dismiss();
             }

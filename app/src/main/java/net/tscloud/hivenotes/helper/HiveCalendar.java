@@ -25,9 +25,11 @@ public class HiveCalendar {
 
     private static final String ACCOUNT_NAME = "HiveNotes User";
     private static final String CALENDAR_NAME = "HiveNotes Calendar";
+
     /**The main/basic URI for the android calendars table*/
     private static final Uri CAL_URI = CalendarContract.Calendars.CONTENT_URI;
     private static long CAL_ID = -1;
+
     /**The main/basic URI for the android events table*/
     private static final Uri EVENT_URI = CalendarContract.Events.CONTENT_URI;
     private static long EVENT_ID = -1;
@@ -36,10 +38,7 @@ public class HiveCalendar {
     //Static methods used for creating Calendar -- Thank You Derek Bekoe
     //
 
-    //
-    //Launch the Calendar Intent for user to create the reminder
-    //will seed w/ certain values
-    //
+    /**Launch the Calendar Intent for user to create the reminder will seed w/ certain values*/
     private static void calendarIntent(Context aCtx, Bundle eventData) {
         Intent intent = new Intent(Intent.ACTION_INSERT);
 
@@ -181,9 +180,7 @@ public class HiveCalendar {
         cursor.close();
     }
 
-    /*
-    List all the visible Calendars
-     */
+    /**List all the visible Calendars - and optionally delete them all*/
     private static void listCalendars(Context aCtx, boolean del) {
         String[] projection =
                 new String[]{
@@ -223,19 +220,69 @@ public class HiveCalendar {
         }
     }
 
-    public static void addEntryPublic(Context aCtx, long eventTime) {
+    /**Find the Calendar that we need*/
+    private static long findCalendar(Context aCtx) {
+        // Calendar ID that we're interested in
+        long result = -1;
+
+        final String[] projection =
+                new String[]{
+                        CalendarContract.Calendars._ID,
+                        CalendarContract.Calendars.NAME,
+                        CalendarContract.Calendars.ACCOUNT_NAME,
+                        CalendarContract.Calendars.ACCOUNT_TYPE};
+
+        final String selection = "("+ CalendarContract.Calendars.ACCOUNT_NAME+" = ? AND "+
+                                        CalendarContract.Calendars.NAME+" = ?)",
+
+        final String[] selectionArgs = new String[] {ACCOUNT_NAME, CALENDAR_NAME};
+
+        Cursor calCursor;
+
+        if (ActivityCompat.checkSelfPermission(aCtx, Manifest.permission.READ_CALENDAR)
+                == PackageManager.PERMISSION_GRANTED) {
+            calCursor =
+                    aCtx.getContentResolver().
+                            query(CalendarContract.Calendars.CONTENT_URI,
+                                    projection,
+                                    selection,
+                                    selectionArgs,
+                                    null);
+
+            if (calCursor.moveToFirst()) {
+                Log.d(TAG, "Calendar");
+                Log.d(TAG, "--------");
+                do {
+                    result = calCursor.getLong(0);
+                    String displayName = calCursor.getString(1);
+                    Log.d(TAG, "id: " + result);
+                    Log.d(TAG, "displayName: " + displayName);
+                } while (calCursor.moveToNext());
+            }
+            else {
+                Log.d(TAG, "No Calendars found");
+            }
+        }
+
+        return result;
+    }
+
+    /**public method to create an event*/
+    public static long addEntryPublic(Context aCtx, long aEventTime, String aTitle,
+            String aDesc, String aLoc) {
         long calId = -1;
         long eventId = -1;
 
         // Find proper Calendar
-        listCalendars(aCtx, true);
+        calId = findCalendar(aCtx);
 
-        if (CAL_ID == -1) {
+        if (calId == -1) {
             calId = createCalendar(aCtx);
             listCalendars(aCtx, false);
         }
-        eventId = addEvent(aCtx, calId, "Title", "Desc", "Loc", eventTime, eventTime);
-        getEventByID(aCtx, EVENT_ID);
+        eventId = addEvent(aCtx, calId, aTitle, aDesc, aLoc, eventTime, eventTime);
+        getEventByID(aCtx, eventId);
     }
 
+    return eventId;
 }
