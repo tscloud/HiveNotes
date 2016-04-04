@@ -14,6 +14,8 @@ import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import java.util.TimeZone;
+
 /**
  * Created by tscloud on 3/29/16.
  */
@@ -25,11 +27,40 @@ public class HiveCalendar {
     private static final String CALENDAR_NAME = "HiveNotes Calendar";
     /**The main/basic URI for the android calendars table*/
     private static final Uri CAL_URI = CalendarContract.Calendars.CONTENT_URI;
-    private static long CAL_ID;
+    private static long CAL_ID = -1;
+    /**The main/basic URI for the android events table*/
+    private static final Uri EVENT_URI = CalendarContract.Events.CONTENT_URI;
+    private static long EVENT_ID = -1;
 
-    /*
-    Static methods used for creating Calendar -- Thank You Derek Bekoe
-     */
+    //
+    //Static methods used for creating Calendar -- Thank You Derek Bekoe
+    //
+
+    //
+    //Launch the Calendar Intent for user to create the reminder
+    //will seed w/ certain values
+    //
+    private static void calendarIntent(Context aCtx, Bundle eventData) {
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+
+        if (eventData != null) {
+            // do I want to do setType or...
+            intent.setType("vnd.android.cursor.item/event");
+            intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventData.getLong("time"));
+            intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false);
+
+            intent.putExtra(CalendarContract.Events.TITLE, eventData.getString("title"));
+            intent.putExtra(CalendarContract.Events.DESCRIPTION, eventData.getString("desc"));
+        }
+        else {
+            // ...setData???
+            //intent.setData(CalendarContract.Events.CONTENT_URI);
+            intent.setData(ContentUris.withAppendedId(buildCalUri(), CAL_ID));
+        }
+
+        aCtx.startActivity(intent);
+    }
+
     /**Creates the values the new calendar will have*/
     private static ContentValues buildNewCalContentValues() {
         final ContentValues cv = new ContentValues();
@@ -60,50 +91,100 @@ public class HiveCalendar {
     /**Create and insert new calendar into android database
      * @param aCtx The context (e.g. activity)
      */
-    public static void createCalendar(Context aCtx) {
+    private static long createCalendar(Context aCtx) {
         ContentResolver cr = aCtx.getContentResolver();
         final ContentValues cv = buildNewCalContentValues();
         Uri calUri = buildCalUri();
         //insert the calendar into the database
         Uri newUri = cr.insert(calUri, cv);
-        CAL_ID = Long.parseLong(newUri.getLastPathSegment());
+        return Long.parseLong(newUri.getLastPathSegment());
     }
 
     /**Permanently deletes our calendar from database (along with all events)*/
-    public static void deleteCalendar(Context aCtx) {
+    private static void deleteCalendar(Context aCtx, long aCalId) {
         ContentResolver cr = aCtx.getContentResolver();
-        Uri calUri = ContentUris.withAppendedId(buildCalUri(), CAL_ID);
+        Uri calUri = ContentUris.withAppendedId(buildCalUri(), aCalId);
         cr.delete(calUri, null, null);
     }
 
-    /*
-    Launch the Calendar Intent for user to create the reminder
-     will seed w/ certain values
+    /**Builds the Uri for events (as a Sync Adapter)*/
+    private static Uri buildEventUri() {
+        return EVENT_URI
+                .buildUpon()
+                .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
+                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, ACCOUNT_NAME)
+                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE,
+                        CalendarContract.ACCOUNT_TYPE_LOCAL)
+                .build();
+    }
+
+    /**Create event - Add an event to our calendar
+     * @param dtstart Event start time (in millis)
+     * @param dtend Event end time (in millis)
      */
-    public static void calendarIntent(Context aCtx, Bundle eventData) {
-        Intent intent = new Intent(Intent.ACTION_INSERT);
+    private static long addEvent(Context aCtx, long aCalId, String title, String description,
+                                 String location, long dtstart, long dtend) {
+        ContentResolver cr = aCtx.getContentResolver();
+        ContentValues cv = new ContentValues();
+        cv.put(CalendarContract.Events.CALENDAR_ID, aCalId);
+        cv.put(CalendarContract.Events.TITLE, title);
+        cv.put(CalendarContract.Events.DTSTART, dtstart);
+        cv.put(CalendarContract.Events.DTEND, dtend);
+        cv.put(CalendarContract.Events.EVENT_LOCATION, location);
+        cv.put(CalendarContract.Events.DESCRIPTION, description);
+        //cv.put(CalendarContract.Events.EVENT_TIMEZONE, "America/Los_Angeles");
+        cv.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getDisplayName());
+        Uri newUri = cr.insert(buildEventUri(), cv);
+        return Long.parseLong(newUri.getLastPathSegment());
+    }
 
-        if (eventData != null) {
-            // do I want to do setType or...
-            intent.setType("vnd.android.cursor.item/event");
-            intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventData.getLong("time"));
-            intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false);
+    /**Finds an event based on the ID
+     * @param ctx The context (e.g. activity)
+     * @param id The id of the event to be found
+     */
+    private static void getEventByID(Context ctx, long id) {
+        ContentResolver cr = ctx.getContentResolver();
+        //Projection array for query (the values you want)
+        final String[] PROJECTION = new String[] {
+                CalendarContract.Events._ID,
+                CalendarContract.Events.TITLE,
+                CalendarContract.Events.DESCRIPTION,
+                CalendarContract.Events.EVENT_LOCATION,
+                CalendarContract.Events.DTSTART,
+                CalendarContract.Events.DTEND,
+        };
+        final int ID_INDEX = 0, TITLE_INDEX = 1, DESC_INDEX = 2, LOCATION_INDEX = 3,
+                START_INDEX = 4, END_INDEX = 5;
+        long start_millis=0, end_millis=0;
+        String title=null, description=null, location=null;
+        final String selection = "("+ CalendarContract.Events.OWNER_ACCOUNT+" = ? AND "+ CalendarContract.Events._ID+" = ?)";
+        final String[] selectionArgs = new String[] {ACCOUNT_NAME, id+""};
+        Cursor cursor = cr.query(buildEventUri(), PROJECTION, selection, selectionArgs, null);
+        //at most one event will be returned because event ids are unique in the table
+        if (cursor.moveToFirst()) {
+            id = cursor.getLong(ID_INDEX);
+            title = cursor.getString(TITLE_INDEX);
+            description = cursor.getString(DESC_INDEX);
+            location = cursor.getString(LOCATION_INDEX);
+            start_millis = cursor.getLong(START_INDEX);
+            end_millis = cursor.getLong(END_INDEX);
 
-            intent.putExtra(CalendarContract.Events.TITLE, eventData.getString("title"));
-            intent.putExtra(CalendarContract.Events.DESCRIPTION, eventData.getString("desc"));
+            //do something with the values...
+            Log.d(TAG, "Event");
+            Log.d(TAG, "--------");
+            Log.d(TAG, "title: " + title);
+            Log.d(TAG, "description: " + description);
+            Log.d(TAG, "location: " + location);
+            Log.d(TAG, "start_millis: " + start_millis);
+            Log.d(TAG, "end_millis: " + end_millis);
         }
-        else {
-            // ...setData???
-            intent.setData(CalendarContract.Events.CONTENT_URI);
-        }
-
-        aCtx.startActivity(intent);
+        cursor.close();
     }
 
     /*
     List all the visible Calendars
      */
-    public static void listCalendars(Context aCtx) {
+    private static void listCalendars(Context aCtx, boolean del) {
         String[] projection =
                 new String[]{
                         CalendarContract.Calendars._ID,
@@ -131,12 +212,30 @@ public class HiveCalendar {
                     String displayName = calCursor.getString(1);
                     Log.d(TAG, "id: " + id);
                     Log.d(TAG, "displayName: " + displayName);
+                    if (del) {
+                        deleteCalendar(aCtx, id);
+                    }
                 } while (calCursor.moveToNext());
             }
             else {
-
+                Log.d(TAG, "No Calendars found");
             }
         }
+    }
+
+    public static void addEntryPublic(Context aCtx, long eventTime) {
+        long calId = -1;
+        long eventId = -1;
+
+        // Find proper Calendar
+        listCalendars(aCtx, true);
+
+        if (CAL_ID == -1) {
+            calId = createCalendar(aCtx);
+            listCalendars(aCtx, false);
+        }
+        eventId = addEvent(aCtx, calId, "Title", "Desc", "Loc", eventTime, eventTime);
+        getEventByID(aCtx, EVENT_ID);
     }
 
 }

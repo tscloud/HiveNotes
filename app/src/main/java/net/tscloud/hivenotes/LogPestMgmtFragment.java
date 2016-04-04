@@ -196,30 +196,6 @@ public class LogPestMgmtFragment extends Fragment {
             }
         });
 
-        /*
-        --Let's do some Calendar stuff--
-         */
-
-        // Create the calendar (as Sync Adapter for now)
-        HiveCalendar.createCalendar(getActivity());
-
-        // List Calendars and see if we can see the one we just created
-        HiveCalendar.listCalendars(getActivity());
-
-        // Default data to be used by implicit Calendar Intent
-        Bundle data = null;
-        /* do not pass data to get a blank Calendar intent */
-        data = new Bundle();
-        data.putLong("time", (long)droneCellFndnRmndrText.getTag());
-        data.putString("title", droneCellFndnRmndrText.getText().toString());
-        data.putString("desc", "HiveNotes Task");
-
-        // pass null if we just want to launch the Intent w/ no predefined data
-        HiveCalendar.calendarIntent(getActivity(), null);
-
-        // Delete the Calendar we just made for now
-        HiveCalendar.deleteCalendar(getActivity());
-
         return v;
     }
 
@@ -324,6 +300,11 @@ public class LogPestMgmtFragment extends Fragment {
                 // label has a human readable value; tag has millis value for DB
                 timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
                 timeLbl.setTag(time);
+
+                /*
+                --Let's do some Calendar stuff--
+                 */
+                HiveCalendar.addEntryPublic(getActivity(), time);
 
                 alertDialog.dismiss();
             }
