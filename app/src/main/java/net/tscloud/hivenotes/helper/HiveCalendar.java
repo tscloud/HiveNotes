@@ -34,11 +34,13 @@ public class HiveCalendar {
     private static final Uri EVENT_URI = CalendarContract.Events.CONTENT_URI;
     private static long EVENT_ID = -1;
 
-    //
-    //Static methods used for creating Calendar -- Thank You Derek Bekoe
-    //
+    /**The main/basic URI for the android reminder table*/
+    private static final Uri REMINDER_URI = CalendarContract.Reminders.CONTENT_URI;
+    private static long REMINDER_ID = -1;
 
-    /**Launch the Calendar Intent for user to create the reminder will seed w/ certain values*/
+    /**Launch the Calendar Intent for user to create the reminder will seed w/ certain values
+     * not currently used
+     */
     private static void calendarIntent(Context aCtx, Bundle eventData) {
         Intent intent = new Intent(Intent.ACTION_INSERT);
 
@@ -60,6 +62,10 @@ public class HiveCalendar {
         aCtx.startActivity(intent);
     }
 
+    //
+    //Static methods used for creating Calendar -- Thank You Derek Bekoe
+    //
+
     /**Builds the Uri in android database (as a Sync Adapter)*/
     private static Uri buildUri(Uri aUri) {
         return aUri
@@ -71,8 +77,11 @@ public class HiveCalendar {
                 .build();
     }
 
-    /**Creates the values the new calendar will have*/
-    private static ContentValues buildNewCalContentValues() {
+    /**Create and insert new calendar into android database
+     * @param aCtx The context (e.g. activity)
+     */
+    private static long createCalendar(Context aCtx) {
+        ContentResolver cr = aCtx.getContentResolver();
         final ContentValues cv = new ContentValues();
         cv.put(CalendarContract.Calendars.ACCOUNT_NAME, ACCOUNT_NAME);
         cv.put(CalendarContract.Calendars.ACCOUNT_TYPE, CalendarContract.ACCOUNT_TYPE_LOCAL);
@@ -84,17 +93,7 @@ public class HiveCalendar {
         cv.put(CalendarContract.Calendars.OWNER_ACCOUNT, ACCOUNT_NAME);
         cv.put(CalendarContract.Calendars.VISIBLE, 1);
         cv.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
-        return cv;
-    }
-
-    /**Create and insert new calendar into android database
-     * @param aCtx The context (e.g. activity)
-     */
-    private static long createCalendar(Context aCtx) {
-        ContentResolver cr = aCtx.getContentResolver();
-        final ContentValues cv = buildNewCalContentValues();
         Uri calUri = buildUri(CAL_URI);
-        //insert the calendar into the database
         Uri newUri = cr.insert(calUri, cv);
         return Long.parseLong(newUri.getLastPathSegment());
     }
@@ -106,10 +105,7 @@ public class HiveCalendar {
         cr.delete(calUri, null, null);
     }
 
-    /**Create event - Add an event to our calendar
-     * @param dtstart Event start time (in millis)
-     * @param dtend Event end time (in millis)
-     */
+    /**Create event - Add an event to our calendar*/
     private static long addEvent(Context aCtx, long aCalId, String title, String description,
                                  String location, long dtstart, long dtend) {
         ContentResolver cr = aCtx.getContentResolver();
@@ -130,7 +126,7 @@ public class HiveCalendar {
      * @param ctx The context (e.g. activity)
      * @param id The id of the event to be found
      */
-    private static Bundle getEventByID(Context ctx, long id) {
+    private static Bundle getEventByID(Context ctx, long aId) {
         Bundle eventData = null;
         ContentResolver cr = ctx.getContentResolver();
         //Projection array for query (the values you want)
@@ -147,13 +143,12 @@ public class HiveCalendar {
         long start_millis=0, end_millis=0;
         String title=null, description=null, location=null;
         final String selection = "("+ CalendarContract.Events.OWNER_ACCOUNT+" = ? AND "+ CalendarContract.Events._ID+" = ?)";
-        final String[] selectionArgs = new String[] {ACCOUNT_NAME, id+""};
+        final String[] selectionArgs = new String[] {ACCOUNT_NAME, aId+""};
         Cursor cursor = cr.query(buildUri(EVENT_URI), PROJECTION, selection, selectionArgs, null);
         //at most one event will be returned because event ids are unique in the table
         if (cursor.moveToFirst()) {
             eventData = new Bundle(6);
-            id = cursor.getLong(ID_INDEX);
-            eventData.putLong("id", id);
+            eventData.putLong("id", aId);
             title = cursor.getString(TITLE_INDEX);
             eventData.putString("title", title);
             description = cursor.getString(DESC_INDEX);
@@ -168,7 +163,7 @@ public class HiveCalendar {
             //do something with the values...
             Log.d(TAG, "Event");
             Log.d(TAG, "--------");
-            Log.d(TAG, "id: " + id);
+            Log.d(TAG, "id: " + aId);
             Log.d(TAG, "title: " + title);
             Log.d(TAG, "description: " + description);
             Log.d(TAG, "location: " + location);
@@ -180,6 +175,7 @@ public class HiveCalendar {
         return eventData;
     }
 
+    /**Helper method to return an event's time*/
     public static long getEventTime(Context aCtx, long id) {
         long reply = 0;
         Bundle data = getEventByID(aCtx, id);
@@ -187,8 +183,31 @@ public class HiveCalendar {
         return data.getLong("start_millis");
     }
 
-    /**List all the visible Calendars - and optionally delete them all*/
-    public static void listCalendars(Context aCtx, boolean del) {
+    /**Permanently deletes our event from database*/
+    private static void deleteEvent(Context aCtx, long aEventId) {
+        ContentResolver cr = aCtx.getContentResolver();
+        Uri eventUri = ContentUris.withAppendedId(buildUri(EVENT_URI), aEventId);
+        cr.delete(eventUri, null, null);
+    }
+
+    /**Create reminder - Add an reminder to our calendar*/
+    private static long addReminder(Context aCtx, long aEventId) {
+        ContentResolver cr = aCtx.getContentResolver();
+        ContentValues cv = new ContentValues();
+        cv.put(CalendarContract.Reminders.EVENT_ID, aEventId);
+        cv.put(CalendarContract.Reminders.METHOD, CalendarContractReminders.METHOD_ALERT);
+        cv.put(CalendarContract.Reminders.MINUTES, 10);
+        Uri newUri = cr.insert(buildUri(EVENT_URI), cv);
+        return Long.parseLong(newUri.getLastPathSegment());
+    }
+
+    /**List all the visible Calendars - and optionally delete them all
+     * Also returns the Calendar ID of the Hive Calendar
+     */
+    private static long findCalendar(Context aCtx, boolean del) {
+        // Calendar ID that we're interested in
+        long result = -1;
+
         String[] projection =
                 new String[]{
                         CalendarContract.Calendars._ID,
@@ -214,56 +233,18 @@ public class HiveCalendar {
                 do {
                     long id = calCursor.getLong(0);
                     String displayName = calCursor.getString(1);
+                    String accountName = calCursor.getString(2);
                     Log.d(TAG, "id: " + id);
                     Log.d(TAG, "displayName: " + displayName);
+                    Log.d(TAG, "accountName: " + accountName);
                     if (del) {
                         deleteCalendar(aCtx, id);
                     }
-                } while (calCursor.moveToNext());
-            }
-            else {
-                Log.d(TAG, "No Calendars found");
-            }
-        }
-    }
-
-    /**Find the Calendar that we need*/
-    private static long findCalendar(Context aCtx) {
-        // Calendar ID that we're interested in
-        long result = -1;
-
-        final String[] projection =
-                new String[]{
-                        CalendarContract.Calendars._ID,
-                        CalendarContract.Calendars.NAME,
-                        CalendarContract.Calendars.ACCOUNT_NAME,
-                        CalendarContract.Calendars.ACCOUNT_TYPE};
-
-        final String selection = "("+ CalendarContract.Calendars.ACCOUNT_NAME+" = ? AND "+
-                                        CalendarContract.Calendars.NAME+" = ?)";
-
-        final String[] selectionArgs = new String[] {ACCOUNT_NAME, CALENDAR_NAME};
-
-        Cursor calCursor;
-
-        if (ActivityCompat.checkSelfPermission(aCtx, Manifest.permission.READ_CALENDAR)
-                == PackageManager.PERMISSION_GRANTED) {
-            calCursor =
-                    aCtx.getContentResolver().
-                            query(CalendarContract.Calendars.CONTENT_URI,
-                                    projection,
-                                    selection,
-                                    selectionArgs,
-                                    null);
-
-            Log.d(TAG, "Calendar");
-            Log.d(TAG, "--------");
-            if (calCursor.moveToFirst()) {
-                do {
-                    result = calCursor.getLong(0);
-                    String displayName = calCursor.getString(1);
-                    Log.d(TAG, "id: " + result);
-                    Log.d(TAG, "displayName: " + displayName);
+                    else {
+                        if (ACCOUNT_NAME.equals(accountName) && NAME.equals(displayName)) {
+                            result = id;
+                        }
+                    }
                 } while (calCursor.moveToNext());
             }
             else {
@@ -277,18 +258,27 @@ public class HiveCalendar {
     /**public method to create an event*/
     public static long addEntryPublic(Context aCtx, long aEventTime, String aTitle,
             String aDesc, String aLoc) {
+        // TESTING
+        //HiveCalendar.findCalendar(getActivity(), true);
+
         long calId = -1;
         long eventId = -1;
 
-        // Find proper Calendar
-        calId = findCalendar(aCtx);
+        // Find proper Calendar...
+        calId = findCalendar(aCtx, false);
 
+        //...and create if not there
         if (calId == -1) {
             calId = createCalendar(aCtx);
-            listCalendars(aCtx, false);
+            findCalendar(aCtx, false);
         }
+
+        // Create the Event
         eventId = addEvent(aCtx, calId, aTitle, aDesc, aLoc, aEventTime, aEventTime);
         getEventByID(aCtx, eventId);
+
+        // Create the Reminder
+        addReminder(aCtx, eventId);
 
         return eventId;
     }

@@ -187,14 +187,15 @@ public class LogPestMgmtFragment extends Fragment {
         droneCellFndnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onReminderPressed(droneCellFndnRmndrText);
+                // Pass in hardcoded values for descriptive text of Event
+                onReminderPressed(droneCellFndnRmndrText, "HiveNotes Reminder", "Drone cell foundation", "Hive???");
             }
         });
 
         mitesTrtmntBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onReminderPressed(mitesTrtmntRmndrText);
+                onReminderPressed(mitesTrtmntRmndrText, "HiveNotes Reminder", "Mites treatment", "Hive???");
             }
         });
 
@@ -276,7 +277,7 @@ public class LogPestMgmtFragment extends Fragment {
         }
     }
 
-    public void onReminderPressed(final TextView timeLbl) {
+    public void onReminderPressed(final TextView timeLbl, String eventTitle, String eventDesc, String eventLocation) {
 
         Log.d(TAG, "onReminderPressed");
 
@@ -306,12 +307,9 @@ public class LogPestMgmtFragment extends Fragment {
                 /*
                 --Let's do some Calendar stuff--
                  */
-                long eventId = HiveCalendar.addEntryPublic(getActivity(), time, "Title", "Desc", "Loc");
+                long eventId = HiveCalendar.addEntryPublic(getActivity(), time, eventTitle, eventDesc, eventLocation);
                 // tag really has Event ID of Event we just created
                 timeLbl.setTag(eventId);
-
-                // TESTING
-                //HiveCalendar.listCalendars(getActivity(), false);
 
                 alertDialog.dismiss();
             }
