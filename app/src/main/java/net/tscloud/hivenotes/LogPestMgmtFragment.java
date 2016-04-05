@@ -158,7 +158,8 @@ public class LogPestMgmtFragment extends Fragment {
 
             //don't set if 0 ==> means it's not set
             if (mLogEntryPestMgmt.getDroneCellFndnRmndr() != 0) {
-                calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndr());
+                calendar.setTimeInMillis(HiveCalendar.getEventTime(getActivity(),
+                        mLogEntryPestMgmt.getDroneCellFndnRmndr()));
                 String droneDate = dateFormat.format(calendar.getTime());
                 String droneTime = timeFormat.format(calendar.getTime());
                 String droneDateTime = droneDate + ' ' + droneTime;
@@ -166,7 +167,8 @@ public class LogPestMgmtFragment extends Fragment {
             }
 
             if (mLogEntryPestMgmt.getMitesTrtmntRmndr() != 0) {
-                calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndr());
+                calendar.setTimeInMillis(HiveCalendar.getEventTime(getActivity(),
+                        mLogEntryPestMgmt.getMitesTrtmntRmndr()));
                 String mitesDate = dateFormat.format(calendar.getTime());
                 String mitesTime = timeFormat.format(calendar.getTime());
                 String mitesDateTime = mitesDate + ' ' + mitesTime;
@@ -305,9 +307,11 @@ public class LogPestMgmtFragment extends Fragment {
                 --Let's do some Calendar stuff--
                  */
                 long eventId = HiveCalendar.addEntryPublic(getActivity(), time, "Title", "Desc", "Loc");
-
                 // tag really has Event ID of Event we just created
                 timeLbl.setTag(eventId);
+
+                // TESTING
+                //HiveCalendar.listCalendars(getActivity(), false);
 
                 alertDialog.dismiss();
             }

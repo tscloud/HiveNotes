@@ -54,10 +54,21 @@ public class HiveCalendar {
         else {
             // ...setData???
             //intent.setData(CalendarContract.Events.CONTENT_URI);
-            intent.setData(ContentUris.withAppendedId(buildCalUri(), CAL_ID));
+            intent.setData(ContentUris.withAppendedId(buildUri(CAL_URI), CAL_ID));
         }
 
         aCtx.startActivity(intent);
+    }
+
+    /**Builds the Uri in android database (as a Sync Adapter)*/
+    private static Uri buildUri(Uri aUri) {
+        return aUri
+                .buildUpon()
+                .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
+                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, ACCOUNT_NAME)
+                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE,
+                        CalendarContract.ACCOUNT_TYPE_LOCAL)
+                .build();
     }
 
     /**Creates the values the new calendar will have*/
@@ -76,24 +87,13 @@ public class HiveCalendar {
         return cv;
     }
 
-    /**Builds the Uri for your Calendar in android database (as a Sync Adapter)*/
-    private static Uri buildCalUri() {
-        return CAL_URI
-                .buildUpon()
-                .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, ACCOUNT_NAME)
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE,
-                        CalendarContract.ACCOUNT_TYPE_LOCAL)
-                .build();
-    }
-
     /**Create and insert new calendar into android database
      * @param aCtx The context (e.g. activity)
      */
     private static long createCalendar(Context aCtx) {
         ContentResolver cr = aCtx.getContentResolver();
         final ContentValues cv = buildNewCalContentValues();
-        Uri calUri = buildCalUri();
+        Uri calUri = buildUri(CAL_URI);
         //insert the calendar into the database
         Uri newUri = cr.insert(calUri, cv);
         return Long.parseLong(newUri.getLastPathSegment());
@@ -102,19 +102,8 @@ public class HiveCalendar {
     /**Permanently deletes our calendar from database (along with all events)*/
     private static void deleteCalendar(Context aCtx, long aCalId) {
         ContentResolver cr = aCtx.getContentResolver();
-        Uri calUri = ContentUris.withAppendedId(buildCalUri(), aCalId);
+        Uri calUri = ContentUris.withAppendedId(buildUri(CAL_URI), aCalId);
         cr.delete(calUri, null, null);
-    }
-
-    /**Builds the Uri for events (as a Sync Adapter)*/
-    private static Uri buildEventUri() {
-        return EVENT_URI
-                .buildUpon()
-                .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, ACCOUNT_NAME)
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE,
-                        CalendarContract.ACCOUNT_TYPE_LOCAL)
-                .build();
     }
 
     /**Create event - Add an event to our calendar
@@ -133,7 +122,7 @@ public class HiveCalendar {
         cv.put(CalendarContract.Events.DESCRIPTION, description);
         //cv.put(CalendarContract.Events.EVENT_TIMEZONE, "America/Los_Angeles");
         cv.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getDisplayName());
-        Uri newUri = cr.insert(buildEventUri(), cv);
+        Uri newUri = cr.insert(buildUri(EVENT_URI), cv);
         return Long.parseLong(newUri.getLastPathSegment());
     }
 
@@ -141,7 +130,8 @@ public class HiveCalendar {
      * @param ctx The context (e.g. activity)
      * @param id The id of the event to be found
      */
-    private static void getEventByID(Context ctx, long id) {
+    private static Bundle getEventByID(Context ctx, long id) {
+        Bundle eventData = null;
         ContentResolver cr = ctx.getContentResolver();
         //Projection array for query (the values you want)
         final String[] PROJECTION = new String[] {
@@ -158,19 +148,27 @@ public class HiveCalendar {
         String title=null, description=null, location=null;
         final String selection = "("+ CalendarContract.Events.OWNER_ACCOUNT+" = ? AND "+ CalendarContract.Events._ID+" = ?)";
         final String[] selectionArgs = new String[] {ACCOUNT_NAME, id+""};
-        Cursor cursor = cr.query(buildEventUri(), PROJECTION, selection, selectionArgs, null);
+        Cursor cursor = cr.query(buildUri(EVENT_URI), PROJECTION, selection, selectionArgs, null);
         //at most one event will be returned because event ids are unique in the table
         if (cursor.moveToFirst()) {
+            eventData = new Bundle(6);
             id = cursor.getLong(ID_INDEX);
+            eventData.putLong("id", id);
             title = cursor.getString(TITLE_INDEX);
+            eventData.putString("title", title);
             description = cursor.getString(DESC_INDEX);
+            eventData.putString("description", description);
             location = cursor.getString(LOCATION_INDEX);
+            eventData.putString("location", location);
             start_millis = cursor.getLong(START_INDEX);
+            eventData.putLong("start_millis", start_millis);
             end_millis = cursor.getLong(END_INDEX);
+            eventData.putLong("end_millis", end_millis);
 
             //do something with the values...
             Log.d(TAG, "Event");
             Log.d(TAG, "--------");
+            Log.d(TAG, "id: " + id);
             Log.d(TAG, "title: " + title);
             Log.d(TAG, "description: " + description);
             Log.d(TAG, "location: " + location);
@@ -178,10 +176,19 @@ public class HiveCalendar {
             Log.d(TAG, "end_millis: " + end_millis);
         }
         cursor.close();
+
+        return eventData;
+    }
+
+    public static long getEventTime(Context aCtx, long id) {
+        long reply = 0;
+        Bundle data = getEventByID(aCtx, id);
+
+        return data.getLong("start_millis");
     }
 
     /**List all the visible Calendars - and optionally delete them all*/
-    private static void listCalendars(Context aCtx, boolean del) {
+    public static void listCalendars(Context aCtx, boolean del) {
         String[] projection =
                 new String[]{
                         CalendarContract.Calendars._ID,
@@ -201,9 +208,9 @@ public class HiveCalendar {
                                     null,
                                     CalendarContract.Calendars._ID + " ASC");
 
+            Log.d(TAG, "Calendar");
+            Log.d(TAG, "--------");
             if (calCursor.moveToFirst()) {
-                Log.d(TAG, "Calendar");
-                Log.d(TAG, "--------");
                 do {
                     long id = calCursor.getLong(0);
                     String displayName = calCursor.getString(1);
@@ -233,7 +240,7 @@ public class HiveCalendar {
                         CalendarContract.Calendars.ACCOUNT_TYPE};
 
         final String selection = "("+ CalendarContract.Calendars.ACCOUNT_NAME+" = ? AND "+
-                                        CalendarContract.Calendars.NAME+" = ?)",
+                                        CalendarContract.Calendars.NAME+" = ?)";
 
         final String[] selectionArgs = new String[] {ACCOUNT_NAME, CALENDAR_NAME};
 
@@ -249,9 +256,9 @@ public class HiveCalendar {
                                     selectionArgs,
                                     null);
 
+            Log.d(TAG, "Calendar");
+            Log.d(TAG, "--------");
             if (calCursor.moveToFirst()) {
-                Log.d(TAG, "Calendar");
-                Log.d(TAG, "--------");
                 do {
                     result = calCursor.getLong(0);
                     String displayName = calCursor.getString(1);
@@ -280,9 +287,10 @@ public class HiveCalendar {
             calId = createCalendar(aCtx);
             listCalendars(aCtx, false);
         }
-        eventId = addEvent(aCtx, calId, aTitle, aDesc, aLoc, eventTime, eventTime);
+        eventId = addEvent(aCtx, calId, aTitle, aDesc, aLoc, aEventTime, aEventTime);
         getEventByID(aCtx, eventId);
+
+        return eventId;
     }
 
-    return eventId;
 }
