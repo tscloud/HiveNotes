@@ -188,14 +188,16 @@ public class LogPestMgmtFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Pass in hardcoded values for descriptive text of Event
-                onReminderPressed(droneCellFndnRmndrText, "HiveNotes Reminder", "Drone cell foundation", "Hive???");
+                onReminderPressed(droneCellFndnRmndrText, "HiveNotes Reminder", "Drone cell foundation",
+                        "Hive");
             }
         });
 
         mitesTrtmntBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onReminderPressed(mitesTrtmntRmndrText, "HiveNotes Reminder", "Mites treatment", "Hive???");
+                onReminderPressed(mitesTrtmntRmndrText, "HiveNotes Reminder", "Mites treatment",
+                        "Hive");
             }
         });
 
@@ -277,7 +279,8 @@ public class LogPestMgmtFragment extends Fragment {
         }
     }
 
-    public void onReminderPressed(final TextView timeLbl, String eventTitle, String eventDesc, String eventLocation) {
+    public void onReminderPressed(final TextView timeLbl, final String eventTitle,
+                                  final String eventDesc, final String eventLocation) {
 
         Log.d(TAG, "onReminderPressed");
 
@@ -301,13 +304,16 @@ public class LogPestMgmtFragment extends Fragment {
                 Log.d(TAG, "Time picked: " + time);
 
                 // label has a human readable value; tag has millis value for DB
-                timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+                timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' +
+                        timeFormat.format(calendar.getTime()));
                 //timeLbl.setTag(time);
 
                 /*
                 --Let's do some Calendar stuff--
+                  Please Note: endtime passed is hardcoded 10 min.
                  */
-                long eventId = HiveCalendar.addEntryPublic(getActivity(), time, eventTitle, eventDesc, eventLocation);
+                long eventId = HiveCalendar.addEntryPublic(getActivity(), time, time+60000,
+                        eventTitle, eventDesc, eventLocation);
                 // tag really has Event ID of Event we just created
                 timeLbl.setTag(eventId);
 

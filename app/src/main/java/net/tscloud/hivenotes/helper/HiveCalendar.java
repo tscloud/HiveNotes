@@ -124,7 +124,7 @@ public class HiveCalendar {
 
     /**Finds an event based on the ID
      * @param ctx The context (e.g. activity)
-     * @param id The id of the event to be found
+     * @param aId The id of the event to be found
      */
     private static Bundle getEventByID(Context ctx, long aId) {
         Bundle eventData = null;
@@ -136,7 +136,7 @@ public class HiveCalendar {
                 CalendarContract.Events.DESCRIPTION,
                 CalendarContract.Events.EVENT_LOCATION,
                 CalendarContract.Events.DTSTART,
-                CalendarContract.Events.DTEND,
+                CalendarContract.Events.DTEND
         };
         final int ID_INDEX = 0, TITLE_INDEX = 1, DESC_INDEX = 2, LOCATION_INDEX = 3,
                 START_INDEX = 4, END_INDEX = 5;
@@ -176,11 +176,34 @@ public class HiveCalendar {
     }
 
     /**Helper method to return an event's time*/
-    public static long getEventTime(Context aCtx, long id) {
+    public static long getEventTime(Context aCtx, long aId) {
         long reply = 0;
-        Bundle data = getEventByID(aCtx, id);
+        Bundle data = getEventByID(aCtx, aId);
 
         return data.getLong("start_millis");
+    }
+
+    /**Finds an event based on the ID
+     * @param aCtx The context (e.g. activity)
+     * @param aDesc The description of the event to be found
+     */
+    private static long getEventByDesc(Context aCtx, String aDesc) {
+        long reply = -1;
+        ContentResolver cr = aCtx.getContentResolver();
+        //Projection array for query (the values you want)
+        final String[] PROJECTION = new String[]{
+                CalendarContract.Events._ID
+        };
+        final String selection = "("+ CalendarContract.Events.OWNER_ACCOUNT+" = ? AND "+ CalendarContract.Events.DESCRIPTION+" = ?)";
+        final String[] selectionArgs = new String[] {ACCOUNT_NAME, aDesc+""};
+        Cursor cursor = cr.query(buildUri(EVENT_URI), PROJECTION, selection, selectionArgs, null);
+        //at most one event will be returned because event ids are unique in the table
+        if (cursor.moveToFirst()) {
+            reply = cursor.getLong(0);
+        }
+        cursor.close();
+
+        return reply;
     }
 
     /**Permanently deletes our event from database*/
@@ -195,9 +218,9 @@ public class HiveCalendar {
         ContentResolver cr = aCtx.getContentResolver();
         ContentValues cv = new ContentValues();
         cv.put(CalendarContract.Reminders.EVENT_ID, aEventId);
-        cv.put(CalendarContract.Reminders.METHOD, CalendarContractReminders.METHOD_ALERT);
+        cv.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
         cv.put(CalendarContract.Reminders.MINUTES, 10);
-        Uri newUri = cr.insert(buildUri(EVENT_URI), cv);
+        Uri newUri = cr.insert(buildUri(REMINDER_URI), cv);
         return Long.parseLong(newUri.getLastPathSegment());
     }
 
@@ -239,9 +262,10 @@ public class HiveCalendar {
                     Log.d(TAG, "accountName: " + accountName);
                     if (del) {
                         deleteCalendar(aCtx, id);
+                        Log.d(TAG, "Deleted Calendar: " + id);
                     }
                     else {
-                        if (ACCOUNT_NAME.equals(accountName) && NAME.equals(displayName)) {
+                        if (ACCOUNT_NAME.equals(accountName) && CALENDAR_NAME.equals(displayName)) {
                             result = id;
                         }
                     }
@@ -256,29 +280,35 @@ public class HiveCalendar {
     }
 
     /**public method to create an event*/
-    public static long addEntryPublic(Context aCtx, long aEventTime, String aTitle,
+    public static long addEntryPublic(Context aCtx, long aStartTime, long aEndTime, String aTitle,
             String aDesc, String aLoc) {
-        // TESTING
-        //HiveCalendar.findCalendar(getActivity(), true);
 
         long calId = -1;
         long eventId = -1;
 
-        // Find proper Calendar...
-        calId = findCalendar(aCtx, false);
-
-        //...and create if not there
-        if (calId == -1) {
-            calId = createCalendar(aCtx);
-            findCalendar(aCtx, false);
+        // TESTING
+        boolean calDelete = false;
+        if (calDelete) {
+            HiveCalendar.findCalendar(aCtx, true);
         }
+        else{
+            // Find proper Calendar...
+            calId = findCalendar(aCtx, false);
 
-        // Create the Event
-        eventId = addEvent(aCtx, calId, aTitle, aDesc, aLoc, aEventTime, aEventTime);
-        getEventByID(aCtx, eventId);
+            //...and create if not there
+            if (calId == -1) {
+                calId = createCalendar(aCtx);
+                findCalendar(aCtx, false);
+            }
 
-        // Create the Reminder
-        addReminder(aCtx, eventId);
+            // Create the Event
+            eventId = addEvent(aCtx, calId, aTitle, aDesc, aLoc, aStartTime, aEndTime);
+            //just for confirmation
+            getEventByID(aCtx, eventId);
+
+            // Create the Reminder
+            addReminder(aCtx, eventId);
+        }
 
         return eventId;
     }
