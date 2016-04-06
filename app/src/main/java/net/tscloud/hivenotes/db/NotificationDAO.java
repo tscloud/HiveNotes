@@ -18,15 +18,17 @@ public class NotificationDAO {
     // columns of the Profile table
     public static final String TABLE_NOTIFICATION = "Notification";
     public static final String COLUMN_NOTIFICATION_ID = "_id";
+    public static final String COLUMN_NOTIFICATION_APIARY = "apiary";
     public static final String COLUMN_NOTIFICATION_HIVE = "hive";
-    public static final String COLUMN_NOTIFICATION_ALARM_URI = "alarm_uri";
+    public static final String COLUMN_NOTIFICATION_EVENT_ID = "event_id";
+    public static final String COLUMN_NOTIFICATION_RMNDR_TYPE = "rmndr_type";
 
     // Database fields
     private SQLiteDatabase mDatabase;
     private MyDBHandler mDbHelper;
     private Context mContext;
-    private String[] mAllColumns = {COLUMN_NOTIFICATION_ID, COLUMN_NOTIFICATION_HIVE,
-            COLUMN_NOTIFICATION_ALARM_URI };
+    private String[] mAllColumns = {COLUMN_NOTIFICATION_ID, COLUMN_NOTIFICATION_APIARY,
+            COLUMN_NOTIFICATION_HIVE, COLUMN_NOTIFICATION_EVENT_ID, COLUMN_NOTIFICATION_RMNDR_TYPE};
 
     public NotificationDAO(Context context) {
         this.mContext = context;
@@ -50,10 +52,12 @@ public class NotificationDAO {
 
     // --DB access methods--
 
-    public Notification createNotification(long hive, String alarm_uri) {
+    public Notification createNotification(long apiary, long hive, long eventId, long rmndrType) {
         ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTIFICATION_APIARY, apiary);
         values.put(COLUMN_NOTIFICATION_HIVE, hive);
-        values.put(COLUMN_NOTIFICATION_ALARM_URI, hive);
+        values.put(COLUMN_NOTIFICATION_EVENT_ID, event_id);
+        values.put(COLUMN_NOTIFICATION_RMNDR_TYPE, rmndrType);
         long insertId = mDatabase.insert(TABLE_NOTIFICATION, null, values);
         Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,
                 COLUMN_NOTIFICATION_ID + " = " + insertId, null, null, null, null);
@@ -83,8 +87,10 @@ public class NotificationDAO {
     protected Notification cursorToNotification(Cursor cursor) {
         Notification notification = new Notification();
         notification.setId(cursor.getLong(0));
-        notification.setHive(cursor.getLong(1));
-        notification.setAlarmURI(cursor.getString(2));
+        notification.setApiary(cursor.getLong(1));
+        notification.setHive(cursor.getLong(2));
+        notification.setEventId(cursor.getLong(3));
+        notification.setRmndrType(cursor.getLong(4));
 
         return notification;
     }

@@ -22,6 +22,10 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
     private int other;
     private String otherType;
 
+    // These hold reminder times -- they will NOT be persisted
+    private long droneCellFndnRmndrTime;
+    private long mitesTrtmntRmndrTime;
+
     public int getDroneCellFndn() {
         return droneCellFndn;
     }

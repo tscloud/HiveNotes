@@ -3,20 +3,30 @@ package net.tscloud.hivenotes.db;
 /**
  * Created by tscloud on 8/20/15.
  */
-public class Notification {
+public class Notification implements Serializable {
 
     public static final String TAG = "Notification";
 
     private long id;
+    private long apiary;
     private long hive;
-    private String alarmURI;
+    private Long eventId;
+    private Long rmndrType;
 
-    public String getAlarmURI() {
-        return alarmURI;
+    public Long getRmndrType() {
+        return rmndrType;
     }
 
-    public void setAlarmURI(String alarmURI) {
-        this.alarmURI = alarmURI;
+    public void setRmndrType(Long rmndrType) {
+        this.rmndrType = rmndrType;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     public long getHive() {
@@ -25,6 +35,14 @@ public class Notification {
 
     public void setHive(long hive) {
         this.hive = hive;
+    }
+
+    public long getApiary() {
+        return apiary;
+    }
+
+    public void setApiary(long apiary) {
+        this.apiary = apiary;
     }
 
     public long getId() {
