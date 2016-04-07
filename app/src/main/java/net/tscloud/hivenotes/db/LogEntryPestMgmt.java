@@ -125,4 +125,21 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
     public void setVisitDate(String visitDate) {
         this.visitDate = visitDate;
     }
+
+    public long getDroneCellFndnRmndrTime() {
+        return droneCellFndnRmndrTime;
+    }
+
+    public void setDroneCellFndnRmndrTime(long droneCellFndnRmndrTime) {
+        this.droneCellFndnRmndrTime = droneCellFndnRmndrTime;
+    }
+
+    public long getMitesTrtmntRmndrTime() {
+        return mitesTrtmntRmndrTime;
+    }
+
+    public void setMitesTrtmntRmndrTime(long mitesTrtmntRmndrTime) {
+        this.mitesTrtmntRmndrTime = mitesTrtmntRmndrTime;
+    }
+
 }

@@ -56,7 +56,7 @@ public class NotificationDAO {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTIFICATION_APIARY, apiary);
         values.put(COLUMN_NOTIFICATION_HIVE, hive);
-        values.put(COLUMN_NOTIFICATION_EVENT_ID, event_id);
+        values.put(COLUMN_NOTIFICATION_EVENT_ID, eventId);
         values.put(COLUMN_NOTIFICATION_RMNDR_TYPE, rmndrType);
         long insertId = mDatabase.insert(TABLE_NOTIFICATION, null, values);
         Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,

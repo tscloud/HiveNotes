@@ -1,5 +1,7 @@
 package net.tscloud.hivenotes.db;
 
+import java.io.Serializable;
+
 /**
  * Created by tscloud on 8/20/15.
  */

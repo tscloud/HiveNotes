@@ -18,6 +18,8 @@ import android.widget.TimePicker;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
+import net.tscloud.hivenotes.db.Notification;
+import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 
 import java.text.DateFormat;
@@ -88,6 +90,8 @@ public class LogPestMgmtFragment extends Fragment {
             mLogEntryPestMgmt.setScreenedBottomBoard(savedInstanceState.getInt("screenedBottomBoard"));
             mLogEntryPestMgmt.setOther(savedInstanceState.getInt("other"));
             mLogEntryPestMgmt.setOtherType(savedInstanceState.getString("otherType"));
+            mLogEntryPestMgmt.setDroneCellFndnRmndrTime(savedInstanceState.getLong("droneCellFndnRmndrTime"));
+            mLogEntryPestMgmt.setMitesTrtmntRmndrTime(savedInstanceState.getLong("mitesTrtmntRmndrTime"));
         }
 
         // save off arguments
@@ -157,9 +161,8 @@ public class LogPestMgmtFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
 
             //don't set if 0 ==> means it's not set
-            if (mLogEntryPestMgmt.getDroneCellFndnRmndr() != 0) {
-                calendar.setTimeInMillis(HiveCalendar.getEventTime(getActivity(),
-                        mLogEntryPestMgmt.getDroneCellFndnRmndr()));
+            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != 0) {
+                calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
                 String droneTime = timeFormat.format(calendar.getTime());
                 String droneDateTime = droneDate + ' ' + droneTime;
@@ -167,8 +170,7 @@ public class LogPestMgmtFragment extends Fragment {
             }
 
             if (mLogEntryPestMgmt.getMitesTrtmntRmndr() != 0) {
-                calendar.setTimeInMillis(HiveCalendar.getEventTime(getActivity(),
-                        mLogEntryPestMgmt.getMitesTrtmntRmndr()));
+                calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndr());
                 String mitesDate = dateFormat.format(calendar.getTime());
                 String mitesTime = timeFormat.format(calendar.getTime());
                 String mitesDateTime = mitesDate + ' ' + mitesTime;
@@ -188,16 +190,14 @@ public class LogPestMgmtFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Pass in hardcoded values for descriptive text of Event
-                onReminderPressed(droneCellFndnRmndrText, "HiveNotes Reminder", "Drone cell foundation",
-                        "Hive");
+                onReminderPressed(droneCellFndnRmndrText);
             }
         });
 
         mitesTrtmntBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onReminderPressed(mitesTrtmntRmndrText, "HiveNotes Reminder", "Mites treatment",
-                        "Hive");
+                onReminderPressed(mitesTrtmntRmndrText);
             }
         });
 
@@ -270,8 +270,8 @@ public class LogPestMgmtFragment extends Fragment {
             mLogEntryPestMgmt.setScreenedBottomBoard(screenedBottomBoardInt);
             mLogEntryPestMgmt.setOther(otherInt);
             mLogEntryPestMgmt.setOtherType(otherString);
-            mLogEntryPestMgmt.setDroneCellFndnRmndr(droneCellFndnRmndrLong);
-            mLogEntryPestMgmt.setMitesTrtmntRmndr(mitesTrtmntRmndrLong);
+            mLogEntryPestMgmt.setDroneCellFndnRmndrTime(droneCellFndnRmndrLong);
+            mLogEntryPestMgmt.setMitesTrtmntRmndrTime(mitesTrtmntRmndrLong);
 
             if (mListener != null) {
                 mListener.onLogPestMgmtFragmentInteraction(mLogEntryPestMgmt);
@@ -279,8 +279,7 @@ public class LogPestMgmtFragment extends Fragment {
         }
     }
 
-    public void onReminderPressed(final TextView timeLbl, final String eventTitle,
-                                  final String eventDesc, final String eventLocation) {
+    public void onReminderPressed(final TextView timeLbl) {
 
         Log.d(TAG, "onReminderPressed");
 
@@ -306,16 +305,16 @@ public class LogPestMgmtFragment extends Fragment {
                 // label has a human readable value; tag has millis value for DB
                 timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' +
                         timeFormat.format(calendar.getTime()));
-                //timeLbl.setTag(time);
+                timeLbl.setTag(time);
 
                 /*
                 --Let's do some Calendar stuff--
                   Please Note: endtime passed is hardcoded 10 min.
                  */
-                long eventId = HiveCalendar.addEntryPublic(getActivity(), time, time+60000,
-                        eventTitle, eventDesc, eventLocation);
+                //long eventId = HiveCalendar.addEntryPublic(getActivity(), time, time+60000,
+                //        eventTitle, eventDesc, eventLocation);
                 // tag really has Event ID of Event we just created
-                timeLbl.setTag(eventId);
+                //timeLbl.setTag(eventId);
 
                 alertDialog.dismiss();
             }
@@ -355,6 +354,8 @@ public class LogPestMgmtFragment extends Fragment {
             outState.putInt("screenedBottomBoard", mLogEntryPestMgmt.getScreenedBottomBoard());
             outState.putInt("other", mLogEntryPestMgmt.getOther());
             outState.putString("otherType", mLogEntryPestMgmt.getOtherType());
+            outState.putLong("droneCellFndnRmndrTime", mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
+            outState.putLong("mitesTrtmntRmndrTime", mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
         }
 
         super.onSaveInstanceState(outState);
@@ -367,6 +368,21 @@ public class LogPestMgmtFragment extends Fragment {
         LogEntryPestMgmtDAO logEntryPestMgmtDAO = new LogEntryPestMgmtDAO(getActivity());
         LogEntryPestMgmt reply = logEntryPestMgmtDAO.getLogEntryById(aLogEntryID);
         logEntryPestMgmtDAO.close();
+
+        // Here's the tricky part (and it's a bit cockamamie and may change) -- need to get the
+        //  Notifications to get the Events to get the times to display
+        Log.d(TAG, "reading Notification table to get Event IDs");
+        NotificationDAO notificationDAO = new NotificationDAO(getActivity());
+        Notification droneCellFndnRmndrNotification =
+                notificationDAO.getNotificationById(reply.getDroneCellFndnRmndr());
+        Notification mitesTrtmntRmndrNotification =
+                notificationDAO.getNotificationById(reply.getMitesTrtmntRmndr());
+
+        long droneCellFndnRmndrEventId = droneCellFndnRmndrNotification.getEventId();
+        long mitesTrtmntRmndrEventId = mitesTrtmntRmndrNotification.getEventId();
+
+        reply.setDroneCellFndnRmndrTime(HiveCalendar.getEventTime(getActivity(), droneCellFndnRmndrEventId));
+        reply.setMitesTrtmntRmndrTime(HiveCalendar.getEventTime(getActivity(), mitesTrtmntRmndrEventId));
 
         return reply;
     }
