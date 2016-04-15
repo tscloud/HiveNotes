@@ -107,11 +107,11 @@ public class LogOtherFragment extends Fragment {
 
         // labels for showing reminder time; be sure to init the tag as this is what goes into the DB
         final TextView requeenRmndrText = (TextView)v.findViewById(R.id.textRequeenRmndr);
-        requeenRmndrText.setTag((long)0);
+        requeenRmndrText.setTag((long)-1);
         final TextView swarmRmndrText = (TextView)v.findViewById(R.id.textSwarmRmndr);
-        swarmRmndrText.setTag((long)0);
+        swarmRmndrText.setTag((long)-1);
         final TextView splitHiveRmndrText = (TextView)v.findViewById(R.id.textSplitHiveRmndr);
-        splitHiveRmndrText.setTag((long)0);
+        splitHiveRmndrText.setTag((long)-1);
 
         // log entry may have something in it either already populated or populated from Bundle
         // if not => 1st check the Activity for previously entered data, if not => potentially read DB

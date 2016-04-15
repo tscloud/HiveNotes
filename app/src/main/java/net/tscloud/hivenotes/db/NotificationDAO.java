@@ -84,6 +84,17 @@ public class NotificationDAO {
         return cursorToNotification(cursor);
     }
 
+    public Notification getNotificationByTypeAndHive(long id, long hive) {
+        Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,
+                COLUMN_NOTIFICATION_ID + " = ?",
+                new String[] { String.valueOf(id) }, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        return cursorToNotification(cursor);
+    }
+
     protected Notification cursorToNotification(Cursor cursor) {
         Notification notification = new Notification();
         notification.setId(cursor.getLong(0));

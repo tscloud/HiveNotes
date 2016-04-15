@@ -116,9 +116,9 @@ public class LogPestMgmtFragment extends Fragment {
 
         // labels for showing reminder time; be sure to init the tag as this is what goes into the DB
         final TextView droneCellFndnRmndrText = (TextView)v.findViewById(R.id.textViewDroneCellFndnRmndr);
-        droneCellFndnRmndrText.setTag((long)0);
+        droneCellFndnRmndrText.setTag((long)-1);
         final TextView mitesTrtmntRmndrText = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
-        mitesTrtmntRmndrText.setTag((long)0);
+        mitesTrtmntRmndrText.setTag((long)-1);
 
         // log entry may have something in it either already populated or populated from Bundle
         // if not => 1st check the Activity for previously entered data, if not => potentially read DB

@@ -99,17 +99,21 @@ CREATE TABLE 'Notification'
 
 CREATE TABLE 'Notification_Type'
 (
-	'_ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	'_ID' INTEGER NOT NULL PRIMARY KEY,
 	'LOG_TYPE' TEXT NOT NULL,
 	'DESCRIPTION' TEXT NOT NULL
 )
 ;
 
-INSERT INTO 'Notification_Type' ('LOG_TYPE', 'DESCRIPTION') VALUES ('LogEntryPestMgmt', 'Remove drone cell foundation frames');
-INSERT INTO 'Notification_Type' ('LOG_TYPE', 'DESCRIPTION') VALUES ('LogEntryPestMgmt', 'Remove mites treatment');
-INSERT INTO 'Notification_Type' ('LOG_TYPE', 'DESCRIPTION') VALUES ('LogEntryOther', 'Check on queen release');
-INSERT INTO 'Notification_Type' ('LOG_TYPE', 'DESCRIPTION') VALUES ('LogEntryOther', 'Check for swarm laying queen');
-INSERT INTO 'Notification_Type' ('LOG_TYPE', 'DESCRIPTION') VALUES ('LogEntryOther', 'Check for split hive laying queen');
+/* MAY NOT USE - VALUES CURRENTLY MAINTAINED IN STATIC CLASS */
+/* This is where the types of Notifications are defined */
+/* This is NOT a completely externalized definition as code that creates Notifications */
+/*    will have to know Notification type regardless of its definition here */
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (0, 'LogEntryPestMgmt', 'Remove drone cell foundation frames');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (1, 'LogEntryPestMgmt', 'Remove mites treatment');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (2, 'LogEntryOther', 'Check on queen release');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (3, 'LogEntryOther', 'Check for swarm laying queen');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (4, 'LogEntryOther', 'Check for split hive laying queen');
 
 CREATE TABLE 'Weather'
 (
