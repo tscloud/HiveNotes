@@ -284,6 +284,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
+    /** Used by fragments to get the data w/ which they may have been dealing */
     public HiveNotesLogDO getPreviousLogData() {
         return mPreviousLogData;
     }
@@ -327,6 +328,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             // set VISIT_DATE to value from LogEntryGeneral or Now
             aLogEntryPestMgmt.setVisitDate(generalDate);
 
+<<<<<<< Updated upstream
             // need to potentially do Notification 1st as its key may need
             //   creation prior to Log entry write
             if (aLogEntryPestMgmt.droneCellFndnRmndrTime != -1) {
@@ -338,6 +340,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mHiveKey)
                 }
             }
+=======
+            // TODO: Notification stuff goes here
+>>>>>>> Stashed changes
 
             if (aLogEntryPestMgmt.getId() == -1) {
                 aLogEntryPestMgmtDAO.createLogEntry(aLogEntryPestMgmt);
@@ -366,6 +371,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
             LogEntryOtherDAO aLogEntryOtherDAO = new LogEntryOtherDAO(this);
             // set VISIT_DATE to value from LogEntryGeneral or Now
             aLogEntryOther.setVisitDate(generalDate);
+
+            // TODO: Notification stuff goes here
 
             if (aLogEntryOther.getId() == -1) {
                 aLogEntryOtherDAO.createLogEntry(aLogEntryOther);
