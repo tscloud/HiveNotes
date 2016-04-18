@@ -98,7 +98,8 @@ public class HiveCalendar {
         return Long.parseLong(newUri.getLastPathSegment());
     }
 
-    /**Permanently deletes our calendar from database (along with all events)*/
+    /**Permanently deletes our calendar from database (along with all events)
+     * Needs to be public as calls to delete events come from Notification logic*/
     private static void deleteCalendar(Context aCtx, long aCalId) {
         ContentResolver cr = aCtx.getContentResolver();
         Uri calUri = ContentUris.withAppendedId(buildUri(CAL_URI), aCalId);
@@ -206,8 +207,9 @@ public class HiveCalendar {
         return reply;
     }
 
-    /**Permanently deletes our event from database*/
-    private static void deleteEvent(Context aCtx, long aEventId) {
+    /**Permanently deletes our event from database
+     * Needs to be public as calls to delete events come from Notification logic*/
+    public static void deleteEvent(Context aCtx, long aEventId) {
         ContentResolver cr = aCtx.getContentResolver();
         Uri eventUri = ContentUris.withAppendedId(buildUri(EVENT_URI), aEventId);
         cr.delete(eventUri, null, null);

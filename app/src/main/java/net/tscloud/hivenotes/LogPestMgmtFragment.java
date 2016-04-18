@@ -161,20 +161,24 @@ public class LogPestMgmtFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
 
             //don't set if 0 ==> means it's not set
-            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != 0) {
+            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
                 String droneTime = timeFormat.format(calendar.getTime());
                 String droneDateTime = droneDate + ' ' + droneTime;
                 droneCellFndnRmndrText.setText(droneDateTime);
+                // don't forget to set the tag
+                droneCellFndnRmndrText.setTag(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
             }
 
-            if (mLogEntryPestMgmt.getMitesTrtmntRmndr() != 0) {
-                calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndr());
+            if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1) {
+                calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
                 String mitesDate = dateFormat.format(calendar.getTime());
                 String mitesTime = timeFormat.format(calendar.getTime());
                 String mitesDateTime = mitesDate + ' ' + mitesTime;
                 mitesTrtmntRmndrText.setText(mitesDateTime);
+                // don't forget to set the tag
+                mitesTrtmntRmndrText.setTag(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
             }
         }
 
@@ -189,7 +193,6 @@ public class LogPestMgmtFragment extends Fragment {
         droneCellFndnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Pass in hardcoded values for descriptive text of Event
                 onReminderPressed(droneCellFndnRmndrText);
             }
         });

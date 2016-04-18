@@ -1,5 +1,8 @@
 package net.tscloud.hivenotes.db;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by tscloud on 4/15/16.
  */
@@ -26,22 +29,22 @@ public class NotificationType {
         "Check on queen release";
     private static String NOTIFY_SWARM_DESC =
         "Check for swarm laying queen";
-    private static String NOTIFY_SPLIT_HIVE =
+    private static String NOTIFY_SPLIT_HIVE_DESC =
         "Check for split hive laying queen";
 
-    private static Map keyToDesc<String, String>
+    private static Map<Integer, String> keyToDesc;
 
     public static String getDesc(int aKey) {
         return keyToDesc.get(aKey);
     }
 
     static {
-        keyToDesc = new HashMap<Sting, Sting>(5);
+        keyToDesc = new HashMap<Integer, String>(5);
         keyToDesc.put(NOTIFY_REMOVE_DRONE, NOTIFY_REMOVE_DRONE_DESC);
         keyToDesc.put(NOTIFY_REMOVE_MITES, NOTIFY_REMOVE_MITES_DESC);
         keyToDesc.put(NOTIFY_QUEEN_RELEASE, NOTIFY_QUEEN_RELEASE_DESC);
         keyToDesc.put(NOTIFY_SWARM, NOTIFY_SWARM_DESC);
-        keyToDesc.put(NOTIFY_SPLIT_HIVE, NOTIFY_SPLIT_HIVE);
+        keyToDesc.put(NOTIFY_SPLIT_HIVE, NOTIFY_SPLIT_HIVE_DESC);
     }
 
 }

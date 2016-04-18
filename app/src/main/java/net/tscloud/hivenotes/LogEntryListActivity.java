@@ -25,6 +25,7 @@ import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
 import net.tscloud.hivenotes.db.Notification;
 import net.tscloud.hivenotes.db.NotificationDAO;
+import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 
 import java.util.Date;
@@ -64,6 +65,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
     public static String INTENT_LOGENTRY_KEY = "logentryKey";
 
     private long mHiveKey;
+    // need the Hive to get the name for the titlebar and other
+    Hive mHiveForName;
 
     // Need to a reference to each of the Log Entry data objects
     public static String INTENT_LOGENTRY_GENERAL_DATA = "logentryGeneralData";
@@ -106,12 +109,12 @@ public class LogEntryListActivity extends AppCompatActivity implements
         // need the Hive name for the tile bar and other things
         Log.d(TAG, "reading Hive table");
         HiveDAO hiveDAO = new HiveDAO(this);
-        Hive hiveForName = hiveDAO.getHiveById(mHiveKey);
+        mHiveForName = hiveDAO.getHiveById(mHiveKey);
         hiveDAO.close();
 
         View abView = getSupportActionBar().getCustomView();
         TextView abText = (TextView)abView.findViewById(R.id.mytext);
-        abText.setText(hiveForName.getName());
+        abText.setText(mHiveForName.getName());
 
         if (findViewById(R.id.logentry_detail_container) != null) {
             // The detail container view will be present only in the
@@ -328,21 +331,17 @@ public class LogEntryListActivity extends AppCompatActivity implements
             // set VISIT_DATE to value from LogEntryGeneral or Now
             aLogEntryPestMgmt.setVisitDate(generalDate);
 
-<<<<<<< Updated upstream
             // need to potentially do Notification 1st as its key may need
             //   creation prior to Log entry write
-            if (aLogEntryPestMgmt.droneCellFndnRmndrTime != -1) {
+            if (aLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
                 //Create Notification
-                aLogEntryPestMgmt.droneCellFndnRmndr = createNotification(
-                    aLogEntryPestMgmt.droneCellFndnRmndrTime,
-                    aLogEntryPestMgmt.droneCellFndnRmndr,
-                    NotificationType.NOTIFY_REMOVE_DRONE,
-                    mHiveKey)
-                }
+                aLogEntryPestMgmt.setDroneCellFndnRmndr(
+                        createNotification(
+                            aLogEntryPestMgmt.getDroneCellFndnRmndrTime(),
+                            aLogEntryPestMgmt.getDroneCellFndnRmndr(),
+                            NotificationType.NOTIFY_REMOVE_DRONE,
+                            mHiveKey));
             }
-=======
-            // TODO: Notification stuff goes here
->>>>>>> Stashed changes
 
             if (aLogEntryPestMgmt.getId() == -1) {
                 aLogEntryPestMgmtDAO.createLogEntry(aLogEntryPestMgmt);
@@ -389,7 +388,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         finish();
     }
 
-    private long createNotification(long aStartTime, long aNotKey, long aNotType, long aHiveKey) {
+    private long createNotification(long aStartTime, long aNotKey, int aNotType, long aHiveKey) {
         // return the Event Id
         long eventId = -1;
 
@@ -404,18 +403,20 @@ public class LogEntryListActivity extends AppCompatActivity implements
             // delete the corresponding Event <- handle errors like:
             //  eventId = 0 or -1
             //  uncaught exception thrown
-            HiveCalendar.deleteEvent(this, wNotDAO.eventId);
+            HiveCalendar.deleteEvent(this, wNot.getEventId());
             // create new Event & Reminder - hardcode endtime
             eventId = HiveCalendar.addEntryPublic(this,
                 aStartTime,
                 aStartTime+600000,
                 NotificationType.NOTIFICATION_TITLE,
                 NotificationType.getDesc(aNotType),
-                hiveForName.getName());
+                mHiveForName.getName());
         }
         else {
             // read Notification by Type and Hive Id <- there should only be 1
         }
+
+        return eventId;
     }
 
     // Make the Up button perform like the Back button
