@@ -68,6 +68,33 @@ public class NotificationDAO {
         return newNotification;
     }
 
+    public Notification updateNotification(long id, long apiary, long hive, long eventId,
+                                               long rmndrType) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTIFICATION_APIARY, apiary);
+        values.put(COLUMN_NOTIFICATION_HIVE, hive);
+        values.put(COLUMN_NOTIFICATION_EVENT_ID, eventId);
+        values.put(COLUMN_NOTIFICATION_RMNDR_TYPE, rmndrType);
+        int rowsUpdated = mDatabase.update(TABLE_NOTIFICATION, values,
+                COLUMN_NOTIFICATION_ID + "=" + id, null);
+
+        Notification updatedNotification = null;
+        if (rowsUpdated > 0) {
+            Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,
+                    COLUMN_NOTIFICATION_ID + " = " + id, null, null, null, null);
+            cursor.moveToFirst();
+            updatedNotification = cursorToLogEntry(cursor);
+            cursor.close();
+        }
+
+        return updatedNotification;
+    }
+
+    public Notification updateNotification(Notification aDO) {
+        return updateNotification(aDO.getId(), aDO.getApiary(), aDO.getHive(), aDO.getEventId(),
+                aDO.getRmndrType());
+    }
+
     public void deleteNotification(Notification notification) {
         long id = notification.getId();
         mDatabase.delete(TABLE_NOTIFICATION, COLUMN_NOTIFICATION_ID + " = " + id, null);
@@ -84,10 +111,10 @@ public class NotificationDAO {
         return cursorToNotification(cursor);
     }
 
-    public Notification getNotificationByTypeAndHive(long id, long hive) {
-        Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,
-                COLUMN_NOTIFICATION_ID + " = ?",
-                new String[] { String.valueOf(id) }, null, null, null);
+    public Notification getNotificationByTypeAndHive(long type, long hive) {
+        Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, COLUMN_NOTIFICATION_ID,
+                COLUMN_NOTIFICATION_RMNDR_TYPE + " = ? AND " + COLUMN_NOTIFICATION_HIVE + " = ?",
+                new String[] { String.valueOf(type), String.valueOf(hive) }, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }

@@ -389,7 +389,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     private long createNotification(long aStartTime, long aNotKey, int aNotType, long aHiveKey) {
-        // return the Event Id
+
+        long notificationId = -1
         long eventId = -1;
 
         // Do the Notification magic
@@ -398,25 +399,41 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
         // if we have a N..Key -> we're going to potentially update the Notification
         if (aNotKey != -1) {
-            // read the Notification
+            // read the Notification by Id
             wNot = wNotDAO.getNotificationById(aNotKey);
-            // delete the corresponding Event <- handle errors like:
-            //  eventId = 0 or -1
-            //  uncaught exception thrown
-            HiveCalendar.deleteEvent(this, wNot.getEventId());
-            // create new Event & Reminder - hardcode endtime
-            eventId = HiveCalendar.addEntryPublic(this,
-                aStartTime,
-                aStartTime+600000,
-                NotificationType.NOTIFICATION_TITLE,
-                NotificationType.getDesc(aNotType),
-                mHiveForName.getName());
         }
         else {
-            // read Notification by Type and Hive Id <- there should only be 1
+            // read Notification by Type and Hive Id
+            wNot = wNotDAO.getNotificationByTypeAndHive(aNotType, aHiveKey);
         }
 
-        return eventId;
+        // delete the corresponding Event <- ** handle errors **
+        if ((wNot != null) && (wNot.eventId > 0)) {
+            HiveCalendar.deleteEvent(this, wNot.getEventId());
+        }
+
+        // create new Event & Reminder - hardcode endtime
+        eventId = HiveCalendar.addEntryPublic(this,
+            aStartTime,
+            aStartTime+600000,
+            NotificationType.NOTIFICATION_TITLE,
+            NotificationType.getDesc(aNotType),
+            mHiveForName.getName());
+
+        if (wNot == null) {
+            wNot = wNotDAO.createNotification(null, aHiveKey, eventId, aNotType);
+        }
+        else {
+            wNot.setEventId(eventId);
+            wNot = wNotDAO.updateNotification(wNot);
+        }
+
+        // return the Notification Id
+        if (wNot != null) {
+            notificationId = wNot.getId();
+        }
+
+        return notificationId;
     }
 
     // Make the Up button perform like the Back button

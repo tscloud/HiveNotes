@@ -12,22 +12,22 @@ public class Notification implements Serializable {
     private long id;
     private long apiary;
     private long hive;
-    private Long eventId;
-    private Long rmndrType;
+    private long eventId;
+    private long rmndrType;
 
-    public Long getRmndrType() {
+    public long getRmndrType() {
         return rmndrType;
     }
 
-    public void setRmndrType(Long rmndrType) {
+    public void setRmndrType(long rmndrType) {
         this.rmndrType = rmndrType;
     }
 
-    public Long getEventId() {
+    public long getEventId() {
         return eventId;
     }
 
-    public void setEventId(Long eventId) {
+    public void setEventId(long eventId) {
         this.eventId = eventId;
     }
 
