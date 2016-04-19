@@ -82,8 +82,9 @@ public class NotificationDAO {
         if (rowsUpdated > 0) {
             Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,
                     COLUMN_NOTIFICATION_ID + " = " + id, null, null, null, null);
-            cursor.moveToFirst();
-            updatedNotification = cursorToLogEntry(cursor);
+            if (cursor.moveToFirst()) {
+                updatedNotification = cursorToNotification(cursor);
+            }
             cursor.close();
         }
 
@@ -104,22 +105,30 @@ public class NotificationDAO {
         Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,
                 COLUMN_NOTIFICATION_ID + " = ?",
                 new String[] { String.valueOf(id) }, null, null, null);
+        Notification retrievedNotification = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedNotification = cursorToNotification(cursor);
+            }
+            cursor.close();
         }
 
-        return cursorToNotification(cursor);
+        return retrievedNotification;
     }
 
     public Notification getNotificationByTypeAndHive(long type, long hive) {
-        Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, COLUMN_NOTIFICATION_ID,
+        Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,
                 COLUMN_NOTIFICATION_RMNDR_TYPE + " = ? AND " + COLUMN_NOTIFICATION_HIVE + " = ?",
                 new String[] { String.valueOf(type), String.valueOf(hive) }, null, null, null);
+        Notification retrievedNotification = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedNotification = cursorToNotification(cursor);
+            }
+            cursor.close();
         }
 
-        return cursorToNotification(cursor);
+        return retrievedNotification;
     }
 
     protected Notification cursorToNotification(Cursor cursor) {

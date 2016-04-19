@@ -390,15 +390,15 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
     private long createNotification(long aStartTime, long aNotKey, int aNotType, long aHiveKey) {
 
-        long notificationId = -1
-        long eventId = -1;
+        long notificationId = 0;
+        long eventId = 0;
 
         // Do the Notification magic
         Notification wNot;
         NotificationDAO wNotDAO = new NotificationDAO(this);
 
         // if we have a N..Key -> we're going to potentially update the Notification
-        if (aNotKey != -1) {
+        if (aNotKey != 0) {
             // read the Notification by Id
             wNot = wNotDAO.getNotificationById(aNotKey);
         }
@@ -408,7 +408,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
 
         // delete the corresponding Event <- ** handle errors **
-        if ((wNot != null) && (wNot.eventId > 0)) {
+        if ((wNot != null) && (wNot.getEventId() > 0)) {
             HiveCalendar.deleteEvent(this, wNot.getEventId());
         }
 
@@ -420,12 +420,15 @@ public class LogEntryListActivity extends AppCompatActivity implements
             NotificationType.getDesc(aNotType),
             mHiveForName.getName());
 
-        if (wNot == null) {
-            wNot = wNotDAO.createNotification(null, aHiveKey, eventId, aNotType);
-        }
-        else {
-            wNot.setEventId(eventId);
-            wNot = wNotDAO.updateNotification(wNot);
+        if (eventId != -1) {
+            if (wNot == null) {
+                // we don't have a Notification -> make a new one
+                wNot = wNotDAO.createNotification(-1, aHiveKey, eventId, aNotType);
+            } else {
+                // we already have a Notification -> update it w/ new event id
+                wNot.setEventId(eventId);
+                wNot = wNotDAO.updateNotification(wNot);
+            }
         }
 
         // return the Notification Id
