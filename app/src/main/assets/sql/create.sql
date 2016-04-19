@@ -210,3 +210,8 @@ CREATE TABLE 'LogEntryOther'
 	CONSTRAINT 'FK_LogEntryOther_Split_Hive_Rmndr' FOREIGN KEY ('SPLIT_HIVE_RMNDR') REFERENCES 'Notification' ('_ID') ON UPDATE Cascade
 )
 ;
+
+/* for testing ONLY  - just so we don't have to manually reenter when we drop the DB*/
+INSERT INTO 'Profile' ('_ID', 'NAME', 'EMAIL') VALUES (0, 'TC', 'TC@mail.com');
+INSERT INTO 'Apiary' ('_ID', 'PROFILE', 'NAME', 'POSTAL_CODE') VALUES (0, 0, 'Grape Apiary', '02818');
+INSERT INTO 'Hive' ('_ID', 'APIARY', 'NAME', 'SPECIES', 'FOUNDATION_TYPE') VALUES (0, 0, 'Hive 5', 'Killer', 'Wax');

@@ -65,13 +65,23 @@ public class ApiaryDAO {
         values.put(COLUMN_LATITUDE, latitude);
         values.put(COLUMN_LONGITUDE, longitude);
         long insertId = mDatabase.insert(TABLE_APIARY, null, values);
-        Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,
-                COLUMN_APIARY_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Apiary newApiary = cursorToApiary(cursor);
-        cursor.close();
+
+        Apiary newApiary = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,
+                    COLUMN_APIARY_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newApiary = cursorToApiary(cursor);
+                cursor.close();
+            }
+        }
 
         return newApiary;
+    }
+
+    public Apiary createApiary(Apiary aDO) {
+        return createApiary(aDO.getProfile(), aDO.getName(), aDO.getPostalCode(), aDO.getLatitude(),
+                              aDO.getLongitude);
     }
 
     public Apiary updateApiary(long id, long profile, String name, String postalCode, float latitude,
@@ -88,12 +98,18 @@ public class ApiaryDAO {
         if (rowsUpdated > 0) {
             Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,
                     COLUMN_APIARY_ID + " = " + id, null, null, null, null);
-            cursor.moveToFirst();
-            updatedApiary = cursorToApiary(cursor);
+            if (cursor.moveToFirst()) {
+                updatedApiary = cursorToApiary(cursor);
+            }
             cursor.close();
         }
 
         return updatedApiary;
+    }
+
+    public Apiary updateApiary(Apiary aDO) {
+        return updateApiary(aDO.getId(), aDO.getProfile(), aDO.getName(), aDO.getPostalCode(),
+                            aDO.getLatitude(), aDO.getLongitude);
     }
 
     public void deleteApiary(Apiary apiary) {
@@ -105,11 +121,16 @@ public class ApiaryDAO {
         Cursor cursor = mDatabase.query(TABLE_APIARY, mAllColumns,
                 COLUMN_APIARY_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
+
+        Apiary retrievedApiary = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedApiary = cursorToApiary(cursor);
+            }
+            cursor.close();
         }
 
-        return cursorToApiary(cursor);
+        return retrievedApiary;
     }
 
     public List<Apiary> getApiaryList(long profileId) {
@@ -119,14 +140,18 @@ public class ApiaryDAO {
                 COLUMN_APIARY_PROFILE + " = ?",
                 new String[] { String.valueOf(profileId) }, null, null, null);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Apiary apiary = cursorToApiary(cursor);
-            listApiary.add(apiary);
-            cursor.moveToNext();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    Apiary apiary = cursorToApiary(cursor);
+                    listApiary.add(apiary);
+                    cursor.moveToNext();
+                }
+            }
+            // make sure to close the cursor
+            cursor.close();
         }
-        // make sure to close the cursor
-        cursor.close();
+
         return listApiary;
     }
 

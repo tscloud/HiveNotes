@@ -229,7 +229,7 @@ public class HiveCalendar {
     /**List all the visible Calendars - and optionally delete them all
      * Also returns the Calendar ID of the Hive Calendar
      */
-    private static long findCalendar(Context aCtx, boolean del) {
+    public static long findCalendar(Context aCtx, boolean del) {
         // Calendar ID that we're interested in
         long result = -1;
 
@@ -262,12 +262,12 @@ public class HiveCalendar {
                     Log.d(TAG, "id: " + id);
                     Log.d(TAG, "displayName: " + displayName);
                     Log.d(TAG, "accountName: " + accountName);
-                    if (del) {
-                        deleteCalendar(aCtx, id);
-                        Log.d(TAG, "Deleted Calendar: " + id);
-                    }
-                    else {
-                        if (ACCOUNT_NAME.equals(accountName) && CALENDAR_NAME.equals(displayName)) {
+                    if (ACCOUNT_NAME.equals(accountName) && CALENDAR_NAME.equals(displayName)) {
+                        if (del) {
+                            deleteCalendar(aCtx, id);
+                            Log.d(TAG, "Deleted Calendar: " + id);
+                        }
+                        else {
                             result = id;
                         }
                     }

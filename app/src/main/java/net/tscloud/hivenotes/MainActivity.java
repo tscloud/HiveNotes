@@ -123,7 +123,10 @@ public class MainActivity extends AppCompatActivity implements
 
         if (deleteDB){
             // FOR TESTING ONLY
+            // delete DB
             boolean dbDeleted = this.deleteDatabase("hivenotes_db");
+            // delete Calendar
+            HiveCalendar.findCalendar(this, true);
 
             String delString;
             if (dbDeleted) {

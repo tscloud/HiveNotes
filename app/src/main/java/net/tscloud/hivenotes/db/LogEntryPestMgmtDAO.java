@@ -80,10 +80,16 @@ public class LogEntryPestMgmtDAO {
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER, other);
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE, otherType);
         long insertId = mDatabase.insert(TABLE_LOGENTRYPESTMGMT, null, values);
-        Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
-                COLUMN_LOGENTRYPESTMGMT_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        LogEntryPestMgmt newLogEntryPestMgmt = cursorToLogEntry(cursor);
+
+        LogEntryPestMgmt newLogEntryPestMgmt = nul;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
+                    COLUMN_LOGENTRYPESTMGMT_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newLogEntryPestMgmt = cursorToLogEntry(cursor);
+                cursor.close();
+            }
+        }
 
         return newLogEntryPestMgmt;
     }
@@ -117,9 +123,10 @@ public class LogEntryPestMgmtDAO {
         if (rowsUpdated > 0) {
             Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
                     COLUMN_LOGENTRYPESTMGMT_ID + " = " + id, null, null, null, null);
-            cursor.moveToFirst();
-            updatedLogEntryPestMgmt = cursorToLogEntry(cursor);
-            cursor.close();
+            if (cursor.moveToFirst()) {
+                updatedLogEntryPestMgmt = cursorToLogEntry(cursor);
+                cursor.close();
+            }
         }
 
         return updatedLogEntryPestMgmt;
@@ -141,12 +148,16 @@ public class LogEntryPestMgmtDAO {
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
                 COLUMN_LOGENTRYPESTMGMT_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
+
+        LogEntryPestMgmt retrievedLog = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedLog = cursorToLogEntry(cursor);
+            }
+            cursor.close();
         }
 
-        return cursorToLogEntry(cursor);
-    }
+        return retrievedLog;
 
     protected LogEntryPestMgmt cursorToLogEntry(Cursor cursor) {
         LogEntryPestMgmt logEntryPestMgmt = new LogEntryPestMgmt();

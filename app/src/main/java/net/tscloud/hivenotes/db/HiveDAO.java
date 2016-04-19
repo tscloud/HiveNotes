@@ -64,16 +64,27 @@ public class HiveDAO {
         values.put(COLUMN_HIVE_FOUNDATION_TYPE, foundationType);
         values.put(COLUMN_HIVE_NOTE, note);
         long insertId = mDatabase.insert(TABLE_HIVE, null, values);
-        Cursor cursor = mDatabase.query(TABLE_HIVE, mAllColumns,
-                COLUMN_HIVE_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Hive newHive = cursorToHive(cursor);
-        cursor.close();
+
+        Hive newHive = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_HIVE, mAllColumns,
+                    COLUMN_HIVE_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newHive = cursorToHive(cursor);
+                cursor.close();
+            }
+        }
 
         return newHive;
     }
 
-    public Hive updateHive(long id, long apiary, String name, String species, String foundationType, String note) {
+    public Hive createHive(Hive aDO) {
+        return createHive(aDO.getApiary(), aDO.getName(), aDO.getSpecies(), aDO.getFoundationType(),
+                          aDO.getNote());
+    }
+
+    public Hive updateHive(long id, long apiary, String name, String species, String foundationType,
+                           String note) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_HIVE_APIARY, apiary);
         values.put(COLUMN_HIVE_NAME, name);
@@ -86,12 +97,18 @@ public class HiveDAO {
         if (rowsUpdated > 0) {
             Cursor cursor = mDatabase.query(TABLE_HIVE, mAllColumns,
                     COLUMN_HIVE_ID + " = " + id, null, null, null, null);
-            cursor.moveToFirst();
-            updatedHive = cursorToHive(cursor);
+            if (cursor.moveToFirst()) {
+                updatedHive = cursorToHive(cursor);
+            }
             cursor.close();
         }
 
         return updatedHive;
+    }
+
+    public Notification updateNotification(Notification aDO) {
+        return updateNotification(aDO.getId(), aDO.getApiary(), aDO.getName(), aDO.getSpecies(),
+                                  aDO.getFoundationType(), aDO.getNote());
     }
 
     public void deleteHive(Hive hive) {
@@ -103,11 +120,15 @@ public class HiveDAO {
         Cursor cursor = mDatabase.query(TABLE_HIVE, mAllColumns,
                 COLUMN_HIVE_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
+
+        Hive retrievedHive = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedHive = cursorToHive(cursor);
+            }
         }
 
-        return cursorToHive(cursor);
+        return retrievedHive;
     }
 
     public List<Hive> getHiveList(long apiaryId) {
@@ -117,14 +138,18 @@ public class HiveDAO {
                 COLUMN_HIVE_APIARY + " = ?",
                 new String[] { String.valueOf(apiaryId) }, null, null, null);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Hive hive = cursorToHive(cursor);
-            listHive.add(hive);
-            cursor.moveToNext();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    Hive hive = cursorToHive(cursor);
+                    listHive.add(hive);
+                    cursor.moveToNext();
+                }
+            }
+            // make sure to close the cursor
+            cursor.close();
         }
-        // make sure to close the cursor
-        cursor.close();
+
         return listHive;
     }
 

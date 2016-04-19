@@ -390,8 +390,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
     private long createNotification(long aStartTime, long aNotKey, int aNotType, long aHiveKey) {
 
-        long notificationId = 0;
-        long eventId = 0;
+        long notificationId;
+        long eventId;
 
         // Do the Notification magic
         Notification wNot;

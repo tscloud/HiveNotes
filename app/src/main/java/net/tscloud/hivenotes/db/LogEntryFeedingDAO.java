@@ -68,11 +68,16 @@ public class LogEntryFeedingDAO {
         values.put(COLUMN_LOGENTRYFEEDING_OTHER, other);
         values.put(COLUMN_LOGENTRYFEEDING_OTHER_TYPE, otherType);
         long insertId = mDatabase.insert(TABLE_LOGENTRYFEEDING, null, values);
-        Cursor cursor = mDatabase.query(TABLE_LOGENTRYFEEDING, mAllColumns,
-                COLUMN_LOGENTRYFEEDING_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        LogEntryFeeding newLogEntryFeeding = cursorToLogEntry(cursor);
 
+        LogEntryFeeding newLogEntryFeeding = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_LOGENTRYFEEDING, mAllColumns,
+                    COLUMN_LOGENTRYFEEDING_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newLogEntryFeeding = cursorToLogEntry(cursor);
+                cursor.close();
+            }
+        }
         return newLogEntryFeeding;
     }
 
@@ -99,8 +104,9 @@ public class LogEntryFeedingDAO {
         if (rowsUpdated > 0) {
             Cursor cursor = mDatabase.query(TABLE_LOGENTRYFEEDING, mAllColumns,
                     COLUMN_LOGENTRYFEEDING_ID + " = " + id, null, null, null, null);
-            cursor.moveToFirst();
-            updatedLogEntryFeeding = cursorToLogEntry(cursor);
+            if (cursor.moveToFirst()) {
+                updatedLogEntryFeeding = cursorToLogEntry(cursor);
+            }
             cursor.close();
         }
 
@@ -121,11 +127,15 @@ public class LogEntryFeedingDAO {
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYFEEDING, mAllColumns,
                 COLUMN_LOGENTRYFEEDING_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
+
+        LogEntryFeeding retrievedLogEntry = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedLogEntry = cursorToLogEntry(cursor);
+            }
         }
 
-        return cursorToLogEntry(cursor);
+        return retrievedLogEntry;
     }
 
     protected LogEntryFeeding cursorToLogEntry(Cursor cursor) {
