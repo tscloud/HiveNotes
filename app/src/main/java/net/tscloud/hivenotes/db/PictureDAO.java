@@ -51,19 +51,53 @@ public class PictureDAO {
 
     // --DB access methods--
 
-    public Picture createPicture(long apiary, long hive, String type, String pictureText) {
+    public Picture createPicture(long apiary, long hive, String imageURI) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_PICTURE_APIARY, apiary);
         values.put(COLUMN_PICTURE_HIVE, hive);
-        values.put(COLUMN_PICTURE_IMAGE_URI, type);
+        values.put(COLUMN_PICTURE_IMAGE_URI, imageURI);
         long insertId = mDatabase.insert(TABLE_PICTURE, null, values);
-        Cursor cursor = mDatabase.query(TABLE_PICTURE, mAllColumns,
-                COLUMN_PICTURE_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Picture newPicture = cursorToPicture(cursor);
-        cursor.close();
+
+        Picture newPicture = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_PICTURE, mAllColumns,
+                    COLUMN_PICTURE_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newPicture = cursorToPicture(cursor);
+            }
+            cursor.close();
+        }
 
         return newPicture;
+    }
+
+    public Picture createPicture(Picture aDO) {
+        return createPicture(aDO.getApiary(), aDO.getHive(), aDO.getImageURI());
+    }
+
+    public Picture updatePicture(long id, long apiary, long hive, String imageURI) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PICTURE_APIARY, apiary);
+        values.put(COLUMN_PICTURE_HIVE, hive);
+        values.put(COLUMN_PICTURE_IMAGE_URI, imageURI);
+        int rowsUpdated = mDatabase.update(TABLE_PICTURE, values,
+                COLUMN_PICTURE_ID + "=" + id, null);
+
+        Picture updatedPicture = null;
+        if (rowsUpdated > 0) {
+            Cursor cursor = mDatabase.query(TABLE_PICTURE, mAllColumns,
+                    COLUMN_PICTURE_ID + " = " + id, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                updatedPicture = cursorToPicture(cursor);
+            }
+            cursor.close();
+        }
+
+        return updatedPicture;
+    }
+
+    public Picture updatePicture(Picture aDO) {
+        return updatePicture(aDO.getId(), aDO.getApiary(), aDO.getHive(), aDO.getImageURI());
     }
 
     public void deletePicture(Picture picture) {
@@ -75,11 +109,16 @@ public class PictureDAO {
         Cursor cursor = mDatabase.query(TABLE_PICTURE, mAllColumns,
                 COLUMN_PICTURE_ID + " = ?",
                 new String[] { String.valueOf(id) }, null, null, null);
+
+        Picture retrievedPicture = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedPicture =cursorToPicture(cursor);
+            }
+            cursor.close();;
         }
 
-        return cursorToPicture(cursor);
+        return retrievedPicture;
     }
 
     protected Picture cursorToPicture(Cursor cursor) {

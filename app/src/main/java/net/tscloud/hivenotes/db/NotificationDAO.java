@@ -66,15 +66,15 @@ public class NotificationDAO {
                     COLUMN_NOTIFICATION_ID + " = " + insertId, null, null, null, null);
             if (cursor.moveToFirst()) {
                 newNotification = cursorToNotification(cursor);
-                cursor.close();
             }
+            cursor.close();
         }
 
         return newNotification;
     }
 
-    public Notification createLogEntry(Notification aDO) {
-        return createLogEntry(aDO.getApiary(), aDO.getHive(), aDO.getEventId(), aDO.getRmndrType());
+    public Notification createNotification(Notification aDO) {
+        return createNotification(aDO.getApiary(), aDO.getHive(), aDO.getEventId(), aDO.getRmndrType());
     }
 
     public Notification updateNotification(long id, long apiary, long hive, long eventId,

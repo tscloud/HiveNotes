@@ -61,11 +61,16 @@ public class WeatherDAO {
         values.put(COLUMN_WEATHER_POLLEN_COUNT, hive);
         values.put(COLUMN_WEATHER_POLLUTION, hive);
         long insertId = mDatabase.insert(TABLE_WEATHER, null, values);
-        Cursor cursor = mDatabase.query(TABLE_WEATHER, mAllColumns,
-                COLUMN_WEATHER_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Weather newWeather = cursorToWeather(cursor);
-        cursor.close();
+
+        Weather newWeather = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_WEATHER, mAllColumns,
+                    COLUMN_WEATHER_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newWeather = cursorToWeather(cursor);
+            }
+            cursor.close();
+        }
 
         return newWeather;
     }
@@ -79,8 +84,13 @@ public class WeatherDAO {
         Cursor cursor = mDatabase.query(TABLE_WEATHER, mAllColumns,
                 COLUMN_WEATHER_ID + " = ?",
                 new String[] { String.valueOf(id) }, null, null, null);
+
+        Weather retrievedWeather = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedWeather = cursorToWeather(cursor);
+            }
+            cursor.close();
         }
 
         return cursorToWeather(cursor);

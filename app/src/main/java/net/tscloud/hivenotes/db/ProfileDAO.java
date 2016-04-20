@@ -57,13 +57,46 @@ public class ProfileDAO{
         values.put(COLUMN_PROFILE_NAME, name);
         values.put(COLUMN_PROFILE_EMAIL, email);
         long insertId = mDatabase.insert(TABLE_PROFILES, null, values);
-        Cursor cursor = mDatabase.query(TABLE_PROFILES, mAllColumns,
-                COLUMN_PROFILE_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Profile newProfile = cursorToProfile(cursor);
-        cursor.close();
+
+        Profile newProfile = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_PROFILES, mAllColumns,
+                    COLUMN_PROFILE_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newProfile = cursorToProfile(cursor);
+            }
+            cursor.close();
+        }
 
         return newProfile;
+    }
+
+    public Profile createProfile(Profile aDO) {
+        return createProfile(aDO.getName(), aDO.getEmail());
+    }
+
+    public Profile updateProfile(long id, String name, String email) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PROFILE_NAME, name);
+        values.put(COLUMN_PROFILE_EMAIL, email);
+        int rowsUpdated = mDatabase.update(TABLE_PROFILES, values,
+                COLUMN_PROFILE_ID + "=" + id, null);
+
+        Profile updatedProfile = null;
+        if (rowsUpdated > 0) {
+            Cursor cursor = mDatabase.query(TABLE_PROFILES, mAllColumns,
+                    COLUMN_PROFILE_ID + " = " + id, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                updatedProfile = cursorToProfile(cursor);
+            }
+            cursor.close();
+        }
+
+        return updatedProfile;
+    }
+
+    public Profile updateProfile(Profile aDO) {
+        return updateProfile(aDO.getId(), aDO.getName(), aDO.getEmail());
     }
 
     public void deleteProfile(Profile profile) {
@@ -79,11 +112,12 @@ public class ProfileDAO{
 
         Cursor cursor = mDatabase.query(TABLE_PROFILES, mAllColumns, null, null, null, null, null);
         if (cursor != null) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                profile = cursorToProfile(cursor);
-                listProfile.add(profile);
-                cursor.moveToNext();
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    profile = cursorToProfile(cursor);
+                    listProfile.add(profile);
+                    cursor.moveToNext();
+                }
             }
             // make sure to close the cursor
             cursor.close();

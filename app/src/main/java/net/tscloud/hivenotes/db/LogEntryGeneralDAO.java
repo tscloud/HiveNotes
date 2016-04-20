@@ -75,11 +75,16 @@ public class LogEntryGeneralDAO {
         values.put(COLUMN_LOGENTRYGENERAL_HONEY_STORES, honeyStores);
         values.put(COLUMN_LOGENTRYGENERAL_POLLEN_STORES, pollenStores);
         long insertId = mDatabase.insert(TABLE_LOGENTRYGENERAL, null, values);
-        Cursor cursor = mDatabase.query(TABLE_LOGENTRYGENERAL, mAllColumns,
-                COLUMN_LOGENTRYGENERAL_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        LogEntryGeneral newLogEntryGeneral = cursorToLogEntry(cursor);
-        cursor.close();
+
+        LogEntryGeneral newLogEntryGeneral = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_LOGENTRYGENERAL, mAllColumns,
+                    COLUMN_LOGENTRYGENERAL_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newLogEntryGeneral = cursorToLogEntry(cursor);
+            }
+            cursor.close();
+        }
 
         return newLogEntryGeneral;
     }
@@ -106,14 +111,16 @@ public class LogEntryGeneralDAO {
         values.put(COLUMN_LOGENTRYGENERAL_QUEEN, queen);
         values.put(COLUMN_LOGENTRYGENERAL_HONEY_STORES, honeyStores);
         values.put(COLUMN_LOGENTRYGENERAL_POLLEN_STORES, pollenStores);
-        int rowsUpdated = mDatabase.update(TABLE_LOGENTRYGENERAL, values, COLUMN_LOGENTRYGENERAL_ID + "=" + id, null);
+        int rowsUpdated = mDatabase.update(TABLE_LOGENTRYGENERAL, values,
+                COLUMN_LOGENTRYGENERAL_ID + "=" + id, null);
 
         LogEntryGeneral updatedLogEntryGeneral = null;
         if (rowsUpdated > 0) {
             Cursor cursor = mDatabase.query(TABLE_LOGENTRYGENERAL, mAllColumns,
                     COLUMN_LOGENTRYGENERAL_ID + " = " + id, null, null, null, null);
-            cursor.moveToFirst();
-            updatedLogEntryGeneral = cursorToLogEntry(cursor);
+            if (cursor.moveToFirst()) {
+                updatedLogEntryGeneral = cursorToLogEntry(cursor);
+            }
             cursor.close();
         }
 
@@ -135,8 +142,13 @@ public class LogEntryGeneralDAO {
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYGENERAL, mAllColumns,
                 COLUMN_LOGENTRYGENERAL_ID + " = ?",
                 new String[] { String.valueOf(id) }, null, null, null);
+
+        LogEntryGeneral retrievedLogEntryGeneral = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedLogEntryGeneral = cursorToLogEntry(cursor);
+            }
+            cursor.close();
         }
 
         return cursorToLogEntry(cursor);

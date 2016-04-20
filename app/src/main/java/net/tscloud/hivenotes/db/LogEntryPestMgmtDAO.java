@@ -81,14 +81,14 @@ public class LogEntryPestMgmtDAO {
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE, otherType);
         long insertId = mDatabase.insert(TABLE_LOGENTRYPESTMGMT, null, values);
 
-        LogEntryPestMgmt newLogEntryPestMgmt = nul;
+        LogEntryPestMgmt newLogEntryPestMgmt = null;
         if (insertId >= 0) {
             Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
                     COLUMN_LOGENTRYPESTMGMT_ID + " = " + insertId, null, null, null, null);
             if (cursor.moveToFirst()) {
                 newLogEntryPestMgmt = cursorToLogEntry(cursor);
-                cursor.close();
             }
+            cursor.close();
         }
 
         return newLogEntryPestMgmt;
@@ -125,8 +125,8 @@ public class LogEntryPestMgmtDAO {
                     COLUMN_LOGENTRYPESTMGMT_ID + " = " + id, null, null, null, null);
             if (cursor.moveToFirst()) {
                 updatedLogEntryPestMgmt = cursorToLogEntry(cursor);
-                cursor.close();
             }
+            cursor.close();
         }
 
         return updatedLogEntryPestMgmt;
@@ -144,7 +144,7 @@ public class LogEntryPestMgmtDAO {
         mDatabase.delete(TABLE_LOGENTRYPESTMGMT, COLUMN_LOGENTRYPESTMGMT_ID + " = " + id, null);
     }
 
-    public LogEntryPestMgmt getLogEntryById(long id){
+    public LogEntryPestMgmt getLogEntryById(long id) {
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
                 COLUMN_LOGENTRYPESTMGMT_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
@@ -158,6 +158,7 @@ public class LogEntryPestMgmtDAO {
         }
 
         return retrievedLog;
+    }
 
     protected LogEntryPestMgmt cursorToLogEntry(Cursor cursor) {
         LogEntryPestMgmt logEntryPestMgmt = new LogEntryPestMgmt();

@@ -81,7 +81,7 @@ public class ApiaryDAO {
 
     public Apiary createApiary(Apiary aDO) {
         return createApiary(aDO.getProfile(), aDO.getName(), aDO.getPostalCode(), aDO.getLatitude(),
-                              aDO.getLongitude);
+                              aDO.getLongitude());
     }
 
     public Apiary updateApiary(long id, long profile, String name, String postalCode, float latitude,
@@ -109,7 +109,7 @@ public class ApiaryDAO {
 
     public Apiary updateApiary(Apiary aDO) {
         return updateApiary(aDO.getId(), aDO.getProfile(), aDO.getName(), aDO.getPostalCode(),
-                            aDO.getLatitude(), aDO.getLongitude);
+                            aDO.getLatitude(), aDO.getLongitude());
     }
 
     public void deleteApiary(Apiary apiary) {

@@ -59,13 +59,22 @@ public class NoteDAO {
         values.put(COLUMN_NOTE_TYPE, type);
         values.put(COLUMN_NOTE_NOTE_TEXT, noteText);
         long insertId = mDatabase.insert(TABLE_NOTE, null, values);
-        Cursor cursor = mDatabase.query(TABLE_NOTE, mAllColumns,
-                COLUMN_NOTE_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        Note newNote = cursorToNote(cursor);
-        cursor.close();
+
+        Note newNote = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_NOTE, mAllColumns,
+                    COLUMN_NOTE_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newNote = cursorToNote(cursor);
+            }
+            cursor.close();
+        }
 
         return newNote;
+    }
+
+    public Note createNote(Note aDO) {
+        return createNote(aDO.getApiary(), aDO.getHive(), aDO.getType(), aDO.getNoteText());
     }
 
     public void deleteNote(Note note) {
@@ -77,8 +86,13 @@ public class NoteDAO {
         Cursor cursor = mDatabase.query(TABLE_NOTE, mAllColumns,
                 COLUMN_NOTE_ID + " = ?",
                 new String[] { String.valueOf(id) }, null, null, null);
+
+        Note retrievedNote = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                cursorToNote(cursor);
+            }
+            cursor.close();
         }
 
         return cursorToNote(cursor);

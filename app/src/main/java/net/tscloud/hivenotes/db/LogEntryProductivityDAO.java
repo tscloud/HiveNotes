@@ -76,11 +76,16 @@ public class LogEntryProductivityDAO {
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, pollenCollected);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED, beeswaxCollected);
         long insertId = mDatabase.insert(TABLE_LOGENTRYPRODUCTIVITY, null, values);
-        Cursor cursor = mDatabase.query(TABLE_LOGENTRYPRODUCTIVITY, mAllColumns,
-                COLUMN_LOGENTRYPRODUCTIVITY_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        LogEntryProductivity newLogEntryProductivity = cursorToLogEntry(cursor);
-        cursor.close();
+
+        LogEntryProductivity newLogEntryProductivity = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_LOGENTRYPRODUCTIVITY, mAllColumns,
+                    COLUMN_LOGENTRYPRODUCTIVITY_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newLogEntryProductivity = cursorToLogEntry(cursor);
+            }
+            cursor.close();
+        }
 
         return newLogEntryProductivity;
     }
@@ -112,8 +117,9 @@ public class LogEntryProductivityDAO {
         if (rowsUpdated > 0) {
             Cursor cursor = mDatabase.query(TABLE_LOGENTRYPRODUCTIVITY, mAllColumns,
                     COLUMN_LOGENTRYPRODUCTIVITY_ID + " = " + id, null, null, null, null);
-            cursor.moveToFirst();
-            updatedLogEntryProductivity = cursorToLogEntry(cursor);
+            if (cursor.moveToFirst()) {
+                updatedLogEntryProductivity = cursorToLogEntry(cursor);
+            }
             cursor.close();
         }
 
@@ -135,8 +141,13 @@ public class LogEntryProductivityDAO {
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYPRODUCTIVITY, mAllColumns,
                 COLUMN_LOGENTRYPRODUCTIVITY_ID + " = ?",
                 new String[]{String.valueOf(id)}, null, null, null);
+
+        LogEntryProductivity retrievedLogEntryProductivity = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedLogEntryProductivity = cursorToLogEntry(cursor);
+            }
+            cursor.close();
         }
 
         return cursorToLogEntry(cursor);

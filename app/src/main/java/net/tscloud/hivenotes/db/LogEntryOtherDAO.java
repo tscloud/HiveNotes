@@ -65,11 +65,16 @@ public class LogEntryOtherDAO {
         values.put(COLUMN_LOGENTRYOTHER_SWARM_RMNDR, swarmRmndr);
         values.put(COLUMN_LOGENTRYOTHER_SPLIT_HIVE_RMNDR, splitHiveRmndr);
         long insertId = mDatabase.insert(TABLE_LOGENTRYOTHER, null, values);
-        Cursor cursor = mDatabase.query(TABLE_LOGENTRYOTHER, mAllColumns,
-                COLUMN_LOGENTRYOTHER_ID + " = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-        LogEntryOther newLogEntryOther = cursorToLogEntry(cursor);
-        cursor.close();
+
+        LogEntryOther newLogEntryOther = null;
+        if (insertId >= 0) {
+            Cursor cursor = mDatabase.query(TABLE_LOGENTRYOTHER, mAllColumns,
+                    COLUMN_LOGENTRYOTHER_ID + " = " + insertId, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                newLogEntryOther = cursorToLogEntry(cursor);
+            }
+            cursor.close();
+        }
 
         return newLogEntryOther;
     }
@@ -88,14 +93,16 @@ public class LogEntryOtherDAO {
         values.put(COLUMN_LOGENTRYOTHER_REQUEEN_RMNDR, requeenRmndr);
         values.put(COLUMN_LOGENTRYOTHER_SWARM_RMNDR, swarmRmndr);
         values.put(COLUMN_LOGENTRYOTHER_SPLIT_HIVE_RMNDR, splitHiveRmndr);
-        int rowsUpdated = mDatabase.update(TABLE_LOGENTRYOTHER, values, COLUMN_LOGENTRYOTHER_ID + "=" + id, null);
+        int rowsUpdated = mDatabase.update(TABLE_LOGENTRYOTHER, values,
+                COLUMN_LOGENTRYOTHER_ID + "=" + id, null);
 
         LogEntryOther updatedLogEntryOther = null;
         if (rowsUpdated > 0) {
             Cursor cursor = mDatabase.query(TABLE_LOGENTRYOTHER, mAllColumns,
                     COLUMN_LOGENTRYOTHER_ID + " = " + id, null, null, null, null);
-            cursor.moveToFirst();
-            updatedLogEntryOther = cursorToLogEntry(cursor);
+            if (cursor.moveToFirst()) {
+                updatedLogEntryOther = cursorToLogEntry(cursor);
+            }
             cursor.close();
         }
 
@@ -116,8 +123,13 @@ public class LogEntryOtherDAO {
         Cursor cursor = mDatabase.query(TABLE_LOGENTRYOTHER, mAllColumns,
                 COLUMN_LOGENTRYOTHER_ID + " = ?",
                 new String[] { String.valueOf(id) }, null, null, null);
+
+        LogEntryOther retrievedLogEntryOther = null;
         if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
+                retrievedLogEntryOther = cursorToLogEntry(cursor);
+            }
+            cursor.close();
         }
 
         return cursorToLogEntry(cursor);

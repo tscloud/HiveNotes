@@ -106,8 +106,8 @@ public class HiveDAO {
         return updatedHive;
     }
 
-    public Notification updateNotification(Notification aDO) {
-        return updateNotification(aDO.getId(), aDO.getApiary(), aDO.getName(), aDO.getSpecies(),
+    public Hive updateHive(Hive aDO) {
+        return updateHive(aDO.getId(), aDO.getApiary(), aDO.getName(), aDO.getSpecies(),
                                   aDO.getFoundationType(), aDO.getNote());
     }
 

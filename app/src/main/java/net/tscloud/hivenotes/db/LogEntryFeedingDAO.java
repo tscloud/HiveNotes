@@ -75,8 +75,8 @@ public class LogEntryFeedingDAO {
                     COLUMN_LOGENTRYFEEDING_ID + " = " + insertId, null, null, null, null);
             if (cursor.moveToFirst()) {
                 newLogEntryFeeding = cursorToLogEntry(cursor);
-                cursor.close();
             }
+            cursor.close();
         }
         return newLogEntryFeeding;
     }
@@ -133,6 +133,7 @@ public class LogEntryFeedingDAO {
             if (cursor.moveToFirst()) {
                 retrievedLogEntry = cursorToLogEntry(cursor);
             }
+            cursor.close();
         }
 
         return retrievedLogEntry;
