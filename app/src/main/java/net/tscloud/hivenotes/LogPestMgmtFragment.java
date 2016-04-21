@@ -20,6 +20,7 @@ import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
 import net.tscloud.hivenotes.db.Notification;
 import net.tscloud.hivenotes.db.NotificationDAO;
+import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 
 import java.text.DateFormat;
@@ -136,6 +137,23 @@ public class LogPestMgmtFragment extends Fragment {
                     mLogEntryPestMgmt = getLogEntry(mLogEntryPestMgmtKey);
                 }
             }
+        }
+
+        // If we don't have reminder times -> we have to check if other log entries have set them
+        //  as these is a Hive level objects
+        // when/where/under what circumstances is this check best made?
+        long [] typeHive = new long[2];
+        typeHive[1] = mHiveID;
+
+        //is 0 the correct value to check for?
+        if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == 0) {
+            typeHive[0] = NotificationType.NOTIFY_REMOVE_DRONE;
+            mLogEntryPestMgmt.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(), -1, typeHive));
+        }
+
+        if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == 0) {
+            typeHive[0] = NotificationType.NOTIFY_REMOVE_MITES;
+            mLogEntryPestMgmt.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),  -1, typeHive));
         }
 
         if (mLogEntryPestMgmt != null) {
@@ -372,20 +390,9 @@ public class LogPestMgmtFragment extends Fragment {
         LogEntryPestMgmt reply = logEntryPestMgmtDAO.getLogEntryById(aLogEntryID);
         logEntryPestMgmtDAO.close();
 
-        // Here's the tricky part (and it's a bit cockamamie and may change) -- need to get the
-        //  Notifications to get the Events to get the times to display
-        Log.d(TAG, "reading Notification table to get Event IDs");
-        NotificationDAO notificationDAO = new NotificationDAO(getActivity());
-        Notification droneCellFndnRmndrNotification =
-                notificationDAO.getNotificationById(reply.getDroneCellFndnRmndr());
-        Notification mitesTrtmntRmndrNotification =
-                notificationDAO.getNotificationById(reply.getMitesTrtmntRmndr());
-
-        long droneCellFndnRmndrEventId = droneCellFndnRmndrNotification.getEventId();
-        long mitesTrtmntRmndrEventId = mitesTrtmntRmndrNotification.getEventId();
-
-        reply.setDroneCellFndnRmndrTime(HiveCalendar.getEventTime(getActivity(), droneCellFndnRmndrEventId));
-        reply.setMitesTrtmntRmndrTime(HiveCalendar.getEventTime(getActivity(), mitesTrtmntRmndrEventId));
+        // get the Reminder times
+        reply.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(), reply.getDroneCellFndnRmndr(), null));
+        reply.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(), reply.getMitesTrtmntRmndr(), null));
 
         return reply;
     }

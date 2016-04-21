@@ -14,6 +14,9 @@ import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import net.tscloud.hivenotes.db.Notification;
+import net.tscloud.hivenotes.db.NotificationDAO;
+
 import java.util.TimeZone;
 
 /**
@@ -178,7 +181,7 @@ public class HiveCalendar {
 
     /**Helper method to return an event's time*/
     public static long getEventTime(Context aCtx, long aId) {
-        long reply = 0;
+        long reply = -1;
         Bundle data = getEventByID(aCtx, aId);
 
         return data.getLong("start_millis");
@@ -224,6 +227,42 @@ public class HiveCalendar {
         cv.put(CalendarContract.Reminders.MINUTES, 10);
         Uri newUri = cr.insert(buildUri(REMINDER_URI), cv);
         return Long.parseLong(newUri.getLastPathSegment());
+    }
+
+    public static long getReminderTime(Context aCtx, long aReminderId, long[] aTypeHive) {
+        // Here's the tricky part (and it's a bit cockamamie and may change) -- need to get the
+        //  Notifications to get the Events to get the times to display
+        Log.d(TAG, "reading Notification table to get Event time by Id");
+        long reply = -1;
+
+        NotificationDAO notificationDAO = new NotificationDAO(aCtx);
+        Notification wNotification = null;
+
+        if (aReminderId > 0) {
+            wNotification = notificationDAO.getNotificationById(aReminderId);
+        }
+        else if (aTypeHive != null){
+            wNotification = notificationDAO.getNotificationByTypeAndHive(aTypeHive[0], aTypeHive[1]);
+        }
+
+        if (wNotification != null) {
+            reply = getEventTime(aCtx, wNotification.getEventId());
+        }
+
+        return reply;
+    }
+
+    public static long getReminderTimeByTypeAndHive(Context aCtx, long aType, long aHive) {
+        // Also cockamamie
+        Log.d(TAG, "reading Notification table to get Event time by type and Hive id");
+        long reply = -1;
+
+        NotificationDAO notificationDAO = new NotificationDAO(aCtx);
+        Notification wNotification = notificationDAO.getNotificationByTypeAndHive(aType, aHive);
+
+        reply = getEventTime(aCtx, wNotification.getEventId());
+
+        return reply;
     }
 
     /**List all the visible Calendars - and optionally delete them all
