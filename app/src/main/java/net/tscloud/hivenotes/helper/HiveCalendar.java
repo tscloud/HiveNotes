@@ -229,38 +229,20 @@ public class HiveCalendar {
         return Long.parseLong(newUri.getLastPathSegment());
     }
 
-    public static long getReminderTime(Context aCtx, long aReminderId, long[] aTypeHive) {
+    public static long getReminderTime(Context aCtx, int aType, long aHive) {
         // Here's the tricky part (and it's a bit cockamamie and may change) -- need to get the
         //  Notifications to get the Events to get the times to display
-        Log.d(TAG, "reading Notification table to get Event time by Id");
+        Log.d(TAG, "reading Notification table to get Event time by Type and Hive");
         long reply = -1;
 
         NotificationDAO notificationDAO = new NotificationDAO(aCtx);
         Notification wNotification = null;
 
-        if (aReminderId > 0) {
-            wNotification = notificationDAO.getNotificationById(aReminderId);
-        }
-        else if (aTypeHive != null){
-            wNotification = notificationDAO.getNotificationByTypeAndHive(aTypeHive[0], aTypeHive[1]);
-        }
+        wNotification = notificationDAO.getNotificationByTypeAndHive(aType, aHive);
 
         if (wNotification != null) {
             reply = getEventTime(aCtx, wNotification.getEventId());
         }
-
-        return reply;
-    }
-
-    public static long getReminderTimeByTypeAndHive(Context aCtx, long aType, long aHive) {
-        // Also cockamamie
-        Log.d(TAG, "reading Notification table to get Event time by type and Hive id");
-        long reply = -1;
-
-        NotificationDAO notificationDAO = new NotificationDAO(aCtx);
-        Notification wNotification = notificationDAO.getNotificationByTypeAndHive(aType, aHive);
-
-        reply = getEventTime(aCtx, wNotification.getEventId());
 
         return reply;
     }

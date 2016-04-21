@@ -84,6 +84,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
     public static String INTENT_PREVIOUS_DATA = "logentryPreviousData";
     private HiveNotesLogDO mPreviousLogData;
 
+    // Map to hold all the Notifications for a Hive so we just do 1 DB read
+    private Map mHiveNotifications<Integer, Long>;
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -160,6 +163,16 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     break;
                 case "3":
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, -1);
+                    // anything w/ Reminders needs to potentially get some timestamps
+                    if (mLogEntryPestMgmtData == null) {
+                        mLogEntryPestMgmtData = new mLogEntryPestMgmtData();
+                        mLogEntryPestMgmtData.setDroneCellFndnRmndrTime(
+                            getReminderTimes(
+                                NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveKey));
+                        mLogEntryPestMgmtData.setMitesTrtmntRmndrTime(
+                            getReminderTimes(
+                                NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveKey));
+                    }
                     mPreviousLogData = mLogEntryPestMgmtData;
                     break;
                 case "4":
@@ -335,12 +348,10 @@ public class LogEntryListActivity extends AppCompatActivity implements
             //   creation prior to Log entry write
             if (aLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
                 //Create Notification
-                aLogEntryPestMgmt.setDroneCellFndnRmndr(
-                        createNotification(
-                            aLogEntryPestMgmt.getDroneCellFndnRmndrTime(),
-                            aLogEntryPestMgmt.getDroneCellFndnRmndr(),
-                            NotificationType.NOTIFY_REMOVE_DRONE,
-                            mHiveKey));
+                createNotification(
+                    aLogEntryPestMgmt.getDroneCellFndnRmndrTime(),
+                    NotificationType.NOTIFY_REMOVE_DRONE,
+                    mHiveKey));
             }
 
             if (aLogEntryPestMgmt.getId() == -1) {
@@ -388,7 +399,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         finish();
     }
 
-    private long createNotification(long aStartTime, long aNotKey, int aNotType, long aHiveKey) {
+    private long createNotification(long aStartTime, int aNotType, long aHiveKey) {
 
         long notificationId = -1;
         long eventId = -1;
@@ -397,15 +408,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
         Notification wNot;
         NotificationDAO wNotDAO = new NotificationDAO(this);
 
-        // if we have a N..Key -> we're going to potentially update the Notification
-        if (aNotKey != 0) {
-            // read the Notification by Id
-            wNot = wNotDAO.getNotificationById(aNotKey);
-        }
-        else {
-            // read Notification by Type and Hive Id
-            wNot = wNotDAO.getNotificationByTypeAndHive(aNotType, aHiveKey);
-        }
+        // read Notification by Type and Hive Id
+        wNot = wNotDAO.getNotificationByTypeAndHive(aNotType, aHiveKey);
 
         // delete the corresponding Event <- ** handle errors **
         if ((wNot != null) && (wNot.getEventId() > 0)) {
@@ -420,7 +424,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             NotificationType.getDesc(aNotType),
             mHiveForName.getName());
 
-        if (eventId != -1) {
+        if (eventId != -1) { //should work pretty much all the time, right?
             if (wNot == null) {
                 // we don't have a Notification -> make a new one
                 wNot = wNotDAO.createNotification(-1, aHiveKey, eventId, aNotType);
@@ -439,6 +443,27 @@ public class LogEntryListActivity extends AppCompatActivity implements
         return notificationId;
     }
 
+    private long getReminderTimes(int aType, long aHiveKey) {
+        // Returns a reference to a Notification based on Notification Type
+        //  and Hive Id
+        long reply;
+        List<Notification> listNotification;
+
+        if (mHiveNotifications == null) {
+            NotificationDAO notDAO = new NotificationDAO(this);
+            listNotification = notDAO.getNotificationList(aHiveKey);
+            if (listNotification != null) {
+                mHiveNotifications = new HashMap<Integer, Long>(5);
+                for (Notification n : listNotification) {
+                    mHiveNotifications.put(n.getRmndrType(), n);
+                }
+            }
+        }
+
+        Notification wNotification = mHiveNotifications.get(aType);
+        reply = HiveCalendar.getEventTime(this, wNot.getEventId());
+    }
+
     // Make the Up button perform like the Back button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -449,4 +474,11 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
+}
+
+/**
+ * AsyncTask to handle Reminder getting
+ */
+private class GetReminderTimesTask extends AsyncTask<Void, Void, Void> {
+
 }

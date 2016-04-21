@@ -9,13 +9,19 @@ public class LogEntryOther implements Serializable, HiveNotesLogDO {
 
     public static final String TAG = "LogEntryPestMgmt";
 
+    /* Reminders children of Hive */
     private long id;
     private long hive;
     private String visitDate;
     private String requeen;
-    private long requeenRmndr;
-    private long swarmRmndr;
-    private long splitHiveRmndr;
+    //private long requeenRmndr;
+    //private long swarmRmndr;
+    //private long splitHiveRmndr;
+
+    // These hold reminder times -- they will NOT be persisted
+    private long requeenRmndrTime = -1;
+    private long swarmRmndrTime = -1;
+    private long splitHiveRmndrTime = -1;
 
     @Override
     public long getHive() {
@@ -45,28 +51,28 @@ public class LogEntryOther implements Serializable, HiveNotesLogDO {
         this.requeen = requeen;
     }
 
-    public long getRequeenRmndr() {
-        return requeenRmndr;
+    public long getRequeenRmndrTime() {
+        return requeenRmndrTime;
     }
 
-    public void setRequeenRmndr(long requeenRmndr) {
-        this.requeenRmndr = requeenRmndr;
+    public void setRequeenRmndrTime(long requeenRmndrTime) {
+        this.requeenRmndrTime = requeenRmndrTime;
     }
 
-    public long getSplitHiveRmndr() {
-        return splitHiveRmndr;
+    public long getSplitHiveRmndrTime() {
+        return splitHiveRmndrTime;
     }
 
-    public void setSplitHiveRmndr(long splitHiveRmndr) {
-        this.splitHiveRmndr = splitHiveRmndr;
+    public void setSplitHiveRmndrTime(long splitHiveRmndrTime) {
+        this.splitHiveRmndrTime = splitHiveRmndrTime;
     }
 
-    public long getSwarmRmndr() {
-        return swarmRmndr;
+    public long getSwarmRmndrTime() {
+        return swarmRmndrTime;
     }
 
-    public void setSwarmRmndr(long swarmRmndr) {
-        this.swarmRmndr = swarmRmndr;
+    public void setSwarmRmndrTime(long swarmRmndrTime) {
+        this.swarmRmndrTime = swarmRmndrTime;
     }
 
     public String getVisitDate() {

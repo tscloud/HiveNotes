@@ -9,15 +9,16 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
 
     public static final String TAG = "LogEntryPestMgmt";
 
+    /* Reminders children of Hive */
     private long id;
     private long hive;
     private String visitDate;
     private int droneCellFndn;
-    private long droneCellFndnRmndr;
+    //private long droneCellFndnRmndr;
     private int smallHiveBeetleTrap;
     private int mitesTrtmnt;
     private String mitesTrtmntType;
-    private long mitesTrtmntRmndr;
+    //private long mitesTrtmntRmndr;
     private int screenedBottomBoard;
     private int other;
     private String otherType;
@@ -34,6 +35,7 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
         this.droneCellFndn = droneCellFndn;
     }
 
+    /*
     public long getDroneCellFndnRmndr() {
         return droneCellFndnRmndr;
     }
@@ -41,6 +43,7 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
     public void setDroneCellFndnRmndr(long droneCellFndnRmndr) {
         this.droneCellFndnRmndr = droneCellFndnRmndr;
     }
+    */
 
     @Override
     public long getHive() {
@@ -70,6 +73,7 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
         this.mitesTrtmnt = mitesTrtmnt;
     }
 
+    /*
     public long getMitesTrtmntRmndr() {
         return mitesTrtmntRmndr;
     }
@@ -77,6 +81,7 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
     public void setMitesTrtmntRmndr(long mitesTrtmntRmndr) {
         this.mitesTrtmntRmndr = mitesTrtmntRmndr;
     }
+    */
 
     public String getMitesTrtmntType() {
         return mitesTrtmntType;

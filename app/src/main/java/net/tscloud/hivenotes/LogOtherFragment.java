@@ -79,9 +79,6 @@ public class LogOtherFragment extends Fragment {
             mLogEntryOther = new LogEntryOther();
             mLogEntryOther.setVisitDate(savedInstanceState.getString("visitDate"));
             mLogEntryOther.setRequeen(savedInstanceState.getString("requeen"));
-            mLogEntryOther.setRequeenRmndr(savedInstanceState.getLong("requeenRmndr"));
-            mLogEntryOther.setSwarmRmndr(savedInstanceState.getLong("swarmRmndr"));
-            mLogEntryOther.setSplitHiveRmndr(savedInstanceState.getLong("splitHiveRmndr"));
         }
 
         // save off arguments
@@ -143,28 +140,34 @@ public class LogOtherFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
 
             //don't set if 0 ==> means it's not set
-            if (mLogEntryOther.getRequeenRmndr() != 0) {
-                calendar.setTimeInMillis(mLogEntryOther.getRequeenRmndr());
+            if (mLogEntryOther.getRequeenRmndrTime() != 0) {
+                calendar.setTimeInMillis(mLogEntryOther.getRequeenRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
                 String droneTime = timeFormat.format(calendar.getTime());
                 String droneDateTime = droneDate + ' ' + droneTime;
                 requeenRmndrText.setText(droneDateTime);
+                // don't forget to set the tag
+                requeenRmndrText.setTag(mLogEntryOther.getRequeenRmndrTime());
             }
 
-            if (mLogEntryOther.getSwarmRmndr() != 0) {
-                calendar.setTimeInMillis(mLogEntryOther.getSwarmRmndr());
-                String mitesDate = dateFormat.format(calendar.getTime());
-                String mitesTime = timeFormat.format(calendar.getTime());
-                String mitesDateTime = mitesDate + ' ' + mitesTime;
-                swarmRmndrText.setText(mitesDateTime);
+            if (mLogEntryOther.getSwarmRmndrTime() != 0) {
+                calendar.setTimeInMillis(mLogEntryOther.getSwarmRmndrTime());
+                String swarmDate = dateFormat.format(calendar.getTime());
+                String swarmTime = timeFormat.format(calendar.getTime());
+                String swarmDateTime = swarmDate + ' ' + swarmTime;
+                swarmRmndrText.setText(swarmDateTime);
+                // don't forget to set the tag
+                swarmRmndrText.setTag(mLogEntryOther.getSwarmRmndrTime());
             }
 
-            if (mLogEntryOther.getSplitHiveRmndr() != 0) {
-                calendar.setTimeInMillis(mLogEntryOther.getSplitHiveRmndr());
-                String mitesDate = dateFormat.format(calendar.getTime());
-                String mitesTime = timeFormat.format(calendar.getTime());
-                String mitesDateTime = mitesDate + ' ' + mitesTime;
-                splitHiveRmndrText.setText(mitesDateTime);
+            if (mLogEntryOther.getSplitHiveRmndrTime() != 0) {
+                calendar.setTimeInMillis(mLogEntryOther.getSplitHiveRmndrTime());
+                String splitHiveDate = dateFormat.format(calendar.getTime());
+                String splitHiveTime = timeFormat.format(calendar.getTime());
+                String splitHiveDateTime = splitHiveDate + ' ' + splitHiveTime;
+                splitHiveRmndrText.setText(splitHiveDateTime);
+                // don't forget to set the tag
+                splitHiveRmndrText.setTag(mLogEntryOther.getSplitHiveRmndrTime());
             }
         }
 
@@ -231,9 +234,9 @@ public class LogOtherFragment extends Fragment {
            mLogEntryOther.setHive(mHiveID);
            mLogEntryOther.setVisitDate(null);
            mLogEntryOther.setRequeen(requeenText);
-           mLogEntryOther.setRequeenRmndr(requeenRmndrLong);
-           mLogEntryOther.setSwarmRmndr(swarmRmndrLong);
-           mLogEntryOther.setSplitHiveRmndr(splitHiveRmndrLong);
+           mLogEntryOther.setRequeenRmndrTime(requeenRmndrLong);
+           mLogEntryOther.setSwarmRmndrTime(swarmRmndrLong);
+           mLogEntryOther.setSplitHiveRmndrTime(splitHiveRmndrLong);
 
            if (mListener != null) {
                mListener.onLogOtherFragmentInteraction(mLogEntryOther);
@@ -298,9 +301,9 @@ public class LogOtherFragment extends Fragment {
         if (mLogEntryOther != null) {
             outState.putString("visitDate", mLogEntryOther.getVisitDate());
             outState.putString("requeen", mLogEntryOther.getRequeen());
-            outState.putLong("requeenRmndr", mLogEntryOther.getRequeenRmndr());
-            outState.putLong("swarmRmndr", mLogEntryOther.getSwarmRmndr());
-            outState.putLong("splitHiveRmndr", mLogEntryOther.getSplitHiveRmndr());
+            outState.putLong("requeenRmndrTime", mLogEntryOther.getRequeenRmndrTime());
+            outState.putLong("swarmRmndrTime", mLogEntryOther.getSwarmRmndrTime());
+            outState.putLong("splitHiveRmndrTime", mLogEntryOther.getSplitHiveRmndrTime());
         }
 
         super.onSaveInstanceState(outState);

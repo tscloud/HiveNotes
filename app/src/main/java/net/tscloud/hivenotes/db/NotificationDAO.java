@@ -142,6 +142,28 @@ public class NotificationDAO {
         return retrievedNotification;
     }
 
+    public List<Notification> getNotificationList(long hiveId){
+        List<Notification> listNotification = new ArrayList<Notification>();
+
+        Cursor cursor = mDatabase.query(TABLE_NOTIFICATION, mAllColumns,
+                COLUMN_NOTIFICATION_HIVE + " = ?",
+                new String[] { String.valueOf(hiveId) }, null, null, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    Notification notification = cursorToNotification(cursor);
+                    listNotification.add(notification);
+                    cursor.moveToNext();
+                }
+            }
+           // make sure to close the cursor
+           cursor.close();
+        }
+
+        return listNotification;
+    }
+
     protected Notification cursorToNotification(Cursor cursor) {
         Notification notification = new Notification();
         notification.setId(cursor.getLong(0));

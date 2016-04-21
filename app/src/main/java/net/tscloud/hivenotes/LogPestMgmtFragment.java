@@ -83,11 +83,9 @@ public class LogPestMgmtFragment extends Fragment {
             mLogEntryPestMgmt = new LogEntryPestMgmt();
             mLogEntryPestMgmt.setVisitDate(savedInstanceState.getString("visitDate"));
             mLogEntryPestMgmt.setDroneCellFndn(savedInstanceState.getInt("droneCellFndn"));
-            mLogEntryPestMgmt.setDroneCellFndnRmndr(savedInstanceState.getLong("droneCellFndnRmndr"));
             mLogEntryPestMgmt.setSmallHiveBeetleTrap(savedInstanceState.getInt("smallHiveBeetleTrap"));
             mLogEntryPestMgmt.setMitesTrtmnt(savedInstanceState.getInt("mitesTrtmnt"));
             mLogEntryPestMgmt.setMitesTrtmntType(savedInstanceState.getString("mitesTrtmntType"));
-            mLogEntryPestMgmt.setMitesTrtmntRmndr(savedInstanceState.getLong("mitesTrtmntRmndr"));
             mLogEntryPestMgmt.setScreenedBottomBoard(savedInstanceState.getInt("screenedBottomBoard"));
             mLogEntryPestMgmt.setOther(savedInstanceState.getInt("other"));
             mLogEntryPestMgmt.setOtherType(savedInstanceState.getString("otherType"));
@@ -142,18 +140,17 @@ public class LogPestMgmtFragment extends Fragment {
         // If we don't have reminder times -> we have to check if other log entries have set them
         //  as these is a Hive level objects
         // when/where/under what circumstances is this check best made?
-        long [] typeHive = new long[2];
-        typeHive[1] = mHiveID;
 
         //is 0 the correct value to check for?
         if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == 0) {
-            typeHive[0] = NotificationType.NOTIFY_REMOVE_DRONE;
-            mLogEntryPestMgmt.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(), -1, typeHive));
+            mLogEntryPestMgmt.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(),
+                NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID));
         }
 
         if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == 0) {
             typeHive[0] = NotificationType.NOTIFY_REMOVE_MITES;
-            mLogEntryPestMgmt.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),  -1, typeHive));
+            mLogEntryPestMgmt.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),
+                NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID));
         }
 
         if (mLogEntryPestMgmt != null) {
@@ -367,11 +364,9 @@ public class LogPestMgmtFragment extends Fragment {
         if (mLogEntryPestMgmt != null) {
             outState.putString("visitDate", mLogEntryPestMgmt.getVisitDate());
             outState.putInt("droneCellFndn", mLogEntryPestMgmt.getDroneCellFndn());
-            outState.putLong("droneCellFndnRmndr", mLogEntryPestMgmt.getDroneCellFndnRmndr());
             outState.putInt("smallHiveBeetleTrap", mLogEntryPestMgmt.getSmallHiveBeetleTrap());
             outState.putInt("mitesTrtmnt", mLogEntryPestMgmt.getMitesTrtmnt());
             outState.putString("mitesTrtmntType", mLogEntryPestMgmt.getMitesTrtmntType());
-            outState.putLong("mitesTrtmntRmndr", mLogEntryPestMgmt.getMitesTrtmntRmndr());
             outState.putInt("screenedBottomBoard", mLogEntryPestMgmt.getScreenedBottomBoard());
             outState.putInt("other", mLogEntryPestMgmt.getOther());
             outState.putString("otherType", mLogEntryPestMgmt.getOtherType());
@@ -391,8 +386,10 @@ public class LogPestMgmtFragment extends Fragment {
         logEntryPestMgmtDAO.close();
 
         // get the Reminder times
-        reply.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(), reply.getDroneCellFndnRmndr(), null));
-        reply.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(), reply.getMitesTrtmntRmndr(), null));
+        reply.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(),
+            NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID));
+        reply.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),
+            NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID));
 
         return reply;
     }

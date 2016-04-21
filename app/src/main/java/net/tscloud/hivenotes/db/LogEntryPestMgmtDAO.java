@@ -16,16 +16,17 @@ public class LogEntryPestMgmtDAO {
 
     // Database table columns
     // columns of the Profile table
+    /* Reminders children of Hive */
     public static final String TABLE_LOGENTRYPESTMGMT = "LogEntryPestMgmt";
     public static final String COLUMN_LOGENTRYPESTMGMT_ID = "_id";
     public static final String COLUMN_LOGENTRYPESTMGMT_HIVE = "hive";
     public static final String COLUMN_LOGENTRYPESTMGMT_VISIT_DATE = "visit_date";
     public static final String COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN = "drone_cell_fndn";
-    public static final String COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN_RMNDR = "drone_cell_fndn_rmndr";
+    //public static final String COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN_RMNDR = "drone_cell_fndn_rmndr";
     public static final String COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP = "small_hive_beetle_trap";
     public static final String COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT = "mites_trtmnt";
     public static final String COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_TYPE = "mites_trtmnt_type";
-    public static final String COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR = "mites_trtmnt_rmndr";
+    //public static final String COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR = "mites_trtmnt_rmndr";
     public static final String COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD = "screened_bottom_board";
     public static final String COLUMN_LOGENTRYPESTMGMT_OTHER = "other";
     public static final String COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE = "other_type";
@@ -36,9 +37,8 @@ public class LogEntryPestMgmtDAO {
     private Context mContext;
     private String[] mAllColumns = { COLUMN_LOGENTRYPESTMGMT_ID, COLUMN_LOGENTRYPESTMGMT_HIVE,
             COLUMN_LOGENTRYPESTMGMT_VISIT_DATE, COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN,
-            COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN_RMNDR, COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP,
-            COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT, COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_TYPE,
-            COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR, COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD,
+            COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP, COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT,
+            COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_TYPE, COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD,
             COLUMN_LOGENTRYPESTMGMT_OTHER, COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE };
 
     public LogEntryPestMgmtDAO(Context context) {
@@ -64,18 +64,16 @@ public class LogEntryPestMgmtDAO {
     // --DB access methods--
 
     public LogEntryPestMgmt createLogEntry(long hive, String visitDate, int drone_cell_fndn,
-                                           long drone_cell_fndn_rmndr, int small_hive_beetle_trap,
-                                           int mites_trtmnt, String mites_trtmnt_type, long mites_trtmnt_rmndr,
-                                           int screened_bottom_board, int other, String otherType) {
+                                            int small_hive_beetle_trap, int mites_trtmnt,
+                                            String mites_trtmnt_type, int screened_bottom_board,
+                                            int other, String otherType) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPESTMGMT_HIVE, hive);
         values.put(COLUMN_LOGENTRYPESTMGMT_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN, drone_cell_fndn);
-        values.put(COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN_RMNDR, drone_cell_fndn_rmndr);
         values.put(COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP, small_hive_beetle_trap);
         values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT, mites_trtmnt);
         values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_TYPE, mites_trtmnt_type);
-        values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR, mites_trtmnt_rmndr);
         values.put(COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD, screened_bottom_board);
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER, other);
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE, otherType);
@@ -95,24 +93,23 @@ public class LogEntryPestMgmtDAO {
     }
 
     public LogEntryPestMgmt createLogEntry(LogEntryPestMgmt aDO) {
-        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getDroneCellFndn(), aDO.getDroneCellFndnRmndr(),
-                aDO.getSmallHiveBeetleTrap(), aDO.getMitesTrtmnt(), aDO.getMitesTrtmntType(), aDO.getMitesTrtmntRmndr(),
-                aDO.getScreenedBottomBoard(), aDO.getOther(), aDO.getOtherType());
+        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getDroneCellFndn(),
+                aDO.getSmallHiveBeetleTrap(), aDO.getMitesTrtmnt(), aDO.getMitesTrtmntType(),
+                aDO.getMitesTrtmntRmndr(), aDO.getScreenedBottomBoard(), aDO.getOther(),
+                aDO.getOtherType());
     }
 
-    public LogEntryPestMgmt updateLogEntry(long id, long hive, String visitDate, int drone_cell_fndn,
-                                               long drone_cell_fndn_rmndr, int small_hive_beetle_trap,
-                                               int mites_trtmnt, String mites_trtmnt_type, long mites_trtmnt_rmndr,
-                                               int screened_bottom_board, int other, String otherType) {
+    public LogEntryPestMgmt updateLogEntry(long id, long hive, String visitDate,
+                                            int drone_cell_fndn, int small_hive_beetle_trap,
+                                            int mites_trtmnt, String mites_trtmnt_type,
+                                            int screened_bottom_board, int other, String otherType) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPESTMGMT_HIVE, hive);
         values.put(COLUMN_LOGENTRYPESTMGMT_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN, drone_cell_fndn);
-        values.put(COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN_RMNDR, drone_cell_fndn_rmndr);
         values.put(COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP, small_hive_beetle_trap);
         values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT, mites_trtmnt);
         values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_TYPE, mites_trtmnt_type);
-        values.put(COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT_RMNDR, mites_trtmnt_rmndr);
         values.put(COLUMN_LOGENTRYPESTMGMT_SCREENED_BOTTOM_BOARD, screened_bottom_board);
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER, other);
         values.put(COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE, otherType);
@@ -134,9 +131,8 @@ public class LogEntryPestMgmtDAO {
 
     public LogEntryPestMgmt updateLogEntry(LogEntryPestMgmt aDO) {
         return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getDroneCellFndn(),
-                aDO.getDroneCellFndnRmndr(), aDO.getSmallHiveBeetleTrap(), aDO.getMitesTrtmnt(),
-                aDO.getMitesTrtmntType(), aDO.getMitesTrtmntRmndr(), aDO.getScreenedBottomBoard(),
-                aDO.getOther(), aDO.getOtherType());
+                aDO.getSmallHiveBeetleTrap(), aDO.getMitesTrtmnt(), aDO.getMitesTrtmntType(),
+                aDO.getScreenedBottomBoard(), aDO.getOther(), aDO.getOtherType());
     }
 
     public void deleteLogEntry(LogEntryPestMgmt logEntryPestMgmt) {
@@ -166,13 +162,11 @@ public class LogEntryPestMgmtDAO {
         logEntryPestMgmt.setHive(cursor.getLong(1));
         logEntryPestMgmt.setVisitDate(cursor.getString(2));
         logEntryPestMgmt.setDroneCellFndn(cursor.getInt(3));
-        logEntryPestMgmt.setDroneCellFndnRmndr(cursor.getInt(4));
-        logEntryPestMgmt.setSmallHiveBeetleTrap(cursor.getInt(5));
-        logEntryPestMgmt.setMitesTrtmnt(cursor.getInt(6));
-        logEntryPestMgmt.setMitesTrtmntType(cursor.getString(7));
-        logEntryPestMgmt.setMitesTrtmntRmndr(cursor.getInt(8));
-        logEntryPestMgmt.setOther(cursor.getInt(9));
-        logEntryPestMgmt.setOtherType(cursor.getString(9));
+        logEntryPestMgmt.setSmallHiveBeetleTrap(cursor.getInt(4));
+        logEntryPestMgmt.setMitesTrtmnt(cursor.getInt(5));
+        logEntryPestMgmt.setMitesTrtmntType(cursor.getString(6));
+        logEntryPestMgmt.setOther(cursor.getInt(7));
+        logEntryPestMgmt.setOtherType(cursor.getString(8));
 
         return logEntryPestMgmt;
     }
