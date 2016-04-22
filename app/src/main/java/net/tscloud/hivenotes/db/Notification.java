@@ -13,13 +13,13 @@ public class Notification implements Serializable {
     private long apiary;
     private long hive;
     private long eventId;
-    private long rmndrType;
+    private int rmndrType;
 
-    public long getRmndrType() {
+    public int getRmndrType() {
         return rmndrType;
     }
 
-    public void setRmndrType(long rmndrType) {
+    public void setRmndrType(int rmndrType) {
         this.rmndrType = rmndrType;
     }
 

@@ -1,6 +1,7 @@
 package net.tscloud.hivenotes;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -29,6 +30,9 @@ import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -85,7 +89,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     private HiveNotesLogDO mPreviousLogData;
 
     // Map to hold all the Notifications for a Hive so we just do 1 DB read
-    private Map mHiveNotifications<Integer, Long>;
+    private Map<Integer, Notification> mHiveNotifications;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -165,7 +169,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, -1);
                     // anything w/ Reminders needs to potentially get some timestamps
                     if (mLogEntryPestMgmtData == null) {
-                        mLogEntryPestMgmtData = new mLogEntryPestMgmtData();
+                        mLogEntryPestMgmtData = new LogEntryPestMgmt();
                         mLogEntryPestMgmtData.setDroneCellFndnRmndrTime(
                             getReminderTimes(
                                 NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveKey));
@@ -350,8 +354,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 //Create Notification
                 createNotification(
                     aLogEntryPestMgmt.getDroneCellFndnRmndrTime(),
-                    NotificationType.NOTIFY_REMOVE_DRONE,
-                    mHiveKey));
+                    NotificationType.NOTIFY_PEST_REMOVE_DRONE,
+                    mHiveKey);
             }
 
             if (aLogEntryPestMgmt.getId() == -1) {
@@ -453,7 +457,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             NotificationDAO notDAO = new NotificationDAO(this);
             listNotification = notDAO.getNotificationList(aHiveKey);
             if (listNotification != null) {
-                mHiveNotifications = new HashMap<Integer, Long>(5);
+                mHiveNotifications = new HashMap<Integer, Notification>(5);
                 for (Notification n : listNotification) {
                     mHiveNotifications.put(n.getRmndrType(), n);
                 }
@@ -461,7 +465,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
 
         Notification wNotification = mHiveNotifications.get(aType);
-        reply = HiveCalendar.getEventTime(this, wNot.getEventId());
+        reply = HiveCalendar.getEventTime(this, wNotification.getEventId());
+
+        return reply;
     }
 
     // Make the Up button perform like the Back button
@@ -479,6 +485,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
 /**
  * AsyncTask to handle Reminder getting
  */
-private class GetReminderTimesTask extends AsyncTask<Void, Void, Void> {
+//class GetReminderTimesTask extends AsyncTask<Void, Void, Void> {
 
-}
+//}

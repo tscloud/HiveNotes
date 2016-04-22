@@ -148,7 +148,6 @@ public class LogPestMgmtFragment extends Fragment {
         }
 
         if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == 0) {
-            typeHive[0] = NotificationType.NOTIFY_REMOVE_MITES;
             mLogEntryPestMgmt.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),
                 NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID));
         }

@@ -95,8 +95,7 @@ public class LogEntryPestMgmtDAO {
     public LogEntryPestMgmt createLogEntry(LogEntryPestMgmt aDO) {
         return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getDroneCellFndn(),
                 aDO.getSmallHiveBeetleTrap(), aDO.getMitesTrtmnt(), aDO.getMitesTrtmntType(),
-                aDO.getMitesTrtmntRmndr(), aDO.getScreenedBottomBoard(), aDO.getOther(),
-                aDO.getOtherType());
+                aDO.getScreenedBottomBoard(), aDO.getOther(), aDO.getOtherType());
     }
 
     public LogEntryPestMgmt updateLogEntry(long id, long hive, String visitDate,
