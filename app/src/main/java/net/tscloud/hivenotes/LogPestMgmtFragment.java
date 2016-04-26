@@ -387,11 +387,14 @@ public class LogPestMgmtFragment extends Fragment {
         LogEntryPestMgmt reply = logEntryPestMgmtDAO.getLogEntryById(aLogEntryID);
         logEntryPestMgmtDAO.close();
 
+        /**  Can we count on the Activity providing this data?
+         *
         // get the Reminder times
         reply.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(),
             NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID));
         reply.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),
             NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID));
+         */
 
         return reply;
     }
