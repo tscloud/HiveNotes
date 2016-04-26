@@ -137,6 +137,8 @@ public class LogPestMgmtFragment extends Fragment {
             }
         }
 
+        /**  Can we count on the Activity providing this data?
+         *
         // If we don't have reminder times -> we have to check if other log entries have set them
         //  as these is a Hive level objects
         // when/where/under what circumstances is this check best made?
@@ -151,6 +153,7 @@ public class LogPestMgmtFragment extends Fragment {
             mLogEntryPestMgmt.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),
                 NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID));
         }
+         */
 
         if (mLogEntryPestMgmt != null) {
 

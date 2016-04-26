@@ -168,6 +168,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 case "3":
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, -1);
                     // anything w/ Reminders needs to potentially get some timestamps
+                    //  we get them here as opposed to the Fragment as there are only a set # of
+                    //  Reminders per Hive (currently 5) -> we don't want to read them for every Log Entry
                     if (mLogEntryPestMgmtData == null) {
                         mLogEntryPestMgmtData = new LogEntryPestMgmt();
                         mLogEntryPestMgmtData.setDroneCellFndnRmndrTime(
@@ -221,6 +223,16 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryProductivityData);
                     break;
                 case "3":
+                    if (mLogEntryPestMgmtData == null) {
+                        mLogEntryPestMgmtData = new LogEntryPestMgmt();
+                        mLogEntryPestMgmtData.setDroneCellFndnRmndrTime(
+                                getReminderTimes(
+                                        NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveKey));
+                        mLogEntryPestMgmtData.setMitesTrtmntRmndrTime(
+                                getReminderTimes(
+                                        NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveKey));
+                    }
+                    mPreviousLogData = mLogEntryPestMgmtData;
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryPestMgmtData);
                     break;
                 case "4":
@@ -310,7 +322,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     private void updateDB(LogEntryGeneral aLogEntryGeneral, LogEntryProductivity aLogEntryProductivity,
-                          LogEntryPestMgmt aLogEntryPestMgmt, LogEntryFeeding aLogEntryFeeding, LogEntryOther aLogEntryOther) {
+                          LogEntryPestMgmt aLogEntryPestMgmt, LogEntryFeeding aLogEntryFeeding,
+                          LogEntryOther aLogEntryOther) {
         // This is the date that will be used for all the VISIT_DATE columns
         //  set it to Now in case there's nothing from LogEntryGeneral
         String generalDate = new Date().toString();

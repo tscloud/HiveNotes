@@ -173,7 +173,7 @@ public class NotificationDAO {
         notification.setApiary(cursor.getLong(1));
         notification.setHive(cursor.getLong(2));
         notification.setEventId(cursor.getLong(3));
-        notification.setRmndrType(cursor.getLong(4));
+        notification.setRmndrType(cursor.getInt(4));
 
         return notification;
     }
