@@ -137,24 +137,6 @@ public class LogPestMgmtFragment extends Fragment {
             }
         }
 
-        /**  Can we count on the Activity providing this data?
-         *
-        // If we don't have reminder times -> we have to check if other log entries have set them
-        //  as these is a Hive level objects
-        // when/where/under what circumstances is this check best made?
-
-        //is 0 the correct value to check for?
-        if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == 0) {
-            mLogEntryPestMgmt.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(),
-                NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID));
-        }
-
-        if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == 0) {
-            mLogEntryPestMgmt.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),
-                NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID));
-        }
-         */
-
         if (mLogEntryPestMgmt != null) {
 
             // fill the form
@@ -174,7 +156,19 @@ public class LogPestMgmtFragment extends Fragment {
             otherCheck.setChecked(mLogEntryPestMgmt.getOther() != 0);
             otherEdit.setText(mLogEntryPestMgmt.getOtherType());
 
-            //do Reminders
+            // do Reminders
+            //is 0 the correct value to check for?
+            // do in AsyncTask?
+            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == 0) {
+                mLogEntryPestMgmt.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(),
+                        NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID));
+            }
+
+            if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == 0) {
+                mLogEntryPestMgmt.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),
+                        NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID));
+            }
+
             Calendar calendar = Calendar.getInstance();
 
             //don't set if 0 ==> means it's not set

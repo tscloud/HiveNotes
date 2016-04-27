@@ -167,8 +167,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     break;
                 case "3":
                     fragment = LogPestMgmtFragment.newInstance(mHiveKey, -1);
-                    // Get the Pest Reminder times
-                    pestReminderHelper();
                     mPreviousLogData = mLogEntryPestMgmtData;
                     break;
                 case "4":
@@ -177,8 +175,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     break;
                 case "5":
                     fragment = LogOtherFragment.newInstance(mHiveKey, -1);
-                    // Get the Other Reminder times
-                    otherReminderHelper();
                     mPreviousLogData = mLogEntryOtherData;
                     break;
                 case "6":
@@ -215,47 +211,16 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryProductivityData);
                     break;
                 case "3":
-                    // Get the Pest Reminder times
-                    pestReminderHelper();
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryPestMgmtData);
                     break;
                 case "4":
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryFeedingData);
                     break;
                 case "5":
-                    // Get the Other Reminder times
-                    otherReminderHelper();
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryOtherData);
                     break;
             }
             startActivityForResult(intent, LOG_DETAIL_REQ_CODE);
-        }
-    }
-
-    private void pestReminderHelper() {
-        if (mLogEntryPestMgmtData == null) {
-            mLogEntryPestMgmtData = new LogEntryPestMgmt();
-            mLogEntryPestMgmtData.setDroneCellFndnRmndrTime(
-                    getHiveReminders(
-                            NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveKey));
-            mLogEntryPestMgmtData.setMitesTrtmntRmndrTime(
-                    getHiveReminders(
-                            NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveKey));
-        }
-    }
-
-    private void otherReminderHelper() {
-        if (mLogEntryOtherData == null) {
-            mLogEntryOtherData = new LogEntryOther();
-            mLogEntryOtherData.setRequeenRmndrTime(
-                    getHiveReminders(
-                            NotificationType.NOTIFY_OTHER_QUEEN_RELEASE, mHiveKey));
-            mLogEntryOtherData.swarmRmndrTime(
-                    getHiveReminders(
-                            NotificationType.NOTIFY_OTHER_SWARM, mHiveKey));
-            mLogEntryOtherData.splitHiveRmndrTime(
-                    getHiveReminders(
-                            NotificationType.NOTIFY_OTHER_SPLIT_HIVE, mHiveKey));
         }
     }
 
@@ -471,34 +436,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
 
         return notificationId;
-    }
-
-    private long getHiveReminders(int aType, long aHiveKey) {
-        /** Anything w/ Reminders needs to potentially get some timestamps
-         *   we get them here as opposed to the Fragment as there are only a finite # of
-         *   Reminders per Hive (currently 5) -> we don't want to read them for every Log Entry
-         *
-         *  Returns a timestamp of an Event tied to a Notification based on
-         *   Notification Type and Hive Id
-         */
-        long reply;
-        List<Notification> listNotification;
-
-        if (mHiveNotifications == null) {
-            NotificationDAO notDAO = new NotificationDAO(this);
-            listNotification = notDAO.getNotificationList(aHiveKey);
-            if (listNotification != null) {
-                mHiveNotifications = new HashMap<Integer, Notification>(5);
-                for (Notification n : listNotification) {
-                    mHiveNotifications.put(n.getRmndrType(), n);
-                }
-            }
-        }
-
-        Notification wNotification = mHiveNotifications.get(aType);
-        reply = HiveCalendar.getEventTime(this, wNotification.getEventId());
-
-        return reply;
     }
 
     // Make the Up button perform like the Back button
