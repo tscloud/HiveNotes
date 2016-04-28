@@ -24,6 +24,8 @@ import net.tscloud.hivenotes.db.Notification;
 import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
+import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
+import net.tscloud.hivenotes.helper.GetReminderTimeTask;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -198,7 +200,7 @@ public class LogPestMgmtFragment extends Fragment {
             mTaskDrone = new GetReminderTimeTask(
                     new GetReminderTimeTaskData(droneCellFndnBtn, droneCellFndnRmndrText,
                             NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID, TASK_DRONE,
-                            calendar));
+                            calendar, dateFormat, timeFormat));
             mTaskDrone.execute();
         }
 
@@ -210,11 +212,11 @@ public class LogPestMgmtFragment extends Fragment {
             mTaskMites = new GetReminderTimeTask(
                     new GetReminderTimeTaskData(mitesTrtmntBtn, mitesTrtmntRmndrText,
                             NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID, TASK_MITES,
-                            calendar));
+                            calendar, dateFormat, timeFormat));
             mTaskMites.execute();
         }
 
-            // set button listeners
+        // set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -442,67 +444,9 @@ public class LogPestMgmtFragment extends Fragment {
         HiveNotesLogDO getPreviousLogData();
     }
 
-    private class GetReminderTimeTaskData {
-        Button btn;
-        TextView txt;
-        int type;
-        long hive;
-        int taskInd;
-        Calendar cal;
+    class MyGetReminderTimeTask extends GetReminderTimeTask {
 
-        GetReminderTimeTaskData(Button aBtn, TextView aTxt, int aType, long aHive, int aTaskInd,
-                                Calendar aCal) {
-            this.btn = aBtn;
-            this.txt = aTxt;
-            this.type = aType;
-            this.hive = aHive;
-            this.taskInd = aTaskInd;
-            this.cal = aCal;
-        }
-    }
-
-    private class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
-        GetReminderTimeTaskData data;
-
-        GetReminderTimeTask(GetReminderTimeTaskData aData) {
-            this.data = aData;
-            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : constructor");
-        }
-
-        @Override
-        protected Long doInBackground(Void... unused) {
-            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : doInBackground");
-
-            //pause to simulate work
-            try {
-                Thread.sleep(2000);
-            }
-            catch (InterruptedException e) {
-                Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : InterruptedException");
-            }
-
-            long reminderMillis = HiveCalendar.getReminderTime(getActivity(), data.type, data.hive);
-            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : doInBackground : reminderMillis: " + reminderMillis);
-
-            return reminderMillis;
-        }
-
-        @Override
-        protected void onPostExecute(Long time) {
-            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : onPostExecute");
-            if (time != -1) {
-                data.cal.setTimeInMillis(time);
-                String fDate = dateFormat.format(data.cal.getTime());
-                String fTime = timeFormat.format(data.cal.getTime());
-                String fDateTime = fDate + ' ' + fTime;
-                Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : onPostExecute : fDateTime: " + fDateTime);
-
-                data.txt.setTag(time);
-                data.txt.setText(fDateTime);
-            }
-
-            data.btn.setEnabled(true);
-
+        protected void nullifyTaskRef(int taskRef) {
             switch (data.taskInd) {
                 case TASK_DRONE:
                     mTaskDrone = null;
@@ -510,7 +454,7 @@ public class LogPestMgmtFragment extends Fragment {
                 case TASK_MITES:
                     mTaskMites = null;
             }
-
         }
     }
+
 }
