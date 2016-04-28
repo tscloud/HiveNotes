@@ -2,7 +2,9 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,9 +51,10 @@ public class LogPestMgmtFragment extends Fragment {
     private OnLogPestMgmntFragmentInteractionListener mListener;
 
     // time/date formatters
-    private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
     private static final String TIME_PATTERN = "HH:mm";
-    private SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    private final Calendar calendar = Calendar.getInstance();
 
     // task references - needed to kill tasks on Fragment Destroy
     private GetReminderTimeTask mTaskDrone = null;
@@ -163,10 +166,8 @@ public class LogPestMgmtFragment extends Fragment {
             otherEdit.setText(mLogEntryPestMgmt.getOtherType());
 
             // do Reminders
-            Calendar calendar = Calendar.getInstance();
 
-            // If we have a time --> use it
-            //don't set if -1 ==> means it's not set
+            // If we have a time --> use it...
             if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
@@ -175,12 +176,6 @@ public class LogPestMgmtFragment extends Fragment {
                 droneCellFndnRmndrText.setText(droneDateTime);
                 // don't forget to set the tag
                 droneCellFndnRmndrText.setTag(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
-            }
-            // Otherwise --> spin up a task to get and set
-            else {
-                //disable the button until task is thru
-                droneCellFndnBtn.setEnabled(false);
-                mTaskDrone = new GetReminderTimeTask(new GetReminderTimeTaskData(droneCellFndnBtn, droneCellFndnRmndrText, NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID, TASK_DRONE, calendar)).execute();
             }
 
             if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1) {
@@ -192,14 +187,34 @@ public class LogPestMgmtFragment extends Fragment {
                 // don't forget to set the tag
                 mitesTrtmntRmndrText.setTag(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
             }
-            else {
-                //disable the button until task is thru
-                mitesTrtmntBtn.setEnabled(false);
-                mTaskMites = new GetReminderTimeTask(new GetReminderTimeTaskData(mitesTrtmntBtn, mitesTrtmntRmndrText, NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID, TASK_MITES, calendar)).execute();
-            }
         }
 
-        // set button listeners
+        // ...Otherwise --> spin up a task to get and set
+        if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1)) {
+            //disable the button until task is thru
+            droneCellFndnBtn.setEnabled(false);
+
+            //setup and execute task
+            mTaskDrone = new GetReminderTimeTask(
+                    new GetReminderTimeTaskData(droneCellFndnBtn, droneCellFndnRmndrText,
+                            NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID, TASK_DRONE,
+                            calendar));
+            mTaskDrone.execute();
+        }
+
+        if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1)) {
+            //disable the button until task is thru
+            mitesTrtmntBtn.setEnabled(false);
+
+            //setup and execute task
+            mTaskMites = new GetReminderTimeTask(
+                    new GetReminderTimeTaskData(mitesTrtmntBtn, mitesTrtmntRmndrText,
+                            NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID, TASK_MITES,
+                            calendar));
+            mTaskMites.execute();
+        }
+
+            // set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -382,11 +397,11 @@ public class LogPestMgmtFragment extends Fragment {
     @Override
     public void onDestroy() {
         if (mTaskDrone != null) {
-            mTaskDrone.cancel();
+            mTaskDrone.cancel(false);
         }
 
         if (mTaskMites != null) {
-            mTaskMites.cancel();
+            mTaskMites.cancel(false);
         }
 
         super.onDestroy();
@@ -435,7 +450,8 @@ public class LogPestMgmtFragment extends Fragment {
         int taskInd;
         Calendar cal;
 
-        GetReminderTimeTaskData(Button aBtn, TextView aTxt, int aType, long aHive, int aTaskInd, Calendar aCal) {
+        GetReminderTimeTaskData(Button aBtn, TextView aTxt, int aType, long aHive, int aTaskInd,
+                                Calendar aCal) {
             this.btn = aBtn;
             this.txt = aTxt;
             this.type = aType;
@@ -450,28 +466,44 @@ public class LogPestMgmtFragment extends Fragment {
 
         GetReminderTimeTask(GetReminderTimeTaskData aData) {
             this.data = aData;
+            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : constructor");
         }
 
         @Override
         protected Long doInBackground(Void... unused) {
-            return timeMillis =  HiveCalendar.getReminderTime(getActivity(), type, hive);
+            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : doInBackground");
+
+            //pause to simulate work
+            try {
+                Thread.sleep(2000);
+            }
+            catch (InterruptedException e) {
+                Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : InterruptedException");
+            }
+
+            long reminderMillis = HiveCalendar.getReminderTime(getActivity(), data.type, data.hive);
+            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : doInBackground : reminderMillis: " + reminderMillis);
+
+            return reminderMillis;
         }
 
         @Override
         protected void onPostExecute(Long time) {
+            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : onPostExecute");
             if (time != -1) {
-                cal.setTimeInMillis(time);
-                String fDate = dateFormat.format(cal.getTime());
-                String fTime = timeFormat.format(cal.getTime());
+                data.cal.setTimeInMillis(time);
+                String fDate = dateFormat.format(data.cal.getTime());
+                String fTime = timeFormat.format(data.cal.getTime());
                 String fDateTime = fDate + ' ' + fTime;
+                Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ") : onPostExecute : fDateTime: " + fDateTime);
 
-                txt.setTag(time);
-                txt.setText(fDateTime);
+                data.txt.setTag(time);
+                data.txt.setText(fDateTime);
             }
 
-            btn.setEnabled(true);
+            data.btn.setEnabled(true);
 
-            switch (taskInd) {
+            switch (data.taskInd) {
                 case TASK_DRONE:
                     mTaskDrone = null;
                     break;
