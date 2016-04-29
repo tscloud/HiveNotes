@@ -10,7 +10,8 @@ import java.util.Calendar;
  * Created by tscloud on 4/28/16.
  */
 public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
-    GetReminderTimeTaskData data;
+
+    private GetReminderTimeTaskData data;
 
     GetReminderTimeTask(GetReminderTimeTaskData aData) {
         this.data = aData;
@@ -61,6 +62,8 @@ public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
         nullifyTaskRef(data.taskInd);
     }
 
+    /** Override to take care of setting the task referenece maintained in the calling class to null
+     */
     protected abstract void nullifyTaskRef(int taskRef);
 
 }

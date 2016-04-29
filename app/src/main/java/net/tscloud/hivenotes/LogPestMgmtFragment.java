@@ -197,7 +197,7 @@ public class LogPestMgmtFragment extends Fragment {
             droneCellFndnBtn.setEnabled(false);
 
             //setup and execute task
-            mTaskDrone = new GetReminderTimeTask(
+            mTaskDrone = new MyGetReminderTimeTask(
                     new GetReminderTimeTaskData(droneCellFndnBtn, droneCellFndnRmndrText,
                             NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID, TASK_DRONE,
                             calendar, dateFormat, timeFormat));
@@ -209,7 +209,7 @@ public class LogPestMgmtFragment extends Fragment {
             mitesTrtmntBtn.setEnabled(false);
 
             //setup and execute task
-            mTaskMites = new GetReminderTimeTask(
+            mTaskMites = new MyGetReminderTimeTask(
                     new GetReminderTimeTaskData(mitesTrtmntBtn, mitesTrtmntRmndrText,
                             NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID, TASK_MITES,
                             calendar, dateFormat, timeFormat));
@@ -444,6 +444,8 @@ public class LogPestMgmtFragment extends Fragment {
         HiveNotesLogDO getPreviousLogData();
     }
 
+    /** subclass of the GetReminderTimeTask
+     */
     class MyGetReminderTimeTask extends GetReminderTimeTask {
 
         protected void nullifyTaskRef(int taskRef) {
