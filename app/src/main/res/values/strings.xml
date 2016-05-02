@@ -182,4 +182,7 @@
     <string name="title_apiary_edit_profile">EditApiaryActivity</string>
     <string name="title_hive_single_edit_profile">EditHiveSingleActivity</string>
     <string name="hive_note_string">Notes:</string>
+    <string name="set">Set</string>
+    <string name="unset">Unset</string>
+    <string name="no_reminder_set">No reminder set</string>
 </resources>

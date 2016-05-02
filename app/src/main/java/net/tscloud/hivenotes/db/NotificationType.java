@@ -16,7 +16,7 @@ public class NotificationType {
     // Notification_Type key values
     public static int NOTIFY_PEST_REMOVE_DRONE = 0;
     public static int NOTIFY_PEST_REMOVE_MITES = 1;
-    public static int NOTIFY_OTHER_QUEEN_RELEASE = 2;
+    public static int NOTIFY_OTHER_REQUEEN = 2;
     public static int NOTIFY_OTHER_SWARM = 3;
     public static int NOTIFY_OTHER_SPLIT_HIVE = 4;
 
@@ -25,7 +25,7 @@ public class NotificationType {
         "Remove drone cell foundation frames";
     private static String NOTIFY_PEST_REMOVE_MITES_DESC =
         "Remove mites treatment";
-    private static String NOTIFY_OTHER_QUEEN_RELEASE_DESC =
+    private static String NOTIFY_OTHER_REQUEEN_DESC =
         "Check on queen release";
     private static String NOTIFY_OTHER_SWARM_DESC =
         "Check for swarm laying queen";
@@ -39,10 +39,11 @@ public class NotificationType {
     }
 
     static {
+        // TODO - use SparseArray
         keyToDesc = new HashMap<Integer, String>(5);
         keyToDesc.put(NOTIFY_PEST_REMOVE_DRONE, NOTIFY_PEST_REMOVE_DRONE_DESC);
         keyToDesc.put(NOTIFY_PEST_REMOVE_MITES, NOTIFY_PEST_REMOVE_MITES_DESC);
-        keyToDesc.put(NOTIFY_OTHER_QUEEN_RELEASE, NOTIFY_OTHER_QUEEN_RELEASE_DESC);
+        keyToDesc.put(NOTIFY_OTHER_REQUEEN, NOTIFY_OTHER_REQUEEN_DESC);
         keyToDesc.put(NOTIFY_OTHER_SWARM, NOTIFY_OTHER_SWARM_DESC);
         keyToDesc.put(NOTIFY_OTHER_SPLIT_HIVE, NOTIFY_OTHER_SPLIT_HIVE_DESC);
     }

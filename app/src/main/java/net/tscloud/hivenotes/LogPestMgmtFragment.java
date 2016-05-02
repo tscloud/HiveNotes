@@ -2,6 +2,7 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -200,7 +201,7 @@ public class LogPestMgmtFragment extends Fragment {
             mTaskDrone = new MyGetReminderTimeTask(
                     new GetReminderTimeTaskData(droneCellFndnBtn, droneCellFndnRmndrText,
                             NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID, TASK_DRONE,
-                            calendar, dateFormat, timeFormat));
+                            calendar, dateFormat, timeFormat), getActivity());
             mTaskDrone.execute();
         }
 
@@ -212,7 +213,7 @@ public class LogPestMgmtFragment extends Fragment {
             mTaskMites = new MyGetReminderTimeTask(
                     new GetReminderTimeTaskData(mitesTrtmntBtn, mitesTrtmntRmndrText,
                             NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID, TASK_MITES,
-                            calendar, dateFormat, timeFormat));
+                            calendar, dateFormat, timeFormat), getActivity());
             mTaskMites.execute();
         }
 
@@ -326,7 +327,6 @@ public class LogPestMgmtFragment extends Fragment {
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 DatePicker datePicker = (DatePicker)dialogView.findViewById(R.id.date_picker);
                 TimePicker timePicker = (TimePicker)dialogView.findViewById(R.id.time_picker);
 
@@ -340,22 +340,28 @@ public class LogPestMgmtFragment extends Fragment {
                 Log.d(TAG, "Time picked: " + time);
 
                 // label has a human readable value; tag has millis value for DB
-                timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' +
-                        timeFormat.format(calendar.getTime()));
+                String timeString = dateFormat.format(calendar.getTime()) + ' ' +
+                        timeFormat.format(calendar.getTime());
+                timeLbl.setText(timeString);
                 timeLbl.setTag(time);
-
-                /*
-                --Let's do some Calendar stuff--
-                  Please Note: endtime passed is hardcoded 10 min.
-                 */
-                //long eventId = HiveCalendar.addEntryPublic(getActivity(), time, time+60000,
-                //        eventTitle, eventDesc, eventLocation);
-                // tag really has Event ID of Event we just created
-                //timeLbl.setTag(eventId);
 
                 alertDialog.dismiss();
             }
         });
+
+        dialogView.findViewById(R.id.date_time_unset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Time UNpicked: ");
+
+                // "unset" tag to indicate
+                timeLbl.setText(R.string.no_reminder_set);
+                timeLbl.setTag((long)-1);
+
+                alertDialog.dismiss();
+            }
+        });
+
         alertDialog.setView(dialogView);
         alertDialog.show();
     }
@@ -448,8 +454,13 @@ public class LogPestMgmtFragment extends Fragment {
      */
     class MyGetReminderTimeTask extends GetReminderTimeTask {
 
+        public MyGetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
+           super(aData, aCtx);
+        }
+
         protected void nullifyTaskRef(int taskRef) {
-            switch (data.taskInd) {
+            Log.d(TAG, "in overridden GetReminderTimeTask.nullifyTaskRef(): taskRef:" + taskRef);
+            switch (taskRef) {
                 case TASK_DRONE:
                     mTaskDrone = null;
                     break;

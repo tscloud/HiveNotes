@@ -307,7 +307,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
         String generalDate = new Date().toString();
 
         if (aLogEntryGeneral != null) {
-            //assume date is set from LogEttryGeneral?
+            Log.d(TAG, "about to persist LogEntryGeneral");
+            //assume date is set from LogEntryGeneral?
             generalDate = aLogEntryGeneral.getVisitDate();
 
             LogEntryGeneralDAO aLogEntryGeneralDAO = new LogEntryGeneralDAO(this);
@@ -321,6 +322,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
 
         if (aLogEntryProductivity != null) {
+            Log.d(TAG, "about to persist LogEntryProductivity");
             LogEntryProductivityDAO aLogEntryProductivityDAO = new LogEntryProductivityDAO(this);
             // set VISIT_DATE to value from LogEntryGeneral or Now
             aLogEntryProductivity.setVisitDate(generalDate);
@@ -335,19 +337,22 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
 
         if (aLogEntryPestMgmt != null) {
+            Log.d(TAG, "about to persist LogEntryPestMgmt");
             LogEntryPestMgmtDAO aLogEntryPestMgmtDAO = new LogEntryPestMgmtDAO(this);
             // set VISIT_DATE to value from LogEntryGeneral or Now
             aLogEntryPestMgmt.setVisitDate(generalDate);
 
             // need to potentially do Notification 1st as its key may need
             //   creation prior to Log entry write
-            if (aLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
-                //Create Notification
-                createNotification(
+            createNotification(
                     aLogEntryPestMgmt.getDroneCellFndnRmndrTime(),
                     NotificationType.NOTIFY_PEST_REMOVE_DRONE,
                     mHiveKey);
-            }
+
+            createNotification(
+                    aLogEntryPestMgmt.getMitesTrtmntRmndrTime(),
+                    NotificationType.NOTIFY_PEST_REMOVE_MITES,
+                    mHiveKey);
 
             if (aLogEntryPestMgmt.getId() == -1) {
                 aLogEntryPestMgmtDAO.createLogEntry(aLogEntryPestMgmt);
@@ -359,6 +364,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
 
         if (aLogEntryFeeding != null) {
+            Log.d(TAG, "about to persist LogEntryFeeding");
             LogEntryFeedingDAO aLogEntryFeedingDAO = new LogEntryFeedingDAO(this);
             // set VISIT_DATE to value from LogEntryGeneral or Now
             aLogEntryFeeding.setVisitDate(generalDate);
@@ -373,11 +379,27 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
 
         if (aLogEntryOther != null) {
+            Log.d(TAG, "about to persist LogEntryOther");
             LogEntryOtherDAO aLogEntryOtherDAO = new LogEntryOtherDAO(this);
             // set VISIT_DATE to value from LogEntryGeneral or Now
             aLogEntryOther.setVisitDate(generalDate);
 
-            // TODO: Notification stuff goes here
+            // need to potentially do Notification 1st as its key may need
+            //   creation prior to Log entry write
+            createNotification(
+                    aLogEntryOther.getRequeenRmndrTime(),
+                    NotificationType.NOTIFY_OTHER_REQUEEN,
+                    mHiveKey);
+
+            createNotification(
+                    aLogEntryOther.getSwarmRmndrTime(),
+                    NotificationType.NOTIFY_OTHER_SWARM,
+                    mHiveKey);
+
+            createNotification(
+                    aLogEntryOther.getSplitHiveRmndrTime(),
+                    NotificationType.NOTIFY_OTHER_SPLIT_HIVE,
+                    mHiveKey);
 
             if (aLogEntryOther.getId() == -1) {
                 aLogEntryOtherDAO.createLogEntry(aLogEntryOther);
@@ -395,6 +417,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     private long createNotification(long aStartTime, int aNotType, long aHiveKey) {
+        Log.d(TAG, "in createNotification()");
 
         long notificationId = -1;
         long eventId = -1;
@@ -404,36 +427,50 @@ public class LogEntryListActivity extends AppCompatActivity implements
         NotificationDAO wNotDAO = new NotificationDAO(this);
 
         // read Notification by Type and Hive Id
+        Log.d(TAG, "getNotificationByTypeAndHive(): aNotType:" + aNotType + " aHiveKey:" + aHiveKey);
         wNot = wNotDAO.getNotificationByTypeAndHive(aNotType, aHiveKey);
 
         // delete the corresponding Event <- ** handle errors **
+        // we are doing this indiscriminately as we have to read the Event anyway to determine if
+        // the times match and we can skip the update
         if ((wNot != null) && (wNot.getEventId() > 0)) {
+            Log.d(TAG, "deleteEvent(): wNot.getEventId():" + wNot.getEventId());
             HiveCalendar.deleteEvent(this, wNot.getEventId());
         }
 
-        // create new Event & Reminder - hardcode endtime
-        eventId = HiveCalendar.addEntryPublic(this,
-            aStartTime,
-            aStartTime+600000,
-            NotificationType.NOTIFICATION_TITLE,
-            NotificationType.getDesc(aNotType),
-            mHiveForName.getName());
+        if (aStartTime != -1) {
+            // create new Event - hardcode endtime
+            eventId = HiveCalendar.addEntryPublic(this,
+                    aStartTime,
+                    aStartTime+600000,
+                    NotificationType.NOTIFICATION_TITLE,
+                    NotificationType.getDesc(aNotType),
+                    mHiveForName.getName());
+        }
 
-        if (eventId != -1) { //should work pretty much all the time, right?
-            if (wNot == null) {
-                // we don't have a Notification -> make a new one
-                wNot = wNotDAO.createNotification(-1, aHiveKey, eventId, aNotType);
-            } else {
-                // we already have a Notification -> update it w/ new event id
-                wNot.setEventId(eventId);
-                wNot = wNotDAO.updateNotification(wNot);
-            }
+        // create/update/delete Notification
+        if (wNot == null) {
+            // we don't have a Notification -> make a new one
+            Log.d(TAG, "createNotification(): eventId:" + eventId);
+            wNot = wNotDAO.createNotification(-1, aHiveKey, eventId, aNotType);
+        } else if (aStartTime != -1){
+            // we already have a Notification -> update it w/ new event id
+            Log.d(TAG, "updateNotification(): eventId:" + eventId);
+            wNot.setEventId(eventId);
+            wNot = wNotDAO.updateNotification(wNot);
+        }
+        else {
+            // we want to delete the Notification
+            Log.d(TAG, "updateNotification(): eventId:" + eventId);
+            wNotDAO.deleteNotification(wNot);
         }
 
         // return the Notification Id
         if (wNot != null) {
             notificationId = wNot.getId();
         }
+
+        Log.d(TAG, "return: notificationId:" + notificationId);
 
         return notificationId;
     }

@@ -1,5 +1,8 @@
 package net.tscloud.hivenotes.helper;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import java.text.DateFormat;
@@ -11,10 +14,14 @@ import java.util.Calendar;
  */
 public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
 
-    private GetReminderTimeTaskData data;
+    public static final String TAG = "GetReminderTimeTask";
 
-    GetReminderTimeTask(GetReminderTimeTaskData aData) {
+    private GetReminderTimeTaskData data;
+    private Context ctx;
+
+    public GetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
         this.data = aData;
+        this.ctx = aCtx;
         Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
             ") : constructor");
     }
@@ -34,7 +41,7 @@ public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
         }
 
         // perform I/O operation - the reason we're using an AsyncTask
-        long reminderMillis = HiveCalendar.getReminderTime(getActivity(), data.type, data.hive);
+        long reminderMillis = HiveCalendar.getReminderTime(ctx, data.type, data.hive);
         Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
             ") : doInBackground : reminderMillis: " + reminderMillis);
 

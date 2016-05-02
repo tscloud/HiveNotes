@@ -2,6 +2,7 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,6 +19,9 @@ import android.widget.TimePicker;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryOtherDAO;
+import net.tscloud.hivenotes.db.NotificationType;
+import net.tscloud.hivenotes.helper.GetReminderTimeTask;
+import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,9 +49,18 @@ public class LogOtherFragment extends Fragment {
     private OnLogOtherFragmentInteractionListener mListener;
 
     // time/date formatters
-    private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-    private String TIME_PATTERN = "HH:mm";
-    private SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    private static final String TIME_PATTERN = "HH:mm";
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    private final Calendar calendar = Calendar.getInstance();
+
+    // task references - needed to kill tasks on Fragment Destroy
+    private GetReminderTimeTask mTaskRequeen = null;
+    private static final int TASK_REQUEEN = 0;
+    private GetReminderTimeTask mTaskSwarm = null;
+    private static final int TASK_SWARM = 1;
+    private GetReminderTimeTask mTaskSplitHive = null;
+    private static final int TASK_SPLIT = 2;
 
     /**
      * Use this factory method to create a new instance of
@@ -137,9 +150,8 @@ public class LogOtherFragment extends Fragment {
                     ((ArrayAdapter) requeenSpinner.getAdapter()).getPosition(
                             mLogEntryOther.getRequeen()));
             //do Reminders
-            Calendar calendar = Calendar.getInstance();
 
-            //don't set if 0 ==> means it's not set
+            // If we have a time --> use it...
             if (mLogEntryOther.getRequeenRmndrTime() != 0) {
                 calendar.setTimeInMillis(mLogEntryOther.getRequeenRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
@@ -171,7 +183,44 @@ public class LogOtherFragment extends Fragment {
             }
         }
 
-        // set button listeners
+        // ...Otherwise --> spin up a task to get and set
+        if ((mLogEntryOther == null) || (mLogEntryOther.getRequeenRmndrTime() != -1)) {
+            //disable the button until task is thru
+            requeenRmndrBtn.setEnabled(false);
+
+            //setup and execute task
+            mTaskRequeen = new MyGetReminderTimeTask(
+                    new GetReminderTimeTaskData(requeenRmndrBtn, requeenRmndrText,
+                            NotificationType.NOTIFY_OTHER_REQUEEN, mHiveID, TASK_REQUEEN,
+                            calendar, dateFormat, timeFormat), getActivity());
+            mTaskRequeen.execute();
+        }
+
+        if ((mLogEntryOther == null) || (mLogEntryOther.getSwarmRmndrTime() != -1)) {
+            //disable the button until task is thru
+            swarmRmndrBtn.setEnabled(false);
+
+            //setup and execute task
+            mTaskSwarm = new MyGetReminderTimeTask(
+                    new GetReminderTimeTaskData(swarmRmndrBtn, swarmRmndrText,
+                            NotificationType.NOTIFY_OTHER_SWARM, mHiveID, TASK_SWARM,
+                            calendar, dateFormat, timeFormat), getActivity());
+            mTaskSwarm.execute();
+        }
+
+        if ((mLogEntryOther == null) || (mLogEntryOther.getSplitHiveRmndrTime() != -1)) {
+            //disable the button until task is thru
+            splitHiveRmndrBtn.setEnabled(false);
+
+            //setup and execute task
+            mTaskSplitHive = new MyGetReminderTimeTask(
+                    new GetReminderTimeTaskData(splitHiveRmndrBtn, splitHiveRmndrText,
+                            NotificationType.NOTIFY_OTHER_SPLIT_HIVE, mHiveID, TASK_SPLIT,
+                            calendar, dateFormat, timeFormat), getActivity());
+            mTaskSplitHive.execute();
+        }
+
+// set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,12 +317,36 @@ public class LogOtherFragment extends Fragment {
                 Log.d(TAG, "Time picked: " + time);
 
                 // label has a human readable value; tag has millis value for DB
-                timeLbl.setText(dateFormat.format(calendar.getTime()) + ' ' + timeFormat.format(calendar.getTime()));
+                String timeString = dateFormat.format(calendar.getTime()) + ' ' +
+                        timeFormat.format(calendar.getTime());
+                timeLbl.setText(timeString);
                 timeLbl.setTag(time);
 
                 alertDialog.dismiss();
             }
         });
+
+        dialogView.findViewById(R.id.date_time_unset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Time UNpicked: ");
+
+                // "unset" tag to indicate
+                //timeLbl.setText(R.string.no_reminder_set);
+                switch (timeLbl.getId()) {
+                    case R.id.textRequeenRmndr:
+                        timeLbl.setText(R.string.other_requeen_rmndr);
+                    case R.id.textSwarmRmndr:
+                        timeLbl.setText(R.string.other_swarm_rmndr);
+                    case R.id.textSplitHiveRmndr:
+                        timeLbl.setText(R.string.other_split_hive_rmndr);
+                }
+                timeLbl.setTag((long)-1);
+
+                alertDialog.dismiss();
+            }
+        });
+
         alertDialog.setView(dialogView);
         alertDialog.show();
     }
@@ -333,6 +406,29 @@ public class LogOtherFragment extends Fragment {
     public interface OnLogOtherFragmentInteractionListener {
         void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther);
         HiveNotesLogDO getPreviousLogData();
+    }
+
+    /** subclass of the GetReminderTimeTask
+     */
+    class MyGetReminderTimeTask extends GetReminderTimeTask {
+
+        public MyGetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
+            super(aData, aCtx);
+        }
+
+        protected void nullifyTaskRef(int taskRef) {
+            Log.d(TAG, "in overridden GetReminderTimeTask.nullifyTaskRef(): taskRef:" + taskRef);
+            switch (taskRef) {
+                case TASK_REQUEEN:
+                    mTaskRequeen = null;
+                    break;
+                case TASK_SWARM:
+                    mTaskSwarm = null;
+                    break;
+                case TASK_SPLIT:
+                    mTaskSplitHive = null;
+            }
+        }
     }
 
 }

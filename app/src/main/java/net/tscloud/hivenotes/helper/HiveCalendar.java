@@ -184,7 +184,11 @@ public class HiveCalendar {
         long reply = -1;
         Bundle data = getEventByID(aCtx, aId);
 
-        return data.getLong("start_millis");
+        if (data != null) {
+            reply = data.getLong("start_millis");
+        }
+
+        return reply;
     }
 
     /**Finds an event based on the ID

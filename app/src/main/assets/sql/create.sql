@@ -176,7 +176,7 @@ CREATE TABLE 'LogEntryPestMgmt'
 	'SCREENED_BOTTOM_BOARD' INTEGER,
 	'OTHER' INTEGER,
 	'OTHER_TYPE' TEXT,
-	CONSTRAINT 'FK_LogEntryPestMgmt_Hive' FOREIGN KEY ('HIVE') REFERENCES 'Hive' ('_ID') ON DELETE Cascade ON UPDATE Cascade,
+	CONSTRAINT 'FK_LogEntryPestMgmt_Hive' FOREIGN KEY ('HIVE') REFERENCES 'Hive' ('_ID') ON DELETE Cascade ON UPDATE Cascade
 	/*CONSTRAINT 'FK_LogEntryPestMgmt_Drone_Cell_Fndn_Rmndr' FOREIGN KEY ('DRONE_CELL_FNDN_RMNDR') REFERENCES 'Notification' ('_ID') ON UPDATE Cascade,*/
 	/*CONSTRAINT 'FK_LogEntryPestMgmt_Mites_Trtmnt_Rmndr' FOREIGN KEY ('MITES_TRTMNT_RMNDR') REFERENCES 'Notification' ('_ID') ON UPDATE Cascade*/
 )
@@ -206,7 +206,7 @@ CREATE TABLE 'LogEntryOther'
 	/*'REQUEEN_RMNDR' INTEGER,*/
 	/*'SWARM_RMNDR' INTEGER,*/
 	/*'SPLIT_HIVE_RMNDR' INTEGER,*/
-	CONSTRAINT 'FK_LogEntryOther_Hive' FOREIGN KEY ('HIVE') REFERENCES 'Hive' ('_ID') ON DELETE Cascade ON UPDATE Cascade,
+	CONSTRAINT 'FK_LogEntryOther_Hive' FOREIGN KEY ('HIVE') REFERENCES 'Hive' ('_ID') ON DELETE Cascade ON UPDATE Cascade
 	/*CONSTRAINT 'FK_LogEntryOther_Requeen_Rmndr' FOREIGN KEY ('REQUEEN_RMNDR') REFERENCES 'Notification' ('_ID') ON UPDATE Cascade,*/
 	/*CONSTRAINT 'FK_LogEntryOther_Swarm_Rmndr' FOREIGN KEY ('SWARM_RMNDR') REFERENCES 'Notification' ('_ID') ON UPDATE Cascade,*/
 	/*CONSTRAINT 'FK_LogEntryOther_Split_Hive_Rmndr' FOREIGN KEY ('SPLIT_HIVE_RMNDR') REFERENCES 'Notification' ('_ID') ON UPDATE Cascade*/

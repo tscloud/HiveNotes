@@ -9,7 +9,7 @@ import java.util.Calendar;
 /**
  * Created by tscloud on 4/28/16.
  */
-public static class GetReminderTimeTaskData {
+public class GetReminderTimeTaskData {
     Button btn;
     TextView txt;
     int type;
@@ -19,7 +19,7 @@ public static class GetReminderTimeTaskData {
     DateFormat dateFormat;
     SimpleDateFormat timeFormat;
 
-    GetReminderTimeTaskData(Button aBtn, TextView aTxt, int aType, long aHive, int aTaskInd,
+    public GetReminderTimeTaskData(Button aBtn, TextView aTxt, int aType, long aHive, int aTaskInd,
                             Calendar aCal, DateFormat aDateFormat, SimpleDateFormat aTimeFormat) {
         this.btn = aBtn;
         this.txt = aTxt;
