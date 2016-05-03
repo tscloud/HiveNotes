@@ -183,6 +183,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
                             mLogEntryFeedingData, mLogEntryOtherData);
                     break;
                 default:
+                    // should this be here? - LogEntryDetailFragment if really just
+                    //  a dummy Fragment
                     fragment = new LogEntryDetailFragment();
                     break;
             }
@@ -218,6 +220,11 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     break;
                 case "5":
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryOtherData);
+                    break;
+                case "6":
+                    // Save button
+                    updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
+                            mLogEntryFeedingData, mLogEntryOtherData);
                     break;
             }
             startActivityForResult(intent, LOG_DETAIL_REQ_CODE);

@@ -96,7 +96,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                     fragTag = "LOG_OTHER_FRAG";
                     break;
                 case "6":
-                    // Save button
+                    // Save button - should we really ever be able to get here?
                     onSaveButton();
                     break;
                 default:

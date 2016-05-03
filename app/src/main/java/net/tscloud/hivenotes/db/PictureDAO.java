@@ -115,7 +115,7 @@ public class PictureDAO {
             if (cursor.moveToFirst()) {
                 retrievedPicture =cursorToPicture(cursor);
             }
-            cursor.close();;
+            cursor.close();
         }
 
         return retrievedPicture;

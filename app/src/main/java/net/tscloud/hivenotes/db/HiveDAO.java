@@ -126,6 +126,7 @@ public class HiveDAO {
             if (cursor.moveToFirst()) {
                 retrievedHive = cursorToHive(cursor);
             }
+            cursor.close();
         }
 
         return retrievedHive;
