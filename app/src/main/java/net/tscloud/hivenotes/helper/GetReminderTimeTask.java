@@ -32,13 +32,13 @@ public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
             ") : doInBackground");
 
         //pause to simulate work
-        try {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
-            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
-                ") : InterruptedException");
-        }
+        //try {
+        //    Thread.sleep(2000);
+        //}
+        //catch (InterruptedException e) {
+        //    Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
+        //        ") : InterruptedException");
+        //}
 
         // perform I/O operation - the reason we're using an AsyncTask
         long reminderMillis = HiveCalendar.getReminderTime(ctx, data.type, data.hive);
