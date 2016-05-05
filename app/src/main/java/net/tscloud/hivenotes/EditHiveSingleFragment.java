@@ -85,10 +85,15 @@ public class EditHiveSingleFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_single_hive, container, false);
 
-        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
+        final View viewNew = v.findViewById(R.id.newHiveButton);
+        final View viewDelete = v.findViewById(R.id.deleteHiveButton);
+        final Button btnNew = (Button)viewNew.findViewById(R.id.hiveNoteButtton);
+        final Button btnDelete = (Button)viewDelete.findViewById(R.id.hiveNoteButtton);
+
+        btnDelete.setText(getResources().getString(R.string.delete_hive_string));
 
         if (mHive != null) {
-            b1.setText(getResources().getString(R.string.save_hive_string));
+            btnNew.setText(getResources().getString(R.string.save_hive_string));
 
             // fill the form
             EditText nameEdit = (EditText)v.findViewById(R.id.editTextHiveName);
@@ -102,21 +107,27 @@ public class EditHiveSingleFragment extends Fragment {
             noteEdit.setText(mHive.getNote());
         }
         else {
-            b1.setText(getResources().getString(R.string.create_hive_string));
+            btnNew.setText(getResources().getString(R.string.create_hive_string));
         }
 
-        // set button listener
-        b1.setOnClickListener(new View.OnClickListener() {
+        // set button listeners
+        btnNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed();
+                onUpdateButtonPressed();
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDeleteButtonPressed();
             }
         });
 
         return v;
     }
 
-    public void onButtonPressed() {
+    public void onUpdateButtonPressed() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist hive");
 
@@ -176,6 +187,11 @@ public class EditHiveSingleFragment extends Fragment {
                 mListener.onEditHiveSingleFragmentInteraction(hive.getId(), lNewHive);
             }
         }
+    }
+
+    public void onDeleteButtonPressed() {
+        // delete hive from DB
+        Log.d(TAG, "about to delete hive");
     }
 
     @Override

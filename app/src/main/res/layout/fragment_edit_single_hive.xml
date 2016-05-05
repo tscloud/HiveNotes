@@ -128,14 +128,30 @@
 
     </LinearLayout>
 
+    <include
+        android:id="@+id/deleteHiveButton"
+        layout="@layout/hive_note_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/hiveLine1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:id="@+id/hiveLine1"
-        android:layout_alignTop="@+id/newHiveButton"
+        android:layout_above="@+id/newHiveButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <include
+        android:id="@+id/newHiveButton"
+        layout="@layout/hive_note_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/hiveLine2"/>
 
     <View
         android:layout_width="fill_parent"
@@ -145,12 +161,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <include
-        android:id="@+id/newHiveButton"
-        layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

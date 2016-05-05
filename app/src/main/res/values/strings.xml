@@ -31,6 +31,7 @@
 
     <string name="create_hive_string">Create Hive</string>
     <string name="save_hive_string">Save Hive</string>
+    <string name="delete_hive_string">Delete Hive</string>
     <string name="no_hives_string">No hives yet</string>
     <string name="new_hive_string">New Hive</string>
     <string name="hive_name_string">Hive Name:</string>
