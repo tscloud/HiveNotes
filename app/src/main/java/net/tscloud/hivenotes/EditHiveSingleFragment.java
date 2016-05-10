@@ -184,7 +184,7 @@ public class EditHiveSingleFragment extends Fragment {
             }
 
             if (mListener != null) {
-                mListener.onEditHiveSingleFragmentInteraction(hive.getId(), lNewHive);
+                mListener.onEditHiveSingleFragmentInteraction(hive.getId(), lNewHive, false);
             }
         }
     }
@@ -192,6 +192,15 @@ public class EditHiveSingleFragment extends Fragment {
     public void onDeleteButtonPressed() {
         // delete hive from DB
         Log.d(TAG, "about to delete hive");
+        HiveDAO hiveDAO = new HiveDAO(getActivity());
+        Hive hive = new Hive();
+        hive.setId(mHiveKey);
+        hiveDAO.deleteHive(hive);
+        hiveDAO.close();
+
+        if (mListener != null) {
+            mListener.onEditHiveSingleFragmentInteraction(hive.getId(), false, true);
+        }
     }
 
     @Override
@@ -231,7 +240,7 @@ public class EditHiveSingleFragment extends Fragment {
      */
     public interface OnEditHiveSingleFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
-        public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive);
+        public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive);
     }
 
 }

@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -210,7 +209,7 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive) {
+    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive) {
         Log.d(TAG, "Back from EditHiveSingleFragment: update Apiary");
 
         // Do some stuff w/ the adapter
@@ -221,8 +220,23 @@ public class EditHiveActivity extends AppCompatActivity implements
         adapter.setItem(fragAdd, 0);
 
         if (newHive) {
-            // just add a blank fragment at the end for Hive adding
-            adapter.addItem(EditHiveSingleFragment.newInstance(mApiaryKey, -1));
+            if (deleteHive) {
+                Log.e(TAG, "trying to add and delete Hive at same time");
+            }
+            else {
+                // just add a blank fragment at the end for Hive adding
+                adapter.addItem(EditHiveSingleFragment.newInstance(mApiaryKey, -1));
+            }
+        }
+        else {
+            if (deleteHive) {
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    EditHiveSingleFragment f = (EditHiveSingleFragment)adapter.getItem(i);
+                    if (f.getHiveKey() == hiveID) {
+
+                    }
+                }
+            }
         }
 
         adapter.notifyDataSetChanged();

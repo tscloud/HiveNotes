@@ -39,7 +39,7 @@ public class EditHiveSingleActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive) {
+    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive) {
         Log.d(TAG, "...new Hive - return to EditHiveActivity");
 
         Intent data = new Intent();

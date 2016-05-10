@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive) {
+    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive) {
         Log.d(TAG, "MainActivity.onEditHiveSingleFragmentInteraction called...");
 
         // IMPORTANT -- this is how we get to EditHiveActivity page viewer
