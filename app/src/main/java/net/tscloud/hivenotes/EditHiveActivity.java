@@ -30,19 +30,6 @@ public class EditHiveActivity extends AppCompatActivity implements
         EditHiveListFragment.OnEditHiveListFragmentInteractionListener,
         EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
 
-    /**
-     * The PagerAdapter that will provide fragments for each of the
-     * sections. We use a FragmentPagerAdapter derivative, which will
-     * keep every loaded fragment in memory. If this becomes too memory
-     * intensive, it may be best to switch to a FragmentStatePagerAdapter.
-     */
-    SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The ViewPager that will host the section contents.
-     */
-    ViewPager mViewPager;
-
     private static final String TAG = "EditHiveActivity";
 
     // starting LogEntryListActivity as subactivity
@@ -56,7 +43,7 @@ public class EditHiveActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_hive);
+        setContentView(R.layout.activity_hive_list);
 
         // Custom Action Bar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -79,31 +66,16 @@ public class EditHiveActivity extends AppCompatActivity implements
         TextView abText = (TextView)abView.findViewById(R.id.mytext);
         abText.setText(apiaryForName.getName());
 
-        // Get the Hive list
+        // Get the Hive list - necessary here?
         mHiveList = deliverHiveList(mApiaryKey, false);
 
-        //List for all out fragments
-        List<Fragment> fragments = getFragments(mApiaryKey, mHiveList);
+        //Create List Fragment and present
+        Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
+        getSupportFragmentManager().beginTransaction()
+                //.addToBackStack(null)
+                .replace(R.id.hive_list_container, listFrag)
+                .commit();
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-    }
-
-    private List<Fragment> getFragments(long aApiaryKey, List<Hive> aHiveList){
-        List<Fragment> fList = new ArrayList<Fragment>();
-
-        fList.add(EditHiveListFragment.newInstance(aApiaryKey));
-
-        for (Hive aHive : aHiveList) {
-            fList.add(EditHiveSingleFragment.newInstance(mApiaryKey, aHive.getId()));
-        }
-
-        return fList;
     }
 
     @Override
@@ -121,19 +93,6 @@ public class EditHiveActivity extends AppCompatActivity implements
         }
         else {
             return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /*
-     *Handlers of buttons defined in hive_edit_button, i.e. buttons in each of the list items
-     */
-    @Override
-    public void onBackPressed() {
-        if (mViewPager.getCurrentItem() != 0) {
-            mViewPager.setCurrentItem(0, true);
-        }
-        else {
-            super.onBackPressed();
         }
     }
 
@@ -195,8 +154,11 @@ public class EditHiveActivity extends AppCompatActivity implements
                         break;
                     }
                 }
-                // setCurrentItem "1" based?
-                mViewPager.setCurrentItem(hivePos + 1, false);
+                // show the proper Hive for update
+                Fragment hiveFrag = EditHiveSingleFragment.newInstance(mApiaryKey, hiveID);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.hive_list_container, hiveFrag)
+                        .commit();
             }
         }
         else {
@@ -212,69 +174,24 @@ public class EditHiveActivity extends AppCompatActivity implements
     public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive) {
         Log.d(TAG, "Back from EditHiveSingleFragment: update Apiary");
 
-        // Do some stuff w/ the adapter
-        SectionsPagerAdapter adapter = (SectionsPagerAdapter)mViewPager.getAdapter();
-
-        // reshow the list of Hives
-        Fragment fragAdd = EditHiveListFragment.newInstance(mApiaryKey);
-        adapter.setItem(fragAdd, 0);
-
-        if (newHive) {
-            if (deleteHive) {
-                Log.e(TAG, "trying to add and delete Hive at same time");
-            }
-            else {
-                // just add a blank fragment at the end for Hive adding
-                adapter.addItem(EditHiveSingleFragment.newInstance(mApiaryKey, -1));
-            }
-        }
-        else {
-            if (deleteHive) {
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    EditHiveSingleFragment f = (EditHiveSingleFragment)adapter.getItem(i);
-                    if (f.getHiveKey() == hiveID) {
-
-                    }
-                }
-            }
-        }
-
-        adapter.notifyDataSetChanged();
-        mViewPager.setCurrentItem(0, false);
+        //Create List Fragment and present
+        Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
+        getSupportFragmentManager().beginTransaction()
+                //.addToBackStack(null)
+                .replace(R.id.hive_list_container, listFrag)
+                .commit();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == HIVE_SINGLE_REQ_CODE) && (resultCode == RESULT_OK)) {
-            Log.d(TAG, "Returned from requestCode = " + requestCode);
-            Log.d(TAG, "Back from EditHiveSingleActivity");
-
-            long hiveKey = data.getExtras().getLong(MainActivity.INTENT_HIVE_KEY);
-            boolean newHive = data.getExtras().getBoolean(MainActivity.INTENT_NEW_HIVE);
-
-            // Do some stuff w/ the adapter
-            SectionsPagerAdapter adapter = (SectionsPagerAdapter)mViewPager.getAdapter();
-
-            // reshow the list of Hives
-            Fragment fragAdd = EditHiveListFragment.newInstance(mApiaryKey);
-            adapter.setItem(fragAdd, 0);
-
-            if (newHive) {
-                // just add a blank fragment at the end for Hive adding
-                adapter.addItem(EditHiveSingleFragment.newInstance(mApiaryKey, hiveKey));
-            }
-
-            adapter.notifyDataSetChanged();
-            mViewPager.setCurrentItem(0, false);
-        }
-        else if ((requestCode == APIARY_REQ_CODE) && (resultCode == RESULT_OK)){
-            Log.d(TAG, "Returned from requestCode = " + requestCode);
-            Log.d(TAG, "Back from EditApiaryActivity");
-
-            mViewPager.setCurrentItem(0, false);
-        }
+        //Create List Fragment and present
+        Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
+        getSupportFragmentManager().beginTransaction()
+                //.addToBackStack(null)
+                .replace(R.id.hive_list_container, listFrag)
+                .commit();
     }
 
     @Override
@@ -289,100 +206,4 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         return mHiveList;
     }
-
-    /**
-     * A FragmentPagerAdapter that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
-
-        private List<Fragment> fragments;
-
-        public SectionsPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
-            super(fm);
-            this.fragments = fragments;
-        }
-
-        public void setItem(Fragment frag, int pos) {
-            this.fragments.set(pos, frag);
-        }
-
-        public void addItem(Fragment frag) {
-            // should always be a blank frag for Hive adding?
-            this.fragments.add(frag);
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return this.fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            // ***** Will this prevent the Pager from going to the last page?
-            //return this.fragments.size() - 1;
-            return this.fragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        public static final String EXTRA_MESSAGE = "EXTRA_MESSAGE";
-        public static final String FRAG_LAYOUT = "FRAG_LAYOUT";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(String message, int fragment_layout) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putString(EXTRA_MESSAGE, message);
-            args.putInt(FRAG_LAYOUT, fragment_layout);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-
-            String message = getArguments().getString(EXTRA_MESSAGE);
-            int fragment_layout = getArguments().getInt(FRAG_LAYOUT);
-            View rootView = inflater.inflate(fragment_layout, container, false);
-
-            return rootView;
-        }
-    }
-
 }
