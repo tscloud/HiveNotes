@@ -74,8 +74,12 @@ public class EditHiveSingleFragment extends Fragment {
         }
 
         if (mHiveKey != -1) {
+            Log.d(TAG, "received Hive key...try to get Hive for update");
             // we need to get the Hive
             mHive = getHive(mHiveKey);
+        }
+        else {
+            Log.d(TAG, "no Hive key received...will be creating new Hive");
         }
     }
 
@@ -93,6 +97,7 @@ public class EditHiveSingleFragment extends Fragment {
         btnDelete.setText(getResources().getString(R.string.delete_hive_string));
 
         if (mHive != null) {
+            Log.d(TAG, "successfully retrieved Hive data");
             btnNew.setText(getResources().getString(R.string.save_hive_string));
 
             // fill the form

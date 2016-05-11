@@ -135,35 +135,16 @@ public class EditHiveActivity extends AppCompatActivity implements
         Log.d(TAG, "Back from EditHiveListFragment...");
 
         if (!updateApiary) {
-            // if id is not -1 => we selected something
-            // else we're making a new Hive
-            if (hiveID == -1) {
-                Log.d(TAG, "...add new Hive");
-                // Do new Hive stuff
-                Intent i = new Intent(this,EditHiveSingleActivity.class);
-                i.putExtra(MainActivity.INTENT_APIARY_KEY, mApiaryKey);
-                i.putExtra(MainActivity.INTENT_HIVE_KEY, hiveID);
-                startActivityForResult(i, HIVE_SINGLE_REQ_CODE);
-            } else {
-                Log.d(TAG, "...edit existing Hive");
-                // Do selected Hive stuff
-                int hivePos = 0;
-                for (int i = 0; i < mHiveList.size(); i++) {
-                    if (hiveID == (mHiveList.get(i).getId())) {
-                        hivePos = i;
-                        break;
-                    }
-                }
-                // show the proper Hive for update
-                Fragment hiveFrag = EditHiveSingleFragment.newInstance(mApiaryKey, hiveID);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.hive_list_container, hiveFrag)
-                        .commit();
-            }
+            //doesn't matter if we are updating a Hive or creating a new one --> call
+            // edit Hive Intent w/ keys or lack thereof
+            Log.d(TAG, "...add/update Hive - start intent EditHiveSingleActivity");
+            Intent i = new Intent(this,EditHiveSingleActivity.class);
+            i.putExtra(MainActivity.INTENT_APIARY_KEY, mApiaryKey);
+            i.putExtra(MainActivity.INTENT_HIVE_KEY, hiveID);
+            startActivityForResult(i, HIVE_SINGLE_REQ_CODE);
         }
         else {
             Log.d(TAG, "...update Apiary - start intent EditApiaryActivity");
-
             Intent i = new Intent(this, EditApiaryActivity.class);
             i.putExtra(MainActivity.INTENT_APIARY_KEY, apiaryID);
             startActivityForResult(i, APIARY_REQ_CODE);
@@ -192,6 +173,22 @@ public class EditHiveActivity extends AppCompatActivity implements
                 //.addToBackStack(null)
                 .replace(R.id.hive_list_container, listFrag)
                 .commit();
+    }
+    /** This is strictly for testing and curiosity **
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        FragmentManager fm = getFragmentManager();
+        int count = fm.getBackStackEntryCount();
+
+        if (count == 0) {
+            for (int i=0; i<count; i++) {
+                FragmentManager.BackStackEntry backEntry = fm.getBackStackEntryAt(i);
+                Log.d(TAG, "onBackPressed(): backEntry name: " + backEntry.getName());
+            }
+        }
     }
 
     @Override
