@@ -278,23 +278,23 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 if (bundleData.keySet().contains(INTENT_LOGENTRY_GENERAL_DATA)) {
                     Log.d(TAG, "received LogEntryGeneral data object");
                     mLogEntryGeneralData =
-                            (LogEntryGeneral) bundleData.getSerializable(INTENT_LOGENTRY_GENERAL_DATA);
+                            (LogEntryGeneral) bundleData.getParcelable(INTENT_LOGENTRY_GENERAL_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_PRODUCTIVITY_DATA)) {
                     Log.d(TAG, "received LogEntryProductivity data object");
                     mLogEntryProductivityData =
-                            (LogEntryProductivity) bundleData.getSerializable(INTENT_LOGENTRY_PRODUCTIVITY_DATA);
+                            (LogEntryProductivity) bundleData.getParcelable(INTENT_LOGENTRY_PRODUCTIVITY_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_PESTMGMT_DATA)) {
                     Log.d(TAG, "received LogEntryPestMgmt data object");
                     mLogEntryPestMgmtData =
-                            (LogEntryPestMgmt) bundleData.getSerializable(INTENT_LOGENTRY_PESTMGMT_DATA);
+                            (LogEntryPestMgmt) bundleData.getParcelable(INTENT_LOGENTRY_PESTMGMT_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_FEEDING_DATA)) {
                     Log.d(TAG, "received LogEntryFeeding data object");
                     mLogEntryFeedingData =
-                            (LogEntryFeeding) bundleData.getSerializable(INTENT_LOGENTRY_FEEDING_DATA);
+                            (LogEntryFeeding) bundleData.getParcelable(INTENT_LOGENTRY_FEEDING_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_OTHER_DATA)) {
                     Log.d(TAG, "received LogEntryOther data object");
                     mLogEntryOtherData =
-                            (LogEntryOther) bundleData.getSerializable(INTENT_LOGENTRY_OTHER_DATA);
+                            (LogEntryOther) bundleData.getParcelable(INTENT_LOGENTRY_OTHER_DATA);
                 }
             }
         }

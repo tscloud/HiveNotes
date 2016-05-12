@@ -1,11 +1,12 @@
 package net.tscloud.hivenotes.db;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by tscloud on 10/17/15.
  */
-public class LogEntryProductivity implements Serializable, HiveNotesLogDO {
+public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
 
     public static final String TAG = "LogEntryProductivity";
 
@@ -103,4 +104,51 @@ public class LogEntryProductivity implements Serializable, HiveNotesLogDO {
     public void setVisitDate(String visitDate) {
         this.visitDate = visitDate;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeLong(this.hive);
+        dest.writeString(this.visitDate);
+        dest.writeString(this.honeyAddSupers);
+        dest.writeString(this.honeyRemoveSupers);
+        dest.writeFloat(this.extractedHoney);
+        dest.writeInt(this.addPollenTrap);
+        dest.writeInt(this.removePollenTrap);
+        dest.writeFloat(this.pollenCollected);
+        dest.writeFloat(this.beeswaxCollected);
+    }
+
+    public LogEntryProductivity() {
+    }
+
+    protected LogEntryProductivity(Parcel in) {
+        this.id = in.readLong();
+        this.hive = in.readLong();
+        this.visitDate = in.readString();
+        this.honeyAddSupers = in.readString();
+        this.honeyRemoveSupers = in.readString();
+        this.extractedHoney = in.readFloat();
+        this.addPollenTrap = in.readInt();
+        this.removePollenTrap = in.readInt();
+        this.pollenCollected = in.readFloat();
+        this.beeswaxCollected = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<LogEntryProductivity> CREATOR = new Parcelable.Creator<LogEntryProductivity>() {
+        @Override
+        public LogEntryProductivity createFromParcel(Parcel source) {
+            return new LogEntryProductivity(source);
+        }
+
+        @Override
+        public LogEntryProductivity[] newArray(int size) {
+            return new LogEntryProductivity[size];
+        }
+    };
 }

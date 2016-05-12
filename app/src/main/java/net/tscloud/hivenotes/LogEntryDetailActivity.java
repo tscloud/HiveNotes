@@ -63,7 +63,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             mlogentryKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_KEY, -1);
 
             try {
-                mPreviousLogData = (HiveNotesLogDO)getIntent().getSerializableExtra(LogEntryListActivity.INTENT_PREVIOUS_DATA);
+                mPreviousLogData = (HiveNotesLogDO)getIntent().getParcelableExtra(LogEntryListActivity.INTENT_PREVIOUS_DATA);
             }
             catch (ClassCastException e) {
                 // Log the exception but continue w/ NO previous log data
@@ -151,7 +151,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
-        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_GENERAL_DATA, aLogEntryGeneral);
+        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_GENERAL_DATA, aLogEntryGeneral);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
@@ -163,7 +163,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
-        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_PRODUCTIVITY_DATA, aLogEntryProductivity);
+        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_PRODUCTIVITY_DATA, aLogEntryProductivity);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
@@ -175,7 +175,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
-        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_PESTMGMT_DATA, alogEntryPestMgmt);
+        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_PESTMGMT_DATA, alogEntryPestMgmt);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
@@ -187,7 +187,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
-        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA, aLogEntryFeeding);
+        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA, aLogEntryFeeding);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
@@ -199,7 +199,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
-        bundleData.putSerializable(LogEntryListActivity.INTENT_LOGENTRY_OTHER_DATA, aLogEntryOther);
+        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_OTHER_DATA, aLogEntryOther);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();

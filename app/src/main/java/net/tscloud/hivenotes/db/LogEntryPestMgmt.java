@@ -1,24 +1,22 @@
 package net.tscloud.hivenotes.db;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by tscloud on 11/3/15.
  */
-public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
+public class LogEntryPestMgmt implements HiveNotesLogDO, Parcelable {
 
     public static final String TAG = "LogEntryPestMgmt";
 
-    /* Reminders children of Hive */
     private long id;
     private long hive;
     private String visitDate;
     private int droneCellFndn;
-    //private long droneCellFndnRmndr;
     private int smallHiveBeetleTrap;
     private int mitesTrtmnt;
     private String mitesTrtmntType;
-    //private long mitesTrtmntRmndr;
     private int screenedBottomBoard;
     private int other;
     private String otherType;
@@ -34,16 +32,6 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
     public void setDroneCellFndn(int droneCellFndn) {
         this.droneCellFndn = droneCellFndn;
     }
-
-    /*
-    public long getDroneCellFndnRmndr() {
-        return droneCellFndnRmndr;
-    }
-
-    public void setDroneCellFndnRmndr(long droneCellFndnRmndr) {
-        this.droneCellFndnRmndr = droneCellFndnRmndr;
-    }
-    */
 
     @Override
     public long getHive() {
@@ -72,16 +60,6 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
     public void setMitesTrtmnt(int mitesTrtmnt) {
         this.mitesTrtmnt = mitesTrtmnt;
     }
-
-    /*
-    public long getMitesTrtmntRmndr() {
-        return mitesTrtmntRmndr;
-    }
-
-    public void setMitesTrtmntRmndr(long mitesTrtmntRmndr) {
-        this.mitesTrtmntRmndr = mitesTrtmntRmndr;
-    }
-    */
 
     public String getMitesTrtmntType() {
         return mitesTrtmntType;
@@ -147,4 +125,54 @@ public class LogEntryPestMgmt implements Serializable, HiveNotesLogDO {
         this.mitesTrtmntRmndrTime = mitesTrtmntRmndrTime;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeLong(this.hive);
+        dest.writeString(this.visitDate);
+        dest.writeInt(this.droneCellFndn);
+        dest.writeInt(this.smallHiveBeetleTrap);
+        dest.writeInt(this.mitesTrtmnt);
+        dest.writeString(this.mitesTrtmntType);
+        dest.writeInt(this.screenedBottomBoard);
+        dest.writeInt(this.other);
+        dest.writeString(this.otherType);
+        dest.writeLong(this.droneCellFndnRmndrTime);
+        dest.writeLong(this.mitesTrtmntRmndrTime);
+    }
+
+    public LogEntryPestMgmt() {
+    }
+
+    protected LogEntryPestMgmt(Parcel in) {
+        this.id = in.readLong();
+        this.hive = in.readLong();
+        this.visitDate = in.readString();
+        this.droneCellFndn = in.readInt();
+        this.smallHiveBeetleTrap = in.readInt();
+        this.mitesTrtmnt = in.readInt();
+        this.mitesTrtmntType = in.readString();
+        this.screenedBottomBoard = in.readInt();
+        this.other = in.readInt();
+        this.otherType = in.readString();
+        this.droneCellFndnRmndrTime = in.readLong();
+        this.mitesTrtmntRmndrTime = in.readLong();
+    }
+
+    public static final Parcelable.Creator<LogEntryPestMgmt> CREATOR = new Parcelable.Creator<LogEntryPestMgmt>() {
+        @Override
+        public LogEntryPestMgmt createFromParcel(Parcel source) {
+            return new LogEntryPestMgmt(source);
+        }
+
+        @Override
+        public LogEntryPestMgmt[] newArray(int size) {
+            return new LogEntryPestMgmt[size];
+        }
+    };
 }

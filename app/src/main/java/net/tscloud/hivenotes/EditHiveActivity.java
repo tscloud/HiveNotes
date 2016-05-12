@@ -180,7 +180,7 @@ public class EditHiveActivity extends AppCompatActivity implements
     public void onBackPressed() {
         super.onBackPressed();
 
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         int count = fm.getBackStackEntryCount();
 
         if (count == 0) {

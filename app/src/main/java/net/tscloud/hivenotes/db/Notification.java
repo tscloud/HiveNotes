@@ -1,11 +1,13 @@
 package net.tscloud.hivenotes.db;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 
 /**
  * Created by tscloud on 8/20/15.
  */
-public class Notification implements Serializable {
+public class Notification implements Parcelable {
 
     public static final String TAG = "Notification";
 
@@ -54,4 +56,41 @@ public class Notification implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeLong(this.apiary);
+        dest.writeLong(this.hive);
+        dest.writeLong(this.eventId);
+        dest.writeInt(this.rmndrType);
+    }
+
+    public Notification() {
+    }
+
+    protected Notification(Parcel in) {
+        this.id = in.readLong();
+        this.apiary = in.readLong();
+        this.hive = in.readLong();
+        this.eventId = in.readLong();
+        this.rmndrType = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Notification> CREATOR = new Parcelable.Creator<Notification>() {
+        @Override
+        public Notification createFromParcel(Parcel source) {
+            return new Notification(source);
+        }
+
+        @Override
+        public Notification[] newArray(int size) {
+            return new Notification[size];
+        }
+    };
 }

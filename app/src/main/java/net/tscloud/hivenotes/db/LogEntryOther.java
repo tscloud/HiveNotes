@@ -1,11 +1,12 @@
 package net.tscloud.hivenotes.db;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by tscloud on 11/15/15.
  */
-public class LogEntryOther implements Serializable, HiveNotesLogDO {
+public class LogEntryOther implements HiveNotesLogDO, Parcelable {
 
     public static final String TAG = "LogEntryPestMgmt";
 
@@ -82,4 +83,45 @@ public class LogEntryOther implements Serializable, HiveNotesLogDO {
     public void setVisitDate(String visitDate) {
         this.visitDate = visitDate;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeLong(this.hive);
+        dest.writeString(this.visitDate);
+        dest.writeString(this.requeen);
+        dest.writeLong(this.requeenRmndrTime);
+        dest.writeLong(this.swarmRmndrTime);
+        dest.writeLong(this.splitHiveRmndrTime);
+    }
+
+    public LogEntryOther() {
+    }
+
+    protected LogEntryOther(Parcel in) {
+        this.id = in.readLong();
+        this.hive = in.readLong();
+        this.visitDate = in.readString();
+        this.requeen = in.readString();
+        this.requeenRmndrTime = in.readLong();
+        this.swarmRmndrTime = in.readLong();
+        this.splitHiveRmndrTime = in.readLong();
+    }
+
+    public static final Parcelable.Creator<LogEntryOther> CREATOR = new Parcelable.Creator<LogEntryOther>() {
+        @Override
+        public LogEntryOther createFromParcel(Parcel source) {
+            return new LogEntryOther(source);
+        }
+
+        @Override
+        public LogEntryOther[] newArray(int size) {
+            return new LogEntryOther[size];
+        }
+    };
 }
