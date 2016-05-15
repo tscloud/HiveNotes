@@ -1,5 +1,6 @@
 package net.tscloud.hivenotes;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
@@ -74,15 +76,15 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
     // Need to a reference to each of the Log Entry data objects
     public static String INTENT_LOGENTRY_GENERAL_DATA = "logentryGeneralData";
-    LogEntryGeneral mLogEntryGeneralData;
+    private LogEntryGeneral mLogEntryGeneralData;
     public static String INTENT_LOGENTRY_PRODUCTIVITY_DATA = "logentryProductivityData";
-    LogEntryProductivity mLogEntryProductivityData;
+    private LogEntryProductivity mLogEntryProductivityData;
     public static String INTENT_LOGENTRY_PESTMGMT_DATA = "logentryPestMGMTData";
-    LogEntryPestMgmt mLogEntryPestMgmtData;
+    private LogEntryPestMgmt mLogEntryPestMgmtData;
     public static String INTENT_LOGENTRY_FEEDING_DATA = "logentryFeedingData";
-    LogEntryFeeding mLogEntryFeedingData;
+    private LogEntryFeeding mLogEntryFeedingData;
     public static String INTENT_LOGENTRY_OTHER_DATA = "logentryOtherData";
-    LogEntryOther mLogEntryOtherData;
+    private LogEntryOther mLogEntryOtherData;
 
     // This is what gets returned on call to get getPreviousLogData()
     public static String INTENT_PREVIOUS_DATA = "logentryPreviousData";
@@ -181,7 +183,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     // Save button
                     //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
                     //        mLogEntryFeedingData, mLogEntryOtherData);
-                    mTask = new UpdateDBTask();
+                    mTask = new UpdateDBTask(this);
                     mTask.execute();
                     break;
                 default:
@@ -227,7 +229,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     // Save button
                     //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
                     //       mLogEntryFeedingData, mLogEntryOtherData);
-                    mTask = new UpdateDBTask();
+                    mTask = new UpdateDBTask(this);
                     mTask.execute();
 
                     break;
@@ -338,115 +340,123 @@ public class LogEntryListActivity extends AppCompatActivity implements
      */
     public class UpdateDBTask extends AsyncTask<Void, Void, Void> {
 
+        public static final String TAG = "UpdateDBTask";
+
+        private Context ctx;
+
+        public UpdateDBTask(Context aCtx) {
+            ctx = aCtx;
+            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : constructor");
+        }
+
         @Override
         protected Void doInBackground(Void... unused) {
-            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() +
-                ") : doInBackground");
+            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : doInBackground");
 
             // This is the date that will be used for all the VISIT_DATE columns
             //  set it to Now in case there's nothing from LogEntryGeneral
             String generalDate = new Date().toString();
 
-            if (mLogEntryGeneral != null) {
+            if (mLogEntryGeneralData != null) {
                 Log.d(TAG, "about to persist LogEntryGeneral");
                 //assume date is set from LogEntryGeneral?
-                generalDate = mLogEntryGeneral.getVisitDate();
+                generalDate = mLogEntryGeneralData.getVisitDate();
 
-                LogEntryGeneralDAO mLogEntryGeneralDAO = new LogEntryGeneralDAO(this);
-                if (mLogEntryGeneral.getId() == -1) {
-                    mLogEntryGeneralDAO.createLogEntry(mLogEntryGeneral);
+                LogEntryGeneralDAO mLogEntryGeneralDAO = new LogEntryGeneralDAO(ctx);
+                if (mLogEntryGeneralData.getId() == -1) {
+                    mLogEntryGeneralDAO.createLogEntry(mLogEntryGeneralData);
                 }
                 else {
-                    mLogEntryGeneralDAO.updateLogEntry(mLogEntryGeneral);
+                    mLogEntryGeneralDAO.updateLogEntry(mLogEntryGeneralData);
                 }
                 mLogEntryGeneralDAO.close();
             }
 
-            if (mLogEntryProductivity != null) {
+            if (mLogEntryProductivityData != null) {
                 Log.d(TAG, "about to persist LogEntryProductivity");
-                LogEntryProductivityDAO mLogEntryProductivityDAO = new LogEntryProductivityDAO(this);
+                LogEntryProductivityDAO mLogEntryProductivityDAO = new LogEntryProductivityDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryProductivity.setVisitDate(generalDate);
+                mLogEntryProductivityData.setVisitDate(generalDate);
 
-                if (mLogEntryProductivity.getId() == -1) {
-                    mLogEntryProductivityDAO.createLogEntry(mLogEntryProductivity);
+                if (mLogEntryProductivityData.getId() == -1) {
+                    mLogEntryProductivityDAO.createLogEntry(mLogEntryProductivityData);
                 }
                 else {
-                    mLogEntryProductivityDAO.updateLogEntry(mLogEntryProductivity);
+                    mLogEntryProductivityDAO.updateLogEntry(mLogEntryProductivityData);
                 }
                 mLogEntryProductivityDAO.close();
             }
 
-            if (mLogEntryPestMgmt != null) {
+            if (mLogEntryPestMgmtData != null) {
                 Log.d(TAG, "about to persist LogEntryPestMgmt");
-                LogEntryPestMgmtDAO mLogEntryPestMgmtDAO = new LogEntryPestMgmtDAO(this);
+                LogEntryPestMgmtDAO mLogEntryPestMgmtDAO = new LogEntryPestMgmtDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryPestMgmt.setVisitDate(generalDate);
+                mLogEntryPestMgmtData.setVisitDate(generalDate);
 
                 // need to potentially do Notification 1st as its key may need
                 //   creation prior to Log entry write
                 createNotification(
-                        mLogEntryPestMgmt.getDroneCellFndnRmndrTime(),
+                        mLogEntryPestMgmtData.getDroneCellFndnRmndrTime(),
                         NotificationType.NOTIFY_PEST_REMOVE_DRONE,
                         mHiveKey);
 
                 createNotification(
-                        mLogEntryPestMgmt.getMitesTrtmntRmndrTime(),
+                        mLogEntryPestMgmtData.getMitesTrtmntRmndrTime(),
                         NotificationType.NOTIFY_PEST_REMOVE_MITES,
                         mHiveKey);
 
-                if (mLogEntryPestMgmt.getId() == -1) {
-                    mLogEntryPestMgmtDAO.createLogEntry(mLogEntryPestMgmt);
+                if (mLogEntryPestMgmtData.getId() == -1) {
+                    mLogEntryPestMgmtDAO.createLogEntry(mLogEntryPestMgmtData);
                 }
                 else {
-                    mLogEntryPestMgmtDAO.updateLogEntry(mLogEntryPestMgmt);
+                    mLogEntryPestMgmtDAO.updateLogEntry(mLogEntryPestMgmtData);
                 }
                 mLogEntryPestMgmtDAO.close();
             }
 
-            if (mLogEntryFeeding != null) {
+            if (mLogEntryFeedingData != null) {
                 Log.d(TAG, "about to persist LogEntryFeeding");
-                LogEntryFeedingDAO mLogEntryFeedingDAO = new LogEntryFeedingDAO(this);
+                LogEntryFeedingDAO mLogEntryFeedingDAO = new LogEntryFeedingDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryFeeding.setVisitDate(generalDate);
+                mLogEntryFeedingData.setVisitDate(generalDate);
 
-                if (mLogEntryFeeding.getId() == -1) {
-                    mLogEntryFeedingDAO.createLogEntry(mLogEntryFeeding);
+                if (mLogEntryFeedingData.getId() == -1) {
+                    mLogEntryFeedingDAO.createLogEntry(mLogEntryFeedingData);
                 }
                 else {
-                    mLogEntryFeedingDAO.updateLogEntry(mLogEntryFeeding);
+                    mLogEntryFeedingDAO.updateLogEntry(mLogEntryFeedingData);
                 }
                 mLogEntryFeedingDAO.close();
             }
 
-            if (mLogEntryOther != null) {
+            if (mLogEntryOtherData != null) {
                 Log.d(TAG, "about to persist LogEntryOther");
-                LogEntryOtherDAO mLogEntryOtherDAO = new LogEntryOtherDAO(this);
+                LogEntryOtherDAO mLogEntryOtherDAO = new LogEntryOtherDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryOther.setVisitDate(generalDate);
+                mLogEntryOtherData.setVisitDate(generalDate);
 
                 // need to potentially do Notification 1st as its key may need
                 //   creation prior to Log entry write
                 createNotification(
-                        mLogEntryOther.getRequeenRmndrTime(),
+                        mLogEntryOtherData.getRequeenRmndrTime(),
                         NotificationType.NOTIFY_OTHER_REQUEEN,
                         mHiveKey);
 
                 createNotification(
-                        mLogEntryOther.getSwarmRmndrTime(),
+                        mLogEntryOtherData.getSwarmRmndrTime(),
                         NotificationType.NOTIFY_OTHER_SWARM,
                         mHiveKey);
 
                 createNotification(
-                        mLogEntryOther.getSplitHiveRmndrTime(),
+                        mLogEntryOtherData.getSplitHiveRmndrTime(),
                         NotificationType.NOTIFY_OTHER_SPLIT_HIVE,
                         mHiveKey);
 
-                if (mLogEntryOther.getId() == -1) {
-                    mLogEntryOtherDAO.createLogEntry(mLogEntryOther);
+                if (mLogEntryOtherData.getId() == -1) {
+                    mLogEntryOtherDAO.createLogEntry(mLogEntryOtherData);
                 }
                 else {
-                    mLogEntryOtherDAO.updateLogEntry(mLogEntryOther);
+                    mLogEntryOtherDAO.updateLogEntry(mLogEntryOtherData);
                 }
                 mLogEntryOtherDAO.close();
             }
@@ -455,6 +465,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
             finish the Activity?
              */
             //finish();
+
+            return(null);
         }
 
         private long createNotification(long aStartTime, int aNotType, long aHiveKey) {
@@ -465,7 +477,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             // Do the Notification magic
             Notification wNot;
-            NotificationDAO wNotDAO = new NotificationDAO(this);
+            NotificationDAO wNotDAO = new NotificationDAO(ctx);
 
             // read Notification by Type and Hive Id
             Log.d(TAG, "getNotificationByTypeAndHive(): aNotType:" + aNotType + " aHiveKey:" + aHiveKey);
@@ -476,12 +488,12 @@ public class LogEntryListActivity extends AppCompatActivity implements
             // the times match and we can skip the update
             if ((wNot != null) && (wNot.getEventId() > 0)) {
                 Log.d(TAG, "deleteEvent(): wNot.getEventId():" + wNot.getEventId());
-                HiveCalendar.deleteEvent(this, wNot.getEventId());
+                HiveCalendar.deleteEvent(ctx, wNot.getEventId());
             }
 
             if (aStartTime != -1) {
                 // create new Event - hardcode endtime
-                eventId = HiveCalendar.addEntryPublic(this,
+                eventId = HiveCalendar.addEntryPublic(ctx,
                         aStartTime,
                         aStartTime+600000,
                         NotificationType.NOTIFICATION_TITLE,
@@ -518,10 +530,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(Void unused) {
-            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() +
-                ") : onPostExecute");
+            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : onPostExecute");
 
-            Toast.makeText(getApplicationContext(), "DB update complete", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "DB update complete", Toast.LENGTH_SHORT).show();
 
             // all we need to do is nullify the Task reference
             mTask = null;

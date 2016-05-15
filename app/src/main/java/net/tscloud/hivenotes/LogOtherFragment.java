@@ -152,7 +152,7 @@ public class LogOtherFragment extends Fragment {
             //do Reminders
 
             // If we have a time --> use it...
-            if (mLogEntryOther.getRequeenRmndrTime() != 0) {
+            if (mLogEntryOther.getRequeenRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryOther.getRequeenRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
                 String droneTime = timeFormat.format(calendar.getTime());
@@ -162,7 +162,7 @@ public class LogOtherFragment extends Fragment {
                 requeenRmndrText.setTag(mLogEntryOther.getRequeenRmndrTime());
             }
 
-            if (mLogEntryOther.getSwarmRmndrTime() != 0) {
+            if (mLogEntryOther.getSwarmRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryOther.getSwarmRmndrTime());
                 String swarmDate = dateFormat.format(calendar.getTime());
                 String swarmTime = timeFormat.format(calendar.getTime());
@@ -172,7 +172,7 @@ public class LogOtherFragment extends Fragment {
                 swarmRmndrText.setTag(mLogEntryOther.getSwarmRmndrTime());
             }
 
-            if (mLogEntryOther.getSplitHiveRmndrTime() != 0) {
+            if (mLogEntryOther.getSplitHiveRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryOther.getSplitHiveRmndrTime());
                 String splitHiveDate = dateFormat.format(calendar.getTime());
                 String splitHiveTime = timeFormat.format(calendar.getTime());
