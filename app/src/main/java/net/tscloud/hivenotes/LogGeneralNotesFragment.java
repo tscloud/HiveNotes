@@ -18,7 +18,11 @@ import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +41,12 @@ public class LogGeneralNotesFragment extends Fragment {
     private LogEntryGeneral mLogEntryGeneral;
 
     private OnLogGeneralNotesFragmentInteractionListener mListener;
+
+    // time/date formatters
+    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    private static final String TIME_PATTERN = "HH:mm";
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    private final Calendar calendar = Calendar.getInstance();
 
     /**
      * Use this factory method to create a new instance of
@@ -66,7 +76,7 @@ public class LogGeneralNotesFragment extends Fragment {
         // populate dataobject from Bundle
         if (savedInstanceState != null) {
             mLogEntryGeneral = new LogEntryGeneral();
-            mLogEntryGeneral.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryGeneral.setVisitDate(savedInstanceState.getLong("visitDate"));
             mLogEntryGeneral.setPopulation(savedInstanceState.getString("population"));
             mLogEntryGeneral.setTemperament(savedInstanceState.getString("temperament"));
             mLogEntryGeneral.setPestsDisease(savedInstanceState.getString("pestsDisease"));
@@ -161,7 +171,14 @@ public class LogGeneralNotesFragment extends Fragment {
             final CheckBox europeanFoulbroodCheck = (CheckBox)v.findViewById(R.id.checkEuropeanFoulbrood);
             final CheckBox chalkbroodCheck = (CheckBox)v.findViewById(R.id.checkChalkbrood);
 
-            dateEdit.setText(mLogEntryGeneral.getVisitDate());
+            // Must format
+            calendar.setTimeInMillis(mLogEntryGeneral.getVisitDate());
+            String formattedVisitDate = dateFormat.format(calendar.getTime());
+            String formattedVisitTime = timeFormat.format(calendar.getTime());
+            String formattedVisitDateTime = formattedVisitDate + ' ' + formattedVisitTime;
+
+            dateEdit.setText(formattedVisitDateTime);
+
             populationSpinner.setSelection(
                     ((ArrayAdapter) populationSpinner.getAdapter()).getPosition(
                             mLogEntryGeneral.getPopulation()));
@@ -195,7 +212,14 @@ public class LogGeneralNotesFragment extends Fragment {
         }
         else {
             // default to todays date
-            dateEdit.setText(new Date().toString());
+            long generalDate = System.currentTimeMillis();
+            calendar.setTimeInMillis(generalDate);
+            String formattedVisitDate = dateFormat.format(calendar.getTime());
+            String formattedVisitTime = timeFormat.format(calendar.getTime());
+            String formattedVisitDateTime = formattedVisitDate + ' ' + formattedVisitTime;
+
+            dateEdit.setText(formattedVisitDateTime);
+            dateEdit.setTag(generalDate);
         }
 
         // set button listener
@@ -233,7 +257,7 @@ public class LogGeneralNotesFragment extends Fragment {
         final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkPestOther);
         final EditText otherEdit = (EditText)getView().findViewById(R.id.editTextOther);
 
-        String dateText = dateEdit.getText().toString();
+        long dateLong = (long)dateEdit.getTag();
         String populationText = populationSpinner.getSelectedItem().toString();
         String temperamentText = temperamentSpinner.getSelectedItem().toString();
 
@@ -299,7 +323,7 @@ public class LogGeneralNotesFragment extends Fragment {
 
             mLogEntryGeneral.setId(mLogEntryGeneralKey);
             mLogEntryGeneral.setHive(mHiveID);
-            mLogEntryGeneral.setVisitDate(dateText);
+            mLogEntryGeneral.setVisitDate(dateLong);
             mLogEntryGeneral.setPopulation(populationText);
             mLogEntryGeneral.setTemperament(temperamentText);
             mLogEntryGeneral.setPestsDisease(pestsDiseaseTextBuf.toString().replaceAll(" ,$", ""));
@@ -352,7 +376,7 @@ public class LogGeneralNotesFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
         if (mLogEntryGeneral != null) {
-            outState.putString("visitDate", mLogEntryGeneral.getVisitDate());
+            outState.putLong("visitDate", mLogEntryGeneral.getVisitDate());
             outState.putString("population", mLogEntryGeneral.getPopulation());
             outState.putString("temperament", mLogEntryGeneral.getTemperament());
             outState.putString("pestsDisease", mLogEntryGeneral.getPestsDisease());

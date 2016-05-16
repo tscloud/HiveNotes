@@ -36,6 +36,7 @@ public class EditHiveActivity extends AppCompatActivity implements
     private static final int LOG_LIST_REQ_CODE = 1;
     private static final int HIVE_SINGLE_REQ_CODE = 2;
     private static final int APIARY_REQ_CODE = 3;
+    private static final int LOG_DATE_REQ_CODE = 3;
 
     private long mApiaryKey;
     private List<Hive> mHiveList;
@@ -119,6 +120,11 @@ public class EditHiveActivity extends AppCompatActivity implements
         TextView tv = (TextView)linLay1.findViewById(R.id.hiveEditTextView);
 
         Log.d(TAG, "HiveName: " + tv.getText());
+
+        // IMPORTANT -- this is how we get to LogDateListActivity log activity
+        // start LogEntryListActivity activity
+        Intent i = new Intent(this,LogDateListActivity.class);
+        startActivityForResult(i, LOG_DATE_REQ_CODE);
     }
 
     public void hiveOtherClickHandler (View v) {

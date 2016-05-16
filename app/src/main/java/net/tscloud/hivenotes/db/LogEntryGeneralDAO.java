@@ -60,7 +60,7 @@ public class LogEntryGeneralDAO {
 
     // --DB access methods--
 
-    public LogEntryGeneral createLogEntry(long hive, String visitDate, String population, String temperament,
+    public LogEntryGeneral createLogEntry(long hive, long visitDate, String population, String temperament,
                                    String pestsDisease, int broodFrames, String broodPattern,
                                    String queen, String honeyStores, String pollenStores) {
         ContentValues values = new ContentValues();
@@ -95,7 +95,7 @@ public class LogEntryGeneralDAO {
                 aDO.getHoneyStores(), aDO.getPollenStores());
     }
 
-    public LogEntryGeneral updateLogEntry(long id, long hive, String visitDate, String population,
+    public LogEntryGeneral updateLogEntry(long id, long hive, long visitDate, String population,
                                    String temperament, String pestsDisease, int broodFrames,
                                    String broodPattern, String queen, String honeyStores,
                                    String pollenStores) {
@@ -158,7 +158,7 @@ public class LogEntryGeneralDAO {
         LogEntryGeneral logEntryGeneral = new LogEntryGeneral();
         logEntryGeneral.setId(cursor.getLong(0));
         logEntryGeneral.setHive(cursor.getLong(1));
-        logEntryGeneral.setVisitDate(cursor.getString(2));
+        logEntryGeneral.setVisitDate(cursor.getLong(2));
         logEntryGeneral.setPopulation(cursor.getString(3));
         logEntryGeneral.setTemperament(cursor.getString(4));
         logEntryGeneral.setPestsDisease(cursor.getString(5));

@@ -64,7 +64,7 @@ public class LogProductivityFragment extends Fragment {
         // populate dataobject from Bundle
         if (savedInstanceState != null) {
             mLogEntryProductivity = new LogEntryProductivity();
-            mLogEntryProductivity.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryProductivity.setVisitDate(savedInstanceState.getLong("visitDate"));
             mLogEntryProductivity.setHoneyAddSupers(savedInstanceState.getString("honeyAddSupers"));
             mLogEntryProductivity.setHoneyRemoveSupers(savedInstanceState.getString("honeyRemoveSupers"));
             mLogEntryProductivity.setExtractedHoney(savedInstanceState.getInt("extractedHoney"));
@@ -234,7 +234,7 @@ public class LogProductivityFragment extends Fragment {
             */
             mLogEntryProductivity.setId(mLogEntryProductivityKey);
             mLogEntryProductivity.setHive(mHiveID);
-            mLogEntryProductivity.setVisitDate(null);
+            mLogEntryProductivity.setVisitDate(-1);
             mLogEntryProductivity.setHoneyAddSupers(addSupersText);
             mLogEntryProductivity.setHoneyRemoveSupers(removeSupersText);
             mLogEntryProductivity.setExtractedHoney(extractedHoneyFloat);
@@ -270,7 +270,7 @@ public class LogProductivityFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
         if (mLogEntryProductivity != null) {
-            outState.putString("visitDate", mLogEntryProductivity.getVisitDate());
+            outState.putLong("visitDate", mLogEntryProductivity.getVisitDate());
             outState.putString("honeyAddSupers", mLogEntryProductivity.getHoneyAddSupers());
             outState.putString("honeyRemoveSupers", mLogEntryProductivity.getHoneyRemoveSupers());
             outState.putFloat("extractedHoney", mLogEntryProductivity.getExtractedHoney());

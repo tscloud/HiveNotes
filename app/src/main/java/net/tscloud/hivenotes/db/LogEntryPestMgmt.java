@@ -12,7 +12,7 @@ public class LogEntryPestMgmt implements HiveNotesLogDO, Parcelable {
 
     private long id;
     private long hive;
-    private String visitDate;
+    private long visitDate;
     private int droneCellFndn;
     private int smallHiveBeetleTrap;
     private int mitesTrtmnt;
@@ -101,11 +101,11 @@ public class LogEntryPestMgmt implements HiveNotesLogDO, Parcelable {
         this.smallHiveBeetleTrap = smallHiveBeetleTrap;
     }
 
-    public String getVisitDate() {
+    public long getVisitDate() {
         return visitDate;
     }
 
-    public void setVisitDate(String visitDate) {
+    public void setVisitDate(long visitDate) {
         this.visitDate = visitDate;
     }
 
@@ -134,7 +134,7 @@ public class LogEntryPestMgmt implements HiveNotesLogDO, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeLong(this.hive);
-        dest.writeString(this.visitDate);
+        dest.writeLong(this.visitDate);
         dest.writeInt(this.droneCellFndn);
         dest.writeInt(this.smallHiveBeetleTrap);
         dest.writeInt(this.mitesTrtmnt);
@@ -152,7 +152,7 @@ public class LogEntryPestMgmt implements HiveNotesLogDO, Parcelable {
     protected LogEntryPestMgmt(Parcel in) {
         this.id = in.readLong();
         this.hive = in.readLong();
-        this.visitDate = in.readString();
+        this.visitDate = in.readLong();
         this.droneCellFndn = in.readInt();
         this.smallHiveBeetleTrap = in.readInt();
         this.mitesTrtmnt = in.readInt();

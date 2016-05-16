@@ -355,7 +355,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             // This is the date that will be used for all the VISIT_DATE columns
             //  set it to Now in case there's nothing from LogEntryGeneral
-            String generalDate = new Date().toString();
+            long generalDate = System.currentTimeMillis();
 
             if (mLogEntryGeneralData != null) {
                 Log.d(TAG, "about to persist LogEntryGeneral");
@@ -370,6 +370,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryGeneralDAO.updateLogEntry(mLogEntryGeneralData);
                 }
                 mLogEntryGeneralDAO.close();
+
+                //clear member vars
+                mLogEntryGeneralData = null;
             }
 
             if (mLogEntryProductivityData != null) {
@@ -385,6 +388,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryProductivityDAO.updateLogEntry(mLogEntryProductivityData);
                 }
                 mLogEntryProductivityDAO.close();
+
+                //clear member vars
+                mLogEntryProductivityData = null;
             }
 
             if (mLogEntryPestMgmtData != null) {
@@ -412,6 +418,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryPestMgmtDAO.updateLogEntry(mLogEntryPestMgmtData);
                 }
                 mLogEntryPestMgmtDAO.close();
+
+                //clear member vars
+                mLogEntryPestMgmtData = null;
             }
 
             if (mLogEntryFeedingData != null) {
@@ -427,6 +436,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryFeedingDAO.updateLogEntry(mLogEntryFeedingData);
                 }
                 mLogEntryFeedingDAO.close();
+
+                //clear member vars
+                mLogEntryFeedingData = null;
             }
 
             if (mLogEntryOtherData != null) {
@@ -459,6 +471,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryOtherDAO.updateLogEntry(mLogEntryOtherData);
                 }
                 mLogEntryOtherDAO.close();
+
+                //clear member vars
+                mLogEntryOtherData = null;
             }
 
             /*

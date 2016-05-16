@@ -61,7 +61,7 @@ public class LogEntryProductivityDAO {
 
     // --DB access methods--
 
-    public LogEntryProductivity createLogEntry(long hive, String visitDate, String honeyAddSupers,
+    public LogEntryProductivity createLogEntry(long hive, long visitDate, String honeyAddSupers,
                                                String honeyRemoveSupers, float extractedHoney,
                                                int addPollenTrap, int removePollenTrap,
                                                float pollenCollected, float beeswaxCollected) {
@@ -96,7 +96,7 @@ public class LogEntryProductivityDAO {
                 aDO.getRemovePollenTrap(), aDO.getPollenCollected(), aDO.getBeeswaxCollected());
     }
 
-    public LogEntryProductivity updateLogEntry(long id, long hive, String visitDate, String honeyAddSupers,
+    public LogEntryProductivity updateLogEntry(long id, long hive, long visitDate, String honeyAddSupers,
                                                String honeyRemoveSupers, float extractedHoney,
                                                int addPollenTrap, int removePollenTrap,
                                                float pollenColected, float beeswaxColected) {
@@ -157,7 +157,7 @@ public class LogEntryProductivityDAO {
         LogEntryProductivity logEntryProductivity = new LogEntryProductivity();
         logEntryProductivity.setId(cursor.getLong(0));
         logEntryProductivity.setHive(cursor.getLong(1));
-        logEntryProductivity.setVisitDate(cursor.getString(2));
+        logEntryProductivity.setVisitDate(cursor.getLong(2));
         logEntryProductivity.setHoneyAddSupers(cursor.getString(3));
         logEntryProductivity.setHoneyRemoveSupers(cursor.getString(4));
         logEntryProductivity.setExtractedHoney(cursor.getFloat(5));

@@ -12,7 +12,7 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
 
     private long id;
     private long hive;
-    private String visitDate;
+    private long visitDate;
     private String honeyAddSupers;
     private String honeyRemoveSupers;
     private float extractedHoney;
@@ -97,11 +97,11 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
         this.removePollenTrap = removePollenTrap;
     }
 
-    public String getVisitDate() {
+    public long getVisitDate() {
         return visitDate;
     }
 
-    public void setVisitDate(String visitDate) {
+    public void setVisitDate(long visitDate) {
         this.visitDate = visitDate;
     }
 
@@ -114,7 +114,7 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeLong(this.hive);
-        dest.writeString(this.visitDate);
+        dest.writeLong(this.visitDate);
         dest.writeString(this.honeyAddSupers);
         dest.writeString(this.honeyRemoveSupers);
         dest.writeFloat(this.extractedHoney);
@@ -130,7 +130,7 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
     protected LogEntryProductivity(Parcel in) {
         this.id = in.readLong();
         this.hive = in.readLong();
-        this.visitDate = in.readString();
+        this.visitDate = in.readLong();
         this.honeyAddSupers = in.readString();
         this.honeyRemoveSupers = in.readString();
         this.extractedHoney = in.readFloat();

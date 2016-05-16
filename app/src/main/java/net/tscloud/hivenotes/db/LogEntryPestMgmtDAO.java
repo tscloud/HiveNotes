@@ -63,7 +63,7 @@ public class LogEntryPestMgmtDAO {
 
     // --DB access methods--
 
-    public LogEntryPestMgmt createLogEntry(long hive, String visitDate, int drone_cell_fndn,
+    public LogEntryPestMgmt createLogEntry(long hive, long visitDate, int drone_cell_fndn,
                                             int small_hive_beetle_trap, int mites_trtmnt,
                                             String mites_trtmnt_type, int screened_bottom_board,
                                             int other, String otherType) {
@@ -98,7 +98,7 @@ public class LogEntryPestMgmtDAO {
                 aDO.getScreenedBottomBoard(), aDO.getOther(), aDO.getOtherType());
     }
 
-    public LogEntryPestMgmt updateLogEntry(long id, long hive, String visitDate,
+    public LogEntryPestMgmt updateLogEntry(long id, long hive, long visitDate,
                                             int drone_cell_fndn, int small_hive_beetle_trap,
                                             int mites_trtmnt, String mites_trtmnt_type,
                                             int screened_bottom_board, int other, String otherType) {
@@ -159,7 +159,7 @@ public class LogEntryPestMgmtDAO {
         LogEntryPestMgmt logEntryPestMgmt = new LogEntryPestMgmt();
         logEntryPestMgmt.setId(cursor.getLong(0));
         logEntryPestMgmt.setHive(cursor.getLong(1));
-        logEntryPestMgmt.setVisitDate(cursor.getString(2));
+        logEntryPestMgmt.setVisitDate(cursor.getLong(2));
         logEntryPestMgmt.setDroneCellFndn(cursor.getInt(3));
         logEntryPestMgmt.setSmallHiveBeetleTrap(cursor.getInt(4));
         logEntryPestMgmt.setMitesTrtmnt(cursor.getInt(5));

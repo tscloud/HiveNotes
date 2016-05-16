@@ -57,7 +57,7 @@ public class LogEntryFeedingDAO {
 
     // --DB access methods--
 
-    public LogEntryFeeding createLogEntry(long hive, String visitDate, int oneOneSugarWater,
+    public LogEntryFeeding createLogEntry(long hive, long visitDate, int oneOneSugarWater,
                                           int oneTwoSugarWater, int pollenPatty, int other, String otherType) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYFEEDING_HIVE, hive);
@@ -86,7 +86,7 @@ public class LogEntryFeedingDAO {
                 aDO.getTwoOneSugarWater(), aDO.getPollenPatty(), aDO.getOther(), aDO.getOtherType());
     }
 
-    public LogEntryFeeding updateLogEntry(long id, long hive, String visitDate, int oneOneSugarWater,
+    public LogEntryFeeding updateLogEntry(long id, long hive, long visitDate, int oneOneSugarWater,
                                           int oneTwoSugarWater, int pollenPatty, int other, String otherType) {
 
         ContentValues values = new ContentValues();
@@ -143,7 +143,7 @@ public class LogEntryFeedingDAO {
         LogEntryFeeding logEntryFeeding = new LogEntryFeeding();
         logEntryFeeding.setId(cursor.getLong(0));
         logEntryFeeding.setHive(cursor.getLong(1));
-        logEntryFeeding.setVisitDate(cursor.getString(2));
+        logEntryFeeding.setVisitDate(cursor.getLong(2));
         logEntryFeeding.setOneOneSugarWater(cursor.getInt(3));
         logEntryFeeding.setTwoOneSugarWater(cursor.getInt(4));
         logEntryFeeding.setPollenPatty(cursor.getInt(5));

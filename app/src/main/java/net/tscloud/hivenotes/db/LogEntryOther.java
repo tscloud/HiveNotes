@@ -13,7 +13,7 @@ public class LogEntryOther implements HiveNotesLogDO, Parcelable {
     /* Reminders children of Hive */
     private long id;
     private long hive;
-    private String visitDate;
+    private long visitDate;
     private String requeen;
     //private long requeenRmndr;
     //private long swarmRmndr;
@@ -76,11 +76,11 @@ public class LogEntryOther implements HiveNotesLogDO, Parcelable {
         this.swarmRmndrTime = swarmRmndrTime;
     }
 
-    public String getVisitDate() {
+    public long getVisitDate() {
         return visitDate;
     }
 
-    public void setVisitDate(String visitDate) {
+    public void setVisitDate(long visitDate) {
         this.visitDate = visitDate;
     }
 
@@ -93,7 +93,7 @@ public class LogEntryOther implements HiveNotesLogDO, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeLong(this.hive);
-        dest.writeString(this.visitDate);
+        dest.writeLong(this.visitDate);
         dest.writeString(this.requeen);
         dest.writeLong(this.requeenRmndrTime);
         dest.writeLong(this.swarmRmndrTime);
@@ -106,7 +106,7 @@ public class LogEntryOther implements HiveNotesLogDO, Parcelable {
     protected LogEntryOther(Parcel in) {
         this.id = in.readLong();
         this.hive = in.readLong();
-        this.visitDate = in.readString();
+        this.visitDate = in.readLong();
         this.requeen = in.readString();
         this.requeenRmndrTime = in.readLong();
         this.swarmRmndrTime = in.readLong();

@@ -12,7 +12,7 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
 
     private long id;
     private long hive;
-    private String visitDate;
+    private long visitDate;
     private String population;
     private String temperament;
     private String pestsDisease;
@@ -106,11 +106,11 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
         this.temperament = temperament;
     }
 
-    public String getVisitDate() {
+    public long getVisitDate() {
         return visitDate;
     }
 
-    public void setVisitDate(String visitDate) {
+    public void setVisitDate(long visitDate) {
         this.visitDate = visitDate;
     }
 
@@ -123,7 +123,7 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeLong(this.hive);
-        dest.writeString(this.visitDate);
+        dest.writeLong(this.visitDate);
         dest.writeString(this.population);
         dest.writeString(this.temperament);
         dest.writeString(this.pestsDisease);
@@ -140,7 +140,7 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
     protected LogEntryGeneral(Parcel in) {
         this.id = in.readLong();
         this.hive = in.readLong();
-        this.visitDate = in.readString();
+        this.visitDate = in.readLong();
         this.population = in.readString();
         this.temperament = in.readString();
         this.pestsDisease = in.readString();

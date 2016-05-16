@@ -12,7 +12,7 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
 
     private long id;
     private long hive;
-    private String visitDate;
+    private long visitDate;
     private int oneOneSugarWater;
     private int twoOneSugarWater;
     private int pollenPatty;
@@ -79,11 +79,11 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
         this.pollenPatty = pollenPatty;
     }
 
-    public String getVisitDate() {
+    public long getVisitDate() {
         return visitDate;
     }
 
-    public void setVisitDate(String visitDate) {
+    public void setVisitDate(long visitDate) {
         this.visitDate = visitDate;
     }
 
@@ -96,7 +96,7 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeLong(this.hive);
-        dest.writeString(this.visitDate);
+        dest.writeLong(this.visitDate);
         dest.writeInt(this.oneOneSugarWater);
         dest.writeInt(this.twoOneSugarWater);
         dest.writeInt(this.pollenPatty);
@@ -110,7 +110,7 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
     protected LogEntryFeeding(Parcel in) {
         this.id = in.readLong();
         this.hive = in.readLong();
-        this.visitDate = in.readString();
+        this.visitDate = in.readLong();
         this.oneOneSugarWater = in.readInt();
         this.twoOneSugarWater = in.readInt();
         this.pollenPatty = in.readInt();

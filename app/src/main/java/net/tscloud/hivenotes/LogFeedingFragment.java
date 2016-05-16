@@ -14,7 +14,6 @@ import android.widget.EditText;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
-import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 
 
 /**
@@ -63,7 +62,7 @@ public class LogFeedingFragment extends Fragment {
         // populate dataobject from Bundle
         if (savedInstanceState != null) {
             mLogEntryFeeding = new LogEntryFeeding();
-            mLogEntryFeeding.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryFeeding.setVisitDate(savedInstanceState.getLong("visitDate"));
             mLogEntryFeeding.setOneOneSugarWater(savedInstanceState.getInt("oneOneSugarWater"));
             mLogEntryFeeding.setTwoOneSugarWater(savedInstanceState.getInt("twoOneSugarWater"));
             mLogEntryFeeding.setPollenPatty(savedInstanceState.getInt("pollenPatty"));
@@ -82,7 +81,7 @@ public class LogFeedingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =inflater.inflate(R.layout.fragment_log_feeding_notes, container, false);
+        View v = inflater.inflate(R.layout.fragment_log_feeding_notes, container, false);
 
         // set button listener and text
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
@@ -169,7 +168,7 @@ public class LogFeedingFragment extends Fragment {
 
             mLogEntryFeeding.setId(mLogEntryFeedingKey);
             mLogEntryFeeding.setHive(mHiveID);
-            mLogEntryFeeding.setVisitDate(null);
+            mLogEntryFeeding.setVisitDate(-1);
             mLogEntryFeeding.setOneOneSugarWater(oneOneSugarInt);
             mLogEntryFeeding.setTwoOneSugarWater(twoOneSugarInt);
             mLogEntryFeeding.setPollenPatty(pollenPattyInt);
@@ -204,7 +203,7 @@ public class LogFeedingFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
         if (mLogEntryFeeding != null) {
-            outState.putString("visitDate", mLogEntryFeeding.getVisitDate());
+            outState.putLong("visitDate", mLogEntryFeeding.getVisitDate());
             outState.putInt("oneOneSugarWater", mLogEntryFeeding.getOneOneSugarWater());
             outState.putLong("twoOneSugarWater", mLogEntryFeeding.getTwoOneSugarWater());
             outState.putInt("pollenPatty", mLogEntryFeeding.getPollenPatty());

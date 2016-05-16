@@ -93,7 +93,7 @@ public class LogPestMgmtFragment extends Fragment {
         // populate dataobject from Bundle
         if (savedInstanceState != null) {
             mLogEntryPestMgmt = new LogEntryPestMgmt();
-            mLogEntryPestMgmt.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryPestMgmt.setVisitDate(savedInstanceState.getLong("visitDate"));
             mLogEntryPestMgmt.setDroneCellFndn(savedInstanceState.getInt("droneCellFndn"));
             mLogEntryPestMgmt.setSmallHiveBeetleTrap(savedInstanceState.getInt("smallHiveBeetleTrap"));
             mLogEntryPestMgmt.setMitesTrtmnt(savedInstanceState.getInt("mitesTrtmnt"));
@@ -300,7 +300,7 @@ public class LogPestMgmtFragment extends Fragment {
 
             mLogEntryPestMgmt.setId(mLogEntryPestMgmtKey);
             mLogEntryPestMgmt.setHive(mHiveID);
-            mLogEntryPestMgmt.setVisitDate(null);
+            mLogEntryPestMgmt.setVisitDate(-1);
             mLogEntryPestMgmt.setDroneCellFndn(droneCellFndnInt);
             mLogEntryPestMgmt.setSmallHiveBeetleTrap(smallHiveBeetleTrapInt);
             mLogEntryPestMgmt.setMitesTrtmnt(mitesTrtmntInt);
@@ -387,7 +387,7 @@ public class LogPestMgmtFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
         if (mLogEntryPestMgmt != null) {
-            outState.putString("visitDate", mLogEntryPestMgmt.getVisitDate());
+            outState.putLong("visitDate", mLogEntryPestMgmt.getVisitDate());
             outState.putInt("droneCellFndn", mLogEntryPestMgmt.getDroneCellFndn());
             outState.putInt("smallHiveBeetleTrap", mLogEntryPestMgmt.getSmallHiveBeetleTrap());
             outState.putInt("mitesTrtmnt", mLogEntryPestMgmt.getMitesTrtmnt());

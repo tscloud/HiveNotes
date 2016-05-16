@@ -55,7 +55,7 @@ public class LogEntryOtherDAO {
 
     // --DB access methods--
 
-    public LogEntryOther createLogEntry(long hive, String visitDate, String requeen) {
+    public LogEntryOther createLogEntry(long hive, long visitDate, String requeen) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYOTHER_HIVE, hive);
         values.put(COLUMN_LOGENTRYOTHER_VISIT_DATE, visitDate);
@@ -79,7 +79,7 @@ public class LogEntryOtherDAO {
         return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getRequeen());
     }
 
-    public LogEntryOther updateLogEntry(long id, long hive, String visitDate, String requeen) {
+    public LogEntryOther updateLogEntry(long id, long hive, long visitDate, String requeen) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYOTHER_HIVE, hive);
         values.put(COLUMN_LOGENTRYOTHER_VISIT_DATE, visitDate);
@@ -129,7 +129,7 @@ public class LogEntryOtherDAO {
         LogEntryOther logEntryOther = new LogEntryOther();
         logEntryOther.setId(cursor.getLong(0));
         logEntryOther.setHive(cursor.getLong(1));
-        logEntryOther.setVisitDate(cursor.getString(2));
+        logEntryOther.setVisitDate(cursor.getLong(2));
         logEntryOther.setRequeen(cursor.getString(3));
 
         return logEntryOther;

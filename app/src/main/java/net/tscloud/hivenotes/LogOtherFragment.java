@@ -90,7 +90,7 @@ public class LogOtherFragment extends Fragment {
         // populate dataobject from Bundle
         if (savedInstanceState != null) {
             mLogEntryOther = new LogEntryOther();
-            mLogEntryOther.setVisitDate(savedInstanceState.getString("visitDate"));
+            mLogEntryOther.setVisitDate(savedInstanceState.getLong("visitDate"));
             mLogEntryOther.setRequeen(savedInstanceState.getString("requeen"));
         }
 
@@ -281,7 +281,7 @@ public class LogOtherFragment extends Fragment {
 
            mLogEntryOther.setId(mLogEntryOtherKey);
            mLogEntryOther.setHive(mHiveID);
-           mLogEntryOther.setVisitDate(null);
+           mLogEntryOther.setVisitDate(-1);
            mLogEntryOther.setRequeen(requeenText);
            mLogEntryOther.setRequeenRmndrTime(requeenRmndrLong);
            mLogEntryOther.setSwarmRmndrTime(swarmRmndrLong);
@@ -372,7 +372,7 @@ public class LogOtherFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
         if (mLogEntryOther != null) {
-            outState.putString("visitDate", mLogEntryOther.getVisitDate());
+            outState.putLong("visitDate", mLogEntryOther.getVisitDate());
             outState.putString("requeen", mLogEntryOther.getRequeen());
             outState.putLong("requeenRmndrTime", mLogEntryOther.getRequeenRmndrTime());
             outState.putLong("swarmRmndrTime", mLogEntryOther.getSwarmRmndrTime());
