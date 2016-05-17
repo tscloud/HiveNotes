@@ -66,13 +66,20 @@ public class LogEntryListActivity extends AppCompatActivity implements
     // starting LogEntryDetailFragment as subactivity
     private static final int LOG_DETAIL_REQ_CODE = 1;
 
-    public static String INTENT_ITEM_ID = "itemId";
-    public static String INTENT_HIVE_KEY = "hiveKey";
-    public static String INTENT_LOGENTRY_KEY = "logentryKey";
+    public final static String INTENT_ITEM_ID = "itemId";
+    //public final static String INTENT_HIVE_KEY = "hiveKey";
+    public final static String INTENT_LOGENTRY_KEY = "logentryKey";
+    public final static String INTENT_LOGENTRY_DATE = "logentryDate";
 
     private long mHiveKey;
     // need the Hive to get the name for the titlebar and other
-    Hive mHiveForName;
+    private Hive mHiveForName;
+
+    // passed in if being called from LogDateListActivity
+    private long mLogDate;
+
+    // not currently passed in
+    private long mLogKey;
 
     // Need to a reference to each of the Log Entry data objects
     public static String INTENT_LOGENTRY_GENERAL_DATA = "logentryGeneralData";
@@ -96,7 +103,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
      */
     private boolean mTwoPane;
 
-    // task references - needed to kill tasks on Fragment Destroy
+    // task references - needed to kill tasks on Activity Destroy
     private UpdateDBTask mTask = null;
 
     @Override
@@ -112,6 +119,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         // Get the hive key from the Intent data
         Intent intent = getIntent();
         mHiveKey = intent.getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
+        mLogDate = intent.getLongExtra(INTENT_LOGENTRY_DATE, -1);
 
         Log.d(TAG, "Called w/ hive key: " + mHiveKey);
 
@@ -183,8 +191,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     // Save button
                     //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
                     //        mLogEntryFeedingData, mLogEntryOtherData);
-                    mTask = new UpdateDBTask(this);
-                    mTask.execute();
+                    mTask = new UpdateDBTask(this).execute();
                     break;
                 default:
                     // should this be here? - LogEntryDetailFragment if really just
@@ -205,7 +212,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             // w/ the selected item ID.
             Intent intent = new Intent(this, LogEntryDetailActivity.class);
             intent.putExtra(INTENT_ITEM_ID, id);
-            intent.putExtra(INTENT_HIVE_KEY, mHiveKey);
+            intent.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
             /*
             Need to pass an appropriate DO so it can potentially be accessed by fragment
              */
@@ -229,9 +236,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     // Save button
                     //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
                     //       mLogEntryFeedingData, mLogEntryOtherData);
-                    mTask = new UpdateDBTask(this);
-                    mTask.execute();
-
+                    mTask = new UpdateDBTask(this).execute();
                     break;
             }
             startActivityForResult(intent, LOG_DETAIL_REQ_CODE);

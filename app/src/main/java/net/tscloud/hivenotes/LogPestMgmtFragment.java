@@ -3,7 +3,6 @@ package net.tscloud.hivenotes;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -76,7 +75,7 @@ public class LogPestMgmtFragment extends Fragment {
     public static LogPestMgmtFragment newInstance(long hiveID, long logEntryID) {
         LogPestMgmtFragment fragment = new LogPestMgmtFragment();
         Bundle args = new Bundle();
-        args.putLong(LogEntryListActivity.INTENT_HIVE_KEY, hiveID);
+        args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;
@@ -107,7 +106,7 @@ public class LogPestMgmtFragment extends Fragment {
 
         // save off arguments
         if (getArguments() != null) {
-            mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
+            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
             mLogEntryPestMgmtKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
         }
     }

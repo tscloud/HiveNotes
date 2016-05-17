@@ -5,40 +5,40 @@
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:padding="8dp"
-    android:layout_height="wrap_content">
-
-    <DatePicker
-        android:id="@+id/date_picker"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:calendarViewShown="true"
-        android:spinnersShown="false"
-        android:layout_weight="4"
-        android:layout_height="0dp" />
+        android:padding="8dp"
+        android:layout_height="wrap_content">
 
-    <TimePicker
-        android:id="@+id/time_picker"
-        android:layout_weight="4"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:calendarViewShown="true"
+            android:spinnersShown="false"
+            android:layout_weight="4"
+            android:layout_height="0dp" />
 
-    <Button
-        android:id="@+id/date_time_set"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:text="@string/set"
-        android:layout_height="0dp" />
+        <TimePicker
+            android:id="@+id/time_picker"
+            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
 
-    <Button
-        android:id="@+id/date_time_unset"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:text="@string/unset"
-        android:layout_height="0dp" />
+        <Button
+            android:id="@+id/date_time_set"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:text="@string/set"
+            android:layout_height="0dp" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/date_time_unset"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:text="@string/unset"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
 </ScrollView>

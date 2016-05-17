@@ -47,7 +47,7 @@ public class LogProductivityFragment extends Fragment {
     public static LogProductivityFragment newInstance(long hiveID, long logEntryID) {
         LogProductivityFragment fragment = new LogProductivityFragment();
         Bundle args = new Bundle();
-        args.putLong(LogEntryListActivity.INTENT_HIVE_KEY, hiveID);
+        args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;
@@ -76,7 +76,7 @@ public class LogProductivityFragment extends Fragment {
 
         // save off arguments
         if (getArguments() != null) {
-            mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
+            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
             mLogEntryProductivityKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
         }
     }

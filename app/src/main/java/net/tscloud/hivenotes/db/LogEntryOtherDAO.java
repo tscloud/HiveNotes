@@ -125,6 +125,22 @@ public class LogEntryOtherDAO {
         return cursorToLogEntry(cursor);
     }
 
+    public LogEntryOther getLogEntryByDate(long date){
+        Cursor cursor = mDatabase.query(TABLE_LOGENTRYOTHER, mAllColumns,
+                COLUMN_LOGENTRYOTHER_VISIT_DATE + " = ?",
+                new String[] { String.valueOf(date) }, null, null, null);
+
+        LogEntryOther retrievedLogEntryOther = null;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                retrievedLogEntryOther = cursorToLogEntry(cursor);
+            }
+            cursor.close();
+        }
+
+        return cursorToLogEntry(cursor);
+    }
+
     protected LogEntryOther cursorToLogEntry(Cursor cursor) {
         LogEntryOther logEntryOther = new LogEntryOther();
         logEntryOther.setId(cursor.getLong(0));

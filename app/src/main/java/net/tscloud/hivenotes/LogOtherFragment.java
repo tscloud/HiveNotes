@@ -44,14 +44,17 @@ public class LogOtherFragment extends Fragment {
 
     private long mHiveID;
     private long mLogEntryOtherKey;
+    private long mLogEntryOtherDate;
     private LogEntryOther mLogEntryOther;
 
     private OnLogOtherFragmentInteractionListener mListener;
 
     // time/date formatters
-    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    private static final DateFormat dateFormat =DateFormat.getDateInstance(DateFormat.LONG,
+        Locale.getDefault());
     private static final String TIME_PATTERN = "HH:mm";
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN,
+        Locale.getDefault());
     private final Calendar calendar = Calendar.getInstance();
 
     // task references - needed to kill tasks on Fragment Destroy
@@ -70,11 +73,11 @@ public class LogOtherFragment extends Fragment {
      * @param logEntryID Parameter 2.
      * @return A new instance of fragment LogOtherFragment.
      */
-    public static LogOtherFragment newInstance(long hiveID, long logEntryID) {
+    public static LogOtherFragment newInstance(long aHiveID, long aLogEntryDate) {
         LogOtherFragment fragment = new LogOtherFragment();
         Bundle args = new Bundle();
-        args.putLong(LogEntryListActivity.INTENT_HIVE_KEY, hiveID);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
+        args.putLong(MainActivity.INTENT_HIVE_KEY, aHiveID);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,8 +99,9 @@ public class LogOtherFragment extends Fragment {
 
         // save off arguments
         if (getArguments() != null) {
-            mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
-            mLogEntryOtherKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
+            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
+            mLogEntryOtherDate =
+                getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_DATE);
         }
     }
 
@@ -115,7 +119,8 @@ public class LogOtherFragment extends Fragment {
         final Button swarmRmndrBtn = (Button)v.findViewById(R.id.buttonSwarmRmndr);
         final Button splitHiveRmndrBtn = (Button)v.findViewById(R.id.buttonSplitHiveRmndr);
 
-        // labels for showing reminder time; be sure to init the tag as this is what goes into the DB
+        // labels for showing reminder time; be sure to init the tag as this is
+        //  what goes into the DB
         final TextView requeenRmndrText = (TextView)v.findViewById(R.id.textRequeenRmndr);
         requeenRmndrText.setTag((long)-1);
         final TextView swarmRmndrText = (TextView)v.findViewById(R.id.textSwarmRmndr);
@@ -123,8 +128,9 @@ public class LogOtherFragment extends Fragment {
         final TextView splitHiveRmndrText = (TextView)v.findViewById(R.id.textSplitHiveRmndr);
         splitHiveRmndrText.setTag((long)-1);
 
-        // log entry may have something in it either already populated or populated from Bundle
-        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
+        // log entry may have something in it either already populated or
+        //  populated from Bundle if not => 1st check the Activity for
+        //  previously entered data, if not => potentially read DB
         if (mLogEntryOther == null) {
             try {
                 mLogEntryOther = (LogEntryOther)mListener.getPreviousLogData();
@@ -135,8 +141,9 @@ public class LogOtherFragment extends Fragment {
                 mLogEntryOther = null;
             }
             if (mLogEntryOther == null) {
-                if (mLogEntryOtherKey != -1) {
-                    mLogEntryOther = getLogEntry(mLogEntryOtherKey);
+                if (mLogEntryOtherDate != -1) {
+                    //read by date, not ID
+                    mLogEntryOther = getLogEntry(mLogEntryOtherDate);
                 }
             }
         }
@@ -220,7 +227,7 @@ public class LogOtherFragment extends Fragment {
             mTaskSplitHive.execute();
         }
 
-// set button listeners
+        // set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -382,12 +389,29 @@ public class LogOtherFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    // Utility method to get Profile
-    LogEntryOther getLogEntry(long aLogEntryID) {
+    @Override
+    public void onDestroy() {
+        if (mTaskRequeen != null) {
+            mTaskRequeen.cancel(false);
+        }
+
+        if (mTaskSwarm != null) {
+            mTaskSwarm.cancel(false);
+        }
+
+        if (mTaskSplitHive != null) {
+            mTaskSplitHive.cancel(false);
+        }
+
+        super.onDestroy();
+    }
+
+    // Utility method to get LogEntry by date
+    LogEntryOther getLogEntry(long aLogEntryDate) {
         // read log Entry
-        Log.d(TAG, "reading LogEntryPestMgmt table");
+        Log.d(TAG, "reading LogEntryPestMgmt table - by date");
         LogEntryOtherDAO logEntryOtherDAO = new LogEntryOtherDAO(getActivity());
-        LogEntryOther reply = logEntryOtherDAO.getLogEntryById(aLogEntryID);
+        LogEntryOther reply = logEntryOtherDAO.getLogEntryByDate(aLogEntryDate);
         logEntryOtherDAO.close();
 
         return reply;

@@ -32,7 +32,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     private static final String TAG = "EditHiveActivity";
 
-    // starting LogEntryListActivity as subactivity
+    // Activity codes
     private static final int LOG_LIST_REQ_CODE = 1;
     private static final int HIVE_SINGLE_REQ_CODE = 2;
     private static final int APIARY_REQ_CODE = 3;
@@ -124,6 +124,7 @@ public class EditHiveActivity extends AppCompatActivity implements
         // IMPORTANT -- this is how we get to LogDateListActivity log activity
         // start LogEntryListActivity activity
         Intent i = new Intent(this,LogDateListActivity.class);
+        i.putExtra(MainActivity.INTENT_HIVE_KEY, (long)tv.getTag());
         startActivityForResult(i, LOG_DATE_REQ_CODE);
     }
 

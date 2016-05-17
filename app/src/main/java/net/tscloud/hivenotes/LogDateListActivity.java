@@ -16,6 +16,11 @@ public class LogDateListActivity extends AppCompatActivity implements
 
     public static final String TAG = "LogDateListActivity";
 
+    // Activity codes
+    private static final int LOG_LIST_REQ_CODE = 1;
+
+    private long mHiveKey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +31,11 @@ public class LogDateListActivity extends AppCompatActivity implements
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Fragment fragment = new LogDateListFragment();
+        // Get the hive key from the Intent data
+        Intent intent = getIntent();
+        mHiveKey = intent.getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
+
+        Fragment fragment = new LogDateListFragment.newInstance(mHiveKey);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.log_date_list_container, fragment)
@@ -37,6 +46,8 @@ public class LogDateListActivity extends AppCompatActivity implements
     public void onLogDateListFragmentInteraction(long logDate) {
         Log.d(TAG, "onLogDateListFragmentInteraction");
 
+        /** all this stuff is just so we can display human readable date
+         */
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
         String TIME_PATTERN = "HH:mm";
         SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
@@ -48,5 +59,13 @@ public class LogDateListActivity extends AppCompatActivity implements
         String formattedDateTime = formattedDate + ' ' + formattedTime;
 
         Log.d(TAG, "date received from fragment: " + formattedDateTime);
-    }
+
+        /** We've got a datetime --> pass it off to LogEntryListActivity so we
+         *   can display/update an old log entry instead of adding a new one
+         */
+        Intent i = new Intent(this,LogEntryListActivity.class);
+        i.putExtra(MainActivity.INTENT_HIVE_KEY, (long)tv.getTag());
+        i.putExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, logDate);
+        startActivityForResult(i, LOG_LIST_REQ_CODE);
+}
 }

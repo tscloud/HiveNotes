@@ -20,6 +20,9 @@ public class LogDateListFragment extends Fragment {
 
     private OnLogDateListFragmentListener mListener;
 
+    // task references - needed to kill tasks on Fragment Destroy
+    private GetDatesTask mTask = null;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -27,10 +30,10 @@ public class LogDateListFragment extends Fragment {
      * @param logDate Parameter 1.
      * @return A new instance of fragment LogDateListFragment.
      */
-    public static LogDateListFragment newInstance(long logDate) {
+    public static LogDateListFragment newInstance(long aHiveKey) {
         LogDateListFragment fragment = new LogDateListFragment();
         Bundle args = new Bundle();
-        args.putLong("hiveID", logDate);
+        args.putLong(MainActivity.INTENT_HIVE_KEY, aHiveKey);
         fragment.setArguments(args);
         return fragment;
     }
@@ -38,14 +41,13 @@ public class LogDateListFragment extends Fragment {
     public LogDateListFragment() {
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // save off arguments
         if (getArguments() != null) {
-            mHiveID = getArguments().getLong("hiveID");
+            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
         }
     }
 
@@ -54,6 +56,11 @@ public class LogDateListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log_date_list, container, false);
+
+        /** AsyncTask to get the date list - this task will be the only one to Load
+         *   the list so no need to check for previous data, etc.
+         */
+        mTask = new GetDatesTask(getActivity());
 
         // set button listener
         final Button b1 = (Button)v.findViewById(R.id.btnFragLogDateList);
@@ -97,7 +104,45 @@ public class LogDateListFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void onDestroy() {
+        if (mTask != null) {
+            mTask.cancel(false);
+        }
+
+        super.onDestroy();
+    }
+
     public interface OnLogDateListFragmentListener {
         public void onLogDateListFragmentInteraction(long logDate);
+    }
+
+    /** get the list of dates we will present to the user
+     */
+    public class GetDatesTask extends AsyncTask<Void, Void, Void> {
+
+        public static final String TAG = "GetDatesTask";
+
+        private Context ctx;
+
+        public GetDatesTask(Context aCtx) {
+            ctx = aCtx;
+            Log.d(TAG, "GetDatesTask("+ Thread.currentThread().getId() + ") : constructor");
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            Log.d(TAG, "GetDatesTask("+ Thread.currentThread().getId() + ") : doInBackground");
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : onPostExecute");
+
+            //Toast.makeText(getApplicationContext(), "DB update complete", Toast.LENGTH_SHORT).show();
+
+            // all we need to do is nullify the Task reference
+            mTask = null;
+        }
     }
 }

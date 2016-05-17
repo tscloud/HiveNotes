@@ -45,7 +45,7 @@ public class LogFeedingFragment extends Fragment {
     public static LogFeedingFragment newInstance(long hiveID, long logEntryID) {
         LogFeedingFragment fragment = new LogFeedingFragment();
         Bundle args = new Bundle();
-        args.putLong(LogEntryListActivity.INTENT_HIVE_KEY, hiveID);
+        args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;
@@ -72,7 +72,7 @@ public class LogFeedingFragment extends Fragment {
 
         // save off arguments
         if (getArguments() != null) {
-            mHiveID = getArguments().getLong(LogEntryListActivity.INTENT_HIVE_KEY);
+            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
             mLogEntryFeedingKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
         }
     }

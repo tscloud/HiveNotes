@@ -59,7 +59,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             String argItemId = getIntent().getStringExtra(LogEntryListActivity.INTENT_ITEM_ID);
-            mHiveKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_HIVE_KEY, -1);
+            mHiveKey = getIntent().getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
             mlogentryKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_KEY, -1);
 
             try {
