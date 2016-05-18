@@ -150,7 +150,7 @@ public class LogEntryProductivityDAO {
             cursor.close();
         }
 
-        return cursorToLogEntry(cursor);
+        return retrievedLogEntryProductivity;
     }
 
     protected LogEntryProductivity cursorToLogEntry(Cursor cursor) {

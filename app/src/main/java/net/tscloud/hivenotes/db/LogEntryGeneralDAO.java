@@ -151,7 +151,7 @@ public class LogEntryGeneralDAO {
             cursor.close();
         }
 
-        return cursorToLogEntry(cursor);
+        return retrievedLogEntryGeneral;
     }
 
     protected LogEntryGeneral cursorToLogEntry(Cursor cursor) {

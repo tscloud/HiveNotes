@@ -69,8 +69,8 @@ public class LogOtherFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param hiveID Parameter 1.
-     * @param logEntryID Parameter 2.
+     * @param aHiveID Parameter 1.
+     * @param aLogEntryDate Parameter 2.
      * @return A new instance of fragment LogOtherFragment.
      */
     public static LogOtherFragment newInstance(long aHiveID, long aLogEntryDate) {

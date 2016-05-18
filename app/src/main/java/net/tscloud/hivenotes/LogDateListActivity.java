@@ -1,10 +1,12 @@
 package net.tscloud.hivenotes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,11 +37,22 @@ public class LogDateListActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         mHiveKey = intent.getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
 
-        Fragment fragment = new LogDateListFragment.newInstance(mHiveKey);
+        Fragment fragment = LogDateListFragment.newInstance(mHiveKey);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.log_date_list_container, fragment)
                 .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Make the Up button perform like the Back button
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -64,7 +77,7 @@ public class LogDateListActivity extends AppCompatActivity implements
          *   can display/update an old log entry instead of adding a new one
          */
         Intent i = new Intent(this,LogEntryListActivity.class);
-        i.putExtra(MainActivity.INTENT_HIVE_KEY, (long)tv.getTag());
+        i.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
         i.putExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, logDate);
         startActivityForResult(i, LOG_LIST_REQ_CODE);
 }

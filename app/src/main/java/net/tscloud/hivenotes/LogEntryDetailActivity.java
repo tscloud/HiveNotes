@@ -32,9 +32,6 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
     public static final String TAG = "LogEntryDetailActivity";
 
-    private long mHiveKey;
-    private long mlogentryKey;
-
     // This is what gets returned on call to get getPreviousLogData()
     private HiveNotesLogDO mPreviousLogData;
 
@@ -59,11 +56,12 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             String argItemId = getIntent().getStringExtra(LogEntryListActivity.INTENT_ITEM_ID);
-            mHiveKey = getIntent().getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
-            mlogentryKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_KEY, -1);
+            long hiveKey = getIntent().getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
+            long logEntryDate = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, -1);
 
             try {
-                mPreviousLogData = (HiveNotesLogDO)getIntent().getParcelableExtra(LogEntryListActivity.INTENT_PREVIOUS_DATA);
+                mPreviousLogData = (HiveNotesLogDO)getIntent().getParcelableExtra(
+                        LogEntryListActivity.INTENT_PREVIOUS_DATA);
             }
             catch (ClassCastException e) {
                 // Log the exception but continue w/ NO previous log data
@@ -76,23 +74,23 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
             switch (argItemId) {
                 case "1":
-                    fragment = LogGeneralNotesFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragment = LogGeneralNotesFragment.newInstance(hiveKey, logEntryDate);
                     fragTag = "LOG_GENERAL_FRAG";
                     break;
                 case "2":
-                    fragment = LogProductivityFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragment = LogProductivityFragment.newInstance(hiveKey, logEntryDate);
                     fragTag = "LOG_PRODUCTIVITY_FRAG";
                     break;
                 case "3":
-                    fragment = LogPestMgmtFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragment = LogPestMgmtFragment.newInstance(hiveKey, logEntryDate);
                     fragTag = "LOG_PEST_FRAG";
                     break;
                 case "4":
-                    fragment = LogFeedingFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragment = LogFeedingFragment.newInstance(hiveKey, logEntryDate);
                     fragTag = "LOG_FEEDING_FRAG";
                     break;
                 case "5":
-                    fragment = LogOtherFragment.newInstance(mHiveKey, mlogentryKey);
+                    fragment = LogOtherFragment.newInstance(hiveKey, logEntryDate);
                     fragTag = "LOG_OTHER_FRAG";
                     break;
                 case "6":
@@ -115,22 +113,6 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            NavUtils.navigateUpTo(this, new Intent(this, LogEntryListActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-        */
-
         // Make the Up button perform like the Back button
         switch (item.getItemId()) {
             case android.R.id.home:

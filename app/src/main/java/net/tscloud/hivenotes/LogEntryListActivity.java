@@ -76,7 +76,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     private Hive mHiveForName;
 
     // passed in if being called from LogDateListActivity
-    private long mLogDate;
+    private long mLogDate = -1;
 
     // not currently passed in
     private long mLogKey;
@@ -168,30 +168,31 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             switch (id) {
                 case "1":
-                    fragment = LogGeneralNotesFragment.newInstance(mHiveKey, -1);
+                    fragment = LogGeneralNotesFragment.newInstance(mHiveKey, mLogDate);
                     mPreviousLogData = mLogEntryGeneralData;
                     break;
                 case "2":
-                    fragment = LogProductivityFragment.newInstance(mHiveKey, -1);
+                    fragment = LogProductivityFragment.newInstance(mHiveKey, mLogDate);
                     mPreviousLogData = mLogEntryProductivityData;
                     break;
                 case "3":
-                    fragment = LogPestMgmtFragment.newInstance(mHiveKey, -1);
+                    fragment = LogPestMgmtFragment.newInstance(mHiveKey, mLogDate);
                     mPreviousLogData = mLogEntryPestMgmtData;
                     break;
                 case "4":
-                    fragment = LogFeedingFragment.newInstance(mHiveKey, -1);
+                    fragment = LogFeedingFragment.newInstance(mHiveKey, mLogDate);
                     mPreviousLogData = mLogEntryFeedingData;
                     break;
                 case "5":
-                    fragment = LogOtherFragment.newInstance(mHiveKey, -1);
+                    fragment = LogOtherFragment.newInstance(mHiveKey, mLogDate);
                     mPreviousLogData = mLogEntryOtherData;
                     break;
                 case "6":
                     // Save button
                     //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
                     //        mLogEntryFeedingData, mLogEntryOtherData);
-                    mTask = new UpdateDBTask(this).execute();
+                    mTask = new UpdateDBTask(this);
+                    mTask.execute();
                     break;
                 default:
                     // should this be here? - LogEntryDetailFragment if really just
@@ -213,6 +214,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             Intent intent = new Intent(this, LogEntryDetailActivity.class);
             intent.putExtra(INTENT_ITEM_ID, id);
             intent.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
+            intent.putExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, mLogDate);
             /*
             Need to pass an appropriate DO so it can potentially be accessed by fragment
              */
@@ -236,7 +238,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     // Save button
                     //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
                     //       mLogEntryFeedingData, mLogEntryOtherData);
-                    mTask = new UpdateDBTask(this).execute();
+                    mTask = new UpdateDBTask(this);
+                    mTask.execute();
                     break;
             }
             startActivityForResult(intent, LOG_DETAIL_REQ_CODE);

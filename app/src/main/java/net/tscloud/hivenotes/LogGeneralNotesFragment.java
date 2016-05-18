@@ -153,8 +153,6 @@ public class LogGeneralNotesFragment extends Fragment {
 
             // setup for disease checkboxes
             String diseaseSetDBString = mLogEntryGeneral.getPestsDisease();
-            //List<String> diseaseSetDBList = Arrays.asList(diseaseSetString.split("\\s*,\\s*"));
-            //String[] diseaseSetConst = getResources().getStringArray(R.array.pests_disease_array);
 
             // fill the form
             final Spinner populationSpinner = (Spinner)v.findViewById(R.id.spinnerPopulation);
@@ -178,6 +176,8 @@ public class LogGeneralNotesFragment extends Fragment {
             String formattedVisitDateTime = formattedVisitDate + ' ' + formattedVisitTime;
 
             dateEdit.setText(formattedVisitDateTime);
+            //did I forget to do this?
+            dateEdit.setTag(mLogEntryGeneral.getVisitDate());
 
             populationSpinner.setSelection(
                     ((ArrayAdapter) populationSpinner.getAdapter()).getPosition(

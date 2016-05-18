@@ -122,7 +122,7 @@ public class LogEntryOtherDAO {
             cursor.close();
         }
 
-        return cursorToLogEntry(cursor);
+        return retrievedLogEntryOther;
     }
 
     public LogEntryOther getLogEntryByDate(long date){
@@ -138,7 +138,7 @@ public class LogEntryOtherDAO {
             cursor.close();
         }
 
-        return cursorToLogEntry(cursor);
+        return retrievedLogEntryOther;
     }
 
     protected LogEntryOther cursorToLogEntry(Cursor cursor) {

@@ -1,6 +1,8 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +29,7 @@ public class LogDateListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param logDate Parameter 1.
+     * @param aHiveKey Parameter 1.
      * @return A new instance of fragment LogDateListFragment.
      */
     public static LogDateListFragment newInstance(long aHiveKey) {
@@ -133,6 +135,8 @@ public class LogDateListFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... unused) {
             Log.d(TAG, "GetDatesTask("+ Thread.currentThread().getId() + ") : doInBackground");
+
+            return(null);
         }
 
         @Override
