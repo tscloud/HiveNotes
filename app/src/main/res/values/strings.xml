@@ -186,5 +186,6 @@
     <string name="set">Set</string>
     <string name="unset">Unset</string>
     <string name="no_reminder_set">No reminder set</string>
+    <string name="set_to_current">Set to current date</string>
     <string name="title_activity_log_date_list">LogDateListActivity</string>
 </resources>

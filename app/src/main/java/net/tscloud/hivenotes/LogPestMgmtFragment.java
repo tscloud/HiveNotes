@@ -317,7 +317,6 @@ public class LogPestMgmtFragment extends Fragment {
     }
 
     public void onReminderPressed(final TextView timeLbl) {
-
         Log.d(TAG, "onReminderPressed");
 
         final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);

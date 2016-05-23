@@ -64,7 +64,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     public static final String TAG = "LogEntryListActivity";
 
     // starting LogEntryDetailFragment as subactivity
-    private static final int LOG_DETAIL_REQ_CODE = 1;
+    private static final int LOG_DETAIL_REQ_CODE = 5;
 
     public final static String INTENT_ITEM_ID = "itemId";
     //public final static String INTENT_HIVE_KEY = "hiveKey";
@@ -75,7 +75,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     // need the Hive to get the name for the titlebar and other
     private Hive mHiveForName;
 
-    // passed in if being called from LogDateListActivity
+    // set by ListFragment
     private long mLogDate = -1;
 
     // not currently passed in
@@ -119,7 +119,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
         // Get the hive key from the Intent data
         Intent intent = getIntent();
         mHiveKey = intent.getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
-        mLogDate = intent.getLongExtra(INTENT_LOGENTRY_DATE, -1);
 
         Log.d(TAG, "Called w/ hive key: " + mHiveKey);
 
@@ -288,8 +287,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 //  LogEntryDetailActivity
                 Log.d(TAG, "Save button pressed from LogEntryDetailActivity...perform save" +
                     "NOOP...!Bad to get here!");
-                //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
-                //        mLogEntryFeedingData, mLogEntryOtherData);
             }
             else {
                 Bundle bundleData = data.getExtras();
@@ -322,6 +319,16 @@ public class LogEntryListActivity extends AppCompatActivity implements
     /** Used by fragments to get the data w/ which they may have been dealing */
     public HiveNotesLogDO getPreviousLogData() {
         return mPreviousLogData;
+    }
+
+    @Override
+    public long getHiveKey() {
+        return mHiveKey;
+    }
+
+    @Override
+    public void setActivityLogDate(long aLogDate) {
+        mLogDate = aLogDate;
     }
 
     // Make the Up button perform like the Back button

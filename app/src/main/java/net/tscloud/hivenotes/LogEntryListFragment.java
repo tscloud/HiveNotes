@@ -22,6 +22,19 @@ import net.tscloud.hivenotes.helper.LogListAdapter;
  */
 public class LogEntryListFragment extends ListFragment {
 
+    public static final String TAG = "LogEntryListFragment";
+
+    private static final int LOG_DATE_REQ_CODE = 6;
+
+    // time/date formatters
+    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    private static final String TIME_PATTERN = "HH:mm";
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    private final Calendar calendar = Calendar.getInstance();
+
+    // We'll need to set this when we get a date back from LogDateListActivity
+    private final TextView mLogDate;
+
     /**
      * The serialization (saved instance state) Bundle key representing the
      * activated item position. Only used on tablets.
@@ -49,6 +62,8 @@ public class LogEntryListFragment extends ListFragment {
          * Callback for when an item has been selected.
          */
         public void onItemSelected(String id);
+        public long getHiveKey();
+        public void setActivityLogDate(long);
     }
 
     /**
@@ -58,6 +73,15 @@ public class LogEntryListFragment extends ListFragment {
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
         public void onItemSelected(String id) {
+        }
+
+        @Override
+        public long getHiveKey() {
+            return -1;
+        }
+
+        @Override
+       public void setActivityLogDate(long data) {
         }
     };
 
@@ -86,6 +110,57 @@ public class LogEntryListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_log_entry_list, container, false);
+
+        // Set up log date text view
+        mLogDate = (TextView)v.findViewById(R.id.textLogDate);
+
+        logDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            //Creating the instance of PopupMenu
+            PopupMenu popup = new PopupMenu(getActivity(), logDate);
+            //Inflating the Popup using xml file
+            popup.getMenuInflater().inflate(R.menu.popup_log_date, popup.getMenu());
+
+            //registering popup with OnMenuItemClickListener
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    Toast.makeText(getActivity(),"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
+
+                    switch (item.getItemId()) {
+                        case "0":
+                            // launch date/time picker
+                            onReminderPressed(logDate);
+                            break;
+                        case "1":
+                            // launch LogDateListActivity
+                            Intent i = new Intent(getActivity(),LogDateListActivity.class);
+                            i.putExtra(MainActivity.INTENT_HIVE_KEY, mCallbacks.getHiveKey());
+                            startActivityForResult(i, LOG_DATE_REQ_CODE);
+                            break;
+                        case "2":
+                            // set to current date
+                            calendar.setTimeInMillis(time);
+                            Log.d(TAG, "Set to current Time: " + time);
+
+                            // label has a human readable value; tag has millis value for DB
+                            String timeString = dateFormat.format(calendar.getTime()) + ' ' +
+                                    timeFormat.format(calendar.getTime());
+                            logDate.setText(timeString);
+                            logDate.setTag(time);
+                            break;
+                    }
+
+                    // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
+                    mCallbacks.setActivityLogDate(logDate.getTag());
+
+                    return true;
+                }
+            });
+
+            popup.show();//showing popup menu
+           }
+        });
 
         return view;
     }
@@ -159,5 +234,92 @@ public class LogEntryListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    public void onReminderPressed(final TextView timeLbl) {
+        Log.d(TAG, "onReminderPressed");
+
+        final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+
+        // set the test of the "unset" button of our standard date/time picker
+        dialogView.findViewById(R.id.date_time_unset).setText(R.string.set_to_current);
+
+        dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePicker datePicker = (DatePicker)dialogView.findViewById(R.id.date_picker);
+                TimePicker timePicker = (TimePicker)dialogView.findViewById(R.id.time_picker);
+
+                Calendar calendar = new GregorianCalendar(datePicker.getYear(),
+                        datePicker.getMonth(),
+                        datePicker.getDayOfMonth(),
+                        timePicker.getCurrentHour(),
+                        timePicker.getCurrentMinute());
+
+                long time = calendar.getTimeInMillis();
+                Log.d(TAG, "Time picked: " + time);
+
+                // label has a human readable value; tag has millis value for DB
+                String timeString = dateFormat.format(calendar.getTime()) + ' ' +
+                        timeFormat.format(calendar.getTime());
+                timeLbl.setText(timeString);
+                timeLbl.setTag(time);
+
+                alertDialog.dismiss();
+            }
+        });
+
+        dialogView.findViewById(R.id.date_time_unset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Time UNpicked: ");
+
+                long time = System.currentTimeMillis();
+                calendar.setTimeInMillis(time);
+                Log.d(TAG, "Set to current Time (from Dialog): " + time);
+
+                // label has a human readable value; tag has millis value for DB
+                String timeString = dateFormat.format(calendar.getTime()) + ' ' +
+                        timeFormat.format(calendar.getTime());
+                timeLbl.setText(timeString);
+                timeLbl.setTag(time);
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.setView(dialogView);
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ((requestCode == LOG_DATE_REQ_CODE) && (resultCode == RESULT_OK)) {
+            Log.d(TAG, "Returned from requestCode = " + requestCode);
+
+            if (data == null) {
+                // can this still happen?
+                Log.d(TAG, "No data from LogDateListActivity  - NOOP...!Bad to get here!");
+            }
+            else {
+                if (mLogDate != null) {
+                    long time = data.getLongExtra(LogDateListActivity.INTENT_LOGENTRY_HISTORY_TIME, -1);
+                    calendar.setTimeInMillis(time);
+                    Log.d(TAG, "Historic Time received: " + time);
+
+                    // label has a human readable value; tag has millis value for DB
+                    String timeString = dateFormat.format(calendar.getTime()) + ' ' +
+                            timeFormat.format(calendar.getTime());
+                    mLogDate.setText(timeString);
+                    mLogDate.setTag(time);
+
+                    // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
+                    mCallbacks.setActivityLogDate(logDate.getTag());
+                }
+            }
+        }
     }
 }

@@ -1,0 +1,11 @@
+<menu xmlns:androclass="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/one"
+        android:title="Enter Date"/>
+
+    <item
+        android:id="@+id/two"
+        android:title="Select Date from history"/>
+
+</menu>

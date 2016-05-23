@@ -19,9 +19,12 @@ public class LogDateListActivity extends AppCompatActivity implements
     public static final String TAG = "LogDateListActivity";
 
     // Activity codes
-    private static final int LOG_LIST_REQ_CODE = 1;
+    private static final int LOG_LIST_REQ_CODE = 4;
 
     private long mHiveKey;
+
+    // reference to historic date/time
+    public static String INTENT_LOGENTRY_HISTORY_TIME = "historyTime";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +79,17 @@ public class LogDateListActivity extends AppCompatActivity implements
         /** We've got a datetime --> pass it off to LogEntryListActivity so we
          *   can display/update an old log entry instead of adding a new one
          */
-        Intent i = new Intent(this,LogEntryListActivity.class);
-        i.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
-        i.putExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, logDate);
-        startActivityForResult(i, LOG_LIST_REQ_CODE);
-}
+        //Intent i = new Intent(this,LogEntryListActivity.class);
+        //i.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
+        //i.putExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, logDate);
+        //startActivityForResult(i, LOG_LIST_REQ_CODE);
+
+        /** We've got a datetime --> pass it pass it back to whomever called us
+         */
+        Intent data = new Intent();
+        data.putExtra(logDate);
+        setResult(INTENT_LOGENTRY_HISTORY_TIME, RESULT_OK, data);
+        finish();
+
+    }
 }
