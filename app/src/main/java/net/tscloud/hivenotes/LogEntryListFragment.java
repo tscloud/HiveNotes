@@ -1,15 +1,31 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import net.tscloud.hivenotes.helper.LogEntryNames;
 import net.tscloud.hivenotes.helper.LogListAdapter;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * A list fragment representing a list of LogEntries. This fragment
@@ -33,7 +49,7 @@ public class LogEntryListFragment extends ListFragment {
     private final Calendar calendar = Calendar.getInstance();
 
     // We'll need to set this when we get a date back from LogDateListActivity
-    private final TextView mLogDate;
+    private TextView mLogDate = null;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -63,7 +79,7 @@ public class LogEntryListFragment extends ListFragment {
          */
         public void onItemSelected(String id);
         public long getHiveKey();
-        public void setActivityLogDate(long);
+        public void setActivityLogDate(long aDate);
     }
 
     /**
@@ -81,7 +97,7 @@ public class LogEntryListFragment extends ListFragment {
         }
 
         @Override
-       public void setActivityLogDate(long data) {
+        public void setActivityLogDate(long data) {
         }
     };
 
@@ -109,16 +125,16 @@ public class LogEntryListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_log_entry_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_log_entry_list, container, false);
 
         // Set up log date text view
         mLogDate = (TextView)v.findViewById(R.id.textLogDate);
 
-        logDate.setOnClickListener(new View.OnClickListener() {
+        mLogDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             //Creating the instance of PopupMenu
-            PopupMenu popup = new PopupMenu(getActivity(), logDate);
+            PopupMenu popup = new PopupMenu(getActivity(), mLogDate);
             //Inflating the Popup using xml file
             popup.getMenuInflater().inflate(R.menu.popup_log_date, popup.getMenu());
 
@@ -128,31 +144,32 @@ public class LogEntryListFragment extends ListFragment {
                     Toast.makeText(getActivity(),"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
 
                     switch (item.getItemId()) {
-                        case "0":
+                        case 0:
                             // launch date/time picker
-                            onReminderPressed(logDate);
+                            onReminderPressed(mLogDate);
                             break;
-                        case "1":
+                        case 1:
                             // launch LogDateListActivity
                             Intent i = new Intent(getActivity(),LogDateListActivity.class);
                             i.putExtra(MainActivity.INTENT_HIVE_KEY, mCallbacks.getHiveKey());
                             startActivityForResult(i, LOG_DATE_REQ_CODE);
                             break;
-                        case "2":
+                        case 2:
                             // set to current date
+                            long time = calendar.getTimeInMillis();
                             calendar.setTimeInMillis(time);
                             Log.d(TAG, "Set to current Time: " + time);
 
                             // label has a human readable value; tag has millis value for DB
                             String timeString = dateFormat.format(calendar.getTime()) + ' ' +
                                     timeFormat.format(calendar.getTime());
-                            logDate.setText(timeString);
-                            logDate.setTag(time);
+                            mLogDate.setText(timeString);
+                            mLogDate.setTag(time);
                             break;
                     }
 
                     // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
-                    mCallbacks.setActivityLogDate(logDate.getTag());
+                    mCallbacks.setActivityLogDate((long)mLogDate.getTag());
 
                     return true;
                 }
@@ -162,7 +179,7 @@ public class LogEntryListFragment extends ListFragment {
            }
         });
 
-        return view;
+        return v;
     }
 
     @Override
@@ -243,7 +260,8 @@ public class LogEntryListFragment extends ListFragment {
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
 
         // set the test of the "unset" button of our standard date/time picker
-        dialogView.findViewById(R.id.date_time_unset).setText(R.string.set_to_current);
+        Button unsetBtn = (Button)dialogView.findViewById(R.id.date_time_unset);
+        unsetBtn.setText(getResources().getString(R.string.set_to_current));
 
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,10 +312,10 @@ public class LogEntryListFragment extends ListFragment {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ((requestCode == LOG_DATE_REQ_CODE) && (resultCode == RESULT_OK)) {
+        if ((requestCode == LOG_DATE_REQ_CODE) && (resultCode == Activity.RESULT_OK)) {
             Log.d(TAG, "Returned from requestCode = " + requestCode);
 
             if (data == null) {
@@ -317,7 +335,7 @@ public class LogEntryListFragment extends ListFragment {
                     mLogDate.setTag(time);
 
                     // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
-                    mCallbacks.setActivityLogDate(logDate.getTag());
+                    mCallbacks.setActivityLogDate((long)mLogDate.getTag());
                 }
             }
         }

@@ -84,11 +84,11 @@ public class LogDateListActivity extends AppCompatActivity implements
         //i.putExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, logDate);
         //startActivityForResult(i, LOG_LIST_REQ_CODE);
 
-        /** We've got a datetime --> pass it pass it back to whomever called us
+        /** We've got a datetime --> pass it back to whomever called us
          */
         Intent data = new Intent();
-        data.putExtra(logDate);
-        setResult(INTENT_LOGENTRY_HISTORY_TIME, RESULT_OK, data);
+        data.putExtra(INTENT_LOGENTRY_HISTORY_TIME, logDate);
+        setResult(RESULT_OK, data);
         finish();
 
     }
