@@ -370,12 +370,13 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             // This is the date that will be used for all the VISIT_DATE columns
             //  set it to Now in case there's nothing from LogEntryGeneral
-            long generalDate = System.currentTimeMillis();
+            // NOW use mLogDate <-- should always be set via Fragment?
+            //long generalDate = System.currentTimeMillis();
 
             if (mLogEntryGeneralData != null) {
                 Log.d(TAG, "about to persist LogEntryGeneral");
-                //assume date is set from LogEntryGeneral?
-                generalDate = mLogEntryGeneralData.getVisitDate();
+                // set VISIT_DATE mLogDate - this should always be set properly by Fragment?
+                mLogEntryGeneralData.setVisitDate(mLogDate);
 
                 LogEntryGeneralDAO mLogEntryGeneralDAO = new LogEntryGeneralDAO(ctx);
                 if (mLogEntryGeneralData.getId() == -1) {
@@ -393,8 +394,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
             if (mLogEntryProductivityData != null) {
                 Log.d(TAG, "about to persist LogEntryProductivity");
                 LogEntryProductivityDAO mLogEntryProductivityDAO = new LogEntryProductivityDAO(ctx);
-                // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryProductivityData.setVisitDate(generalDate);
+                // set VISIT_DATE mLogDate - this should always be set properly by Fragment?
+                mLogEntryProductivityData.setVisitDate(mLogDate);
 
                 if (mLogEntryProductivityData.getId() == -1) {
                     mLogEntryProductivityDAO.createLogEntry(mLogEntryProductivityData);
@@ -412,7 +413,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 Log.d(TAG, "about to persist LogEntryPestMgmt");
                 LogEntryPestMgmtDAO mLogEntryPestMgmtDAO = new LogEntryPestMgmtDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryPestMgmtData.setVisitDate(generalDate);
+                mLogEntryPestMgmtData.setVisitDate(mLogDate);
 
                 // need to potentially do Notification 1st as its key may need
                 //   creation prior to Log entry write
@@ -442,7 +443,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 Log.d(TAG, "about to persist LogEntryFeeding");
                 LogEntryFeedingDAO mLogEntryFeedingDAO = new LogEntryFeedingDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryFeedingData.setVisitDate(generalDate);
+                mLogEntryFeedingData.setVisitDate(mLogDate);
 
                 if (mLogEntryFeedingData.getId() == -1) {
                     mLogEntryFeedingDAO.createLogEntry(mLogEntryFeedingData);
@@ -460,7 +461,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 Log.d(TAG, "about to persist LogEntryOther");
                 LogEntryOtherDAO mLogEntryOtherDAO = new LogEntryOtherDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryOtherData.setVisitDate(generalDate);
+                mLogEntryOtherData.setVisitDate(mLogDate);
 
                 // need to potentially do Notification 1st as its key may need
                 //   creation prior to Log entry write
