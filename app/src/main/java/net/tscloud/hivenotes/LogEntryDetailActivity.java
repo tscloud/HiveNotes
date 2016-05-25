@@ -57,6 +57,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             // using a fragment transaction.
             String argItemId = getIntent().getStringExtra(LogEntryListActivity.INTENT_ITEM_ID);
             long hiveKey = getIntent().getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
+            long logKey = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_KEY, -1);
             long logEntryDate = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, -1);
 
             try {
@@ -74,23 +75,23 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
             switch (argItemId) {
                 case "1":
-                    fragment = LogGeneralNotesFragment.newInstance(hiveKey, logEntryDate);
+                    fragment = LogGeneralNotesFragment.newInstance(hiveKey, logEntryDate, logKey);
                     fragTag = "LOG_GENERAL_FRAG";
                     break;
                 case "2":
-                    fragment = LogProductivityFragment.newInstance(hiveKey, logEntryDate);
+                    fragment = LogProductivityFragment.newInstance(hiveKey, logEntryDate, logKey);
                     fragTag = "LOG_PRODUCTIVITY_FRAG";
                     break;
                 case "3":
-                    fragment = LogPestMgmtFragment.newInstance(hiveKey, logEntryDate);
+                    fragment = LogPestMgmtFragment.newInstance(hiveKey, logEntryDate, logKey);
                     fragTag = "LOG_PEST_FRAG";
                     break;
                 case "4":
-                    fragment = LogFeedingFragment.newInstance(hiveKey, logEntryDate);
+                    fragment = LogFeedingFragment.newInstance(hiveKey, logEntryDate, logKey);
                     fragTag = "LOG_FEEDING_FRAG";
                     break;
                 case "5":
-                    fragment = LogOtherFragment.newInstance(hiveKey, logEntryDate);
+                    fragment = LogOtherFragment.newInstance(hiveKey, logEntryDate, logKey);
                     fragTag = "LOG_OTHER_FRAG";
                     break;
                 case "6":

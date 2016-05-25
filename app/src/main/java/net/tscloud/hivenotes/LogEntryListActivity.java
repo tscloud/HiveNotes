@@ -167,23 +167,23 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             switch (id) {
                 case "1":
-                    fragment = LogGeneralNotesFragment.newInstance(mHiveKey, mLogDate);
+                    fragment = LogGeneralNotesFragment.newInstance(mHiveKey, mLogDate, -1);
                     mPreviousLogData = mLogEntryGeneralData;
                     break;
                 case "2":
-                    fragment = LogProductivityFragment.newInstance(mHiveKey, mLogDate);
+                    fragment = LogProductivityFragment.newInstance(mHiveKey, mLogDate, -1);
                     mPreviousLogData = mLogEntryProductivityData;
                     break;
                 case "3":
-                    fragment = LogPestMgmtFragment.newInstance(mHiveKey, mLogDate);
+                    fragment = LogPestMgmtFragment.newInstance(mHiveKey, mLogDate, -1);
                     mPreviousLogData = mLogEntryPestMgmtData;
                     break;
                 case "4":
-                    fragment = LogFeedingFragment.newInstance(mHiveKey, mLogDate);
+                    fragment = LogFeedingFragment.newInstance(mHiveKey, mLogDate, -1);
                     mPreviousLogData = mLogEntryFeedingData;
                     break;
                 case "5":
-                    fragment = LogOtherFragment.newInstance(mHiveKey, mLogDate);
+                    fragment = LogOtherFragment.newInstance(mHiveKey, mLogDate, -1);
                     mPreviousLogData = mLogEntryOtherData;
                     break;
                 case "6":
@@ -212,6 +212,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             // w/ the selected item ID.
             Intent intent = new Intent(this, LogEntryDetailActivity.class);
             intent.putExtra(INTENT_ITEM_ID, id);
+            intent.putExtra(INTENT_LOGENTRY_KEY, -1);
             intent.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
             intent.putExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, mLogDate);
             /*

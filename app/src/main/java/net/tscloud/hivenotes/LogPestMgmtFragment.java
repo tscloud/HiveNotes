@@ -72,10 +72,11 @@ public class LogPestMgmtFragment extends Fragment {
      * @param logEntryID Parameter 2.
      * @return A new instance of fragment LogPestMgmtFragment.
      */
-    public static LogPestMgmtFragment newInstance(long hiveID, long logEntryID) {
+    public static LogPestMgmtFragment newInstance(long hiveID, long aLogEntryDate, long logEntryID) {
         LogPestMgmtFragment fragment = new LogPestMgmtFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;

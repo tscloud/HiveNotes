@@ -73,11 +73,12 @@ public class LogOtherFragment extends Fragment {
      * @param aLogEntryDate Parameter 2.
      * @return A new instance of fragment LogOtherFragment.
      */
-    public static LogOtherFragment newInstance(long aHiveID, long aLogEntryDate) {
+    public static LogOtherFragment newInstance(long aHiveID, long aLogEntryDate, long logEntryID) {
         LogOtherFragment fragment = new LogOtherFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.INTENT_HIVE_KEY, aHiveID);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -102,6 +103,7 @@ public class LogOtherFragment extends Fragment {
             mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
             mLogEntryOtherDate =
                 getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_DATE);
+            mLogEntryOtherKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
         }
     }
 
@@ -288,7 +290,7 @@ public class LogOtherFragment extends Fragment {
 
            mLogEntryOther.setId(mLogEntryOtherKey);
            mLogEntryOther.setHive(mHiveID);
-           mLogEntryOther.setVisitDate(-1);
+           mLogEntryOther.setVisitDate(mLogEntryOtherDate);
            mLogEntryOther.setRequeen(requeenText);
            mLogEntryOther.setRequeenRmndrTime(requeenRmndrLong);
            mLogEntryOther.setSwarmRmndrTime(swarmRmndrLong);

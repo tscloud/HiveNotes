@@ -42,10 +42,11 @@ public class LogFeedingFragment extends Fragment {
      * @param logEntryID Parameter 2.
      * @return A new instance of fragment LogFeedingFragment.
      */
-    public static LogFeedingFragment newInstance(long hiveID, long logEntryID) {
+    public static LogFeedingFragment newInstance(long hiveID, long aLogEntryDate, long logEntryID) {
         LogFeedingFragment fragment = new LogFeedingFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;

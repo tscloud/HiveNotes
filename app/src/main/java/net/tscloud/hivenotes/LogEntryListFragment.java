@@ -112,13 +112,6 @@ public class LogEntryListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-        setListAdapter(new ArrayAdapter<LogEntryNames.LogEntryItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                LogEntryNames.ITEMS));
-        */
         setListAdapter(new LogListAdapter(getActivity(), LogEntryNames.ITEMS));
     }
 
@@ -156,19 +149,19 @@ public class LogEntryListFragment extends ListFragment {
                         Toast.makeText(getActivity(),"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
 
                         switch (item.getItemId()) {
-                            case 0:
+                            case R.id.itemEnterDate:
                                 // launch date/time picker
                                 onReminderPressed(mTextViewLogDate);
                                 // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
                                 mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
                                 break;
-                            case 1:
+                            case R.id.itemSelectDate:
                                 // launch LogDateListActivity
                                 Intent i = new Intent(getActivity(),LogDateListActivity.class);
                                 i.putExtra(MainActivity.INTENT_HIVE_KEY, mCallbacks.getHiveKey());
                                 startActivityForResult(i, LOG_DATE_REQ_CODE);
                                 break;
-                            case 2:
+                            case R.id.itemSetDateCurrent:
                                 // set to current date
                                 long time = calendar.getTimeInMillis();
                                 calendar.setTimeInMillis(time);
@@ -348,7 +341,7 @@ public class LogEntryListFragment extends ListFragment {
                     mTextViewLogDate.setTag(time);
 
                     // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
-                    mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
+                    mCallbacks.setActivityLogDate(time);
                 }
             }
         }

@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -80,7 +83,9 @@ public class LogDateListFragment extends Fragment {
     public void onButtonPressed() {
         Log.d(TAG, "in onButtonPressed");
 
-        mListener.onLogDateListFragmentInteraction(System.currentTimeMillis());
+        Calendar calendar = new GregorianCalendar(2013,0,31);
+
+        mListener.onLogDateListFragmentInteraction(calendar.getTimeInMillis());
     }
 
     @Override

@@ -21,7 +21,6 @@ import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -38,6 +37,7 @@ public class LogGeneralNotesFragment extends Fragment {
 
     private long mHiveID;
     private long mLogEntryGeneralKey;
+    private long mLogEntryGeneralDate;
     private LogEntryGeneral mLogEntryGeneral;
 
     private OnLogGeneralNotesFragmentInteractionListener mListener;
@@ -56,10 +56,11 @@ public class LogGeneralNotesFragment extends Fragment {
      * @param logEntryID Parameter 2.
      * @return A new instance of fragment LogGeneralNotesFragment.
      */
-    public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryID) {
+    public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogGeneralNotesFragment fragment = new LogGeneralNotesFragment();
         Bundle args = new Bundle();
         args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, logEntryDate);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
         fragment.setArguments(args);
         return fragment;
@@ -90,6 +91,7 @@ public class LogGeneralNotesFragment extends Fragment {
         // save off arguments
         if (getArguments() != null) {
             mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
+            mLogEntryGeneralDate = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
             mLogEntryGeneralKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
         }
     }
@@ -169,16 +171,6 @@ public class LogGeneralNotesFragment extends Fragment {
             final CheckBox europeanFoulbroodCheck = (CheckBox)v.findViewById(R.id.checkEuropeanFoulbrood);
             final CheckBox chalkbroodCheck = (CheckBox)v.findViewById(R.id.checkChalkbrood);
 
-            // Must format
-            calendar.setTimeInMillis(mLogEntryGeneral.getVisitDate());
-            String formattedVisitDate = dateFormat.format(calendar.getTime());
-            String formattedVisitTime = timeFormat.format(calendar.getTime());
-            String formattedVisitDateTime = formattedVisitDate + ' ' + formattedVisitTime;
-
-            dateEdit.setText(formattedVisitDateTime);
-            //did I forget to do this?
-            dateEdit.setTag(mLogEntryGeneral.getVisitDate());
-
             populationSpinner.setSelection(
                     ((ArrayAdapter) populationSpinner.getAdapter()).getPosition(
                             mLogEntryGeneral.getPopulation()));
@@ -210,17 +202,6 @@ public class LogGeneralNotesFragment extends Fragment {
             chalkbroodCheck.setChecked(diseaseSetDBString.contains(chalkbroodCheck.getText()));
             otherCheck.setChecked(diseaseSetDBString.contains(otherCheck.getText()));
         }
-        else {
-            // default to todays date
-            long generalDate = System.currentTimeMillis();
-            calendar.setTimeInMillis(generalDate);
-            String formattedVisitDate = dateFormat.format(calendar.getTime());
-            String formattedVisitTime = timeFormat.format(calendar.getTime());
-            String formattedVisitDateTime = formattedVisitDate + ' ' + formattedVisitTime;
-
-            dateEdit.setText(formattedVisitDateTime);
-            dateEdit.setTag(generalDate);
-        }
 
         // set button listener
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
@@ -239,7 +220,6 @@ public class LogGeneralNotesFragment extends Fragment {
 
         boolean lNewLogEntry = false;
 
-        final EditText dateEdit = (EditText)getView().findViewById(R.id.editTextDate);
         final Spinner populationSpinner = (Spinner)getView().findViewById(R.id.spinnerPopulation);
         final Spinner temperamentSpinner = (Spinner)getView().findViewById(R.id.spinnerTemperament);
         final Spinner broodFramesSpinner = (Spinner)getView().findViewById(R.id.spinnerBroodFrames);
@@ -257,7 +237,6 @@ public class LogGeneralNotesFragment extends Fragment {
         final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkPestOther);
         final EditText otherEdit = (EditText)getView().findViewById(R.id.editTextOther);
 
-        long dateLong = (long)dateEdit.getTag();
         String populationText = populationSpinner.getSelectedItem().toString();
         String temperamentText = temperamentSpinner.getSelectedItem().toString();
 
@@ -323,7 +302,7 @@ public class LogGeneralNotesFragment extends Fragment {
 
             mLogEntryGeneral.setId(mLogEntryGeneralKey);
             mLogEntryGeneral.setHive(mHiveID);
-            mLogEntryGeneral.setVisitDate(dateLong);
+            mLogEntryGeneral.setVisitDate(mLogEntryGeneralDate);
             mLogEntryGeneral.setPopulation(populationText);
             mLogEntryGeneral.setTemperament(temperamentText);
             mLogEntryGeneral.setPestsDisease(pestsDiseaseTextBuf.toString().replaceAll(" ,$", ""));

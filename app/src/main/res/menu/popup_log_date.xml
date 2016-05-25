@@ -1,11 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/one"
+        android:id="@+id/itemEnterDate"
         android:title="Enter Date"/>
 
     <item
-        android:id="@+id/two"
+        android:id="@+id/itemSelectDate"
         android:title="Select Date from history"/>
+
+    <item
+        android:id="@+id/itemSetDateCurrent"
+        android:title="Set Date to current"/>
 
 </menu>
