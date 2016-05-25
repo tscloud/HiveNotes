@@ -16,9 +16,8 @@ public abstract class LogFragment extends Fragment {
 
     // member vars common to all Log Fragments
     private long mHiveID;
-    private long mLogEntryGeneralKey;
-    private long mLogEntryGeneralDate;
-    private HiveNotesLogDO mLogEntryDO;
+    private long mLogEntryKey;
+    private long mLogEntryDate;
 
     // time/date formatters
     private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
@@ -29,11 +28,21 @@ public abstract class LogFragment extends Fragment {
     // abstract methods
     abstract HiveNotesLogDO getLogEntryDO();
 
-    abstract void setLogEntryDO(HiveNotesLogDO dataObj);
+    abstract void setLogEntryDO(HiveNotesLogDO aDataObj);
 
-    abstract long getLogEntryKey();
+    abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
 
-    abstract HiveNotesLogDO getLogEntryFromDB(long key);
+    // concrete static methods
+    public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate, long aLogEntryID) {
+        Log.d(TAG, "in setLogFragArgs()");
+
+        Bundle args = new Bundle();
+        args.putLong(MainActivity.INTENT_HIVE_KEY, aHiveID);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
+        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, aLogEntryID);
+        frag.setArguments(args);
+        return frag;
+    }
 
     // concrete methods
     protected void getLogEntry(PreviousLogDataProvider aListener) {
@@ -41,6 +50,7 @@ public abstract class LogFragment extends Fragment {
 
         // log entry may have something in it either already populated or populated from Bundle
         // if not => 1st check the Activity for previously entered data, if not => potentially read DB
+        //  on id 1st, date 2nd
         if (getLogEntryDO() == null) {
             try {
                 setLogEntryDO(aListener.getPreviousLogData());
@@ -51,11 +61,20 @@ public abstract class LogFragment extends Fragment {
                 setLogEntryDO(null);
             }
             if (getLogEntryDO() == null) {
-                if (getLogEntryKey() != -1) {
-                    setLogEntryDO(getLogEntryFromDB(getLogEntryKey()));
-                }
+                setLogEntryDO(getLogEntryFromDB(mLogEntryKey, mLogEntryDate));
             }
         }
+    }
+
+    protected void saveOffArgs() {
+        Log.d(TAG, "in saveOffArgs()");
+
+        if (getArguments() != null) {
+            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
+            mLogEntryKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
+            mLogEntryDate = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
+        }
+
     }
 
     // necessary interfaces

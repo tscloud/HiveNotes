@@ -31,13 +31,10 @@ import java.util.Locale;
  * Use the {@link LogGeneralNotesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogGeneralNotesFragment extends Fragment {
+public class LogGeneralNotesFragment extends LogFragment {
 
     public static final String TAG = "LogGeneralNotesFragment";
 
-    private long mHiveID;
-    private long mLogEntryGeneralKey;
-    private long mLogEntryGeneralDate;
     private LogEntryGeneral mLogEntryGeneral;
 
     private OnLogGeneralNotesFragmentInteractionListener mListener;
@@ -58,12 +55,8 @@ public class LogGeneralNotesFragment extends Fragment {
      */
     public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogGeneralNotesFragment fragment = new LogGeneralNotesFragment();
-        Bundle args = new Bundle();
-        args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, logEntryDate);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
-        fragment.setArguments(args);
-        return fragment;
+
+        return setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
     }
 
     public LogGeneralNotesFragment() {
@@ -88,12 +81,8 @@ public class LogGeneralNotesFragment extends Fragment {
             mLogEntryGeneral.setPollenStores(savedInstanceState.getString("pollenStores"));
         }
 
-        // save off arguments
-        if (getArguments() != null) {
-            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
-            mLogEntryGeneralDate = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-            mLogEntryGeneralKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
+        // save off arguments via super method
+        saveOffArgs();
     }
 
     @Override
@@ -130,26 +119,10 @@ public class LogGeneralNotesFragment extends Fragment {
 
         broodFramesSpinner.setAdapter(spinnerArrayAdapter);
 
-        // date must be set if we are performing update
-        final EditText dateEdit = (EditText)v.findViewById(R.id.editTextDate);
-
-        // log entry may have something in it either already populated or populated from Bundle
-        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
-        if (mLogEntryGeneral == null) {
-            try {
-                mLogEntryGeneral = (LogEntryGeneral)mListener.getPreviousLogData();
-            }
-            catch (ClassCastException e) {
-                // Log the exception but continue w/ NO previous log data
-                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
-                mLogEntryGeneral = null;
-            }
-            if (mLogEntryGeneral == null) {
-                if (mLogEntryGeneralKey != -1) {
-                    mLogEntryGeneral = getLogEntry(mLogEntryGeneralKey);
-                }
-            }
-        }
+        /**
+         * call super method to get DO via best means
+         */
+        getLogEntry(mListener);
 
         if (mLogEntryGeneral != null) {
 
@@ -370,11 +343,19 @@ public class LogGeneralNotesFragment extends Fragment {
     }
 
     // Utility method to get Profile
-    LogEntryGeneral getLogEntry(long aLogEntryID) {
+    LogEntryGeneral getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryGeneral table");
         LogEntryGeneralDAO logEntryGeneralDAO = new LogEntryGeneralDAO(getActivity());
-        LogEntryGeneral reply = logEntryGeneralDAO.getLogEntryById(aLogEntryID);
+        LogEntryGeneral reply = null;
+
+        if (aKey != -1) {
+            reply = logEntryGeneralDAO.getLogEntryById(aKey);
+        }
+        else if (aDate != -1) {
+            reply = logEntryGeneralDAO.getLogEntryByDate(aDate);
+        }
+
         logEntryGeneralDAO.close();
 
         return reply;
@@ -392,7 +373,6 @@ public class LogGeneralNotesFragment extends Fragment {
      */
     public interface OnLogGeneralNotesFragmentInteractionListener {
         void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
-        HiveNotesLogDO getPreviousLogData();
     }
 
 }
