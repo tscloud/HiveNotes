@@ -154,6 +154,22 @@ public class LogEntryGeneralDAO {
         return retrievedLogEntryGeneral;
     }
 
+    public LogEntryGeneral getLogEntryByDate(long date){
+        Cursor cursor = mDatabase.query(TABLE_LOGENTRYGENERAL, mAllColumns,
+                COLUMN_LOGENTRYGENERAL_VISIT_DATE + " = ?",
+                new String[] { String.valueOf(date) }, null, null, null);
+
+        LogEntryGeneral retrievedLogEntryGeneral = null;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                retrievedLogEntryGeneral = cursorToLogEntry(cursor);
+            }
+            cursor.close();
+        }
+
+        return retrievedLogEntryGeneral;
+    }
+
     protected LogEntryGeneral cursorToLogEntry(Cursor cursor) {
         LogEntryGeneral logEntryGeneral = new LogEntryGeneral();
         logEntryGeneral.setId(cursor.getLong(0));

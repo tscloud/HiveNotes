@@ -59,8 +59,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
         LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener,
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
-        LogOtherFragment.OnLogOtherFragmentInteractionListener,
-        LogFragment.PreviousLogDataProvider {
+        LogOtherFragment.OnLogOtherFragmentInteractionListener {
 
     public static final String TAG = "LogEntryListActivity";
 

@@ -1,5 +1,6 @@
 package net.tscloud.hivenotes;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
@@ -15,15 +16,15 @@ public abstract class LogFragment extends Fragment {
     public static final String TAG = "LogFragment";
 
     // member vars common to all Log Fragments
-    private long mHiveID;
-    private long mLogEntryKey;
-    private long mLogEntryDate;
+    protected long mHiveID;
+    protected long mLogEntryKey;
+    protected long mLogEntryDate;
 
     // time/date formatters
-    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-    private static final String TIME_PATTERN = "HH:mm";
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
-    private final Calendar calendar = Calendar.getInstance();
+    protected static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    protected static final String TIME_PATTERN = "HH:mm";
+    protected static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    protected final Calendar calendar = Calendar.getInstance();
 
     // abstract methods
     abstract HiveNotesLogDO getLogEntryDO();
@@ -40,8 +41,8 @@ public abstract class LogFragment extends Fragment {
         args.putLong(MainActivity.INTENT_HIVE_KEY, aHiveID);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
         args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, aLogEntryID);
-        frag.setArguments(args);
-        return frag;
+        aFrag.setArguments(args);
+        return aFrag;
     }
 
     // concrete methods

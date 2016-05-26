@@ -56,11 +56,21 @@ public class LogGeneralNotesFragment extends LogFragment {
     public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogGeneralNotesFragment fragment = new LogGeneralNotesFragment();
 
-        return setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
+        return (LogGeneralNotesFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
     }
 
     public LogGeneralNotesFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    HiveNotesLogDO getLogEntryDO() {
+        return mLogEntryGeneral;
+    }
+
+    @Override
+    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+        mLogEntryGeneral = (LogEntryGeneral)aDataObj;
     }
 
     @Override
@@ -273,9 +283,9 @@ public class LogGeneralNotesFragment extends LogFragment {
                 mLogEntryGeneral = new LogEntryGeneral();
             }
 
-            mLogEntryGeneral.setId(mLogEntryGeneralKey);
+            mLogEntryGeneral.setId(mLogEntryKey);
             mLogEntryGeneral.setHive(mHiveID);
-            mLogEntryGeneral.setVisitDate(mLogEntryGeneralDate);
+            mLogEntryGeneral.setVisitDate(mLogEntryDate);
             mLogEntryGeneral.setPopulation(populationText);
             mLogEntryGeneral.setTemperament(temperamentText);
             mLogEntryGeneral.setPestsDisease(pestsDiseaseTextBuf.toString().replaceAll(" ,$", ""));
@@ -311,7 +321,7 @@ public class LogGeneralNotesFragment extends LogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnLogGeneralNotesFragmentInteractionListener) activity;
+            mListener = (OnLogGeneralNotesFragmentInteractionListener)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnLogGeneralNotesFragmentInteractionListener");
@@ -371,7 +381,7 @@ public class LogGeneralNotesFragment extends LogFragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnLogGeneralNotesFragmentInteractionListener {
+    public interface OnLogGeneralNotesFragmentInteractionListener extends LogFragment.PreviousLogDataProvider{
         void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
     }
 
