@@ -39,20 +39,6 @@ public class LogGeneralNotesFragment extends LogFragment {
 
     private OnLogGeneralNotesFragmentInteractionListener mListener;
 
-    // time/date formatters
-    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-    private static final String TIME_PATTERN = "HH:mm";
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
-    private final Calendar calendar = Calendar.getInstance();
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param hiveID Parameter 1.
-     * @param logEntryID Parameter 2.
-     * @return A new instance of fragment LogGeneralNotesFragment.
-     */
     public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogGeneralNotesFragment fragment = new LogGeneralNotesFragment();
 
@@ -371,16 +357,6 @@ public class LogGeneralNotesFragment extends LogFragment {
         return reply;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnLogGeneralNotesFragmentInteractionListener extends LogFragment.PreviousLogDataProvider{
         void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
     }
