@@ -124,16 +124,10 @@ public class LogEntryListFragment extends ListFragment {
         mTextViewLogDate = (TextView)v.findViewById(R.id.textLogDate);
 
         // Initially set to current time
-        long time = calendar.getTimeInMillis();
-        calendar.setTimeInMillis(time);
+        long time = setTextViewDate(-1);
         Log.d(TAG, "Set to current Time (initial): " + time);
-
-        // label has a human readable value; tag has millis value for DB
-        String timeString = dateFormat.format(calendar.getTime()) + ' ' +
-                timeFormat.format(calendar.getTime());
-        mTextViewLogDate.setText(timeString);
-        mTextViewLogDate.setTag(time);
-
+        //set the activity's LogDate
+        //mCallbacks.setActivityLogDate(time);
 
         mTextViewLogDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +147,7 @@ public class LogEntryListFragment extends ListFragment {
                                 // launch date/time picker
                                 onReminderPressed(mTextViewLogDate);
                                 // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
-                                mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
+                                //mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
                                 break;
                             case R.id.itemSelectDate:
                                 // launch LogDateListActivity
@@ -163,7 +157,7 @@ public class LogEntryListFragment extends ListFragment {
                                 break;
                             case R.id.itemSetDateCurrent:
                                 // set to current date
-                                long time = calendar.getTimeInMillis();
+                                long time = System.currentTimeMillis();
                                 calendar.setTimeInMillis(time);
                                 Log.d(TAG, "Set to current Time (menu): " + time);
 
@@ -173,7 +167,7 @@ public class LogEntryListFragment extends ListFragment {
                                 mTextViewLogDate.setText(timeString);
                                 mTextViewLogDate.setTag(time);
                                 // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
-                                mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
+                                //mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
                                 break;
                         }
 
@@ -223,6 +217,29 @@ public class LogEntryListFragment extends ListFragment {
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
 
+        // Previously we had been setting this whenever it changed
+        mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
+
+        /**
+         * Don't like doing this - if the Save btn hit (only know this by id=6) -> we have to reset
+         *  the date.  If we don't -> the next log entries will use the date we just used to save a
+         *  log entry.  This will result in attempt to read the log w/ the date we just used and we
+         *  will get a hit (we just saved an entry w/ this date) and we will be updating that entry
+         *  instead of creating a new one.  Also note that the Activity's logDate is NOT set.
+         */
+        //if (LogEntryNames.ITEMS.get(position).getId().equals("6")) {
+        //    long time = setTextViewDate(-1);
+        //    Log.d(TAG, "Set to current Time (prior to Save): " + time);
+        //}
+
+        /**
+         * OR - indicate to the user that if update after saving -> they will we updating the entry
+         *  they just created/updated
+         */
+        if (LogEntryNames.ITEMS.get(position).getId().equals("6")) {
+            mTextViewLogDate.setText(mTextViewLogDate.getText() + " (EXISTING)");
+        }
+
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
         mCallbacks.onItemSelected(LogEntryNames.ITEMS.get(position).getId());
@@ -257,6 +274,24 @@ public class LogEntryListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    private long setTextViewDate(long aTime) {
+
+        if (aTime == -1) {
+            aTime = System.currentTimeMillis();
+        }
+        // Initially set to current time
+        calendar.setTimeInMillis(aTime);
+        Log.d(TAG, "Set to current Time: " + aTime);
+
+        // label has a human readable value; tag has millis value for DB
+        String timeString = dateFormat.format(calendar.getTime()) + ' ' +
+                timeFormat.format(calendar.getTime());
+        mTextViewLogDate.setText(timeString);
+        mTextViewLogDate.setTag(aTime);
+
+        return aTime;
     }
 
     public void onReminderPressed(final TextView timeLbl) {
@@ -341,7 +376,7 @@ public class LogEntryListFragment extends ListFragment {
                     mTextViewLogDate.setTag(time);
 
                     // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
-                    mCallbacks.setActivityLogDate(time);
+                    //mCallbacks.setActivityLogDate(time);
                 }
             }
         }

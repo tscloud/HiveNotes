@@ -73,7 +73,7 @@ public abstract class LogFragment extends Fragment {
         if (getArguments() != null) {
             mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
             mLogEntryKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-            mLogEntryDate = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
+            mLogEntryDate = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_DATE);
         }
 
     }

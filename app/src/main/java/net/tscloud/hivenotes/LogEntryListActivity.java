@@ -188,8 +188,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     break;
                 case "6":
                     // Save button
-                    //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
-                    //        mLogEntryFeedingData, mLogEntryOtherData);
                     mTask = new UpdateDBTask(this);
                     mTask.execute();
                     break;
@@ -214,7 +212,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             intent.putExtra(INTENT_ITEM_ID, id);
             intent.putExtra(INTENT_LOGENTRY_KEY, -1);
             intent.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
-            intent.putExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, mLogDate);
+            intent.putExtra(INTENT_LOGENTRY_DATE, mLogDate);
             /*
             Need to pass an appropriate DO so it can potentially be accessed by fragment
              */
@@ -330,6 +328,12 @@ public class LogEntryListActivity extends AppCompatActivity implements
     @Override
     public void setActivityLogDate(long aLogDate) {
         mLogDate = aLogDate;
+        // Do we need to do this every time we set mLogDate?
+        mLogEntryGeneralData = null;
+        mLogEntryProductivityData = null;
+        mLogEntryPestMgmtData = null;
+        mLogEntryFeedingData = null;
+        mLogEntryOtherData = null;
     }
 
     // Make the Up button perform like the Back button
