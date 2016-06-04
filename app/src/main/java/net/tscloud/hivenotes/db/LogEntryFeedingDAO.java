@@ -139,6 +139,22 @@ public class LogEntryFeedingDAO {
         return retrievedLogEntry;
     }
 
+    public LogEntryFeeding getLogEntryByDate(long date){
+        Cursor cursor = mDatabase.query(TABLE_LOGENTRYFEEDING, mAllColumns,
+                COLUMN_LOGENTRYFEEDING_VISIT_DATE + " = ?",
+                new String[]{String.valueOf(date)}, null, null, null);
+
+        LogEntryFeeding retrievedLogEntry = null;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                retrievedLogEntry = cursorToLogEntry(cursor);
+            }
+            cursor.close();
+        }
+
+        return retrievedLogEntry;
+    }
+
     protected LogEntryFeeding cursorToLogEntry(Cursor cursor) {
         LogEntryFeeding logEntryFeeding = new LogEntryFeeding();
         logEntryFeeding.setId(cursor.getLong(0));

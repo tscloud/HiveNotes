@@ -153,6 +153,22 @@ public class LogEntryProductivityDAO {
         return retrievedLogEntryProductivity;
     }
 
+    public LogEntryProductivity getLogEntryByDate(long date){
+        Cursor cursor = mDatabase.query(TABLE_LOGENTRYPRODUCTIVITY, mAllColumns,
+                COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE + " = ?",
+                new String[]{String.valueOf(date)}, null, null, null);
+
+        LogEntryProductivity retrievedLogEntryProductivity = null;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                retrievedLogEntryProductivity = cursorToLogEntry(cursor);
+            }
+            cursor.close();
+        }
+
+        return retrievedLogEntryProductivity;
+    }
+
     protected LogEntryProductivity cursorToLogEntry(Cursor cursor) {
         LogEntryProductivity logEntryProductivity = new LogEntryProductivity();
         logEntryProductivity.setId(cursor.getLong(0));

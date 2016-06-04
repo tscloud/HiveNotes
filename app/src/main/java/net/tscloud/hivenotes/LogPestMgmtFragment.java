@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
+import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
 import net.tscloud.hivenotes.db.Notification;
@@ -42,21 +43,15 @@ import java.util.Locale;
  * Use the {@link LogPestMgmtFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogPestMgmtFragment extends Fragment {
+public class LogPestMgmtFragment extends LogFragment {
 
     public static final String TAG = "LogPestMgmtFragment";
 
-    private long mHiveID;
-    private long mLogEntryPestMgmtKey;
+    // DO for this particular Fragment
     private LogEntryPestMgmt mLogEntryPestMgmt;
 
+    // reference to Activity that should have started me
     private OnLogPestMgmntFragmentInteractionListener mListener;
-
-    // time/date formatters
-    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-    private static final String TIME_PATTERN = "HH:mm";
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
-    private final Calendar calendar = Calendar.getInstance();
 
     // task references - needed to kill tasks on Fragment Destroy
     private GetReminderTimeTask mTaskDrone = null;
@@ -64,26 +59,26 @@ public class LogPestMgmtFragment extends Fragment {
     private GetReminderTimeTask mTaskMites = null;
     private static final int TASK_MITES = 1;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param hiveID Parameter 1.
-     * @param logEntryID Parameter 2.
-     * @return A new instance of fragment LogPestMgmtFragment.
-     */
-    public static LogPestMgmtFragment newInstance(long hiveID, long aLogEntryDate, long logEntryID) {
+    // Factory method to create a new instance of this fragment using the provided parameters.
+    public static LogPestMgmtFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogPestMgmtFragment fragment = new LogPestMgmtFragment();
-        Bundle args = new Bundle();
-        args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
-        fragment.setArguments(args);
-        return fragment;
+
+        return (LogPestMgmtFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
     }
 
     public LogPestMgmtFragment() {
         // Required empty public constructor
+    }
+
+    // Accessors needed by super class
+    @Override
+    HiveNotesLogDO getLogEntryDO() {
+        return mLogEntryPestMgmt;
+    }
+
+    @Override
+    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+        mLogEntryPestMgmt = (LogEntryPestMgmt)aDataObj;
     }
 
     @Override
@@ -105,11 +100,8 @@ public class LogPestMgmtFragment extends Fragment {
             mLogEntryPestMgmt.setMitesTrtmntRmndrTime(savedInstanceState.getLong("mitesTrtmntRmndrTime"));
         }
 
-        // save off arguments
-        if (getArguments() != null) {
-            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
-            mLogEntryPestMgmtKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
+        // save off arguments via super method
+        saveOffArgs();
     }
 
     @Override
@@ -131,23 +123,10 @@ public class LogPestMgmtFragment extends Fragment {
         final TextView mitesTrtmntRmndrText = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
         mitesTrtmntRmndrText.setTag((long)-1);
 
-        // log entry may have something in it either already populated or populated from Bundle
-        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
-        if (mLogEntryPestMgmt == null) {
-            try {
-                mLogEntryPestMgmt = (LogEntryPestMgmt)mListener.getPreviousLogData();
-            }
-            catch (ClassCastException e) {
-                // Log the exception but continue w/ NO previous log data
-                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
-                mLogEntryPestMgmt = null;
-            }
-            if (mLogEntryPestMgmt == null) {
-                if (mLogEntryPestMgmtKey != -1) {
-                    mLogEntryPestMgmt = getLogEntry(mLogEntryPestMgmtKey);
-                }
-            }
-        }
+        /**
+         * call super method to get DO via best means
+         */
+        getLogEntry(mListener);
 
         if (mLogEntryPestMgmt != null) {
 
@@ -298,9 +277,9 @@ public class LogPestMgmtFragment extends Fragment {
                 mLogEntryPestMgmt = new LogEntryPestMgmt();
             }
 
-            mLogEntryPestMgmt.setId(mLogEntryPestMgmtKey);
+            mLogEntryPestMgmt.setId(mLogEntryKey);
             mLogEntryPestMgmt.setHive(mHiveID);
-            mLogEntryPestMgmt.setVisitDate(-1);
+            mLogEntryPestMgmt.setVisitDate(mLogEntryDate);
             mLogEntryPestMgmt.setDroneCellFndn(droneCellFndnInt);
             mLogEntryPestMgmt.setSmallHiveBeetleTrap(smallHiveBeetleTrapInt);
             mLogEntryPestMgmt.setMitesTrtmnt(mitesTrtmntInt);
@@ -414,22 +393,21 @@ public class LogPestMgmtFragment extends Fragment {
         super.onDestroy();
     }
 
-    // Utility method to get Profile
-    LogEntryPestMgmt getLogEntry(long aLogEntryID) {
+    @Override
+    LogEntryPestMgmt getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryPestMgmt table");
         LogEntryPestMgmtDAO logEntryPestMgmtDAO = new LogEntryPestMgmtDAO(getActivity());
-        LogEntryPestMgmt reply = logEntryPestMgmtDAO.getLogEntryById(aLogEntryID);
-        logEntryPestMgmtDAO.close();
+        LogEntryPestMgmt reply = null;
 
-        /**  Can we count on the Activity providing this data?
-         *
-        // get the Reminder times
-        reply.setDroneCellFndnRmndrTime(HiveCalendar.getReminderTime(getActivity(),
-            NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID));
-        reply.setMitesTrtmntRmndrTime(HiveCalendar.getReminderTime(getActivity(),
-            NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID));
-         */
+        if (aKey != -1) {
+            reply = logEntryPestMgmtDAO.getLogEntryById(aKey);
+        }
+        else if (aDate != -1) {
+            reply = logEntryPestMgmtDAO.getLogEntryByDate(aDate);
+        }
+
+        logEntryPestMgmtDAO.close();
 
         return reply;
     }
@@ -439,14 +417,10 @@ public class LogPestMgmtFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnLogPestMgmntFragmentInteractionListener {
+    public interface OnLogPestMgmntFragmentInteractionListener extends
+            LogFragment.PreviousLogDataProvider {
         void onLogPestMgmtFragmentInteraction(LogEntryPestMgmt alogEntryPestMgmt);
-        HiveNotesLogDO getPreviousLogData();
     }
 
     /** subclass of the GetReminderTimeTask

@@ -210,7 +210,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             // w/ the selected item ID.
             Intent intent = new Intent(this, LogEntryDetailActivity.class);
             intent.putExtra(INTENT_ITEM_ID, id);
-            intent.putExtra(INTENT_LOGENTRY_KEY, -1);
+            intent.putExtra(INTENT_LOGENTRY_KEY, (long)-1);
             intent.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
             intent.putExtra(INTENT_LOGENTRY_DATE, mLogDate);
             /*
@@ -233,14 +233,15 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryOtherData);
                     break;
                 case "6":
-                    // Save button
-                    //updateDB(mLogEntryGeneralData, mLogEntryProductivityData, mLogEntryPestMgmtData,
-                    //       mLogEntryFeedingData, mLogEntryOtherData);
+                    // Save button - do not start Detail activity, just update and screw
                     mTask = new UpdateDBTask(this);
                     mTask.execute();
                     break;
             }
-            startActivityForResult(intent, LOG_DETAIL_REQ_CODE);
+            // Save button - do not start Detail activity, just update and screw
+            if (!id.equals("6")) {
+                startActivityForResult(intent, LOG_DETAIL_REQ_CODE);
+            }
         }
     }
 

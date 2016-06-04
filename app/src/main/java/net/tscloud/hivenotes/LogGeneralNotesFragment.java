@@ -35,11 +35,14 @@ public class LogGeneralNotesFragment extends LogFragment {
 
     public static final String TAG = "LogGeneralNotesFragment";
 
+    // DO for this particular Fragment
     private LogEntryGeneral mLogEntryGeneral;
 
+    // reference to Activity that should have started me
     private OnLogGeneralNotesFragmentInteractionListener mListener;
 
-    public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
+     // Factory method to create a new instance of this fragment using the provided parameters.
+     public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogGeneralNotesFragment fragment = new LogGeneralNotesFragment();
 
         return (LogGeneralNotesFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
@@ -49,6 +52,7 @@ public class LogGeneralNotesFragment extends LogFragment {
         // Required empty public constructor
     }
 
+    // Accessors needed by super class
     @Override
     HiveNotesLogDO getLogEntryDO() {
         return mLogEntryGeneral;
@@ -338,7 +342,7 @@ public class LogGeneralNotesFragment extends LogFragment {
         super.onSaveInstanceState(outState);
     }
 
-    // Utility method to get Profile
+    @Override
     LogEntryGeneral getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryGeneral table");
@@ -357,7 +361,14 @@ public class LogGeneralNotesFragment extends LogFragment {
         return reply;
     }
 
-    public interface OnLogGeneralNotesFragmentInteractionListener extends LogFragment.PreviousLogDataProvider{
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     */
+    public interface OnLogGeneralNotesFragmentInteractionListener extends
+            LogFragment.PreviousLogDataProvider {
         void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
     }
 

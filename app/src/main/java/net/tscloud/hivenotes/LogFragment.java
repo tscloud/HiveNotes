@@ -65,6 +65,11 @@ public abstract class LogFragment extends Fragment {
                 setLogEntryDO(getLogEntryFromDB(mLogEntryKey, mLogEntryDate));
             }
         }
+
+        // If we got a DO => set the Key
+        if (getLogEntryDO() != null) {
+            mLogEntryKey = getLogEntryDO().getId();
+        }
     }
 
     protected void saveOffArgs() {

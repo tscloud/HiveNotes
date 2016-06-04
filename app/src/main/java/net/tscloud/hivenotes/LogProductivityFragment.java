@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
+import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
@@ -26,36 +27,36 @@ import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
  * Use the {@link LogProductivityFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogProductivityFragment extends Fragment {
+public class LogProductivityFragment extends LogFragment {
 
     public static final String TAG = "LogProductivityFragment";
 
-    private long mHiveID;
-    private long mLogEntryProductivityKey;
+    // DO for this particular Fragment
     private LogEntryProductivity mLogEntryProductivity;
 
+    // reference to Activity that should have started me
     private OnLogProductivityFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param hiveID Parameter 1.
-     * @param logEntryID Parameter 2.
-     * @return A new instance of fragment LogProductivityFragment.
-     */
-    public static LogProductivityFragment newInstance(long hiveID, long aLogEntryDate, long logEntryID) {
+    // Factory method to create a new instance of this fragment using the provided parameters.
+    public static LogProductivityFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogProductivityFragment fragment = new LogProductivityFragment();
-        Bundle args = new Bundle();
-        args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
-        fragment.setArguments(args);
-        return fragment;
+
+        return (LogProductivityFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
     }
 
     public LogProductivityFragment() {
         // Required empty public constructor
+    }
+
+    // Accessors needed by super class
+    @Override
+    HiveNotesLogDO getLogEntryDO() {
+        return mLogEntryProductivity;
+    }
+
+    @Override
+    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+        mLogEntryProductivity = (LogEntryProductivity)aDataObj;
     }
 
     @Override
@@ -75,11 +76,8 @@ public class LogProductivityFragment extends Fragment {
             mLogEntryProductivity.setBeeswaxCollected(savedInstanceState.getInt("beeswaxCollected"));
         }
 
-        // save off arguments
-        if (getArguments() != null) {
-            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
-            mLogEntryProductivityKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
+        // save off arguments via super method
+        saveOffArgs();
     }
 
     @Override
@@ -107,23 +105,10 @@ public class LogProductivityFragment extends Fragment {
         addSupersSpinner.setAdapter(spinnerArrayAdapter);
         removeSupersSpinner.setAdapter(spinnerArrayAdapter);
 
-        // log entry may have something in it either already populated or populated from Bundle
-        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
-        if (mLogEntryProductivity == null) {
-            try {
-                mLogEntryProductivity = (LogEntryProductivity)mListener.getPreviousLogData();
-            }
-            catch (ClassCastException e) {
-                // Log the exception but continue w/ NO previous log data
-                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
-                mLogEntryProductivity = null;
-            }
-            if (mLogEntryProductivity == null) {
-                if (mLogEntryProductivityKey != -1) {
-                    mLogEntryProductivity = getLogEntry(mLogEntryProductivityKey);
-                }
-            }
-        }
+        /**
+         * call super method to get DO via best means
+         */
+        getLogEntry(mListener);
 
         if (mLogEntryProductivity != null) {
 
@@ -204,38 +189,10 @@ public class LogProductivityFragment extends Fragment {
             if (mLogEntryProductivity == null) {
                 mLogEntryProductivity = new LogEntryProductivity();
             }
-            /*
-            LogEntryProductivity logEntryProductivity;
-            if (mLogEntryProductivityKey == -1) {
-                // VISIT_DATE column will be set at DB update time
-                logEntryProductivity = logEntryProductivityDAO.createLogEntry(mHiveID, null,
-                        addSupersText, removeSupersText, extractedHoneyFloat, pollenAddTrapInt,
-                        pollenRemoveTrapInt, pollenCollectedFloat, beeswaxCollectedFloat);
-                lNewLogEntry = true;
-            }
-            else {
-                // VISIT_DATE column will be set at DB update time
-                logEntryProductivity = logEntryProductivityDAO.updateLogEntry(mLogEntryProductivityKey,
-                        mHiveID, null, addSupersText, removeSupersText,
-                        extractedHoneyFloat, pollenAddTrapInt, pollenRemoveTrapInt, pollenCollectedFloat,
-                        beeswaxCollectedFloat);
-            }
-            logEntryProductivityDAO.close();
 
-            if (logEntryProductivity != null) {
-                // Reset LogEntryGeneral instance vars
-                mLogEntryProductivity = logEntryProductivity;
-                mLogEntryProductivityKey = logEntryProductivity.getId();
-
-                Log.d(TAG, "LogEntryProductivity ID: " + logEntryProductivity.getId());
-            }
-            else {
-                Log.d(TAG, "BAD...LogEntryProductivity update failed");
-            }
-            */
-            mLogEntryProductivity.setId(mLogEntryProductivityKey);
+            mLogEntryProductivity.setId(mLogEntryKey);
             mLogEntryProductivity.setHive(mHiveID);
-            mLogEntryProductivity.setVisitDate(-1);
+            mLogEntryProductivity.setVisitDate(mLogEntryDate);
             mLogEntryProductivity.setHoneyAddSupers(addSupersText);
             mLogEntryProductivity.setHoneyRemoveSupers(removeSupersText);
             mLogEntryProductivity.setExtractedHoney(extractedHoneyFloat);
@@ -284,12 +241,20 @@ public class LogProductivityFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    // Utility method to get Profile
-    LogEntryProductivity getLogEntry(long aLogEntryID) {
+    @Override
+    LogEntryProductivity getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryProductivity table");
         LogEntryProductivityDAO logEntryProductivityDAO = new LogEntryProductivityDAO(getActivity());
-        LogEntryProductivity reply = logEntryProductivityDAO.getLogEntryById(aLogEntryID);
+        LogEntryProductivity reply = null;
+
+        if (aKey != -1) {
+            reply = logEntryProductivityDAO.getLogEntryById(aKey);
+        }
+        else if (aDate != -1) {
+            reply = logEntryProductivityDAO.getLogEntryByDate(aDate);
+        }
+
         logEntryProductivityDAO.close();
 
         return reply;
@@ -300,14 +265,10 @@ public class LogProductivityFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnLogProductivityFragmentInteractionListener {
+    public interface OnLogProductivityFragmentInteractionListener extends
+            LogFragment.PreviousLogDataProvider {
         public void onLogProductivityFragmentInteraction(LogEntryProductivity aLogEntryProductivity);
-        HiveNotesLogDO getPreviousLogData();
     }
 
 }

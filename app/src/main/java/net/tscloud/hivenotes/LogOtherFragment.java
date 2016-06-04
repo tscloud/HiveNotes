@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
+import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryOtherDAO;
 import net.tscloud.hivenotes.db.NotificationType;
@@ -38,24 +39,15 @@ import java.util.Locale;
  * Use the {@link LogOtherFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogOtherFragment extends Fragment {
+public class LogOtherFragment extends LogFragment {
 
     public static final String TAG = "LogOtherFragment";
 
-    private long mHiveID;
-    private long mLogEntryOtherKey;
-    private long mLogEntryOtherDate;
+    // DO for this particular Fragment
     private LogEntryOther mLogEntryOther;
 
+    // reference to Activity that should have started me
     private OnLogOtherFragmentInteractionListener mListener;
-
-    // time/date formatters
-    private static final DateFormat dateFormat =DateFormat.getDateInstance(DateFormat.LONG,
-        Locale.getDefault());
-    private static final String TIME_PATTERN = "HH:mm";
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN,
-        Locale.getDefault());
-    private final Calendar calendar = Calendar.getInstance();
 
     // task references - needed to kill tasks on Fragment Destroy
     private GetReminderTimeTask mTaskRequeen = null;
@@ -65,26 +57,26 @@ public class LogOtherFragment extends Fragment {
     private GetReminderTimeTask mTaskSplitHive = null;
     private static final int TASK_SPLIT = 2;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param aHiveID Parameter 1.
-     * @param aLogEntryDate Parameter 2.
-     * @return A new instance of fragment LogOtherFragment.
-     */
-    public static LogOtherFragment newInstance(long aHiveID, long aLogEntryDate, long logEntryID) {
+    // Factory method to create a new instance of this fragment using the provided parameters.
+    public static LogOtherFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogOtherFragment fragment = new LogOtherFragment();
-        Bundle args = new Bundle();
-        args.putLong(MainActivity.INTENT_HIVE_KEY, aHiveID);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
-        fragment.setArguments(args);
-        return fragment;
+
+        return (LogOtherFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
     }
 
     public LogOtherFragment() {
         // Required empty public constructor
+    }
+
+    // Accessors needed by super class
+    @Override
+    HiveNotesLogDO getLogEntryDO() {
+        return mLogEntryOther;
+    }
+
+    @Override
+    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+        mLogEntryOther = (LogEntryOther) aDataObj;
     }
 
     @Override
@@ -98,13 +90,8 @@ public class LogOtherFragment extends Fragment {
             mLogEntryOther.setRequeen(savedInstanceState.getString("requeen"));
         }
 
-        // save off arguments
-        if (getArguments() != null) {
-            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
-            mLogEntryOtherDate =
-                getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_DATE);
-            mLogEntryOtherKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
+        // save off arguments via super method
+        saveOffArgs();
     }
 
     @Override
@@ -130,25 +117,10 @@ public class LogOtherFragment extends Fragment {
         final TextView splitHiveRmndrText = (TextView)v.findViewById(R.id.textSplitHiveRmndr);
         splitHiveRmndrText.setTag((long)-1);
 
-        // log entry may have something in it either already populated or
-        //  populated from Bundle if not => 1st check the Activity for
-        //  previously entered data, if not => potentially read DB
-        if (mLogEntryOther == null) {
-            try {
-                mLogEntryOther = (LogEntryOther)mListener.getPreviousLogData();
-            }
-            catch (ClassCastException e) {
-                // Log the exception but continue w/ NO previous log data
-                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
-                mLogEntryOther = null;
-            }
-            if (mLogEntryOther == null) {
-                if (mLogEntryOtherDate != -1) {
-                    //read by date, not ID
-                    mLogEntryOther = getLogEntry(mLogEntryOtherDate);
-                }
-            }
-        }
+        /**
+         * call super method to get DO via best means
+         */
+        getLogEntry(mListener);
 
         if (mLogEntryOther != null) {
 
@@ -288,9 +260,9 @@ public class LogOtherFragment extends Fragment {
                mLogEntryOther = new LogEntryOther();
            }
 
-           mLogEntryOther.setId(mLogEntryOtherKey);
+           mLogEntryOther.setId(mLogEntryKey);
            mLogEntryOther.setHive(mHiveID);
-           mLogEntryOther.setVisitDate(mLogEntryOtherDate);
+           mLogEntryOther.setVisitDate(mLogEntryDate);
            mLogEntryOther.setRequeen(requeenText);
            mLogEntryOther.setRequeenRmndrTime(requeenRmndrLong);
            mLogEntryOther.setSwarmRmndrTime(swarmRmndrLong);
@@ -407,12 +379,20 @@ public class LogOtherFragment extends Fragment {
         super.onDestroy();
     }
 
-    // Utility method to get LogEntry by date
-    LogEntryOther getLogEntry(long aLogEntryDate) {
+    @Override
+    LogEntryOther getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryPestMgmt table - by date");
         LogEntryOtherDAO logEntryOtherDAO = new LogEntryOtherDAO(getActivity());
-        LogEntryOther reply = logEntryOtherDAO.getLogEntryByDate(aLogEntryDate);
+        LogEntryOther reply = null;
+
+        if (aKey != -1) {
+            reply = logEntryOtherDAO.getLogEntryById(aKey);
+        }
+        else if (aDate != -1) {
+            reply = logEntryOtherDAO.getLogEntryByDate(aDate);
+        }
+
         logEntryOtherDAO.close();
 
         return reply;
@@ -423,14 +403,10 @@ public class LogOtherFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnLogOtherFragmentInteractionListener {
+    public interface OnLogOtherFragmentInteractionListener extends
+            LogFragment.PreviousLogDataProvider {
         void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther);
-        HiveNotesLogDO getPreviousLogData();
     }
 
     /** subclass of the GetReminderTimeTask

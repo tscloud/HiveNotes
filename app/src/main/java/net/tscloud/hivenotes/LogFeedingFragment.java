@@ -14,6 +14,7 @@ import android.widget.EditText;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
+import net.tscloud.hivenotes.db.LogEntryGeneral;
 
 
 /**
@@ -24,36 +25,36 @@ import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
  * Use the {@link LogFeedingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogFeedingFragment extends Fragment {
+public class LogFeedingFragment extends LogFragment {
 
     public static final String TAG = "LogFeedingFragment";
 
-    private long mHiveID;
-    private long mLogEntryFeedingKey;
+    // DO for this particular Fragment
     private LogEntryFeeding mLogEntryFeeding;
 
+    // reference to Activity that should have started me
     private OnLogFeedingFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param hiveID Parameter 1.
-     * @param logEntryID Parameter 2.
-     * @return A new instance of fragment LogFeedingFragment.
-     */
-    public static LogFeedingFragment newInstance(long hiveID, long aLogEntryDate, long logEntryID) {
+    // Factory method to create a new instance of this fragment using the provided parameters.
+    public static LogFeedingFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogFeedingFragment fragment = new LogFeedingFragment();
-        Bundle args = new Bundle();
-        args.putLong(MainActivity.INTENT_HIVE_KEY, hiveID);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_DATE, aLogEntryDate);
-        args.putLong(LogEntryListActivity.INTENT_LOGENTRY_KEY, logEntryID);
-        fragment.setArguments(args);
-        return fragment;
+
+        return (LogFeedingFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
     }
 
     public LogFeedingFragment() {
         // Required empty public constructor
+    }
+
+    // Accessors needed by super class
+    @Override
+    HiveNotesLogDO getLogEntryDO() {
+        return mLogEntryFeeding;
+    }
+
+    @Override
+    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+        mLogEntryFeeding = (LogEntryFeeding) aDataObj;
     }
 
     @Override
@@ -71,11 +72,8 @@ public class LogFeedingFragment extends Fragment {
             mLogEntryFeeding.setOtherType(savedInstanceState.getString("otherType"));
         }
 
-        // save off arguments
-        if (getArguments() != null) {
-            mHiveID = getArguments().getLong(MainActivity.INTENT_HIVE_KEY);
-            mLogEntryFeedingKey = getArguments().getLong(LogEntryListActivity.INTENT_LOGENTRY_KEY);
-        }
+        // save off arguments via super method
+        saveOffArgs();
     }
 
     @Override
@@ -88,22 +86,10 @@ public class LogFeedingFragment extends Fragment {
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
         b1.setText(getResources().getString(R.string.done_string));
 
-        // log entry may have something in it either already populated or populated from Bundle
-        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
-        if (mLogEntryFeeding == null) {
-            try {
-                mLogEntryFeeding = (LogEntryFeeding) mListener.getPreviousLogData();
-            } catch (ClassCastException e) {
-                // Log the exception but continue w/ NO previous log data
-                Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
-                mLogEntryFeeding = null;
-            }
-            if (mLogEntryFeeding == null) {
-                if (mLogEntryFeedingKey != -1) {
-                    mLogEntryFeeding = getLogEntry(mLogEntryFeedingKey);
-                }
-            }
-        }
+        /**
+         * call super method to get DO via best means
+         */
+        getLogEntry(mListener);
 
         if (mLogEntryFeeding != null) {
 
@@ -167,9 +153,9 @@ public class LogFeedingFragment extends Fragment {
                 mLogEntryFeeding = new LogEntryFeeding();
             }
 
-            mLogEntryFeeding.setId(mLogEntryFeedingKey);
+            mLogEntryFeeding.setId(mLogEntryKey);
             mLogEntryFeeding.setHive(mHiveID);
-            mLogEntryFeeding.setVisitDate(-1);
+            mLogEntryFeeding.setVisitDate(mLogEntryDate);
             mLogEntryFeeding.setOneOneSugarWater(oneOneSugarInt);
             mLogEntryFeeding.setTwoOneSugarWater(twoOneSugarInt);
             mLogEntryFeeding.setPollenPatty(pollenPattyInt);
@@ -215,12 +201,20 @@ public class LogFeedingFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-    // Utility method to get Profile
-    LogEntryFeeding getLogEntry(long aLogEntryID) {
+    @Override
+    LogEntryFeeding getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryFeeding table");
         LogEntryFeedingDAO logEntryFeedingDAO = new LogEntryFeedingDAO(getActivity());
-        LogEntryFeeding reply = logEntryFeedingDAO.getLogEntryById(aLogEntryID);
+        LogEntryFeeding reply = null;
+
+        if (aKey != -1) {
+            reply = logEntryFeedingDAO.getLogEntryById(aKey);
+        }
+        else if (aDate != -1) {
+            reply = logEntryFeedingDAO.getLogEntryByDate(aDate);
+        }
+
         logEntryFeedingDAO.close();
 
         return reply;
@@ -235,9 +229,9 @@ public class LogFeedingFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnLogFeedingFragmentInteractionListener {
+    public interface OnLogFeedingFragmentInteractionListener extends
+            LogFragment.PreviousLogDataProvider {
         public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding);
-        HiveNotesLogDO getPreviousLogData();
     }
 
 }

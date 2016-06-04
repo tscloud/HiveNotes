@@ -155,6 +155,22 @@ public class LogEntryPestMgmtDAO {
         return retrievedLog;
     }
 
+    public LogEntryPestMgmt getLogEntryByDate(long date) {
+        Cursor cursor = mDatabase.query(TABLE_LOGENTRYPESTMGMT, mAllColumns,
+                COLUMN_LOGENTRYPESTMGMT_VISIT_DATE + " = ?",
+                new String[]{String.valueOf(date)}, null, null, null);
+
+        LogEntryPestMgmt retrievedLog = null;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                retrievedLog = cursorToLogEntry(cursor);
+            }
+            cursor.close();
+        }
+
+        return retrievedLog;
+    }
+
     protected LogEntryPestMgmt cursorToLogEntry(Cursor cursor) {
         LogEntryPestMgmt logEntryPestMgmt = new LogEntryPestMgmt();
         logEntryPestMgmt.setId(cursor.getLong(0));
