@@ -41,8 +41,8 @@ public class LogGeneralNotesFragment extends LogFragment {
     // reference to Activity that should have started me
     private OnLogGeneralNotesFragmentInteractionListener mListener;
 
-     // Factory method to create a new instance of this fragment using the provided parameters.
-     public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
+    // Factory method to create a new instance of this fragment using the provided parameters.
+    public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogGeneralNotesFragment fragment = new LogGeneralNotesFragment();
 
         return (LogGeneralNotesFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
@@ -54,12 +54,12 @@ public class LogGeneralNotesFragment extends LogFragment {
 
     // Accessors needed by super class
     @Override
-    HiveNotesLogDO getLogEntryDO() {
+    protected HiveNotesLogDO getLogEntryDO() {
         return mLogEntryGeneral;
     }
 
     @Override
-    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryGeneral = (LogEntryGeneral)aDataObj;
     }
 
@@ -343,7 +343,7 @@ public class LogGeneralNotesFragment extends LogFragment {
     }
 
     @Override
-    LogEntryGeneral getLogEntryFromDB(long aKey, long aDate) {
+    protected LogEntryGeneral getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryGeneral table");
         LogEntryGeneralDAO logEntryGeneralDAO = new LogEntryGeneralDAO(getActivity());

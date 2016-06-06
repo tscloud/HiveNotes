@@ -50,12 +50,12 @@ public class LogProductivityFragment extends LogFragment {
 
     // Accessors needed by super class
     @Override
-    HiveNotesLogDO getLogEntryDO() {
+    protected HiveNotesLogDO getLogEntryDO() {
         return mLogEntryProductivity;
     }
 
     @Override
-    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryProductivity = (LogEntryProductivity)aDataObj;
     }
 
@@ -242,7 +242,7 @@ public class LogProductivityFragment extends LogFragment {
     }
 
     @Override
-    LogEntryProductivity getLogEntryFromDB(long aKey, long aDate) {
+    protected LogEntryProductivity getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryProductivity table");
         LogEntryProductivityDAO logEntryProductivityDAO = new LogEntryProductivityDAO(getActivity());

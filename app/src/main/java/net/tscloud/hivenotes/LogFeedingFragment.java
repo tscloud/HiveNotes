@@ -48,12 +48,12 @@ public class LogFeedingFragment extends LogFragment {
 
     // Accessors needed by super class
     @Override
-    HiveNotesLogDO getLogEntryDO() {
+    protected HiveNotesLogDO getLogEntryDO() {
         return mLogEntryFeeding;
     }
 
     @Override
-    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryFeeding = (LogEntryFeeding) aDataObj;
     }
 
@@ -202,7 +202,7 @@ public class LogFeedingFragment extends LogFragment {
     }
 
     @Override
-    LogEntryFeeding getLogEntryFromDB(long aKey, long aDate) {
+    protected LogEntryFeeding getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryFeeding table");
         LogEntryFeedingDAO logEntryFeedingDAO = new LogEntryFeedingDAO(getActivity());
@@ -224,10 +224,6 @@ public class LogFeedingFragment extends LogFragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnLogFeedingFragmentInteractionListener extends
             LogFragment.PreviousLogDataProvider {

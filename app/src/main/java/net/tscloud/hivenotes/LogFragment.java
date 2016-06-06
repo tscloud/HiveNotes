@@ -27,11 +27,11 @@ public abstract class LogFragment extends Fragment {
     protected final Calendar calendar = Calendar.getInstance();
 
     // abstract methods
-    abstract HiveNotesLogDO getLogEntryDO();
+    protected abstract HiveNotesLogDO getLogEntryDO();
 
-    abstract void setLogEntryDO(HiveNotesLogDO aDataObj);
+    protected abstract void setLogEntryDO(HiveNotesLogDO aDataObj);
 
-    abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
+    protected abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
 
     // concrete static methods
     public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate, long aLogEntryID) {

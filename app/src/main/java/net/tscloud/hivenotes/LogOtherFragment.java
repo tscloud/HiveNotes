@@ -70,12 +70,12 @@ public class LogOtherFragment extends LogFragment {
 
     // Accessors needed by super class
     @Override
-    HiveNotesLogDO getLogEntryDO() {
+    protected HiveNotesLogDO getLogEntryDO() {
         return mLogEntryOther;
     }
 
     @Override
-    void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryOther = (LogEntryOther) aDataObj;
     }
 
@@ -380,7 +380,7 @@ public class LogOtherFragment extends LogFragment {
     }
 
     @Override
-    LogEntryOther getLogEntryFromDB(long aKey, long aDate) {
+    protected LogEntryOther getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryPestMgmt table - by date");
         LogEntryOtherDAO logEntryOtherDAO = new LogEntryOtherDAO(getActivity());
