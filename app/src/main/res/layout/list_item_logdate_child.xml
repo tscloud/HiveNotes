@@ -5,7 +5,7 @@
     android:background="#cbcbcb">
 
     <TextView
-        android:id="@+id/child_list_item_crime_date_text_view"
+        android:id="@+id/child_list_item_logdate_date_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
