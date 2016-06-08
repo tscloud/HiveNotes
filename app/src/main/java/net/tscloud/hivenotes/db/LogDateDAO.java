@@ -7,6 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tscloud on 8/15/15.
  */
@@ -21,19 +24,19 @@ public class LogDateDAO {
 
     // compile time constant for big union query
     private static final String q = "SELECT VISIT_DATE FROM LogEntryGeneral " +
-                                    "WHERE HIVE = ? " +
-                                    "UNION " +
-                                    "SELECT VISIT_DATE FROM LogEntryProductivity " +
-                                    "WHERE HIVE = ? " +
-                                    "UNION " +
-                                    "SELECT VISIT_DATE FROM LogEntryPestMgmt " +
-                                    "WHERE HIVE = ? " +
-                                    "UNION " +
-                                    "SELECT VISIT_DATE FROM LogEntryFeeding " +
-                                    "WHERE HIVE = ? " +
-                                    "UNION " +
-                                    "SELECT VISIT_DATE FROM LogEntryOther";
-                                    "WHERE HIVE = ?";
+            "WHERE HIVE = ? " +
+            "UNION " +
+            "SELECT VISIT_DATE FROM LogEntryProductivity " +
+            "WHERE HIVE = ? " +
+            "UNION " +
+            "SELECT VISIT_DATE FROM LogEntryPestMgmt " +
+            "WHERE HIVE = ? " +
+            "UNION " +
+            "SELECT VISIT_DATE FROM LogEntryFeeding " +
+            "WHERE HIVE = ? " +
+            "UNION " +
+            "SELECT VISIT_DATE FROM LogEntryOther " +
+            "WHERE HIVE = ?";
 
     public LogDateDAO(Context context) {
         this.mContext = context;
@@ -58,14 +61,17 @@ public class LogDateDAO {
     // --DB access methods--
 
     public List<Long> getAllVisitDates(long aHiveId) {
-        List<Long> listLogDate = null;
-        Cursor cursor = mDatabase.rawQuery(q, new String[] {aHiveId, aHiveId, aHiveId, aHiveId, aHiveId});
+        List<Long> reply = null;
+        String hIdString = Long.toString(aHiveId);
+
+        Cursor cursor = mDatabase.rawQuery(q,
+                new String[]{hIdString, hIdString, hIdString, hIdString, hIdString});
 
         if (cursor != null) {
-            listLogDate = new ArrayList<Long>(cursor.getCount());
+            reply = new ArrayList<Long>(cursor.getCount());
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
-                    listHive.add(cursor.getLong(0));
+                    reply.add(cursor.getLong(0));
                     cursor.moveToNext();
                 }
             }
@@ -73,4 +79,6 @@ public class LogDateDAO {
             cursor.close();
         }
 
-        return listHive;
+        return reply;
+    }
+}

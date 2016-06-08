@@ -5,14 +5,28 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
+
+import net.tscloud.hivenotes.db.LogDateDAO;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -67,7 +81,7 @@ public class LogDateListFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log_date_list, container, false);
 
-        mLogDateRecyclerView = (RecyclerView) view.findViewById(R.id.logdate_recycler_view);
+        mLogDateRecyclerView = (RecyclerView) v.findViewById(R.id.logdate_recycler_view);
         mLogDateRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         /** AsyncTask to get the date list - this task will be the only one to Load
@@ -162,21 +176,34 @@ public class LogDateListFragment extends Fragment {
     }
 
     // Parent object
-    public class LogDateParent implements ParentObject {
+    public class LogDateParent implements ParentListItem {
 
+        private Date mDate;
         private List<Object> mChildrenList;
 
         public LogDateParent() {
         }
 
         @Override
-        public List<Object> getChildObjectList() {
+        public List<Object> getChildItemList() {
             return mChildrenList;
         }
 
-        @Override
-        public void setChildObjectList(List<Object> list) {
+        public void setChildItemList(List<Object> list) {
             mChildrenList = list;
+        }
+
+        public Date getDate() {
+            return mDate;
+        }
+
+        public void setDate(Date mDate) {
+            this.mDate = mDate;
+        }
+
+        @Override
+        public boolean isInitiallyExpanded() {
+            return false;
         }
     }
 
@@ -190,10 +217,19 @@ public class LogDateListFragment extends Fragment {
         }
 
         // Getter and setter methods
+        public Date getDate() {
+            return mDate;
+        }
+
+        public void setDate(Date mDate) {
+            this.mDate = mDate;
+        }
+
     }
 
     // Adapter
-    public class LogDateExpandableAdapter extends ExpandableRecyclerAdapter<LogDateParentViewHolder, LogDateChildViewHolder> {
+    public class LogDateExpandableAdapter extends ExpandableRecyclerAdapter<LogDateParentViewHolder,
+                LogDateChildViewHolder> {
 
         private LayoutInflater mInflater;
 
@@ -215,21 +251,23 @@ public class LogDateListFragment extends Fragment {
         }
 
         @Override
-        public void onBindParentViewHolder(LogDateParentViewHolder logDateParentViewHolder, int i, ParentListItem parentListItem) {
+        public void onBindParentViewHolder(LogDateParentViewHolder logDateParentViewHolder, int i,
+                                           ParentListItem parentListItem) {
             LogDateParent logDateParent = (LogDateParent) parentListItem;
-            logDateParentViewHolder.mLogDateTitleTextView.setText(logDateParent.getTitle());
+            logDateParentViewHolder.mLogDateTitleTextView.setText(logDateParent.getDate().toString());
         }
 
         @Override
-        public void onBindChildViewHolder(LogDateChildViewHolder logDateChildViewHolder, int i, Object childListItem) {
+        public void onBindChildViewHolder(LogDateChildViewHolder logDateChildViewHolder, int i,
+                                          Object childListItem) {
             LogDateChild logDateChild = (LogDateChild) childListItem;
-            LogDateChildViewHolder.mLogDateDateText.setText(logDateChild.getDate().toString());
+            logDateChildViewHolder.mLogDateDateText.setText(logDateChild.getDate().toString());
         }
     }
 
     /** get the list of dates we will present to the user
      */
-    public class GetDatesTask extends AsyncTask<Void, Void, Long> {
+    public class GetDatesTask extends AsyncTask<Void, Void, List<Long>> {
 
         public static final String TAG = "GetDatesTask";
 
@@ -241,28 +279,28 @@ public class LogDateListFragment extends Fragment {
         }
 
         @Override
-        protected Void doInBackground(Void... unused) {
+        protected List<Long> doInBackground(Void... unused) {
             Log.d(TAG, "GetDatesTask("+ Thread.currentThread().getId() + ") : doInBackground");
 
-            LogDateDAO logDateDAO = new LogDateDAO();
+            LogDateDAO logDateDAO = new LogDateDAO(ctx);
             List<Long> logDateList = logDateDAO.getAllVisitDates(mHiveID);
 
-            return(null);
+            return(logDateList);
         }
 
         @Override
-        protected void onPostExecute(Long dateArray) {
+        protected void onPostExecute(List<Long> dateArray) {
             Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : onPostExecute");
 
             //Toast.makeText(getApplicationContext(), "DB query complete", Toast.LENGTH_SHORT).show();
 
             LogDateExpandableAdapter logDateExpandableAdapter =
                 new LogDateExpandableAdapter(getActivity(), getLogDateParents(dateArray));
-            logDateExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
-            logDateExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
-            logDateExpandableAdapter.setParentAndIconExpandOnClick(true);
+            //logDateExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+            //logDateExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
+            //logDateExpandableAdapter.setParentAndIconExpandOnClick(true);
 
-            logDateExpandableAdapter.onRestoreInstanceState(savedInstanceState);
+            //logDateExpandableAdapter.onRestoreInstanceState(savedInstanceState);
 
             mLogDateRecyclerView.setAdapter(logDateExpandableAdapter);
 
@@ -270,11 +308,11 @@ public class LogDateListFragment extends Fragment {
             mTask = null;
         }
 
-        private ArrayList<ParentObject> getLogDateParents(List<Long> aLogDateList) {
+        private ArrayList<ParentListItem> getLogDateParents(List<Long> aLogDateList) {
             // For each Date (Child object) => determine year/month, if
             //  corresponding year/month Parent object does not exist => create
             //  it and place this Child under it
-            ArrayList<ParentObject> reply = null;
+            ArrayList<ParentListItem> reply = null;
 
             for (long logDate : aLogDateList) {
 
