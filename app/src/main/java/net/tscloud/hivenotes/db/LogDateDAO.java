@@ -36,7 +36,8 @@ public class LogDateDAO {
             "WHERE HIVE = ? " +
             "UNION " +
             "SELECT VISIT_DATE FROM LogEntryOther " +
-            "WHERE HIVE = ?";
+            "WHERE HIVE = ? " +
+            "ORDER BY VISIT_DATE DESC";
 
     public LogDateDAO(Context context) {
         this.mContext = context;

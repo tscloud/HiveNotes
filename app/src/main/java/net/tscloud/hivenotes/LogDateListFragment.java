@@ -131,7 +131,13 @@ public class LogDateListFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
         super.onSaveInstanceState(outState);
-        ((LogDateExpandableAdapter) mLogDateRecyclerView.getAdapter()).onSaveInstanceState(outState);
+        ((LogDateExpandableAdapter)mLogDateRecyclerView.getAdapter()).onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ((LogDateExpandableAdapter)mLogDateRecyclerView.getAdapter()).onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -158,8 +164,10 @@ public class LogDateListFragment extends Fragment {
         public LogDateParentViewHolder(View itemView) {
             super(itemView);
 
-            mLogDateTitleTextView = (TextView) itemView.findViewById(R.id.parent_list_item_logdate_title_text_view);
-            mParentDropDownArrow = (ImageButton) itemView.findViewById(R.id.parent_list_item_expand_arrow);
+            mLogDateTitleTextView =
+                (TextView)itemView.findViewById(R.id.parent_list_item_logdate_title_text_view);
+            mParentDropDownArrow =
+                (ImageButton)itemView.findViewById(R.id.parent_list_item_expand_arrow);
         }
     }
 
@@ -178,7 +186,7 @@ public class LogDateListFragment extends Fragment {
     // Parent object
     public class LogDateParent implements ParentListItem {
 
-        private Date mDate;
+        private String mMonthYear;
         private List<Object> mChildrenList;
 
         public LogDateParent() {
@@ -193,12 +201,13 @@ public class LogDateListFragment extends Fragment {
             mChildrenList = list;
         }
 
-        public Date getDate() {
-            return mDate;
+        // Getter and setter methods
+        public String getMonthYear() {
+            return mMonthYear;
         }
 
-        public void setDate(Date mDate) {
-            this.mDate = mDate;
+        public void setMonthYear(String aDate) {
+            mMonthYear = aDate;
         }
 
         @Override
@@ -228,8 +237,8 @@ public class LogDateListFragment extends Fragment {
     }
 
     // Adapter
-    public class LogDateExpandableAdapter extends ExpandableRecyclerAdapter<LogDateParentViewHolder,
-                LogDateChildViewHolder> {
+    public class LogDateExpandableAdapter extends
+                ExpandableRecyclerAdapter<LogDateParentViewHolder, LogDateChildViewHolder> {
 
         private LayoutInflater mInflater;
 
@@ -254,7 +263,7 @@ public class LogDateListFragment extends Fragment {
         public void onBindParentViewHolder(LogDateParentViewHolder logDateParentViewHolder, int i,
                                            ParentListItem parentListItem) {
             LogDateParent logDateParent = (LogDateParent) parentListItem;
-            logDateParentViewHolder.mLogDateTitleTextView.setText(logDateParent.getDate().toString());
+            logDateParentViewHolder.mLogDateTitleTextView.setText(logDateParent.getMonthYear());
         }
 
         @Override
@@ -300,8 +309,6 @@ public class LogDateListFragment extends Fragment {
             //logDateExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
             //logDateExpandableAdapter.setParentAndIconExpandOnClick(true);
 
-            //logDateExpandableAdapter.onRestoreInstanceState(savedInstanceState);
-
             mLogDateRecyclerView.setAdapter(logDateExpandableAdapter);
 
             // all we need to do is nullify the Task reference
@@ -309,13 +316,42 @@ public class LogDateListFragment extends Fragment {
         }
 
         private ArrayList<ParentListItem> getLogDateParents(List<Long> aLogDateList) {
-            // For each Date (Child object) => determine year/month, if
-            //  corresponding year/month Parent object does not exist => create
-            //  it and place this Child under it
-            ArrayList<ParentListItem> reply = null;
+            /**
+             * For each Date (Child object) => determine year/month, if
+             *  corresponding year/month Parent object does not exist => create
+             *  it and place this Child under it
+             */
+            //parent list that will returned
+            ArrayList<ParentListItem> parentList = null;
+            //initial current parent, init String value to something that will NOT match
+            LogDateParent currentParent = new LogDateParent();
+            currentParent.setMonthYear("bogus");
+
+            //date formatters
+            SimpleDateFormat fMonth = new SimpleDateFormat("MMMMM");
+            SimpleDateFormat fYear = new SimpleDateFormat("yyyy");
 
             for (long logDate : aLogDateList) {
+                if (currentParent.getMonthYear().contains(fMonth.format(logDate)) &&
+                    currentParent.getMonthYear().contains(fYear.format(logDate))) {
 
+                    // We have a parent to stick this date under
+                    currentParent.getChildItemList().add(new LogDateChild(new Date(logDate)));
+                }
+                else {
+                    // We do not have a parent to put this date under => make a
+                    //  parent and stick this date under it & add it to the big parent list
+                    LogDateParent newParent = new LogDateParent();
+                    newParent.setMonthYear(fMonth.format(logDate) + " " + fYear.format(logDate)));
+
+                    ArrayList<Object> childList = new ArrayList<ParentListItem>();
+                    childList.add(new LogDateChild(new Date(logDate)));
+                    newParent.setChildItemList(childList);
+
+                    parentList.add(newParent);
+
+                    currentParent = newParent;
+                }
             }
 
             return reply;
