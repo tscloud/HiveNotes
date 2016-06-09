@@ -52,9 +52,6 @@ public class LogDateListFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param aHiveKey Parameter 1.
-     * @return A new instance of fragment LogDateListFragment.
      */
     public static LogDateListFragment newInstance(long aHiveKey) {
         LogDateListFragment fragment = new LogDateListFragment();
@@ -174,14 +171,21 @@ public class LogDateListFragment extends Fragment {
     }
 
     // Child view holder
-    public class LogDateChildViewHolder extends ChildViewHolder {
+    public class LogDateChildViewHolder extends ChildViewHolder implements View.OnClickListener {
 
         public TextView mLogDateDateText;
 
         public LogDateChildViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
 
             mLogDateDateText = (TextView) itemView.findViewById(R.id.child_list_item_logdate_date_text_view);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Pass the Date in millis back to the calling Activity - And we're done!
+            mListener.onLogDateListFragmentInteraction(mLogDateDateText.getTag());
         }
     }
 
@@ -273,6 +277,8 @@ public class LogDateListFragment extends Fragment {
                                           Object childListItem) {
             LogDateChild logDateChild = (LogDateChild) childListItem;
             logDateChildViewHolder.mLogDateDateText.setText(logDateChild.getDate().toString());
+            // Set the Tag w/ the Date in millis -> we will pass this back to our calling Activity
+            logDateChildViewHolder.mLogDateDateText.setTag(logDateChild.getDate();
         }
     }
 

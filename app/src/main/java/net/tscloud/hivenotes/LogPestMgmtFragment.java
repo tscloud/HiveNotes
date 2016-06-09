@@ -181,7 +181,10 @@ public class LogPestMgmtFragment extends LogFragment {
                     new GetReminderTimeTaskData(droneCellFndnBtn, droneCellFndnRmndrText,
                             NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID, TASK_DRONE,
                             calendar, dateFormat, timeFormat), getActivity());
+            // All AsynchTasks executed serially on same background Thread
             mTaskDrone.execute();
+            // Each AsyncTask executes on its own Thread
+            mTaskDrone.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
         if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1)) {
@@ -193,7 +196,10 @@ public class LogPestMgmtFragment extends LogFragment {
                     new GetReminderTimeTaskData(mitesTrtmntBtn, mitesTrtmntRmndrText,
                             NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID, TASK_MITES,
                             calendar, dateFormat, timeFormat), getActivity());
+            // All AsynchTasks executed serially on same background Thread
             mTaskMites.execute();
+            // Each AsyncTask executes on its own Thread
+            mTaskMites.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
         // set button listeners

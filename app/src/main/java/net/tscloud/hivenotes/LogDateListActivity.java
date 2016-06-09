@@ -60,21 +60,7 @@ public class LogDateListActivity extends AppCompatActivity implements
 
     @Override
     public void onLogDateListFragmentInteraction(long logDate) {
-        Log.d(TAG, "onLogDateListFragmentInteraction");
-
-        /** all this stuff is just so we can display human readable date
-         */
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-        String TIME_PATTERN = "HH:mm";
-        SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.setTimeInMillis(logDate);
-        String formattedDate = dateFormat.format(calendar.getTime());
-        String formattedTime = timeFormat.format(calendar.getTime());
-        String formattedDateTime = formattedDate + ' ' + formattedTime;
-
-        Log.d(TAG, "date received from fragment: " + formattedDateTime);
+        Log.d(TAG, "date received from fragment: " + logDate);
 
         /** We've got a datetime --> pass it off to LogEntryListActivity so we
          *   can display/update an old log entry instead of adding a new one

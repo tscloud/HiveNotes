@@ -174,7 +174,10 @@ public class LogOtherFragment extends LogFragment {
                     new GetReminderTimeTaskData(requeenRmndrBtn, requeenRmndrText,
                             NotificationType.NOTIFY_OTHER_REQUEEN, mHiveID, TASK_REQUEEN,
                             calendar, dateFormat, timeFormat), getActivity());
-            mTaskRequeen.execute();
+            // All AsynchTasks executed serially on same background Thread
+            //mTaskRequeen.execute();
+            // Each AsyncTask executes on its own Thread
+            mTaskRequeen.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
         if ((mLogEntryOther == null) || (mLogEntryOther.getSwarmRmndrTime() != -1)) {
@@ -186,7 +189,10 @@ public class LogOtherFragment extends LogFragment {
                     new GetReminderTimeTaskData(swarmRmndrBtn, swarmRmndrText,
                             NotificationType.NOTIFY_OTHER_SWARM, mHiveID, TASK_SWARM,
                             calendar, dateFormat, timeFormat), getActivity());
-            mTaskSwarm.execute();
+            // All AsynchTasks executed serially on same background Thread
+            //mTaskSwarm.execute();
+            // Each AsyncTask executes on its own Thread
+            mTaskSwarm.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
         if ((mLogEntryOther == null) || (mLogEntryOther.getSplitHiveRmndrTime() != -1)) {
@@ -198,7 +204,10 @@ public class LogOtherFragment extends LogFragment {
                     new GetReminderTimeTaskData(splitHiveRmndrBtn, splitHiveRmndrText,
                             NotificationType.NOTIFY_OTHER_SPLIT_HIVE, mHiveID, TASK_SPLIT,
                             calendar, dateFormat, timeFormat), getActivity());
-            mTaskSplitHive.execute();
+            // All AsynchTasks executed serially on same background Thread
+            //mTaskSplitHive.execute();
+            // Each AsyncTask executes on its own Thread
+            mTaskSplitHive.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
         // set button listeners

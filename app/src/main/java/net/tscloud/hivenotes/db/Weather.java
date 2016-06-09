@@ -8,49 +8,58 @@ public class Weather {
     public static final String TAG = "Weather";
 
     private long id;
-    private String snapshotDate;
-    private String temperature;
-    private String rainfall;
-    private String pollenCount;
-    private String pollution;
+    private long snapshotDate;
+    private float temperature;
+    private float rainfall;
+    private float pressure;
+    private String weather;
+    private String windDirection;
+    private float windMPH;
+    private String humidity;
+    private float dewPoint;
+    private String visibility;
+    private String solarRadiation;
+    private String uvIndex;
+    private float pollenCount;
+    private float pollution;
 
-    public String getTemperature() {
+    public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(String temperature) {
+    public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 
-    public String getSnapshotDate() {
+    public long getSnapshotDate() {
         return snapshotDate;
     }
 
-    public void setSnapshotDate(String snapshotDate) {
+    public void setSnapshotDate(long snapshotDate) {
         this.snapshotDate = snapshotDate;
     }
 
-    public String getRainfall() {
+    public float getRainfall() {
         return rainfall;
     }
 
-    public void setRainfall(String rainfall) {
+    public void setRainfall(float rainfall) {
         this.rainfall = rainfall;
     }
 
-    public String getPollution() {
+    public float getPollution() {
         return pollution;
     }
 
-    public void setPollution(String pollution) {
+    public void setPollution(float pollution) {
         this.pollution = pollution;
     }
 
-    public String getPollenCount() {
+    public float getPollenCount() {
         return pollenCount;
     }
 
-    public void setPollenCount(String pollenCount) {
+    public void setPollenCount(float pollenCount) {
         this.pollenCount = pollenCount;
     }
 
