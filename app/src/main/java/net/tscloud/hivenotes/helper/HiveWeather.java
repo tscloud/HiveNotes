@@ -1,5 +1,22 @@
 package net.tscloud.hivenotes.helper;
 
+import android.os.Build;
+import android.util.Log;
+
+import net.tscloud.hivenotes.db.Weather;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.util.Scanner;
+
 /**
  * Created by tscloud on 6/9/16.
  */
@@ -19,8 +36,11 @@ public class HiveWeather {
 	public static final String WU_QUERY = null;
 	public static final String WU_FORMAT = "json";
 
+    public static final int CONNECTION_TIMEOUT = 10000;
+    public static final int DATARETRIEVAL_TIMEOUT = 10000;
+
 	public static Weather requestWunderground(String aQuery) {
-		Sting url = WU_ROOT + WU_API_KEY +"/" + WU_FEATURES + "/q/" + aQuery +
+		String url = WU_ROOT + WU_API_KEY +"/" + WU_FEATURES + "/q/" + aQuery +
 					"/" + WU_FORMAT;
 
         Log.d(TAG, "HiveWeather.requestWunderground(): url: " + url);
@@ -31,9 +51,9 @@ public class HiveWeather {
         if (jsonObj != null) {
 	        JSONObject jsonHead = jsonObj.optJSONObject("current_observation");
 	        if (jsonHead != null) {
-	        	reply.getSnapshotDate = System.currentTimeMillis();
-	        	reply.setTemperature = (float)jsonHead.optDouble("temp_f", -1);
-	        	reply.setRainfall = Float.parseFloat(jsonHead.optString("precip_today_in", "-1"));
+	        	reply.setSnapshotDate(System.currentTimeMillis());
+	        	reply.setTemperature((float)jsonHead.optDouble("temp_f", -1));
+	        	reply.setRainfall(Float.parseFloat(jsonHead.optString("precip_today_in", "-1")));
 	        }
         }
 

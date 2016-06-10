@@ -99,11 +99,11 @@ public class WeatherDAO {
     protected Weather cursorToWeather(Cursor cursor) {
         Weather weather = new Weather();
         weather.setId(cursor.getLong(0));
-        weather.setSnapshotDate(cursor.getString(1));
-        weather.setTemperature(cursor.getString(2));
-        weather.setRainfall(cursor.getString(3));
-        weather.setPollenCount(cursor.getString(4));
-        weather.setPollution(cursor.getString(5));
+        weather.setSnapshotDate(cursor.getLong(1));
+        weather.setTemperature(cursor.getLong(2));
+        weather.setRainfall(cursor.getLong(3));
+        weather.setPollenCount(cursor.getLong(4));
+        weather.setPollution(cursor.getLong(5));
 
         return weather;
     }

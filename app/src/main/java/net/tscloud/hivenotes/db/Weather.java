@@ -23,6 +23,78 @@ public class Weather {
     private float pollenCount;
     private float pollution;
 
+    public float getDewPoint() {
+        return dewPoint;
+    }
+
+    public void setDewPoint(float dewPoint) {
+        this.dewPoint = dewPoint;
+    }
+
+    public String getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(String humidity) {
+        this.humidity = humidity;
+    }
+
+    public float getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(float pressure) {
+        this.pressure = pressure;
+    }
+
+    public String getSolarRadiation() {
+        return solarRadiation;
+    }
+
+    public void setSolarRadiation(String solarRadiation) {
+        this.solarRadiation = solarRadiation;
+    }
+
+    public String getUvIndex() {
+        return uvIndex;
+    }
+
+    public void setUvIndex(String uvIndex) {
+        this.uvIndex = uvIndex;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+
+    public String getWeather() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather = weather;
+    }
+
+    public String getWindDirection() {
+        return windDirection;
+    }
+
+    public void setWindDirection(String windDirection) {
+        this.windDirection = windDirection;
+    }
+
+    public float getWindMPH() {
+        return windMPH;
+    }
+
+    public void setWindMPH(float windMPH) {
+        this.windMPH = windMPH;
+    }
+
     public float getTemperature() {
         return temperature;
     }

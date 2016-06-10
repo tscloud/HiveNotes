@@ -185,7 +185,7 @@ public class LogDateListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             // Pass the Date in millis back to the calling Activity - And we're done!
-            mListener.onLogDateListFragmentInteraction(mLogDateDateText.getTag());
+            mListener.onLogDateListFragmentInteraction((long)mLogDateDateText.getTag());
         }
     }
 
@@ -278,7 +278,7 @@ public class LogDateListFragment extends Fragment {
             LogDateChild logDateChild = (LogDateChild) childListItem;
             logDateChildViewHolder.mLogDateDateText.setText(logDateChild.getDate().toString());
             // Set the Tag w/ the Date in millis -> we will pass this back to our calling Activity
-            logDateChildViewHolder.mLogDateDateText.setTag(logDateChild.getDate();
+            logDateChildViewHolder.mLogDateDateText.setTag(logDateChild.getDate().getTime());
         }
     }
 
