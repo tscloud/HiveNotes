@@ -46,9 +46,8 @@ public class HiveWeather {
         Log.d(TAG, "HiveWeather.requestWunderground(): url: " + url);
         Weather reply = new Weather();
 
-        JSONObject jsonObj = requestWebService(url);
-
-        if (jsonObj != null) {
+        // Make the wunderground call - get JSON back
+        if (requestWebService(url) != null) {
 	        JSONObject jsonHead = jsonObj.optJSONObject("current_observation");
 	        if (jsonHead != null) {
 	        	reply.setSnapshotDate(System.currentTimeMillis());
