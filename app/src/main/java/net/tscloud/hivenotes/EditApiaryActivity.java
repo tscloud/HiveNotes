@@ -9,12 +9,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import net.tscloud.hivenotes.db.Apiary;
+
 public class EditApiaryActivity extends AppCompatActivity implements
         EditApiaryFragment.OnEditApiaryFragmentInteractionListener {
 
     private static final String TAG = "EditApiaryActivity";
     private long mProfileKey = -1;
     private long mApiaryKey = -1;
+
+    // Intent data keys
+    public final static String INTENT_APIARY_DATA = "apiaryData";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +44,13 @@ public class EditApiaryActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditApiaryFragmentInteraction() {
+    public void onEditApiaryFragmentInteraction(Apiary aApiary) {
         Log.d(TAG, "...update Apiary - return to MainActivity");
 
         Intent data = new Intent();
-        //data.putExtra(MainActivity.INTENT_PROFILE_KEY, mProfile.getId());
+        Bundle bundleData = new Bundle();
+        bundleData.putParcelable(INTENT_APIARY_DATA, aApiary);
+        data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
     }

@@ -18,6 +18,7 @@ public class WeatherDAO {
     // columns of the Profile table
     public static final String TABLE_WEATHER = "Weather";
     public static final String COLUMN_WEATHER_ID = "_id";
+    public static final String COLUMN_WEATHER_APIARY = "apiary";
     public static final String COLUMN_WEATHER_SNAPSHOT_DATE = "snapshot_date";
     public static final String COLUMN_WEATHER_TEMPERATURE = "temperature";
     public static final String COLUMN_WEATHER_RAINFALL = "rainfall";
@@ -26,7 +27,7 @@ public class WeatherDAO {
     public static final String COLUMN_WEATHER_WINDDIRECTION = "windDirection";
     public static final String COLUMN_WEATHER_WINDMPH = "windMPH";
     public static final String COLUMN_WEATHER_HUMIDITY = "humidity";
-    public static final String COLUMN_WEATHER_DEWPOINT"dewPoint";
+    public static final String COLUMN_WEATHER_DEWPOINT = "dewPoint";
     public static final String COLUMN_WEATHER_VISIBILITY = "visibility";
     public static final String COLUMN_WEATHER_SOLARRADIATION = "solarRadiation";
     public static final String COLUMN_WEATHER_UVINDEX = "uvIndex";
@@ -37,12 +38,12 @@ public class WeatherDAO {
     private SQLiteDatabase mDatabase;
     private MyDBHandler mDbHelper;
     private Context mContext;
-    private String[] mAllColumns = { COLUMN_WEATHER_ID, COLUMN_WEATHER_SNAPSHOT_DATE,
-        COLUMN_WEATHER_TEMPERATURE, COLUMN_WEATHER_RAINFALL, COLUMN_WEATHER_PRESSURE,
-        COLUMN_WEATHER_WEATHER, COLUMN_WEATHER_WINDDIRECTION, COLUMN_WEATHER_WINDMPH,
-        COLUMN_WEATHER_HUMIDITY, COLUMN_WEATHER_DEWPOINT, COLUMN_WEATHER_VISIBILITY,
-        COLUMN_WEATHER_SOLARRADIATION, COLUMN_WEATHER_UVINDEXCOLUMN_WEATHER_POLLEN_COUNT,
-        COLUMN_WEATHER_POLLUTION };
+    private String[] mAllColumns = { COLUMN_WEATHER_ID, COLUMN_WEATHER_APIARY,
+            COLUMN_WEATHER_SNAPSHOT_DATE, COLUMN_WEATHER_TEMPERATURE, COLUMN_WEATHER_RAINFALL,
+            COLUMN_WEATHER_PRESSURE, COLUMN_WEATHER_WEATHER, COLUMN_WEATHER_WINDDIRECTION,
+            COLUMN_WEATHER_WINDMPH, COLUMN_WEATHER_HUMIDITY, COLUMN_WEATHER_DEWPOINT,
+            COLUMN_WEATHER_VISIBILITY, COLUMN_WEATHER_SOLARRADIATION, COLUMN_WEATHER_UVINDEX,
+            COLUMN_WEATHER_POLLEN_COUNT, COLUMN_WEATHER_POLLUTION };
 
     public WeatherDAO(Context context) {
         this.mContext = context;
@@ -66,13 +67,13 @@ public class WeatherDAO {
 
     // --DB access methods--
 
-    public Weather createWeather(long hive, long snapshotDate, float temperature,
+    public Weather createWeather(long apiary, long snapshotDate, float temperature,
                                 float rainfall, float pressure, String weather,
                                 String windDirection, float windMPH, String humidity,
                                 float dewPoint, String visibility, String solarRadiation,
                                 String uvIndex, float pollenCount, float pollution) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_WEATHER_HIVE, hive);
+        values.put(COLUMN_WEATHER_APIARY, apiary);
         values.put(COLUMN_WEATHER_SNAPSHOT_DATE, snapshotDate);
         values.put(COLUMN_WEATHER_TEMPERATURE, temperature);
         values.put(COLUMN_WEATHER_RAINFALL, rainfall);
@@ -103,20 +104,20 @@ public class WeatherDAO {
     }
 
     public Weather createWeather(Weather aDO) {
-        return createWeather(aDO.getHive(), aDO.getSnapshotDate(), aDO.getTemperature(),
+        return createWeather(aDO.getApiary(), aDO.getSnapshotDate(), aDO.getTemperature(),
                 aDO.getRainfall(), aDO.getPressure(), aDO.getWeather(),
                 aDO.getWindDirection(), aDO.getWindMPH(), aDO.getHumidity(),
                 aDO.getDewPoint(), aDO.getVisibility(), aDO.getSolarRadiation(),
                 aDO.getUvIndex(), aDO.getPollenCount(), aDO.getPollution());
     }
 
-    public Weather updateWeather(long id, long hive, long snapshotDate, float temperature,
+    public Weather updateWeather(long id, long apiary, long snapshotDate, float temperature,
                                 float rainfall, float pressure, String weather,
                                 String windDirection, float windMPH, String humidity,
                                 float dewPoint, String visibility, String solarRadiation,
                                 String uvIndex, float pollenCount, float pollution) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_WEATHER_HIVE, hive);
+        values.put(COLUMN_WEATHER_APIARY, apiary);
         values.put(COLUMN_WEATHER_SNAPSHOT_DATE, snapshotDate);
         values.put(COLUMN_WEATHER_TEMPERATURE, temperature);
         values.put(COLUMN_WEATHER_RAINFALL, rainfall);
@@ -144,11 +145,11 @@ public class WeatherDAO {
             cursor.close();
         }
 
-        return updatedLogEntryPestMgmt;
+        return updatedWeather;
     }
 
     public Weather updateWeather(Weather aDO) {
-        return updateWeather(aDO.getId(), aDO.getHive(), aDO.getSnapshotDate(),
+        return updateWeather(aDO.getId(), aDO.getApiary(), aDO.getSnapshotDate(),
                 aDO.getTemperature(), aDO.getRainfall(), aDO.getPressure(),
                 aDO.getWeather(), aDO.getWindDirection(), aDO.getWindMPH(),
                 aDO.getHumidity(), aDO.getDewPoint(), aDO.getVisibility(),
@@ -183,17 +184,17 @@ public class WeatherDAO {
         weather.setSnapshotDate(cursor.getLong(1));
         weather.setTemperature(cursor.getFloat(2));
         weather.setRainfall(cursor.getFloat(3));
-        weather.setPressure(cursor.getFloat(3));
-        weather.setWeather(cursor.getString(3));
-        weather.setWindDirection(cursor.getString(3));
-        weather.setWindMPH(cursor.getFloat(3));
-        weather.setHumidity(cursor.getString(3));
-        weather.setDewPoint(cursor.getFloat(3));
-        weather.setVisibility(cursor.getString(3));
-        weather.setSolarRadiation(cursor.getString(3));
-        weather.setUvIndex(cursor.getString(3));
-        weather.setPollenCount(cursor.getFloat(4));
-        weather.setPollution(cursor.getFloat(5));
+        weather.setPressure(cursor.getFloat(4));
+        weather.setWeather(cursor.getString(5));
+        weather.setWindDirection(cursor.getString(6));
+        weather.setWindMPH(cursor.getFloat(7));
+        weather.setHumidity(cursor.getString(8));
+        weather.setDewPoint(cursor.getFloat(9));
+        weather.setVisibility(cursor.getString(10));
+        weather.setSolarRadiation(cursor.getString(11));
+        weather.setUvIndex(cursor.getString(12));
+        weather.setPollenCount(cursor.getFloat(13));
+        weather.setPollution(cursor.getFloat(14));
 
         return weather;
     }

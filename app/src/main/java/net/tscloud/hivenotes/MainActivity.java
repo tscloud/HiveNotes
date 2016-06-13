@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditApiaryFragmentInteraction() {
+    public void onEditApiaryFragmentInteraction(Apiary aApiary) {
         Log.d(TAG, "MainActivity.onEditApiaryFragmentInteraction called...");
 
         //  This is where we want to show apiary list - but we have to reread

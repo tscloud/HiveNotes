@@ -37,6 +37,7 @@
     <string name="hive_name_string">Hive Name:</string>
     <string name="hive_species_string">Species:</string>
     <string name="hive_foundation_type_string">Foundation Type:</string>
+    <string name="weather_string">Weather</string>
 
     <string name="done_string">Done</string>
     <string name="db_toast_string">"DB successfully deleted =)"</string>

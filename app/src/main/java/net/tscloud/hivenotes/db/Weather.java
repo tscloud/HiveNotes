@@ -8,6 +8,7 @@ public class Weather {
     public static final String TAG = "Weather";
 
     private long id;
+    private long apiary;
     private long snapshotDate;
     private float temperature;
     private float rainfall;
@@ -22,6 +23,14 @@ public class Weather {
     private String uvIndex;
     private float pollenCount;
     private float pollution;
+
+    public long getApiary() {
+        return apiary;
+    }
+
+    public void setApiary(long apiary) {
+        this.apiary = apiary;
+    }
 
     public float getDewPoint() {
         return dewPoint;

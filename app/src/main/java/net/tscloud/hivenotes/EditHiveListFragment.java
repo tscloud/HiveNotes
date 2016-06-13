@@ -106,6 +106,8 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         final Button btnCreateHive = (Button)layoutCreateHive.findViewById(R.id.hiveNoteButtton);
         View layoutUpdateApiary = view.findViewById(R.id.updateApiaryListButton);
         final Button btnUpdateApiary = (Button)layoutUpdateApiary.findViewById(R.id.hiveNoteButtton);
+        View layoutWeather = view.findViewById(R.id.weatherListButton);
+        final Button btnWeather = (Button)layoutWeather.findViewById(R.id.hiveNoteButtton);
 
         // --Set the Adapter--
         mListView = (AbsListView) view.findViewById(android.R.id.list); // get the ListView
@@ -124,8 +126,9 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         // set button text
         btnCreateHive.setText(getResources().getString(R.string.create_hive_string));
         btnUpdateApiary.setText(getResources().getString(R.string.update_apiary_string));
+        btnWeather.setText(getResources().getString(R.string.weather_string));
 
-        // set (2) button listeners
+        // set (3) button listeners
         btnCreateHive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,20 +143,34 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
             }
         });
 
+        btnWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onWeatherButtonPressed();
+            }
+        });
+
         return view;
     }
 
     public void onCreateHiveButtonPressed() {
         if (mListener != null) {
             // means we want to make a new Hive
-            mListener.onEditHiveListFragmentInteraction(mApiaryKey, -1, false);
+            mListener.onEditHiveListFragmentCreateHive(-1);
         }
     }
 
     public void onUpdateApiaryButtonPressed() {
         if (mListener != null) {
-            // means we want to make a new Hive
-            mListener.onEditHiveListFragmentInteraction(mApiaryKey, -1, true);
+            // means we want to update the Apiary
+            mListener.onEditHiveListFragmentUpdateApiary(mApiaryKey);
+        }
+    }
+
+    public void onWeatherButtonPressed() {
+        if (mListener != null) {
+            // means we want do some weather
+            mListener.onEditHiveListFragmentWeather(mApiaryKey);
         }
     }
 
@@ -180,7 +197,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
 
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onEditHiveListFragmentInteraction(mApiaryKey, mHiveList.get(position).getId(), false);
+            mListener.onEditHiveListFragmentCreateHive(mHiveList.get(position).getId());
         }
     }
 
@@ -205,7 +222,9 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      */
     public interface OnEditHiveListFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
-        public void onEditHiveListFragmentInteraction(long apiaryID, long hiveID, boolean updateApiary);
+        public void onEditHiveListFragmentCreateHive(long hiveID);
+        public void onEditHiveListFragmentUpdateApiary(long apiaryID);
+        public void onEditHiveListFragmentWeather(long apiaryID);
 
         // For getting Hive data
         public List<Hive> deliverHiveList(long anApiaryKey, boolean reread);

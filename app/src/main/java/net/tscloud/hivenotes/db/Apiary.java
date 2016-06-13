@@ -1,9 +1,12 @@
 package net.tscloud.hivenotes.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by tscloud on 8/15/15.
  */
-public class Apiary {
+public class Apiary implements Parcelable {
 
     public static final String TAG = "Apiary";
 
@@ -67,4 +70,40 @@ public class Apiary {
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeLong(this.profile);
+        dest.writeString(this.name);
+        dest.writeString(this.postalCode);
+        dest.writeFloat(this.latitude);
+        dest.writeFloat(this.longitude);
+    }
+
+    protected Apiary(Parcel in) {
+        this.id = in.readLong();
+        this.profile = in.readLong();
+        this.name = in.readString();
+        this.postalCode = in.readString();
+        this.latitude = in.readFloat();
+        this.longitude = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<Apiary> CREATOR = new Parcelable.Creator<Apiary>() {
+        @Override
+        public Apiary createFromParcel(Parcel source) {
+            return new Apiary(source);
+        }
+
+        @Override
+        public Apiary[] newArray(int size) {
+            return new Apiary[size];
+        }
+    };
 }

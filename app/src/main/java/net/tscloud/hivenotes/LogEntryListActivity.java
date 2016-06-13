@@ -245,6 +245,29 @@ public class LogEntryListActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Toolbar click handlers
+     */
+    public void hiveFeedingToolClickHandler (View v) {
+        Log.d(TAG, "hiveFeedingToolClickHandler called");
+    }
+
+    public void hiveGeneralToolClickHandler (View v) {
+        Log.d(TAG, "hiveGeneralToolClickHandler called");
+    }
+
+    public void hiveOtherToolClickHandler (View v) {
+        Log.d(TAG, "hiveOtherToolClickHandler called");
+    }
+
+    public void hiveProductionToolClickHandler (View v) {
+        Log.d(TAG, "hiveProductionToolClickHandler called");
+    }
+
+    public void hivePestToolClickHandler (View v) {
+        Log.d(TAG, "hivePestToolClickHandler called");
+    }
+
     @Override
     public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral) {
         Log.d(TAG, "received LogEntryGeneral data object");

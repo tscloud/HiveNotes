@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -20,11 +23,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
+import net.tscloud.hivenotes.db.Weather;
+import net.tscloud.hivenotes.db.WeatherDAO;
+import net.tscloud.hivenotes.helper.HiveWeather;
 
 public class EditHiveActivity extends AppCompatActivity implements
         EditHiveListFragment.OnEditHiveListFragmentInteractionListener,
@@ -39,6 +46,10 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     private long mApiaryKey;
     private List<Hive> mHiveList;
+    private Apiary mApiary;
+
+    // task references - needed to kill tasks on Activity Destroy
+    private WeatherCallTask mTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +70,12 @@ public class EditHiveActivity extends AppCompatActivity implements
         // need the Apiary name for the tile bar
         Log.d(TAG, "reading Apiary table");
         ApiaryDAO apiaryDAO = new ApiaryDAO(this);
-        Apiary apiaryForName = apiaryDAO.getApiaryById(mApiaryKey);
+        mApiary = apiaryDAO.getApiaryById(mApiaryKey);
         apiaryDAO.close();
 
         View abView = getSupportActionBar().getCustomView();
         TextView abText = (TextView)abView.findViewById(R.id.mytext);
-        abText.setText(apiaryForName.getName());
+        abText.setText(mApiary.getName());
 
         // Get the Hive list - necessary here?
         mHiveList = deliverHiveList(mApiaryKey, false);
@@ -137,24 +148,45 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditHiveListFragmentInteraction(long apiaryID, long hiveID, boolean updateApiary) {
+    public void onEditHiveListFragmentCreateHive(long hiveID) {
         Log.d(TAG, "Back from EditHiveListFragment...");
+        Log.d(TAG, "...add/update Hive - start intent EditHiveSingleActivity");
 
-        if (!updateApiary) {
-            //doesn't matter if we are updating a Hive or creating a new one --> call
-            // edit Hive Intent w/ keys or lack thereof
-            Log.d(TAG, "...add/update Hive - start intent EditHiveSingleActivity");
-            Intent i = new Intent(this,EditHiveSingleActivity.class);
-            i.putExtra(MainActivity.INTENT_APIARY_KEY, mApiaryKey);
-            i.putExtra(MainActivity.INTENT_HIVE_KEY, hiveID);
-            startActivityForResult(i, HIVE_SINGLE_REQ_CODE);
+        //doesn't matter if we are updating a Hive or creating a new one --> call
+        // edit Hive Intent w/ keys or lack thereof
+        Intent i = new Intent(this,EditHiveSingleActivity.class);
+        i.putExtra(MainActivity.INTENT_APIARY_KEY, mApiaryKey);
+        i.putExtra(MainActivity.INTENT_HIVE_KEY, hiveID);
+        startActivityForResult(i, HIVE_SINGLE_REQ_CODE);
+    }
+
+    @Override
+    public void onEditHiveListFragmentUpdateApiary(long apiaryID) {
+        Log.d(TAG, "Back from EditHiveListFragment...");
+        Log.d(TAG, "...update Apiary - start intent EditApiaryActivity");
+
+        Intent i = new Intent(this, EditApiaryActivity.class);
+        i.putExtra(MainActivity.INTENT_APIARY_KEY, apiaryID);
+        startActivityForResult(i, APIARY_REQ_CODE);
+    }
+
+    @Override
+    public void onEditHiveListFragmentWeather(long apiaryID) {
+        Log.d(TAG, "Back from EditHiveListFragment...");
+        Log.d(TAG, "...do some weather - start intent EditApiaryActivity");
+
+        String wuQuery;
+
+        if ((mApiary.getLatitude() == 0) && (mApiary.getLongitude() == 0)) {
+            wuQuery = mApiary.getPostalCode();
         }
         else {
-            Log.d(TAG, "...update Apiary - start intent EditApiaryActivity");
-            Intent i = new Intent(this, EditApiaryActivity.class);
-            i.putExtra(MainActivity.INTENT_APIARY_KEY, apiaryID);
-            startActivityForResult(i, APIARY_REQ_CODE);
+            wuQuery = mApiary.getLatitude() + "," + mApiary.getLongitude();
         }
+
+        Log.d(TAG, "about to start WeatherCallTask AsyncTask");
+        mTask = new WeatherCallTask(this, wuQuery);
+        mTask.execute();
     }
 
     @Override
@@ -173,13 +205,24 @@ public class EditHiveActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Create List Fragment and present
+        switch (requestCode) {
+            case (APIARY_REQ_CODE):
+                // if we are returning from editing the Apiary => reset our member var
+                Bundle bundleData = data.getExtras();
+                if (bundleData.keySet().contains(EditApiaryActivity.INTENT_APIARY_DATA)) {
+                    Log.d(TAG, "received LogEntryGeneral data object");
+                    mApiary = bundleData.getParcelable(EditApiaryActivity.INTENT_APIARY_DATA);
+                }
+        }
+
+                //Create List Fragment and present
         Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
         getSupportFragmentManager().beginTransaction()
                 //.addToBackStack(null)
                 .replace(R.id.hive_list_container, listFrag)
                 .commit();
     }
+
     /** This is strictly for testing and curiosity **
      */
     @Override
@@ -208,5 +251,59 @@ public class EditHiveActivity extends AppCompatActivity implements
         }
 
         return mHiveList;
+    }
+    /** do big update of all log tables in background
+     */
+    public class WeatherCallTask extends AsyncTask<Void, Void, Void> {
+
+        public static final String TAG = "WeatherCallTask";
+
+        private Context ctx;
+        private String queryString;
+
+        private ProgressDialog dialog =
+                new ProgressDialog(EditHiveActivity.this);
+
+        public WeatherCallTask(Context aCtx, String aQueryString) {
+            ctx = aCtx;
+            queryString = aQueryString;
+            Log.d(TAG, "WeatherCallTask(" + Thread.currentThread().getId() + ") : constructor");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO i18n
+            dialog.setMessage("Please wait..Calling weather service");
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            // Call the service
+            Weather weatherDO = HiveWeather.requestWunderground(queryString);
+            Log.d(TAG, "returned from wunderground WS call");
+
+            // Persist what comes back
+            WeatherDAO weatherDAO = new WeatherDAO(ctx);
+            weatherDO.setApiary(mApiaryKey);
+            weatherDAO.createWeather(weatherDO);
+
+            return(null);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Log.d(TAG, "WeatherCallTask("+ Thread.currentThread().getId() + ") : onPostExecute");
+
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+
+            Toast.makeText(getApplicationContext(), "Weather service call complete...data persisted",
+                    Toast.LENGTH_SHORT).show();
+
+            // all we need to do is nullify the Task reference
+            mTask = null;
+        }
     }
 }

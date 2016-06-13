@@ -199,7 +199,7 @@ public class EditApiaryFragment extends Fragment implements
             }
 
             if (mListener != null) {
-                mListener.onEditApiaryFragmentInteraction();
+                mListener.onEditApiaryFragmentInteraction(apiary);
             }
         }
     }
@@ -347,7 +347,7 @@ public class EditApiaryFragment extends Fragment implements
      */
     public interface OnEditApiaryFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
-        void onEditApiaryFragmentInteraction();
+        void onEditApiaryFragmentInteraction(Apiary aApiary);
 
         // For getting Apiary data
         //List<Apiary> deliverApiaryList(long aProfileID);

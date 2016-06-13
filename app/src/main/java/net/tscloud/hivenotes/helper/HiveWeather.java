@@ -1,6 +1,7 @@
 package net.tscloud.hivenotes.helper;
 
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import net.tscloud.hivenotes.db.Weather;
@@ -47,19 +48,30 @@ public class HiveWeather {
         Weather reply = new Weather();
 
         // Make the wunderground call - get JSON back
-        if (requestWebService(url) != null) {
-	        JSONObject jsonHead = jsonObj.optJSONObject("current_observation");
+        JSONObject jsonCallResult = requestWebService(url);
+        if (jsonCallResult != null) {
+	        JSONObject jsonHead = jsonCallResult.optJSONObject("current_observation");
 	        if (jsonHead != null) {
 	        	reply.setSnapshotDate(System.currentTimeMillis());
 	        	reply.setTemperature((float)jsonHead.optDouble("temp_f", -1));
 	        	reply.setRainfall(Float.parseFloat(jsonHead.optString("precip_today_in", "-1")));
-	        }
+	        	reply.setPressure(Float.parseFloat(jsonHead.optString("pressure_in", "-1")));
+	        	reply.setWeather(jsonHead.optString("weather", "weather conditions not available"));
+	        	reply.setWindDirection(jsonHead.optString("wind_dir", "wind direction not available"));
+	        	reply.setWindMPH((float)jsonHead.optDouble("wind_mph", -1));
+                reply.setHumidity(jsonHead.optString("relative_humidity", "humidity not available"));
+                reply.setDewPoint((float)jsonHead.optDouble("dewpoint_f", -1));
+                reply.setVisibility(jsonHead.optString("visibility_mi", "visibility not available"));
+                reply.setSolarRadiation(jsonHead.optString("solarradiation", "solar radiation not available"));
+                reply.setUvIndex(jsonHead.optString("UV", "UV index not available"));
+            }
         }
 
         return reply;
 	}
 
-	private static JSONObject requestWebService(String serviceUrl) {
+	@Nullable
+    private static JSONObject requestWebService(String serviceUrl) {
 	    disableConnectionReuseIfNecessary();
 
 	    HttpURLConnection urlConnection = null;

@@ -13,6 +13,7 @@
         android:layout_weight="0.20"
         android:id="@+id/toolbarHomeImage"
         android:contentDescription="Home"
+        android:onClick="hiveFeedingToolClickHandler"
         android:clickable="true" />
 
     <ImageView
@@ -23,6 +24,7 @@
         android:layout_weight="0.20"
         android:id="@+id/toolbarLogImage"
         android:contentDescription="Past Log Entries"
+        android:onClick="hiveGeneralToolClickHandler"
         android:clickable="true" />
 
     <ImageView
@@ -33,6 +35,7 @@
         android:layout_weight="0.20"
         android:id="@+id/toolbarAnalysisImage"
         android:contentDescription="Analysis"
+        android:onClick="hiveOtherToolClickHandler"
         android:clickable="true" />
 
     <ImageView
@@ -43,6 +46,7 @@
         android:layout_weight="0.20"
         android:id="@+id/toolbarReminderImage"
         android:contentDescription="Reminders"
+        android:onClick="hiveProductionToolClickHandler"
         android:clickable="true" />
 
     <ImageView
@@ -53,6 +57,7 @@
         android:layout_weight="0.20"
         android:id="@+id/toolbarPicsImage"
         android:contentDescription="Pics"
+        android:onClick="hivePestToolClickHandler"
         android:clickable="true" />
 
 </LinearLayout>
