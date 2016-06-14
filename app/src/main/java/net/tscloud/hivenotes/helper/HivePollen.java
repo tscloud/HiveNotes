@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.Date;
 import java.text.ParseException;
+import java.util.NoSuchElementException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Map;
@@ -86,7 +87,7 @@ public class HivePollen {
 
             if(doc.select("div.columns").first().text() == null)
             {
-                Log.e(TAG, "Bad News: no div.columns");
+                throw new NoSuchElementException("Bad News: no div.columns");
             }
 
             // get "location" from XML
