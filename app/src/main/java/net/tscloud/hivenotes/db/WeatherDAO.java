@@ -71,7 +71,7 @@ public class WeatherDAO {
                                 float rainfall, float pressure, String weather,
                                 String windDirection, float windMPH, String humidity,
                                 float dewPoint, String visibility, String solarRadiation,
-                                String uvIndex, float pollenCount, float pollution) {
+                                String uvIndex, float pollenCount, String pollution) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEATHER_APIARY, apiary);
         values.put(COLUMN_WEATHER_SNAPSHOT_DATE, snapshotDate);
@@ -115,7 +115,7 @@ public class WeatherDAO {
                                 float rainfall, float pressure, String weather,
                                 String windDirection, float windMPH, String humidity,
                                 float dewPoint, String visibility, String solarRadiation,
-                                String uvIndex, float pollenCount, float pollution) {
+                                String uvIndex, float pollenCount, String pollution) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEATHER_APIARY, apiary);
         values.put(COLUMN_WEATHER_SNAPSHOT_DATE, snapshotDate);
@@ -194,7 +194,7 @@ public class WeatherDAO {
         weather.setSolarRadiation(cursor.getString(11));
         weather.setUvIndex(cursor.getString(12));
         weather.setPollenCount(cursor.getFloat(13));
-        weather.setPollution(cursor.getFloat(14));
+        weather.setPollution(cursor.getString(14));
 
         return weather;
     }

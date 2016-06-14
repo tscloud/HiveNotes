@@ -60,28 +60,19 @@
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" line="151" />
+    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" line="153" />
     <bookmark url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml" line="0" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ca4e5e2-3ed5-48e4-9429-4e5b4b4764ee" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HivePollen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/assets/sql/create.sql" afterPath="$PROJECT_DIR$/app/src/main/assets/sql/create.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Apiary.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Apiary.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_grid.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_grid.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/hive_tool_bar.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/hive_tool_bar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="HiveNotes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -112,11 +103,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="525">
-          <file leaf-file-name="create.sql" pinned="true" current-in-tab="false">
+          <file leaf-file-name="create.sql" pinned="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/assets/sql/create.sql">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="139" column="29" selection-start-line="139" selection-start-column="14" selection-end-line="139" selection-end-column="29" />
+                <state vertical-scroll-proportion="0.7570093">
+                  <caret line="147" column="27" selection-start-line="147" selection-start-column="27" selection-end-line="147" selection-end-column="27" />
                   <folding />
                 </state>
               </provider>
@@ -129,6 +120,8 @@
                   <caret line="238" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
                   <folding>
                     <element signature="imports" expanded="false" />
+                    <element signature="e#10761#10762#0" expanded="false" />
+                    <element signature="e#10822#10823#0" expanded="false" />
                     <element signature="e#14357#14358#0" expanded="false" />
                     <element signature="e#14396#14397#0" expanded="false" />
                     <element signature="e#14442#14443#0" expanded="false" />
@@ -157,15 +150,7 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
                   <caret line="177" column="45" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="45" />
-                  <folding>
-                    <element signature="imports" expanded="false" />
-                    <element signature="e#5069#5070#0" expanded="false" />
-                    <element signature="e#5128#5129#0" expanded="false" />
-                    <element signature="e#5277#5278#0" expanded="false" />
-                    <element signature="e#5338#5339#0" expanded="false" />
-                    <element signature="e#5482#5483#0" expanded="false" />
-                    <element signature="e#5538#5539#0" expanded="false" />
-                  </folding>
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -174,10 +159,8 @@
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="306" column="9" selection-start-line="306" selection-start-column="9" selection-end-line="306" selection-end-column="9" />
-                  <folding>
-                    <element signature="imports" expanded="false" />
-                  </folding>
+                  <caret line="291" column="62" selection-start-line="291" selection-start-column="62" selection-end-line="291" selection-end-column="62" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -187,7 +170,9 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
                   <caret line="0" column="9" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
-                  <folding />
+                  <folding>
+                    <element signature="imports" expanded="false" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -197,7 +182,13 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
                   <caret line="201" column="64" selection-start-line="201" selection-start-column="64" selection-end-line="201" selection-end-column="64" />
-                  <folding />
+                  <folding>
+                    <element signature="imports" expanded="false" />
+                    <element signature="e#3417#3418#0" expanded="false" />
+                    <element signature="e#3476#3477#0" expanded="false" />
+                    <element signature="e#3712#3713#0" expanded="false" />
+                    <element signature="e#3784#3785#0" expanded="false" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -207,16 +198,6 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
                   <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.80244756">
-                  <caret line="34" column="48" selection-start-line="34" selection-start-column="48" selection-end-line="34" selection-end-column="48" />
                   <folding />
                 </state>
               </provider>
@@ -262,19 +243,6 @@
                     <element signature="e#7416#7417#0" expanded="false" />
                     <element signature="e#7458#7459#0" expanded="false" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="list_item_logdate_parent.xml" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/list_item_logdate_parent.xml">
-              <provider editor-type-id="android-designer">
-                <state />
-              </provider>
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="3" column="39" selection-start-line="3" selection-start-column="39" selection-end-line="3" selection-end-column="39" />
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -334,11 +302,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="HiveWeather.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="HiveWeather.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="66" column="13" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
+                <state vertical-scroll-proportion="0.61417323">
+                  <caret line="46" column="69" selection-start-line="46" selection-start-column="69" selection-end-line="46" selection-end-column="69" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -350,12 +318,8 @@
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="32" column="64" selection-start-line="32" selection-start-column="57" selection-end-line="32" selection-end-column="64" />
-                  <folding>
-                    <element signature="imports" expanded="false" />
-                    <element signature="e#2754#2755#0" expanded="false" />
-                    <element signature="e#2787#2788#0" expanded="false" />
-                  </folding>
+                  <caret line="128" column="54" selection-start-line="128" selection-start-column="54" selection-end-line="128" selection-end-column="54" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -364,83 +328,41 @@
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
-                  <folding>
-                    <element signature="e#643#644#0" expanded="false" />
-                    <element signature="e#672#673#0" expanded="false" />
-                    <element signature="e#714#715#0" expanded="false" />
-                    <element signature="e#750#751#0" expanded="false" />
-                    <element signature="e#784#785#0" expanded="false" />
-                    <element signature="e#815#816#0" expanded="false" />
-                    <element signature="e#862#863#0" expanded="false" />
-                    <element signature="e#902#903#0" expanded="false" />
-                    <element signature="e#937#938#0" expanded="false" />
-                    <element signature="e#968#969#0" expanded="false" />
-                    <element signature="e#1016#1017#0" expanded="false" />
-                    <element signature="e#1056#1057#0" expanded="false" />
-                    <element signature="e#1090#1091#0" expanded="false" />
-                    <element signature="e#1121#1122#0" expanded="false" />
-                    <element signature="e#1168#1169#0" expanded="false" />
-                    <element signature="e#1208#1209#0" expanded="false" />
-                    <element signature="e#1249#1250#0" expanded="false" />
-                    <element signature="e#1286#1287#0" expanded="false" />
-                    <element signature="e#1346#1347#0" expanded="false" />
-                    <element signature="e#1398#1399#0" expanded="false" />
-                    <element signature="e#1432#1433#0" expanded="false" />
-                    <element signature="e#1462#1463#0" expanded="false" />
-                    <element signature="e#1508#1509#0" expanded="false" />
-                    <element signature="e#1546#1547#0" expanded="false" />
-                    <element signature="e#1583#1584#0" expanded="false" />
-                    <element signature="e#1616#1617#0" expanded="false" />
-                    <element signature="e#1668#1669#0" expanded="false" />
-                    <element signature="e#1712#1713#0" expanded="false" />
-                    <element signature="e#1746#1747#0" expanded="false" />
-                    <element signature="e#1776#1777#0" expanded="false" />
-                    <element signature="e#1822#1823#0" expanded="false" />
-                    <element signature="e#1860#1861#0" expanded="false" />
-                    <element signature="e#1900#1901#0" expanded="false" />
-                    <element signature="e#1936#1937#0" expanded="false" />
-                    <element signature="e#1994#1995#0" expanded="false" />
-                    <element signature="e#2044#2045#0" expanded="false" />
-                    <element signature="e#2077#2078#0" expanded="false" />
-                    <element signature="e#2107#2108#0" expanded="false" />
-                    <element signature="e#2152#2153#0" expanded="false" />
-                    <element signature="e#2190#2191#0" expanded="false" />
-                    <element signature="e#2227#2228#0" expanded="false" />
-                    <element signature="e#2261#2262#0" expanded="false" />
-                    <element signature="e#2314#2315#0" expanded="false" />
-                    <element signature="e#2360#2361#0" expanded="false" />
-                    <element signature="e#2397#2398#0" expanded="false" />
-                    <element signature="e#2432#2433#0" expanded="false" />
-                    <element signature="e#2486#2487#0" expanded="false" />
-                    <element signature="e#2534#2535#0" expanded="false" />
-                    <element signature="e#2568#2569#0" expanded="false" />
-                    <element signature="e#2599#2600#0" expanded="false" />
-                    <element signature="e#2646#2647#0" expanded="false" />
-                    <element signature="e#2686#2687#0" expanded="false" />
-                    <element signature="e#2721#2722#0" expanded="false" />
-                    <element signature="e#2753#2754#0" expanded="false" />
-                    <element signature="e#2802#2803#0" expanded="false" />
-                    <element signature="e#2844#2845#0" expanded="false" />
-                    <element signature="e#2881#2882#0" expanded="false" />
-                    <element signature="e#2915#2916#0" expanded="false" />
-                    <element signature="e#2968#2969#0" expanded="false" />
-                    <element signature="e#3014#3015#0" expanded="false" />
-                    <element signature="e#3041#3042#0" expanded="false" />
-                    <element signature="e#3066#3067#0" expanded="false" />
-                    <element signature="e#3100#3101#0" expanded="false" />
-                    <element signature="e#3128#3129#0" expanded="false" />
-                  </folding>
+                  <caret line="134" column="35" selection-start-line="134" selection-start-column="35" selection-end-line="134" selection-end-column="35" />
+                  <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="HiveCalendar.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="HiveCalendar.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveCalendar.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.61256546">
-                  <caret line="55" column="32" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
                   <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="HivePollen.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HivePollen.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="22" column="50" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#661#675#0" expanded="true" />
+                    <element signature="e#1288#1289#0" expanded="true" />
+                    <element signature="e#1326#1327#0" expanded="true" />
+                    <element signature="e#1361#1362#0" expanded="true" />
+                    <element signature="e#1397#1398#0" expanded="true" />
+                    <element signature="e#1435#1436#0" expanded="true" />
+                    <element signature="e#1470#1471#0" expanded="true" />
+                    <element signature="e#1521#1522#0" expanded="true" />
+                    <element signature="e#1573#1574#0" expanded="true" />
+                    <element signature="e#1627#1628#0" expanded="true" />
+                    <element signature="e#1679#1680#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -455,9 +377,9 @@
         <option value="Singleton" />
         <option value="resourceFile" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="layoutResourceFile_vertical" />
         <option value="layoutResourceFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -2170,7 +2092,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveSingleFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_hive_list.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Notification.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/HiveNotesLogDO.java" />
@@ -2206,8 +2127,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogDateListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogOtherFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogPestMgmtFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/hive_tool_bar.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java" />
@@ -2220,7 +2139,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Apiary.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java" />
         <option value="$PROJECT_DIR$/app/src/main/assets/sql/create.sql" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HivePollen.java" />
       </list>
     </option>
   </component>
@@ -2232,9 +2154,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-1" />
     <option name="y" value="33" />
-    <option name="width" value="3840" />
-    <option name="height" value="2082" />
+    <option name="width" value="3842" />
+    <option name="height" value="2083" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -2304,6 +2227,20 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HiveNotes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2619,20 +2556,6 @@
       <pane id="Scratches">
         <subPane />
       </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HiveNotes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2665,7 +2588,7 @@
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.SHOW" value="true" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="SearchEverywhereHistoryKey" value="android.provider&#9;null&#9;null&#10;log_round&#9;FILE&#9;file:///home/tscloud/AndroidStudioProjects/HiveNotes/app/src/main/res/drawable/log_round_icon.png&#10;buttonDroneCellFndn&#9;PSI&#9;JAVA://net.tscloud.hivenotes.R.id#buttonDroneCellFndn&#10;R&#9;PSI&#9;JAVA://net.tscloud.hivenotes.R&#10;toast&#9;PSI&#9;JAVA://android.widget.Toast" />
-    <property name="device.picker.selection" value="FA44NSF02512" />
+    <property name="device.picker.selection" value="Nexus_5_API_22" />
     <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
     <property name="last_opened_file_path" value="$USER_HOME$/code_git/bignerdranch/expandable-recycler-view" />
   </component>
@@ -2975,12 +2898,6 @@
       <option name="number" value="Default" />
       <updated>1439340940336</updated>
     </task>
-    <task id="LOCAL-00050" summary="2nd NON-working FetchCoordinates.  requestLocationUpdates() cannot be in doInBackground() as currently.">
-      <created>1446092004202</created>
-      <option name="number" value="00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1446092004202</updated>
-    </task>
     <task id="LOCAL-00051" summary="Ditch Looper/Handler for Timer.  Still need to perform callback properly.">
       <created>1446303950664</created>
       <option name="number" value="00051" />
@@ -3269,7 +3186,13 @@
       <option name="project" value="LOCAL" />
       <updated>1465564407285</updated>
     </task>
-    <option name="localTasksCounter" value="99" />
+    <task id="LOCAL-00099" summary="wunderground call complete.">
+      <created>1465793681467</created>
+      <option name="number" value="00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1465793681469</updated>
+    </task>
+    <option name="localTasksCounter" value="100" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3282,7 +3205,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="33" width="3840" height="2082" extended-state="6" />
+    <frame x="-1" y="33" width="3842" height="2083" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32968834" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -3291,8 +3214,8 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32721382" sideWeight="0.5066278" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.325054" sideWeight="0.48992577" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.325054" sideWeight="0.49045599" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3248511" sideWeight="0.48992577" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32647535" sideWeight="0.49045599" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3367623" sideWeight="0.4917553" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864103" sideWeight="0.4989356" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295334" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -3364,7 +3287,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="Start Calendar stuff.  Tweak delete DB." />
     <MESSAGE value="More Calendar stuff." />
     <MESSAGE value="Almost done (much cleanup still) w/ Calendar and Event?  Need to do Reminders." />
     <MESSAGE value="More Calendar updates.  Some revamp needed." />
@@ -3389,7 +3311,8 @@
     <MESSAGE value="Get expandablerecyclerview stuff to compile.  Use current version of expandablerecyclerview." />
     <MESSAGE value="Finished expandablerecyclerview except for the clicklistener." />
     <MESSAGE value="expandablerecyclerview clicklistener works.  wunderground call code compiles." />
-    <option name="LAST_COMMIT_MESSAGE" value="expandablerecyclerview clicklistener works.  wunderground call code compiles." />
+    <MESSAGE value="wunderground call complete." />
+    <option name="LAST_COMMIT_MESSAGE" value="wunderground call complete." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3433,18 +3356,11 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="222" />
+      <option name="time" value="226" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Android/Sdk/sources/android-23/java/lang/Class.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3509804">
-          <caret line="334" column="27" selection-start-line="334" selection-start-column="27" selection-end-line="334" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/LogEntryGeneralDAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3522,13 +3438,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_log_date_list.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -3555,13 +3464,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.22791222">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48621273">
-          <caret line="32" column="66" selection-start-line="32" selection-start-column="66" selection-end-line="32" selection-end-column="66" />
         </state>
       </provider>
     </entry>
@@ -3682,18 +3584,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="64" selection-start-line="32" selection-start-column="57" selection-end-line="32" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2754#2755#0" expanded="false" />
-            <element signature="e#2787#2788#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_hive_list.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -3808,34 +3698,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Apiary.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="9" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="177" column="45" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="false" />
-            <element signature="e#5069#5070#0" expanded="false" />
-            <element signature="e#5128#5129#0" expanded="false" />
-            <element signature="e#5277#5278#0" expanded="false" />
-            <element signature="e#5338#5339#0" expanded="false" />
-            <element signature="e#5482#5483#0" expanded="false" />
-            <element signature="e#5538#5539#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3844,79 +3712,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="201" column="64" selection-start-line="201" selection-start-column="64" selection-end-line="201" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
           <folding>
-            <element signature="e#643#644#0" expanded="false" />
-            <element signature="e#672#673#0" expanded="false" />
-            <element signature="e#714#715#0" expanded="false" />
-            <element signature="e#750#751#0" expanded="false" />
-            <element signature="e#784#785#0" expanded="false" />
-            <element signature="e#815#816#0" expanded="false" />
-            <element signature="e#862#863#0" expanded="false" />
-            <element signature="e#902#903#0" expanded="false" />
-            <element signature="e#937#938#0" expanded="false" />
-            <element signature="e#968#969#0" expanded="false" />
-            <element signature="e#1016#1017#0" expanded="false" />
-            <element signature="e#1056#1057#0" expanded="false" />
-            <element signature="e#1090#1091#0" expanded="false" />
-            <element signature="e#1121#1122#0" expanded="false" />
-            <element signature="e#1168#1169#0" expanded="false" />
-            <element signature="e#1208#1209#0" expanded="false" />
-            <element signature="e#1249#1250#0" expanded="false" />
-            <element signature="e#1286#1287#0" expanded="false" />
-            <element signature="e#1346#1347#0" expanded="false" />
-            <element signature="e#1398#1399#0" expanded="false" />
-            <element signature="e#1432#1433#0" expanded="false" />
-            <element signature="e#1462#1463#0" expanded="false" />
-            <element signature="e#1508#1509#0" expanded="false" />
-            <element signature="e#1546#1547#0" expanded="false" />
-            <element signature="e#1583#1584#0" expanded="false" />
-            <element signature="e#1616#1617#0" expanded="false" />
-            <element signature="e#1668#1669#0" expanded="false" />
-            <element signature="e#1712#1713#0" expanded="false" />
-            <element signature="e#1746#1747#0" expanded="false" />
-            <element signature="e#1776#1777#0" expanded="false" />
-            <element signature="e#1822#1823#0" expanded="false" />
-            <element signature="e#1860#1861#0" expanded="false" />
-            <element signature="e#1900#1901#0" expanded="false" />
-            <element signature="e#1936#1937#0" expanded="false" />
-            <element signature="e#1994#1995#0" expanded="false" />
-            <element signature="e#2044#2045#0" expanded="false" />
-            <element signature="e#2077#2078#0" expanded="false" />
-            <element signature="e#2107#2108#0" expanded="false" />
-            <element signature="e#2152#2153#0" expanded="false" />
-            <element signature="e#2190#2191#0" expanded="false" />
-            <element signature="e#2227#2228#0" expanded="false" />
-            <element signature="e#2261#2262#0" expanded="false" />
-            <element signature="e#2314#2315#0" expanded="false" />
-            <element signature="e#2360#2361#0" expanded="false" />
-            <element signature="e#2397#2398#0" expanded="false" />
-            <element signature="e#2432#2433#0" expanded="false" />
-            <element signature="e#2486#2487#0" expanded="false" />
-            <element signature="e#2534#2535#0" expanded="false" />
-            <element signature="e#2568#2569#0" expanded="false" />
-            <element signature="e#2599#2600#0" expanded="false" />
-            <element signature="e#2646#2647#0" expanded="false" />
-            <element signature="e#2686#2687#0" expanded="false" />
-            <element signature="e#2721#2722#0" expanded="false" />
-            <element signature="e#2753#2754#0" expanded="false" />
-            <element signature="e#2802#2803#0" expanded="false" />
-            <element signature="e#2844#2845#0" expanded="false" />
-            <element signature="e#2881#2882#0" expanded="false" />
-            <element signature="e#2915#2916#0" expanded="false" />
-            <element signature="e#2968#2969#0" expanded="false" />
-            <element signature="e#3014#3015#0" expanded="false" />
-            <element signature="e#3041#3042#0" expanded="false" />
-            <element signature="e#3066#3067#0" expanded="false" />
-            <element signature="e#3100#3101#0" expanded="false" />
-            <element signature="e#3128#3129#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#3417#3418#0" expanded="false" />
+            <element signature="e#3476#3477#0" expanded="false" />
+            <element signature="e#3712#3713#0" expanded="false" />
+            <element signature="e#3784#3785#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3927,29 +3728,13 @@
           <caret line="238" column="0" selection-start-line="236" selection-start-column="0" selection-end-line="238" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="false" />
+            <element signature="e#10761#10762#0" expanded="false" />
+            <element signature="e#10822#10823#0" expanded="false" />
             <element signature="e#14357#14358#0" expanded="false" />
             <element signature="e#14396#14397#0" expanded="false" />
             <element signature="e#14442#14443#0" expanded="false" />
             <element signature="e#14473#14474#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="306" column="9" selection-start-line="306" selection-start-column="9" selection-end-line="306" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sql/create.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="139" column="29" selection-start-line="139" selection-start-column="14" selection-end-line="139" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3973,29 +3758,114 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveCalendar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="66" column="13" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="177" column="45" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24310637">
+          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48621273">
+          <caret line="32" column="66" selection-start-line="32" selection-start-column="66" selection-end-line="32" selection-end-column="66" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.80244756">
-          <caret line="34" column="48" selection-start-line="34" selection-start-column="48" selection-end-line="34" selection-end-column="48" />
+        <state vertical-scroll-proportion="0.09304997">
+          <caret line="6" column="1" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveCalendar.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Apiary.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.61256546">
-          <caret line="55" column="32" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="128" column="54" selection-start-line="128" selection-start-column="54" selection-end-line="128" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="134" column="35" selection-start-line="134" selection-start-column="35" selection-end-line="134" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="291" column="62" selection-start-line="291" selection-start-column="62" selection-end-line="291" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sql/create.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7570093">
+          <caret line="147" column="27" selection-start-line="147" selection-start-column="27" selection-end-line="147" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HivePollen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="50" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#661#675#0" expanded="true" />
+            <element signature="e#1288#1289#0" expanded="true" />
+            <element signature="e#1326#1327#0" expanded="true" />
+            <element signature="e#1361#1362#0" expanded="true" />
+            <element signature="e#1397#1398#0" expanded="true" />
+            <element signature="e#1435#1436#0" expanded="true" />
+            <element signature="e#1470#1471#0" expanded="true" />
+            <element signature="e#1521#1522#0" expanded="true" />
+            <element signature="e#1573#1574#0" expanded="true" />
+            <element signature="e#1627#1628#0" expanded="true" />
+            <element signature="e#1679#1680#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.61417323">
+          <caret line="46" column="69" selection-start-line="46" selection-start-column="69" selection-end-line="46" selection-end-column="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

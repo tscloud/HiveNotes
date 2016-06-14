@@ -1,6 +1,7 @@
 package net.tscloud.hivenotes;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,6 +32,7 @@ import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
 import net.tscloud.hivenotes.db.Weather;
 import net.tscloud.hivenotes.db.WeatherDAO;
+import net.tscloud.hivenotes.helper.HivePollen;
 import net.tscloud.hivenotes.helper.HiveWeather;
 
 public class EditHiveActivity extends AppCompatActivity implements
@@ -279,9 +281,29 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         @Override
         protected Void doInBackground(Void... unused) {
-            // Call the service
+            // Call the weather service
             Weather weatherDO = HiveWeather.requestWunderground(queryString);
             Log.d(TAG, "returned from wunderground WS call");
+
+            // Call the pollen "service"
+            HivePollen hivePollen = new HivePollen("02818");
+            Log.d(TAG, "Today: " + hivePollen.getDateToday());
+            Log.d(TAG, "Pollen Today: " + hivePollen.getPollenIndexToday());
+            Log.d(TAG, "Type: " + hivePollen.getPollenType());
+            Log.d(TAG, "City: " + hivePollen.getCity());
+            Log.d(TAG, "Zip: " + hivePollen.getZipcode());
+            int i = 0;
+            for (Date d : hivePollen.getCorrespondingDate()) {
+                Log.d(TAG, "Date "+ i++ + ": " + d);
+            }
+            i = 0;
+            for (String s : hivePollen.getPollenIndex()) {
+                Log.d(TAG, "Pollen Index "+ i++ + ": " + s);
+            }
+
+            // Load DO w/ pollen data
+            weatherDO.setPollenCount(hivePollen.getPollenIndexToday());
+            weatherDO.setPollution(hivePollen.getPollenType());
 
             // Persist what comes back
             WeatherDAO weatherDAO = new WeatherDAO(ctx);

@@ -22,7 +22,7 @@ public class Weather {
     private String solarRadiation;
     private String uvIndex;
     private float pollenCount;
-    private float pollution;
+    private String pollution;
 
     public long getApiary() {
         return apiary;
@@ -128,11 +128,11 @@ public class Weather {
         this.rainfall = rainfall;
     }
 
-    public float getPollution() {
+    public String getPollution() {
         return pollution;
     }
 
-    public void setPollution(float pollution) {
+    public void setPollution(String pollution) {
         this.pollution = pollution;
     }
 
