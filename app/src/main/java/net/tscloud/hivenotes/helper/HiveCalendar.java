@@ -41,10 +41,8 @@ public class HiveCalendar {
     private static final Uri REMINDER_URI = CalendarContract.Reminders.CONTENT_URI;
     private static long REMINDER_ID = -1;
 
-    /**Launch the Calendar Intent for user to create the reminder will seed w/ certain values
-     * not currently used
-     */
-    private static void calendarIntent(Context aCtx, Bundle eventData) {
+    // DON'T use this one - use the one below
+    private static void calendarIntentOrig(Context aCtx, Bundle eventData) {
         Intent intent = new Intent(Intent.ACTION_INSERT);
 
         if (eventData != null) {
@@ -65,19 +63,37 @@ public class HiveCalendar {
         aCtx.startActivity(intent);
     }
 
+    /**Launch the Calendar Intent
+     */
+    public static void calendarIntent(Context aCtx, long time) {
+        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+        builder.appendPath("time");
+        ContentUris.appendId(builder, time);
+        Intent intent = new Intent(Intent.ACTION_VIEW)
+                .setData(buildUri(builder.build()));
+
+        Log.d(TAG, "calendarIntent: " + builder.build());
+
+        aCtx.startActivity(intent);
+    }
+
     //
     //Static methods used for creating Calendar -- Thank You Derek Bekoe
     //
 
     /**Builds the Uri in android database (as a Sync Adapter)*/
     private static Uri buildUri(Uri aUri) {
-        return aUri
+        Uri calUri = aUri
                 .buildUpon()
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
                 .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, ACCOUNT_NAME)
                 .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE,
                         CalendarContract.ACCOUNT_TYPE_LOCAL)
                 .build();
+
+        Log.d(TAG, "buildUri: " + calUri);
+
+        return calUri;
     }
 
     /**Create and insert new calendar into android database

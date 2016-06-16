@@ -210,14 +210,16 @@ public class EditHiveActivity extends AppCompatActivity implements
         switch (requestCode) {
             case (APIARY_REQ_CODE):
                 // if we are returning from editing the Apiary => reset our member var
-                Bundle bundleData = data.getExtras();
-                if (bundleData.keySet().contains(EditApiaryActivity.INTENT_APIARY_DATA)) {
-                    Log.d(TAG, "received LogEntryGeneral data object");
-                    mApiary = bundleData.getParcelable(EditApiaryActivity.INTENT_APIARY_DATA);
+                if (data != null) {
+                    Bundle bundleData = data.getExtras();
+                    if (bundleData.keySet().contains(EditApiaryActivity.INTENT_APIARY_DATA)) {
+                        Log.d(TAG, "received LogEntryGeneral data object");
+                        mApiary = bundleData.getParcelable(EditApiaryActivity.INTENT_APIARY_DATA);
+                    }
                 }
         }
 
-                //Create List Fragment and present
+        //Create List Fragment and present
         Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
         getSupportFragmentManager().beginTransaction()
                 //.addToBackStack(null)
@@ -274,8 +276,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         @Override
         protected void onPreExecute() {
-            // TODO i18n
-            dialog.setMessage("Please wait..Calling weather service");
+            dialog.setMessage(getResources().getString(R.string.weather_service_msg_string));
             dialog.show();
         }
 
@@ -287,6 +288,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
             // Call the pollen "service"
             HivePollen hivePollen = new HivePollen("02818");
+            /*
             Log.d(TAG, "Today: " + hivePollen.getDateToday());
             Log.d(TAG, "Pollen Today: " + hivePollen.getPollenIndexToday());
             Log.d(TAG, "Type: " + hivePollen.getPollenType());
@@ -300,6 +302,7 @@ public class EditHiveActivity extends AppCompatActivity implements
             for (String s : hivePollen.getPollenIndex()) {
                 Log.d(TAG, "Pollen Index "+ i++ + ": " + s);
             }
+            */
 
             // Load DO w/ pollen data
             weatherDO.setPollenCount(hivePollen.getPollenIndexToday());

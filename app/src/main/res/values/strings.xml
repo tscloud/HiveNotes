@@ -22,7 +22,7 @@
     <string name="postal_code_string">Postal Code:</string>
     <string name="new_apiary_name_string">Apiary Name:</string>
     <string name="apiary_latlon">Lat/Lon:</string>
-    <string name="apiary_compute_latlon">Lat/Lon from Postal Code or GPS</string>
+    <string name="apiary_compute_latlon">Lat/Lon from GPS/Network</string>
 
     <string name="new_profile_string">New Profile</string>
     <string name="create_profile_string">Create Profile</string>
@@ -44,6 +44,7 @@
     <string name="db_toast_string_neg">"DB NOT deleted =("</string>
     <string name="gps_toast_string">Waiting for GPS location…</string>
     <string name="network_toast_string">Waiting for Network location…</string>
+    <string name="weather_service_msg_string">Please wait..Calling weather service</string>
 
     <string name="title_logentry_list">LogEntries</string>
     <string name="title_logentry_detail">LogEntry Detail</string>

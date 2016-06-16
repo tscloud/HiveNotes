@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,21 +18,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
-import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
-import net.tscloud.hivenotes.db.Notification;
-import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 
 /**
@@ -173,7 +166,7 @@ public class LogPestMgmtFragment extends LogFragment {
         }
 
         // ...Otherwise --> spin up a task to get and set
-        if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1)) {
+        if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == -1)) {
             //disable the button until task is thru
             droneCellFndnBtn.setEnabled(false);
 
@@ -183,12 +176,12 @@ public class LogPestMgmtFragment extends LogFragment {
                             NotificationType.NOTIFY_PEST_REMOVE_DRONE, mHiveID, TASK_DRONE,
                             calendar, dateFormat, timeFormat), getActivity());
             // All AsynchTasks executed serially on same background Thread
-            mTaskDrone.execute();
+            //mTaskDrone.execute();
             // Each AsyncTask executes on its own Thread
             mTaskDrone.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
-        if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1)) {
+        if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == -1)) {
             //disable the button until task is thru
             mitesTrtmntBtn.setEnabled(false);
 
@@ -198,7 +191,7 @@ public class LogPestMgmtFragment extends LogFragment {
                             NotificationType.NOTIFY_PEST_REMOVE_MITES, mHiveID, TASK_MITES,
                             calendar, dateFormat, timeFormat), getActivity());
             // All AsynchTasks executed serially on same background Thread
-            mTaskMites.execute();
+            //mTaskMites.execute();
             // Each AsyncTask executes on its own Thread
             mTaskMites.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
@@ -215,6 +208,7 @@ public class LogPestMgmtFragment extends LogFragment {
             @Override
             public void onClick(View v) {
                 onReminderPressed(droneCellFndnRmndrText);
+                //HiveCalendar.calendarIntent(getActivity(), System.currentTimeMillis());
             }
         });
 

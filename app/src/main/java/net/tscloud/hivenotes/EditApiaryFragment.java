@@ -103,7 +103,7 @@ public class EditApiaryFragment extends Fragment implements
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(mProfileID);
+                onCreateApiaryButtonPressed(mProfileID);
             }
         });
 
@@ -133,7 +133,7 @@ public class EditApiaryFragment extends Fragment implements
         return v;
     }
 
-    public void onButtonPressed(long profileID) {
+    public void onCreateApiaryButtonPressed(long profileID) {
         // get name and email and put to DB
         Log.d(TAG, "about to persist apiary");
 
@@ -159,7 +159,7 @@ public class EditApiaryFragment extends Fragment implements
             longitudeFloat = Float.parseFloat(longitudeString);
         }
 
-        // neither EditText can be empty
+        // Name EditText can be empty
         boolean emptyText = false;
 
         if (nameText.length() == 0){
@@ -167,14 +167,6 @@ public class EditApiaryFragment extends Fragment implements
             emptyText = true;
             Log.d(TAG, "Uh oh...Name empty");
         }
-
-        /* Postal Code not required - try to get location from GPS/Network if not entered
-        if (postalCodeText.length() == 0){
-            postalCodeEdit.setError("Postal Code cannot be empty");
-            emptyText = true;
-            Log.d(TAG, "Uh oh...Postal Code empty");
-        }
-        */
 
         if (!emptyText) {
             ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
@@ -208,9 +200,9 @@ public class EditApiaryFragment extends Fragment implements
         final EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
         final String postalCodeText = postalCodeEdit.getText().toString();
 
-        if ((postalCodeText != null) && (postalCodeText.length() != 0)) {
+        if (postalCodeText.length() != 0) {
             // use postal code to get lat/lon
-            final Geocoder geocoder= new Geocoder(getActivity());
+            final Geocoder geocoder = new Geocoder(getActivity());
             try {
                 List<Address> addresses = geocoder.getFromLocationName(postalCodeText, 1);
                 if (addresses != null && !addresses.isEmpty()) {

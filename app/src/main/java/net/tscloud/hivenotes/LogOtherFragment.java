@@ -166,7 +166,7 @@ public class LogOtherFragment extends LogFragment {
         }
 
         // ...Otherwise --> spin up a task to get and set
-        if ((mLogEntryOther == null) || (mLogEntryOther.getRequeenRmndrTime() != -1)) {
+        if ((mLogEntryOther == null) || (mLogEntryOther.getRequeenRmndrTime() == -1)) {
             //disable the button until task is thru
             requeenRmndrBtn.setEnabled(false);
 
@@ -181,7 +181,7 @@ public class LogOtherFragment extends LogFragment {
             mTaskRequeen.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
-        if ((mLogEntryOther == null) || (mLogEntryOther.getSwarmRmndrTime() != -1)) {
+        if ((mLogEntryOther == null) || (mLogEntryOther.getSwarmRmndrTime() == -1)) {
             //disable the button until task is thru
             swarmRmndrBtn.setEnabled(false);
 
@@ -196,7 +196,7 @@ public class LogOtherFragment extends LogFragment {
             mTaskSwarm.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
-        if ((mLogEntryOther == null) || (mLogEntryOther.getSplitHiveRmndrTime() != -1)) {
+        if ((mLogEntryOther == null) || (mLogEntryOther.getSplitHiveRmndrTime() == -1)) {
             //disable the button until task is thru
             splitHiveRmndrBtn.setEnabled(false);
 
