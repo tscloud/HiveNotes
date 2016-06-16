@@ -159,16 +159,77 @@ public class EditApiaryFragment extends Fragment implements
             longitudeFloat = Float.parseFloat(longitudeString);
         }
 
-        // Name EditText can be empty
         boolean emptyText = false;
 
-        if (nameText.length() == 0){
+        // Name EditText can be empty
+        if (nameText.length() == 0) {
             nameEdit.setError("Name cannot be empty");
             emptyText = true;
             Log.d(TAG, "Uh oh...Name empty");
         }
 
+        // Lat/Lon - if we have 1 => we need the other
+        if ((latitudeString.length() != 0) && (longitudeString.length == 0) {
+            longitudeEdit.setError("Need lat AND lon");
+            emptyText = true;
+            Log.d(TAG, "Uh oh...Longitude empty");
+        }
+
+        if ((longitudeString.length() != 0) && (latitudeString.length == 0) {
+            latitudeEdit.setError("Need lat AND lon");
+            emptyText = true;
+            Log.d(TAG, "Uh oh...Latitude empty");
+        }
+
         if (!emptyText) {
+
+            /** Before we write the Apiary, we need zip/latlon checks
+             *   if lat/lon => geocode to get zip potentially overwriting an
+             *    existing zip <- these need to match at weather data will be
+             *    got be lat/lon (it may be more accurate) but pollen data can
+             *    only be got be zip
+             *   if zip & no lat/lon => geocode to get lat/lon <- technically not
+             *    necessary but we can consistently retrieve weather by lat/lon
+             */
+
+            if ((latitudeFloat != 0 ) && (longitudeFloat != 0)) {
+                // use lat/lon to get postal code
+                final Geocoder geocoder = new Geocoder(getActivity());
+                try {
+                    List<Address> addresses = geocoder.getFromLocationName(latitudeFloat, longitudeFloat, 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        Address address = addresses.get(0);
+                        // Use the address as needed
+                        postalCodeText = address.getPostalCode;
+                    } else {
+                        // Display appropriate message when Geocoder services are not available
+                        Log.d(TAG, "no find postal code");
+                    }
+                } catch (IOException e) {
+                    // handle exception
+                    Log.d(TAG, "IOException getting postal code from lat/lon: " + e.getMessage());
+                }
+            }
+            else if (postalCodeText.length != 0) {
+                // use postal code to get lat/lon
+                final Geocoder geocoder = new Geocoder(getActivity());
+                try {
+                    List<Address> addresses = geocoder.getFromLocationName(postalCodeText, 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        Address address = addresses.get(0);
+                        // Use the address as needed
+                        latitudeFloat = address.getLatitude();
+                        longitudeFloat = address.getLongitude();
+                    } else {
+                        // Display appropriate message when Geocoder services are not available
+                        Log.d(TAG, "no find lat/lon");
+                    }
+                } catch (IOException e) {
+                    // handle exception
+                    Log.d(TAG, "IOException getting lat/lon from postal code: " + e.getMessage());
+                }
+            }
+
             ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
             Apiary apiary;
             if (mApiaryID == -1) {
@@ -197,60 +258,37 @@ public class EditApiaryFragment extends Fragment implements
     }
 
     public void onComputeLatLonButtonPressed(long profileID) {
-        final EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
-        final String postalCodeText = postalCodeEdit.getText().toString();
+        Log.d(TAG, "trying to get lat/lon");
+        try {
+            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        if (postalCodeText.length() != 0) {
-            // use postal code to get lat/lon
-            final Geocoder geocoder = new Geocoder(getActivity());
-            try {
-                List<Address> addresses = geocoder.getFromLocationName(postalCodeText, 1);
-                if (addresses != null && !addresses.isEmpty()) {
-                    Address address = addresses.get(0);
-                    // Use the address as needed
-                    loadScreenLatLon((float)address.getLatitude(), (float)address.getLongitude(),
-                        "From postal code: ");
-                } else {
-                    // Display appropriate message when Geocoder services are not available
-                    Log.d(TAG, "no find lat/lon");
-                }
-            } catch (IOException e) {
-                // handle exception
-                Log.d(TAG, "IOException getting lat/lon from postal code: " + e.getMessage());
+            // Check LastKnownLocation - GPS
+            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            // make sure location is at least somewhat "fresh"
+            if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
+                loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
+                    "From GPS: ");
             }
-        }
-        else {
-            try {
-                mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-                // Check LastKnownLocation - GPS
-                Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            else {
+                // Check LastKnownLocation - Network
+                location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 // make sure location is at least somewhat "fresh"
                 if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
                     loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
-                        "From GPS: ");
+                            "From Network: ");
                 }
                 else {
-                    // Check LastKnownLocation - Network
-                    location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    // make sure location is at least somewhat "fresh"
-                    if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
-                        loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
-                                "From Network: ");
-                    }
-                    else {
-                        // Crank up GPS and/or Network
-                        TimeoutableLocationListener tLocListner =
-                                new TimeoutableLocationListener(mLocationManager, 1000*5, this);
-                        tLocListner.execute(getActivity());
-                        //loadScreenLatLon((float)tLocListner.mLocation.getLatitude(), (float)tLocListner.mLocation.getLongitude(),
-                        //        tLocListner.mLocation.getProvider());
-                    }
+                    // Crank up GPS and/or Network
+                    TimeoutableLocationListener tLocListner =
+                            new TimeoutableLocationListener(mLocationManager, 1000*5, this);
+                    tLocListner.execute(getActivity());
+                    //loadScreenLatLon((float)tLocListner.mLocation.getLatitude(), (float)tLocListner.mLocation.getLongitude(),
+                    //        tLocListner.mLocation.getProvider());
                 }
             }
-            catch (SecurityException e) {
-                Log.d(TAG, "Permission not given for location services");
-            }
+        }
+        catch (SecurityException e) {
+            Log.d(TAG, "Permission not given for location services");
         }
     }
 
@@ -271,37 +309,6 @@ public class EditApiaryFragment extends Fragment implements
                     aLocation.getProvider());
         }
     }
-/*
-    @Override
-    public void onLocationChanged(Location location) {
-        if (location != null) {
-            loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
-                "From " + location.getProvider() + " callback: ");
-            try {
-                mLocationManager.removeUpdates(this);
-            }
-            catch (SecurityException e) {
-                //should this happen?
-                Log.d(TAG, "Permission not given for location services");
-            }
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-    */
 
     @Override
     public void onAttach(Activity activity) {

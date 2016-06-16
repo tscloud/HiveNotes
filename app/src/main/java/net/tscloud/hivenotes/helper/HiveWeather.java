@@ -32,7 +32,8 @@ public class HiveWeather {
 	//  to hide
 	public static final String WU_API_KEY = "24a52428b9227583";
 	public static final String WU_ROOT = "http://api.wunderground.com/api/";
-	public static final String WU_FEATURES = "conditions";
+	public static final String WU_CONDITIONS = "conditions";
+	public static final String WU_GEOLOOKUP = "geolookup";
 	public static final String WU_SETTINGS = null;
 	public static final String WU_QUERY = null;
 	public static final String WU_FORMAT = "json";
@@ -40,8 +41,13 @@ public class HiveWeather {
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int DATARETRIEVAL_TIMEOUT = 10000;
 
+    // These are the JSON field we're interested in
+    String [] dataFields {"temp_f", "precip_today_in", "pressure_in", "weather",
+		"wind_dir", "wind_mph", "relative_humidity", "dewpoint_f", "visibility_mi",
+		"solarradiation", "UV"};
+
 	public static Weather requestWunderground(String aQuery) {
-		String url = WU_ROOT + WU_API_KEY +"/" + WU_FEATURES + "/q/" + aQuery +
+		String url = WU_ROOT + WU_API_KEY +"/" + WU_CONDITIONS + "/q/" + aQuery +
 					"/" + WU_FORMAT;
 
         Log.d(TAG, "HiveWeather.requestWunderground(): url: " + url);
@@ -54,8 +60,8 @@ public class HiveWeather {
 	        if (jsonHead != null) {
 	        	reply.setSnapshotDate(System.currentTimeMillis());
 	        	reply.setTemperature((float)jsonHead.optDouble("temp_f", -1));
-	        	reply.setRainfall(Float.parseFloat(jsonHead.optString("precip_today_in", "-1")));
-	        	reply.setPressure(Float.parseFloat(jsonHead.optString("pressure_in", "-1")));
+	        	reply.setRainfall(float.parseFloat(jsonHead.optString("precip_today_in", "-1")));
+	        	reply.setPressure(float.parseFloat(jsonHead.optString("pressure_in", "-1")));
 	        	reply.setWeather(jsonHead.optString("weather", "weather conditions not available"));
 	        	reply.setWindDirection(jsonHead.optString("wind_dir", "wind direction not available"));
 	        	reply.setWindMPH((float)jsonHead.optDouble("wind_mph", -1));
@@ -69,6 +75,20 @@ public class HiveWeather {
 
         return reply;
 	}
+
+	public static Weather requestWundergroundExtended(String aQuery) {
+		/** Here's the skinny:
+		 *   Not all weather station provide all data
+		 *    We've going to retrieve data from an array of nearby stations (how many?)
+		 *    We'll build the return data set based on a union of this data
+		 */
+		String url = WU_ROOT + WU_API_KEY +"/" + WU_GEOLOOKUP + "/q/" + aQuery +
+					"/" + WU_FORMAT;
+
+        Log.d(TAG, "HiveWeather.requestWundergroundExtended(): url: " + url);
+        // Make the wunderground call to get weather stations - get JSON back
+        JSONObject jsonCallResult = requestWebService(url);
+    }
 
 	@Nullable
     private static JSONObject requestWebService(String serviceUrl) {

@@ -187,7 +187,9 @@ public class EditHiveActivity extends AppCompatActivity implements
         }
 
         Log.d(TAG, "about to start WeatherCallTask AsyncTask");
-        mTask = new WeatherCallTask(this, wuQuery);
+        mTask = new WeatherCallTask(this, mApiary.getPostalCode(),
+                                    mApiary.getLatitude(),
+                                    mApiary.getLongitude());
         mTask.execute();
     }
 
@@ -263,14 +265,18 @@ public class EditHiveActivity extends AppCompatActivity implements
         public static final String TAG = "WeatherCallTask";
 
         private Context ctx;
-        private String queryString;
+        private String postalCode;
+        float lat = 0;
+        float lon = 0;
 
         private ProgressDialog dialog =
                 new ProgressDialog(EditHiveActivity.this);
 
-        public WeatherCallTask(Context aCtx, String aQueryString) {
+        public WeatherCallTask(Context aCtx, String aPostalCode, float aLat, float aLon) {
             ctx = aCtx;
-            queryString = aQueryString;
+            postalCode = aPostalCode;
+            lat = aLat;
+            lon = aLon;
             Log.d(TAG, "WeatherCallTask(" + Thread.currentThread().getId() + ") : constructor");
         }
 
@@ -283,35 +289,59 @@ public class EditHiveActivity extends AppCompatActivity implements
         @Override
         protected Void doInBackground(Void... unused) {
             // Call the weather service
-            Weather weatherDO = HiveWeather.requestWunderground(queryString);
-            Log.d(TAG, "returned from wunderground WS call");
+            // build query string <-lat/lon should be present unless lat/lon
+            //  & zip are not present
+            String queryString = null;
 
-            // Call the pollen "service"
-            HivePollen hivePollen = new HivePollen("02818");
-            /*
-            Log.d(TAG, "Today: " + hivePollen.getDateToday());
-            Log.d(TAG, "Pollen Today: " + hivePollen.getPollenIndexToday());
-            Log.d(TAG, "Type: " + hivePollen.getPollenType());
-            Log.d(TAG, "City: " + hivePollen.getCity());
-            Log.d(TAG, "Zip: " + hivePollen.getZipcode());
-            int i = 0;
-            for (Date d : hivePollen.getCorrespondingDate()) {
-                Log.d(TAG, "Date "+ i++ + ": " + d);
+            if ((lat != 0) && (lon != 0) {
+                queryString = lat + "," + lon;
             }
-            i = 0;
-            for (String s : hivePollen.getPollenIndex()) {
-                Log.d(TAG, "Pollen Index "+ i++ + ": " + s);
+            else if ((postalCode != null) && (postalCode.length() != 0) {
+                queryString = postalCode;
             }
-            */
 
-            // Load DO w/ pollen data
-            weatherDO.setPollenCount(hivePollen.getPollenIndexToday());
-            weatherDO.setPollution(hivePollen.getPollenType());
+            if (queryString != null) {
+                Log.d(TAG, "about to make weather service calls");
 
-            // Persist what comes back
-            WeatherDAO weatherDAO = new WeatherDAO(ctx);
-            weatherDO.setApiary(mApiaryKey);
-            weatherDAO.createWeather(weatherDO);
+                // Call the weather service
+                Weather weatherDO = HiveWeather.requestWunderground(queryString);
+                Log.d(TAG, "returned from wunderground WS call");
+
+                // Call the pollen "service"
+                // postalCode should not by null - check anyway?
+                HivePollen hivePollen = new HivePollen(postalCode);
+                Log.d(TAG, "returned from pollen page call");
+                /*
+                Log.d(TAG, "Today: " + hivePollen.getDateToday());
+                Log.d(TAG, "Pollen Today: " + hivePollen.getPollenIndexToday());
+                Log.d(TAG, "Type: " + hivePollen.getPollenType());
+                Log.d(TAG, "City: " + hivePollen.getCity());
+                Log.d(TAG, "Zip: " + hivePollen.getZipcode());
+                int i = 0;
+                for (Date d : hivePollen.getCorrespondingDate()) {
+                    Log.d(TAG, "Date "+ i++ + ": " + d);
+                }
+                i = 0;
+                for (String s : hivePollen.getPollenIndex()) {
+                    Log.d(TAG, "Pollen Index "+ i++ + ": " + s);
+                }
+                */
+
+                // Load DO w/ pollen data
+                weatherDO.setPollenCount(hivePollen.getPollenIndexToday());
+                weatherDO.setPollution(hivePollen.getPollenType());
+
+                // Persist what comes back
+                WeatherDAO weatherDAO = new WeatherDAO(ctx);
+                weatherDO.setApiary(mApiaryKey);
+                weatherDAO.createWeather(weatherDO);
+            }
+            else {
+                String msg "no loaction data : unable to make weather service calls";
+                Log.d(TAG, msg);
+                Toast.makeText(getApplicationContext(), msg,
+                                Toast.LENGTH_SHORT).show();
+            }
 
             return(null);
         }
