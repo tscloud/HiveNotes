@@ -293,10 +293,10 @@ public class EditHiveActivity extends AppCompatActivity implements
             //  & zip are not present
             String queryString = null;
 
-            if ((lat != 0) && (lon != 0) {
+            if ((lat != 0) && (lon != 0)) {
                 queryString = lat + "," + lon;
             }
-            else if ((postalCode != null) && (postalCode.length() != 0) {
+            else if ((postalCode != null) && (postalCode.length() != 0)) {
                 queryString = postalCode;
             }
 
@@ -304,7 +304,7 @@ public class EditHiveActivity extends AppCompatActivity implements
                 Log.d(TAG, "about to make weather service calls");
 
                 // Call the weather service
-                Weather weatherDO = HiveWeather.requestWunderground(queryString);
+                Weather weatherDO = HiveWeather.requestWundergroundExtended(queryString);
                 Log.d(TAG, "returned from wunderground WS call");
 
                 // Call the pollen "service"
@@ -330,6 +330,8 @@ public class EditHiveActivity extends AppCompatActivity implements
                 // Load DO w/ pollen data
                 weatherDO.setPollenCount(hivePollen.getPollenIndexToday());
                 weatherDO.setPollution(hivePollen.getPollenType());
+                // and set origin of data
+                weatherDO.setDataOrigin("O"); // "O"bserved AOT "H"istoric
 
                 // Persist what comes back
                 WeatherDAO weatherDAO = new WeatherDAO(ctx);
@@ -337,7 +339,7 @@ public class EditHiveActivity extends AppCompatActivity implements
                 weatherDAO.createWeather(weatherDO);
             }
             else {
-                String msg "no loaction data : unable to make weather service calls";
+                String msg = "no loaction data : unable to make weather service calls";
                 Log.d(TAG, msg);
                 Toast.makeText(getApplicationContext(), msg,
                                 Toast.LENGTH_SHORT).show();

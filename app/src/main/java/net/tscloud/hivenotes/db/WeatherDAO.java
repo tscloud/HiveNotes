@@ -33,6 +33,7 @@ public class WeatherDAO {
     public static final String COLUMN_WEATHER_UVINDEX = "uvIndex";
     public static final String COLUMN_WEATHER_POLLEN_COUNT = "pollen_count";
     public static final String COLUMN_WEATHER_POLLUTION = "pollution";
+    public static final String COLUMN_WEATHER_DATA_ORIGIN = "data_origin";
 
     // Database fields
     private SQLiteDatabase mDatabase;
@@ -43,7 +44,7 @@ public class WeatherDAO {
             COLUMN_WEATHER_PRESSURE, COLUMN_WEATHER_WEATHER, COLUMN_WEATHER_WINDDIRECTION,
             COLUMN_WEATHER_WINDMPH, COLUMN_WEATHER_HUMIDITY, COLUMN_WEATHER_DEWPOINT,
             COLUMN_WEATHER_VISIBILITY, COLUMN_WEATHER_SOLARRADIATION, COLUMN_WEATHER_UVINDEX,
-            COLUMN_WEATHER_POLLEN_COUNT, COLUMN_WEATHER_POLLUTION };
+            COLUMN_WEATHER_POLLEN_COUNT, COLUMN_WEATHER_POLLUTION,COLUMN_WEATHER_DATA_ORIGIN };
 
     public WeatherDAO(Context context) {
         this.mContext = context;
@@ -71,7 +72,8 @@ public class WeatherDAO {
                                 float rainfall, float pressure, String weather,
                                 String windDirection, float windMPH, String humidity,
                                 float dewPoint, String visibility, String solarRadiation,
-                                String uvIndex, float pollenCount, String pollution) {
+                                String uvIndex, float pollenCount, String pollution,
+                                String dataOrigin) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEATHER_APIARY, apiary);
         values.put(COLUMN_WEATHER_SNAPSHOT_DATE, snapshotDate);
@@ -88,6 +90,7 @@ public class WeatherDAO {
         values.put(COLUMN_WEATHER_UVINDEX, uvIndex);
         values.put(COLUMN_WEATHER_POLLEN_COUNT, pollenCount);
         values.put(COLUMN_WEATHER_POLLUTION, pollution);
+        values.put(COLUMN_WEATHER_DATA_ORIGIN, dataOrigin);
         long insertId = mDatabase.insert(TABLE_WEATHER, null, values);
 
         Weather newWeather = null;
@@ -108,14 +111,15 @@ public class WeatherDAO {
                 aDO.getRainfall(), aDO.getPressure(), aDO.getWeather(),
                 aDO.getWindDirection(), aDO.getWindMPH(), aDO.getHumidity(),
                 aDO.getDewPoint(), aDO.getVisibility(), aDO.getSolarRadiation(),
-                aDO.getUvIndex(), aDO.getPollenCount(), aDO.getPollution());
+                aDO.getUvIndex(), aDO.getPollenCount(), aDO.getPollution(), aDO.getDataOrigin());
     }
 
     public Weather updateWeather(long id, long apiary, long snapshotDate, float temperature,
                                 float rainfall, float pressure, String weather,
                                 String windDirection, float windMPH, String humidity,
                                 float dewPoint, String visibility, String solarRadiation,
-                                String uvIndex, float pollenCount, String pollution) {
+                                String uvIndex, float pollenCount, String pollution,
+                                String dataOrigin) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEATHER_APIARY, apiary);
         values.put(COLUMN_WEATHER_SNAPSHOT_DATE, snapshotDate);
@@ -132,6 +136,7 @@ public class WeatherDAO {
         values.put(COLUMN_WEATHER_UVINDEX, uvIndex);
         values.put(COLUMN_WEATHER_POLLEN_COUNT, pollenCount);
         values.put(COLUMN_WEATHER_POLLUTION, pollution);
+        values.put(COLUMN_WEATHER_DATA_ORIGIN, dataOrigin);
         int rowsUpdated = mDatabase.update(TABLE_WEATHER, values,
                 COLUMN_WEATHER_ID + "=" + id, null);
 
@@ -154,7 +159,7 @@ public class WeatherDAO {
                 aDO.getWeather(), aDO.getWindDirection(), aDO.getWindMPH(),
                 aDO.getHumidity(), aDO.getDewPoint(), aDO.getVisibility(),
                 aDO.getSolarRadiation(), aDO.getUvIndex(), aDO.getPollenCount(),
-                aDO.getPollution());
+                aDO.getPollution(), aDO.getDataOrigin());
     }
 
     public void deleteWeather(Weather weather) {
@@ -195,6 +200,7 @@ public class WeatherDAO {
         weather.setUvIndex(cursor.getString(12));
         weather.setPollenCount(cursor.getFloat(13));
         weather.setPollution(cursor.getString(14));
+        weather.setDataOrigin(cursor.getString(15));
 
         return weather;
     }

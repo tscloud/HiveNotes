@@ -23,6 +23,7 @@ public class Weather {
     private String uvIndex;
     private float pollenCount;
     private String pollution;
+    private String dataOrigin;
 
     public long getApiary() {
         return apiary;
@@ -134,6 +135,14 @@ public class Weather {
 
     public void setPollution(String pollution) {
         this.pollution = pollution;
+    }
+
+    public String getDataOrigin() {
+        return dataOrigin;
+    }
+
+    public void setDataOrigin(String dataOrigin) {
+        this.dataOrigin = dataOrigin;
     }
 
     public float getPollenCount() {

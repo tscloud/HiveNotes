@@ -250,6 +250,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
      */
     public void hiveFeedingToolClickHandler (View v) {
         Log.d(TAG, "hiveFeedingToolClickHandler called");
+        // Launch the Calendar Intent
+        HiveCalendar.calendarIntent(this, System.currentTimeMillis());
     }
 
     public void hiveGeneralToolClickHandler (View v) {

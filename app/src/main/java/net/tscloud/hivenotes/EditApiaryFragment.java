@@ -169,13 +169,13 @@ public class EditApiaryFragment extends Fragment implements
         }
 
         // Lat/Lon - if we have 1 => we need the other
-        if ((latitudeString.length() != 0) && (longitudeString.length == 0) {
+        if ((latitudeString.length() != 0) && (longitudeString.length() == 0)) {
             longitudeEdit.setError("Need lat AND lon");
             emptyText = true;
             Log.d(TAG, "Uh oh...Longitude empty");
         }
 
-        if ((longitudeString.length() != 0) && (latitudeString.length == 0) {
+        if ((longitudeString.length() != 0) && (latitudeString.length() == 0)) {
             latitudeEdit.setError("Need lat AND lon");
             emptyText = true;
             Log.d(TAG, "Uh oh...Latitude empty");
@@ -196,11 +196,12 @@ public class EditApiaryFragment extends Fragment implements
                 // use lat/lon to get postal code
                 final Geocoder geocoder = new Geocoder(getActivity());
                 try {
-                    List<Address> addresses = geocoder.getFromLocationName(latitudeFloat, longitudeFloat, 1);
+                    List<Address> addresses = geocoder.getFromLocation((double)latitudeFloat,
+                            (double)longitudeFloat, 1);
                     if (addresses != null && !addresses.isEmpty()) {
                         Address address = addresses.get(0);
                         // Use the address as needed
-                        postalCodeText = address.getPostalCode;
+                        postalCodeText = address.getPostalCode();
                     } else {
                         // Display appropriate message when Geocoder services are not available
                         Log.d(TAG, "no find postal code");
@@ -210,7 +211,7 @@ public class EditApiaryFragment extends Fragment implements
                     Log.d(TAG, "IOException getting postal code from lat/lon: " + e.getMessage());
                 }
             }
-            else if (postalCodeText.length != 0) {
+            else if (postalCodeText.length() != 0) {
                 // use postal code to get lat/lon
                 final Geocoder geocoder = new Geocoder(getActivity());
                 try {
@@ -218,8 +219,8 @@ public class EditApiaryFragment extends Fragment implements
                     if (addresses != null && !addresses.isEmpty()) {
                         Address address = addresses.get(0);
                         // Use the address as needed
-                        latitudeFloat = address.getLatitude();
-                        longitudeFloat = address.getLongitude();
+                        latitudeFloat = (float)address.getLatitude();
+                        longitudeFloat = (float)address.getLongitude();
                     } else {
                         // Display appropriate message when Geocoder services are not available
                         Log.d(TAG, "no find lat/lon");
@@ -288,7 +289,7 @@ public class EditApiaryFragment extends Fragment implements
             }
         }
         catch (SecurityException e) {
-            Log.d(TAG, "Permission not given for location services");
+            Log.d(TAG, "Permission not given for location services", e);
         }
     }
 

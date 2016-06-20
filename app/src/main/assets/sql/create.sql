@@ -133,6 +133,7 @@ CREATE TABLE 'Weather'
 	'UVINDEX' TEXT,
 	'POLLEN_COUNT' REAL,
 	'POLLUTION' TEXT,
+	'DATA_ORIGIN' TEXT, /* "O"bserved, "H"istoric */
 	CONSTRAINT 'FK_Weather_Apiary' FOREIGN KEY ('APIARY') REFERENCES 'Apiary' ('_ID') ON DELETE Cascade ON UPDATE Cascade
 )
 ;

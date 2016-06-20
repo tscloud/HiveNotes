@@ -6,6 +6,7 @@ import android.util.Log;
 
 import net.tscloud.hivenotes.db.Weather;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +17,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -34,43 +39,42 @@ public class HiveWeather {
 	public static final String WU_ROOT = "http://api.wunderground.com/api/";
 	public static final String WU_CONDITIONS = "conditions";
 	public static final String WU_GEOLOOKUP = "geolookup";
+	public static final String WU_PWS = "pws:";
 	public static final String WU_SETTINGS = null;
 	public static final String WU_QUERY = null;
 	public static final String WU_FORMAT = "json";
+
+    public static final String OPEN_API_KEY = "6662ef1917e9cf9560a7cf277e423059";
 
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int DATARETRIEVAL_TIMEOUT = 10000;
 
     // These are the JSON field we're interested in
-    String [] dataFields {"temp_f", "precip_today_in", "pressure_in", "weather",
+    private static String [] dataFields = {"temp_f", "precip_today_in", "pressure_in", "weather",
 		"wind_dir", "wind_mph", "relative_humidity", "dewpoint_f", "visibility_mi",
 		"solarradiation", "UV"};
 
-	public static Weather requestWunderground(String aQuery) {
-		String url = WU_ROOT + WU_API_KEY +"/" + WU_CONDITIONS + "/q/" + aQuery +
-					"/" + WU_FORMAT;
+    private static String [] mergeFields = {"solarradiation", "UV"};
 
-        Log.d(TAG, "HiveWeather.requestWunderground(): url: " + url);
+	public static Weather requestWunderground(String aQuery) {
+        Log.d(TAG, "HiveWeather.requestWunderground()");
         Weather reply = new Weather();
 
         // Make the wunderground call - get JSON back
-        JSONObject jsonCallResult = requestWebService(url);
-        if (jsonCallResult != null) {
-	        JSONObject jsonHead = jsonCallResult.optJSONObject("current_observation");
-	        if (jsonHead != null) {
-	        	reply.setSnapshotDate(System.currentTimeMillis());
-	        	reply.setTemperature((float)jsonHead.optDouble("temp_f", -1));
-	        	reply.setRainfall(float.parseFloat(jsonHead.optString("precip_today_in", "-1")));
-	        	reply.setPressure(float.parseFloat(jsonHead.optString("pressure_in", "-1")));
-	        	reply.setWeather(jsonHead.optString("weather", "weather conditions not available"));
-	        	reply.setWindDirection(jsonHead.optString("wind_dir", "wind direction not available"));
-	        	reply.setWindMPH((float)jsonHead.optDouble("wind_mph", -1));
-                reply.setHumidity(jsonHead.optString("relative_humidity", "humidity not available"));
-                reply.setDewPoint((float)jsonHead.optDouble("dewpoint_f", -1));
-                reply.setVisibility(jsonHead.optString("visibility_mi", "visibility not available"));
-                reply.setSolarRadiation(jsonHead.optString("solarradiation", "solar radiation not available"));
-                reply.setUvIndex(jsonHead.optString("UV", "UV index not available"));
-            }
+        JSONObject jsonHead = queryCondition(aQuery);
+        if (jsonHead != null) {
+            reply.setSnapshotDate(System.currentTimeMillis());
+            reply.setTemperature((float)jsonHead.optDouble("temp_f", -1));
+            reply.setRainfall(Float.parseFloat(jsonHead.optString("precip_today_in", "-1")));
+            reply.setPressure(Float.parseFloat(jsonHead.optString("pressure_in", "-1")));
+            reply.setWeather(jsonHead.optString("weather", "weather conditions not available"));
+            reply.setWindDirection(jsonHead.optString("wind_dir", "wind direction not available"));
+            reply.setWindMPH((float)jsonHead.optDouble("wind_mph", -1));
+            reply.setHumidity(jsonHead.optString("relative_humidity", "humidity not available"));
+            reply.setDewPoint((float)jsonHead.optDouble("dewpoint_f", -1));
+            reply.setVisibility(jsonHead.optString("visibility_mi", "visibility not available"));
+            reply.setSolarRadiation(jsonHead.optString("solarradiation", "solar radiation not available"));
+            reply.setUvIndex(jsonHead.optString("UV", "UV index not available"));
         }
 
         return reply;
@@ -82,12 +86,142 @@ public class HiveWeather {
 		 *    We've going to retrieve data from an array of nearby stations (how many?)
 		 *    We'll build the return data set based on a union of this data
 		 */
-		String url = WU_ROOT + WU_API_KEY +"/" + WU_GEOLOOKUP + "/q/" + aQuery +
-					"/" + WU_FORMAT;
+        Log.d(TAG, "HiveWeather.requestWundergroundExtended()");
+		Weather reply = new Weather();
 
-        Log.d(TAG, "HiveWeather.requestWundergroundExtended(): url: " + url);
+		// Make the wunderground call to get weather stations - get JSON back
+        try {
+            JSONArray jsonStationArray = queryStationArray(aQuery);
+
+            // How many stations do we want to check?  This needs to be configurable
+            int staThresh = 3;
+            // this is where we are going to keep each station's conditions
+            List<Map<String, String>> staCondHashArray = new ArrayList<Map<String, String>>();
+
+            // interate over the retrieved station list & use the top x
+            for (int i=0; (i < jsonStationArray.length()) && (i < staThresh); i++) {
+                JSONObject station = jsonStationArray.getJSONObject(i);
+                String staId = station.optString("id");
+                // get this station's conditions
+                JSONObject staCond = queryCondition(WU_PWS + staId);
+                // iterate over our list of data fields array
+                HashMap<String, String> staCondHash = new HashMap<>();
+                staCondHash.put("station", staId);
+                for (String tag : dataFields) {
+                    staCondHash.put(tag, staCond.optString(tag));
+                }
+                staCondHashArray.add(staCondHash);
+            }
+            Log.d(TAG, "finished load staCondHashArray");
+            reply = mergeConditions(staCondHashArray);
+        }
+        catch (JSONException e) {
+            Log.d(TAG, "JSONException thrown in requestWundergroundExtended()", e);
+        };
+
+        return reply;
+    }
+
+    private static JSONObject queryCondition(String aQuery) {
+        String url = WU_ROOT + WU_API_KEY + "/" + WU_CONDITIONS + "/q/" + aQuery +
+                "." + WU_FORMAT;
+
+        Log.d(TAG, "HiveWeather.queryCondition(): url: " + url);
+        JSONObject reply = null;
+
+        // Make the wunderground call - get JSON back
+        JSONObject jsonCallResult = requestWebService(url);
+        if (jsonCallResult != null) {
+            reply = jsonCallResult.optJSONObject("current_observation");
+        }
+
+        return reply;
+    }
+
+    private static JSONArray queryStationArray(String aQuery) {
+        String url = WU_ROOT + WU_API_KEY + "/" + WU_GEOLOOKUP + "/q/" + aQuery +
+                "." + WU_FORMAT;
+
+        Log.d(TAG, "HiveWeather.queryStationArray(): url: " + url);
+        JSONArray reply = null;
+
         // Make the wunderground call to get weather stations - get JSON back
         JSONObject jsonCallResult = requestWebService(url);
+        if (jsonCallResult != null) {
+            try {
+                reply = jsonCallResult.getJSONObject("location")
+                        .getJSONObject("nearby_weather_stations")
+                        .getJSONObject("pws")
+                        .getJSONArray("station");
+
+            } catch (JSONException e) {
+                Log.d(TAG, "JSONException thrown in queryStationArray()", e);
+            };
+        }
+
+        return reply;
+    }
+
+    private static Weather mergeConditions(List<Map<String, String>> aConditions) {
+        Log.d(TAG, "HiveWeather.mergeConditions()");
+        Weather reply = new Weather();
+
+        //start w/ the 1st entry in the array - it's the closest to our position
+        Map<String, String> returnHash = aConditions.get(0);
+
+        for (String tag : mergeFields) {
+            if (!checkTag(returnHash.get(tag))) {
+                //start at 1 since we do not need to check the 1st
+                for (int i = 1; i < aConditions.size(); i++) {
+                    Map<String, String> otherData = aConditions.get(i);
+                    if (checkTag(otherData.get(tag))) {
+                        returnHash.put(tag, otherData.get(tag));
+                        break;
+                    }
+                }
+
+                //if we didn't end up w/ a "good" value => just set it to 0
+                if (!checkTag(returnHash.get(tag))) {
+                    returnHash.put(tag, "0");
+                }
+            }
+        }
+
+        reply.setSnapshotDate(System.currentTimeMillis());
+        reply.setTemperature(Float.parseFloat(returnHash.get("temp_f")));
+        reply.setRainfall(Float.parseFloat(returnHash.get("precip_today_in")));
+        reply.setPressure(Float.parseFloat(returnHash.get("pressure_in")));
+        reply.setWeather(returnHash.get("weather"));
+        reply.setWindDirection(returnHash.get("wind_dir"));
+        reply.setWindMPH(Float.parseFloat(returnHash.get("wind_mph")));
+        reply.setHumidity(returnHash.get("relative_humidity"));
+        reply.setDewPoint(Float.parseFloat(returnHash.get("dewpoint_f")));
+        reply.setVisibility(returnHash.get("visibility_mi"));
+        reply.setSolarRadiation(returnHash.get("solarradiation"));
+        reply.setUvIndex(returnHash.get("UV"));
+
+        return reply;
+    }
+
+    private static boolean checkTag(String aTag) {
+        // return true if the value appears to contain viable data
+        boolean reply = true;
+
+        try {
+            if ((aTag == null) ||
+                    (aTag.length() == 0) ||
+                    (aTag.equals("--") ||
+                            (Double.parseDouble(aTag) == 0))) {
+
+                reply = false;
+            }
+        }
+        catch (NumberFormatException e) {
+            // got something unexpected - return bad
+            reply = false;
+        }
+
+        return reply;
     }
 
 	@Nullable
