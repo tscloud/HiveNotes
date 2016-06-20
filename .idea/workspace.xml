@@ -64,15 +64,11 @@
     <bookmark url="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" line="206" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ca4e5e2-3ed5-48e4-9429-4e5b4b4764ee" name="Default" comment="">
+    <list default="true" id="5ca4e5e2-3ed5-48e4-9429-4e5b4b4764ee" name="Default" comment="Weather and location stuff.">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/hivenotes_stuff/weather_data/wunderground_conditions.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/hivenotes_stuff/weather_data/wunderground_geolookup.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/hivenotes_stuff/weather_data/wunderground_history.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/assets/sql/create.sql" afterPath="$PROJECT_DIR$/app/src/main/assets/sql/create.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Weather.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java" />
     </list>
     <ignored path="HiveNotes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -2917,12 +2913,6 @@
       <option name="number" value="Default" />
       <updated>1439340940336</updated>
     </task>
-    <task id="LOCAL-00053" summary="Location discovery OK w/ TimeoutableLocationListener?">
-      <created>1446443152390</created>
-      <option name="number" value="00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1446443152390</updated>
-    </task>
     <task id="LOCAL-00054" summary="LogEntryPestMgmt data objects.  Not Done.">
       <created>1446616027375</created>
       <option name="number" value="00054" />
@@ -3211,7 +3201,13 @@
       <option name="project" value="LOCAL" />
       <updated>1466049178123</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="Weather and location stuff.">
+      <created>1466397615372</created>
+      <option name="number" value="00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1466397615374</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3234,14 +3230,14 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32721382" sideWeight="0.5066278" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37195453" sideWeight="0.48992577" order="14" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32593393" sideWeight="0.49045599" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32593393" sideWeight="0.49045599" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33784515" sideWeight="0.4917553" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864103" sideWeight="0.4989356" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295334" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32593393" sideWeight="0.51007426" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16781548" sideWeight="0.5020048" order="5" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16781548" sideWeight="0.5020048" order="5" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3275582" sideWeight="0.4949468" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16993637" sideWeight="0.4979952" order="6" side_tool="false" content_ui="tabs" x="1598" y="126" width="643" height="1877" />
@@ -3306,7 +3302,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="More Calendar updates.  Some revamp needed." />
     <MESSAGE value="More Calendar updates.  Need to move Notifications to Hive level.&#10;Also move DB access to Activity." />
     <MESSAGE value="Tiny Notification changes." />
     <MESSAGE value="Start Reminders in fragment." />
@@ -3331,7 +3326,8 @@
     <MESSAGE value="wunderground call complete." />
     <MESSAGE value="Pollen data persistence." />
     <MESSAGE value="Calendar Intent working (?) and Reminder bug fix." />
-    <option name="LAST_COMMIT_MESSAGE" value="Calendar Intent working (?) and Reminder bug fix." />
+    <MESSAGE value="Weather and location stuff." />
+    <option name="LAST_COMMIT_MESSAGE" value="Weather and location stuff." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

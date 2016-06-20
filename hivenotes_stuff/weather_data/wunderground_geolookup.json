@@ -1,0 +1,443 @@
+{
+    "response": {
+        "version": "0.1",
+        "termsofService": "http://www.wunderground.com/weather/api/d/terms.html",
+        "features": {
+            "geolookup": 1
+        }
+    },
+    "location": {
+        "type": "CITY",
+        "country": "US",
+        "country_iso3166": "US",
+        "country_name": "USA",
+        "state": "RI",
+        "city": "East Greenwich",
+        "tz_short": "EDT",
+        "tz_long": "America/New_York",
+        "lat": "41.660000",
+        "lon": "-71.450000",
+        "zip": "02818",
+        "magic": "1",
+        "wmo": "99999",
+        "l": "/q/zmw:02818.1.99999",
+        "requesturl": "US/RI/East_Greenwich.html",
+        "wuiurl": "http://www.wunderground.com/US/RI/East_Greenwich.html",
+        "nearby_weather_stations": {
+            "airport": {
+                "station": [
+                    {
+                        "city": "",
+                        "state": "",
+                        "country": "",
+                        "icao": "",
+                        "lat": "",
+                        "lon": ""
+                    },
+                    {
+                        "city": "Providence",
+                        "state": "RI",
+                        "country": "US",
+                        "icao": "KPVD",
+                        "lat": "41.72248840",
+                        "lon": "-71.43247223"
+                    },
+                    {
+                        "city": "Newport",
+                        "state": "RI",
+                        "country": "US",
+                        "icao": "KUUU",
+                        "lat": "41.53244019",
+                        "lon": "-71.28154755"
+                    },
+                    {
+                        "city": "Pawtucket",
+                        "state": "RI",
+                        "country": "US",
+                        "icao": "KSFZ",
+                        "lat": "41.92076492",
+                        "lon": "-71.49137878"
+                    }
+                ]
+            },
+            "pws": {
+                "station": [
+                    {
+                        "neighborhood": "Cowesett",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI6",
+                        "lat": 41.672558,
+                        "lon": -71.457184,
+                        "distance_km": 1,
+                        "distance_mi": 0
+                    },
+                    {
+                        "neighborhood": "Kent County",
+                        "city": "East Greenwich",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIEASTG9",
+                        "lat": 41.651699,
+                        "lon": -71.472687,
+                        "distance_km": 2,
+                        "distance_mi": 1
+                    },
+                    {
+                        "neighborhood": "Cowesett",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI13",
+                        "lat": 41.682114,
+                        "lon": -71.45961,
+                        "distance_km": 2,
+                        "distance_mi": 1
+                    },
+                    {
+                        "neighborhood": "Cowesett",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI10",
+                        "lat": 41.688438,
+                        "lon": -71.45623,
+                        "distance_km": 3,
+                        "distance_mi": 1
+                    },
+                    {
+                        "neighborhood": "Cedar Tree Point",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI16",
+                        "lat": 41.689194,
+                        "lon": -71.442535,
+                        "distance_km": 3,
+                        "distance_mi": 1
+                    },
+                    {
+                        "neighborhood": "West Warwick",
+                        "city": "West Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWESTW6",
+                        "lat": 41.67802,
+                        "lon": -71.506424,
+                        "distance_km": 5,
+                        "distance_mi": 3
+                    },
+                    {
+                        "neighborhood": "Tollgate",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI19",
+                        "lat": 41.704559,
+                        "lon": -71.481323,
+                        "distance_km": 5,
+                        "distance_mi": 3
+                    },
+                    {
+                        "neighborhood": "Warwick Neck",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI11",
+                        "lat": 41.68169,
+                        "lon": -71.386475,
+                        "distance_km": 5,
+                        "distance_mi": 3
+                    },
+                    {
+                        "neighborhood": "Quailridge / Bald Hill",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI8",
+                        "lat": 41.697098,
+                        "lon": -71.503433,
+                        "distance_km": 6,
+                        "distance_mi": 3
+                    },
+                    {
+                        "neighborhood": "John F. Horgan Elementary School",
+                        "city": "West Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWESTW8",
+                        "lat": 41.714909,
+                        "lon": -71.517082,
+                        "distance_km": 8,
+                        "distance_mi": 4
+                    },
+                    {
+                        "neighborhood": "Southeastern Cranston",
+                        "city": "Cranston",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRICRANS2",
+                        "lat": 41.734299,
+                        "lon": -71.466301,
+                        "distance_km": 8,
+                        "distance_mi": 5
+                    },
+                    {
+                        "neighborhood": "Wakefield Hills Elementary School",
+                        "city": "West Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWESTW7",
+                        "lat": 41.723629,
+                        "lon": -71.505753,
+                        "distance_km": 8,
+                        "distance_mi": 5
+                    },
+                    {
+                        "neighborhood": "Hoxsie",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI21",
+                        "lat": 41.730286,
+                        "lon": -71.4104,
+                        "distance_km": 8,
+                        "distance_mi": 5
+                    },
+                    {
+                        "neighborhood": "RI Fast Ferry - Quonset Point",
+                        "city": "North Kingstown",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRINORTH14",
+                        "lat": 41.587063,
+                        "lon": -71.413895,
+                        "distance_km": 8,
+                        "distance_mi": 5
+                    },
+                    {
+                        "neighborhood": "NOS_PORTS",
+                        "city": "North Kingstown",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "MQPTR1",
+                        "lat": 41.5868,
+                        "lon": -71.411003,
+                        "distance_km": 8,
+                        "distance_mi": 5
+                    },
+                    {
+                        "neighborhood": "NOS_PORTS",
+                        "city": "Prudence Island",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "MPTCR1",
+                        "lat": 41.637169,
+                        "lon": -71.339302,
+                        "distance_km": 9,
+                        "distance_mi": 5
+                    },
+                    {
+                        "neighborhood": "Stone Gate",
+                        "city": "North Kingstown",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRINORTH7",
+                        "lat": 41.573792,
+                        "lon": -71.472282,
+                        "distance_km": 9,
+                        "distance_mi": 5
+                    },
+                    {
+                        "neighborhood": "Wickford",
+                        "city": "N Kingstown",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRINKING4",
+                        "lat": 41.56839,
+                        "lon": -71.471268,
+                        "distance_km": 10,
+                        "distance_mi": 6
+                    },
+                    {
+                        "neighborhood": "",
+                        "city": "North Kingstown",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRINORTH1",
+                        "lat": 41.565704,
+                        "lon": -71.493408,
+                        "distance_km": 11,
+                        "distance_mi": 6
+                    },
+                    {
+                        "neighborhood": "",
+                        "city": "West Greenwich",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWESTG3",
+                        "lat": 41.656277,
+                        "lon": -71.592384,
+                        "distance_km": 11,
+                        "distance_mi": 7
+                    },
+                    {
+                        "neighborhood": "Western Cranston",
+                        "city": "Cranston",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRICRANS23",
+                        "lat": 41.760353,
+                        "lon": -71.514275,
+                        "distance_km": 12,
+                        "distance_mi": 7
+                    },
+                    {
+                        "neighborhood": "Henry Brown Road",
+                        "city": "Exeter",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIEXETE2",
+                        "lat": 41.608318,
+                        "lon": -71.599464,
+                        "distance_km": 13,
+                        "distance_mi": 8
+                    },
+                    {
+                        "neighborhood": "Coventry Center Weather Station",
+                        "city": "Coventry",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRICOVEN1",
+                        "lat": 41.673359,
+                        "lon": -71.617371,
+                        "distance_km": 13,
+                        "distance_mi": 8
+                    },
+                    {
+                        "neighborhood": "APRSWXNET",
+                        "city": "Coventry",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "MC1485",
+                        "lat": 41.67321,
+                        "lon": -71.617401,
+                        "distance_km": 13,
+                        "distance_mi": 8
+                    },
+                    {
+                        "neighborhood": "Quail Hollow",
+                        "city": "North Kingstown",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRINORTH19",
+                        "lat": 41.529305,
+                        "lon": -71.478554,
+                        "distance_km": 14,
+                        "distance_mi": 8
+                    },
+                    {
+                        "neighborhood": "RevLev's Bridge WG, RI",
+                        "city": "West Greenwich",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWESTG8",
+                        "lat": 41.647369,
+                        "lon": -71.636406,
+                        "distance_km": 15,
+                        "distance_mi": 9
+                    },
+                    {
+                        "neighborhood": "Sheffield Hill",
+                        "city": "Exeter",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIEXETE5",
+                        "lat": 41.557312,
+                        "lon": -71.577972,
+                        "distance_km": 15,
+                        "distance_mi": 9
+                    },
+                    {
+                        "neighborhood": "Congdon Hill Road - Saunderstown",
+                        "city": "North Kingstown",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRINORTH17",
+                        "lat": 41.522133,
+                        "lon": -71.486389,
+                        "distance_km": 15,
+                        "distance_mi": 9
+                    },
+                    {
+                        "neighborhood": "Highland Avenue",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI14",
+                        "lat": 41.682011,
+                        "lon": -71.459656,
+                        "distance_km": 2,
+                        "distance_mi": 1
+                    },
+                    {
+                        "neighborhood": "Oakland Beach",
+                        "city": "Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWARWI12",
+                        "lat": 41.68726,
+                        "lon": -71.395729,
+                        "distance_km": 5,
+                        "distance_mi": 3
+                    },
+                    {
+                        "neighborhood": "Lancer Lane",
+                        "city": "East Greenwich",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIEASTG4",
+                        "lat": 41.666862,
+                        "lon": -71.524078,
+                        "distance_km": 6,
+                        "distance_mi": 3
+                    },
+                    {
+                        "neighborhood": "Angus Street",
+                        "city": "West Warwick",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRIWESTW4",
+                        "lat": 41.671234,
+                        "lon": -71.536499,
+                        "distance_km": 7,
+                        "distance_mi": 4
+                    },
+                    {
+                        "neighborhood": "Mumford Street",
+                        "city": "Coventry",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRICOVEN17",
+                        "lat": 41.723186,
+                        "lon": -71.53817,
+                        "distance_km": 10,
+                        "distance_mi": 6
+                    },
+                    {
+                        "neighborhood": "Glenham Road",
+                        "city": "Cranston",
+                        "state": "RI",
+                        "country": "US",
+                        "id": "KRICRANS16",
+                        "lat": 41.743469,
+                        "lon": -71.501762,
+                        "distance_km": 10,
+                        "distance_mi": 6
+                    }
+                ]
+            }
+        }
+    }
+}
