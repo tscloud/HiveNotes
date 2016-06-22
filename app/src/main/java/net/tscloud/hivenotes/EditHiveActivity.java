@@ -42,9 +42,9 @@ public class EditHiveActivity extends AppCompatActivity implements
     private static final String TAG = "EditHiveActivity";
 
     // Activity codes
-    private static final int LOG_LIST_REQ_CODE = 1;
-    private static final int HIVE_SINGLE_REQ_CODE = 2;
-    private static final int APIARY_REQ_CODE = 3;
+    private static final int LOG_LIST_REQ_CODE = 8;
+    private static final int HIVE_SINGLE_REQ_CODE = 9;
+    private static final int APIARY_REQ_CODE = 10;
 
     private long mApiaryKey;
     private List<Hive> mHiveList;

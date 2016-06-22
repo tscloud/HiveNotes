@@ -65,6 +65,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
     // starting LogEntryDetailFragment as subactivity
     private static final int LOG_DETAIL_REQ_CODE = 5;
+    private static final int GRAPH_REQ_CODE = 7;
 
     public final static String INTENT_ITEM_ID = "itemId";
     //public final static String INTENT_HIVE_KEY = "hiveKey";
@@ -255,7 +256,12 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     public void hiveGeneralToolClickHandler (View v) {
+        // Launch the Graph Activity
         Log.d(TAG, "hiveGeneralToolClickHandler called");
+        Intent i = new Intent(this,GraphActivity.class);
+        i.putExtra(MainActivity.INTENT_APIARY_KEY, (long)-1);
+        i.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
+        startActivityForResult(i, GRAPH_REQ_CODE);
     }
 
     public void hiveOtherToolClickHandler (View v) {
