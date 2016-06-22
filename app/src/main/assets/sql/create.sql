@@ -132,11 +132,37 @@ CREATE TABLE 'Weather'
 	'SOLARRADIATION' TEXT,
 	'UVINDEX' TEXT,
 	'POLLEN_COUNT' REAL,
-	'POLLUTION' TEXT,
-	'DATA_ORIGIN' TEXT, /* "O"bserved, "H"istoric */
+	'POLLUTION' TEXT
 	CONSTRAINT 'FK_Weather_Apiary' FOREIGN KEY ('APIARY') REFERENCES 'Apiary' ('_ID') ON DELETE Cascade ON UPDATE Cascade
 )
 ;
+
+/*
+-- List of cols for WeatherHistory --
+fog
+rain
+snow
+thunder
+tornado
+hail
+snowfalli ?
+snowdepthi ?
+maxtempi
+mintempi
+maxdewpti
+mindewpti
+maxpressurei
+minpressurei
+maxwspdi
+minwspdi
+maxtempi
+mintempi
+maxvisi
+minvisi
+precipi
+coolingdegreedays
+heatingdegreedays
+*/
 
 CREATE TABLE 'LogEntryGeneral'
 (
@@ -210,6 +236,25 @@ CREATE TABLE 'LogEntryOther'
 	CONSTRAINT 'FK_LogEntryOther_Hive' FOREIGN KEY ('HIVE') REFERENCES 'Hive' ('_ID') ON DELETE Cascade ON UPDATE Cascade
 )
 ;
+
+CREATE TABLE 'GraphableData'
+(
+	'_ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	'TABLE' TEXT,
+	'COLUMN' TEXT,
+	'PRETTY_NAME' TEXT,
+	'CATEGORY' TEXT
+)
+;
+
+/* These are the set uo data that can be presented in a graph */
+/*  If TABLE/COLUMN given => data will be presented as that value vs time */
+/*  Otherwise => special action to be taken */
+/*  Only graphs that have TABLE/COLUMN can be presented against eachother */
+INSERT INTO 'GraphableData' ('_ID',	'TABLE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'Weather', 'POLLEN_COUNT', 'Pollen Count', 'Observed Weather');
+INSERT INTO 'GraphableData' ('_ID',	'TABLE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'Weather', 'TEMPERATURE', 'Temperature', 'Observed Weather');
+INSERT INTO 'GraphableData' ('_ID',	'TABLE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'Weather', 'PRESSURE', 'Pressure', 'Observed Weather');
+INSERT INTO 'GraphableData' ('_ID',	'TABLE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'N/A', 'N/A', 'Pollen Type', 'Observed Weather');
 
 /* for testing ONLY  - just so we don't have to manually reenter when we drop the DB */
 /* INSERT INTO 'Profile' ('_ID', 'NAME', 'EMAIL') VALUES (0, 'TC', 'TC@mail.com');

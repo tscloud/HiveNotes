@@ -330,8 +330,6 @@ public class EditHiveActivity extends AppCompatActivity implements
                 // Load DO w/ pollen data
                 weatherDO.setPollenCount(hivePollen.getPollenIndexToday());
                 weatherDO.setPollution(hivePollen.getPollenType());
-                // and set origin of data
-                weatherDO.setDataOrigin("O"); // "O"bserved AOT "H"istoric
 
                 // Persist what comes back
                 WeatherDAO weatherDAO = new WeatherDAO(ctx);
