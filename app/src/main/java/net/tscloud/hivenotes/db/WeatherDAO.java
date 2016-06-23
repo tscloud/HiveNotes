@@ -33,7 +33,6 @@ public class WeatherDAO {
     public static final String COLUMN_WEATHER_UVINDEX = "uvIndex";
     public static final String COLUMN_WEATHER_POLLEN_COUNT = "pollen_count";
     public static final String COLUMN_WEATHER_POLLUTION = "pollution";
-    public static final String COLUMN_WEATHER_DATA_ORIGIN = "data_origin";
 
     // Database fields
     private SQLiteDatabase mDatabase;
@@ -44,7 +43,7 @@ public class WeatherDAO {
             COLUMN_WEATHER_PRESSURE, COLUMN_WEATHER_WEATHER, COLUMN_WEATHER_WINDDIRECTION,
             COLUMN_WEATHER_WINDMPH, COLUMN_WEATHER_HUMIDITY, COLUMN_WEATHER_DEWPOINT,
             COLUMN_WEATHER_VISIBILITY, COLUMN_WEATHER_SOLARRADIATION, COLUMN_WEATHER_UVINDEX,
-            COLUMN_WEATHER_POLLEN_COUNT, COLUMN_WEATHER_POLLUTION,COLUMN_WEATHER_DATA_ORIGIN };
+            COLUMN_WEATHER_POLLEN_COUNT, COLUMN_WEATHER_POLLUTION };
 
     public WeatherDAO(Context context) {
         this.mContext = context;
@@ -109,7 +108,7 @@ public class WeatherDAO {
                 aDO.getRainfall(), aDO.getPressure(), aDO.getWeather(),
                 aDO.getWindDirection(), aDO.getWindMPH(), aDO.getHumidity(),
                 aDO.getDewPoint(), aDO.getVisibility(), aDO.getSolarRadiation(),
-                aDO.getUvIndex(), aDO.getPollenCount(), aDO.getPollution();
+                aDO.getUvIndex(), aDO.getPollenCount(), aDO.getPollution());
     }
 
     public Weather updateWeather(long id, long apiary, long snapshotDate, float temperature,
