@@ -193,4 +193,5 @@
     <string name="existing"> (EXISTING)</string>
 
     <string name="graph_selection">Graph Selection</string>
+    <string name="add_graph">Add Graph</string>
 </resources>

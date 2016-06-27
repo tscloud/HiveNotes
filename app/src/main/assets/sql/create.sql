@@ -132,37 +132,41 @@ CREATE TABLE 'Weather'
 	'SOLARRADIATION' TEXT,
 	'UVINDEX' TEXT,
 	'POLLEN_COUNT' REAL,
-	'POLLUTION' TEXT
+	'POLLUTION' TEXT,
 	CONSTRAINT 'FK_Weather_Apiary' FOREIGN KEY ('APIARY') REFERENCES 'Apiary' ('_ID') ON DELETE Cascade ON UPDATE Cascade
 )
 ;
 
-/*
--- List of cols for WeatherHistory --
-fog
-rain
-snow
-thunder
-tornado
-hail
-snowfalli ?
-snowdepthi ?
-maxtempi
-mintempi
-maxdewpti
-mindewpti
-maxpressurei
-minpressurei
-maxwspdi
-minwspdi
-maxtempi
-mintempi
-maxvisi
-minvisi
-precipi
-coolingdegreedays
-heatingdegreedays
-*/
+CREATE TABLE 'WeatherHistory'
+(
+	'_ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	'APIARY' INTEGER,
+	'SNAPSHOT_DATE' INTEGER,
+	'FOG' INTEGER,
+	'RAIN' INTEGER,
+	'SNOW' INTEGER,
+	'THUNDER' INTEGER,
+	'HAIL' INTEGER,
+	'MAXTEMPI' INTEGER,
+    'MINTEMPI' INTEGER,
+    'MAXDEWPTI' INTEGER,
+    'MINDEWPTI' INTEGER,
+    'MAXPRESSUREI' REAL,
+    'MINPRESSUREI' REAL,
+    'MAXWSPDI' INTEGER,
+    'MINWSPDI' INTEGER,
+    'MEANWDIRD' INTEGER,
+    'MAXHUMIDITY' INTEGER,
+    'MINHUMIDITY' INTEGER,
+    'MAXVISI' INTEGER,
+    'MINVISI' INTEGER,
+    'PRECIPI' REAL,
+    'COOLINGDEGREEDAYS' INTEGER,
+    'HEATINGDEGREEDAYS' INTEGER,
+
+	CONSTRAINT 'FK_WeatherHistory_Apiary' FOREIGN KEY ('APIARY') REFERENCES 'Apiary' ('_ID') ON DELETE Cascade ON UPDATE Cascade
+)
+;
 
 CREATE TABLE 'LogEntryGeneral'
 (
@@ -240,7 +244,7 @@ CREATE TABLE 'LogEntryOther'
 CREATE TABLE 'GraphableData'
 (
 	'_ID' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	'TABLE' TEXT,
+	'DIRECTIVE' TEXT,
 	'COLUMN' TEXT,
 	'PRETTY_NAME' TEXT,
 	'CATEGORY' TEXT

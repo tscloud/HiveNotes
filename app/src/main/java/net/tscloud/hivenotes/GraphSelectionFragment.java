@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Spinner;
 
 
 /**
@@ -69,7 +71,16 @@ public class GraphSelectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_graph_selection, container, false);
+        View view = inflater.inflate(R.layout.fragment_graph_selection, container, false);
+
+        // disable the stuff inside the include - let AsyncTask enable after spinner is filled
+        View layoutSelector1 = view.findViewById(R.id.selector1);
+        final Spinner spnSelector1 = (Spinner)layoutSelector1.findViewById(R.id.spinnerSelection);
+        final Button btnSelector1 = (Button)layoutSelector1.findViewById(R.id.buttonSelection);
+        spnSelector1.setEnabled(false);
+        btnSelector1.setEnabled(false);
+
+        return view;
     }
 
     @Override
