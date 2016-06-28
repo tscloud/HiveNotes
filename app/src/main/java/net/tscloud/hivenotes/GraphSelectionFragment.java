@@ -214,12 +214,14 @@ public class GraphSelectionFragment extends Fragment {
     }
 
     // Needed by above method
-    private void updateLabel(View aDateEditText) {
+    private void updateLabel(View aDateEditText, Calendar aCal) {
 
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        ((EditText)aDateEditText).setText(sdf.format(myCalendar.getTime()));
+        ((EditText)aDateEditText).setText(sdf.format(aCal.getTime()));
+        //set the tag to time in millis for use later on down the road
+        ((EditText)aDateEditText).setTag(aCal.getTimeInMillis());
     }
 
     @Override
