@@ -147,13 +147,13 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public void onEditApiaryButtonPressed() {
+    private void onEditApiaryButtonPressed() {
         if (mListener != null) {
             mListener.onHomeFragmentInteraction(null, false);
         }
     }
 
-    public void onDropDBButtonPressed() {
+    private void onDropDBButtonPressed() {
         if (mListener != null) {
             mListener.onHomeFragmentInteraction(null, true);
         }

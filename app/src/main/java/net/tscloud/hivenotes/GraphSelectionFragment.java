@@ -2,14 +2,21 @@ package net.tscloud.hivenotes;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import net.tscloud.hivenotes.db.GraphableData;
+import net.tscloud.hivenotes.db.GraphableDataDAO;
+
+import java.util.List;
 
 
 /**
@@ -30,6 +37,12 @@ public class GraphSelectionFragment extends Fragment {
     // and instance var of same - needed?
     private long mApiaryID = -1;
     private long mHiveID = -1;
+
+    // This is the list pretty names for GraphableData
+    String[] mPrettyNames;
+
+    // task references - needed to kill tasks on Activity Destroy
+    private GetGraphableData mTask = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -80,7 +93,23 @@ public class GraphSelectionFragment extends Fragment {
         spnSelector1.setEnabled(false);
         btnSelector1.setEnabled(false);
 
+        // Listeners
+        btnSelector1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSelectorButtonPressed(spnSelector1.getSelectedItemPosition());
+            }
+        });
+
+        // AsyncTask to get pretty names from GraphableData
+        mTask = new GetGraphableData(getActivity(), spnSelector1, btnSelector1);
+        mTask.execute();
+
         return view;
+    }
+
+    // Make new Selector group
+    private void onSelectorButtonPressed(int itemToKnockOut) {
     }
 
     @Override
@@ -100,6 +129,15 @@ public class GraphSelectionFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onDestroy() {
+        if (mTask != null) {
+            mTask.cancel(false);
+        }
+
+        super.onDestroy();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -109,5 +147,59 @@ public class GraphSelectionFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    /**
+     * Get GraphableData
+     */
+    public class GetGraphableData extends AsyncTask<Void, Void, Void> {
+
+        public static final String TAG = "GetGraphableData";
+
+        private Context ctx;
+        private Spinner spinner;
+        private Button button;
+
+        public GetGraphableData(Context aCtx, Spinner aSpinner, Button aButton) {
+            ctx = aCtx;
+            spinner = aSpinner;
+            button = aButton;
+            Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : constructor");
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : doInBackground");
+
+            GraphableDataDAO dao = new GraphableDataDAO(ctx);
+            List<GraphableData> listData = dao.getGraphableDataList();
+
+            // loading the member var for pretty names - this will be used now and later for other
+            //  spinners
+            mPrettyNames = new String[listData.size()];
+            int i = 0;
+            for (GraphableData dataElem : listData) {
+                mPrettyNames[i++] = dataElem.getPrettyName();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : onPostExecute");
+
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
+                    (ctx, android.R.layout.simple_spinner_item, mPrettyNames);
+
+            spinner.setAdapter(spinnerArrayAdapter);
+            spinner.setEnabled(true);
+
+            button.setEnabled(true);
+
+            // all we need to do is nullify the Task reference
+            mTask = null;
+        }
+
     }
 }

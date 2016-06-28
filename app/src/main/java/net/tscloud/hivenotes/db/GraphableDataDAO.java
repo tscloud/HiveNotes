@@ -18,7 +18,7 @@ public class GraphableDataDAO {
     // Database table columns
     // columns of the WeatherHistory table
     public static final String TABLE_GRAPHABLEDATA = "GraphableData";
-    public static final String COLUMN_GRAPHABLEDATA_ID = "id";
+    public static final String COLUMN_GRAPHABLEDATA_ID = "_id";
     public static final String COLUMN_GRAPHABLEDATA_DIRECTIVE = "directive";
     public static final String COLUMN_GRAPHABLEDATA_COLUMN = "column";
     public static final String COLUMN_GRAPHABLEDATA_PRETTYNAME = "pretty_name";

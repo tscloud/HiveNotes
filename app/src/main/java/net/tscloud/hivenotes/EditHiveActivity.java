@@ -258,7 +258,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         return mHiveList;
     }
-    /** do big update of all log tables in background
+    /** call weather WS to get weather data and persist
      */
     public class WeatherCallTask extends AsyncTask<Void, Void, Void> {
 
@@ -288,6 +288,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         @Override
         protected Void doInBackground(Void... unused) {
+            Log.d(TAG, "WeatherCallTask("+ Thread.currentThread().getId() + ") : doInBackground");
             // Call the weather service
             // build query string <-lat/lon should be present unless lat/lon
             //  & zip are not present

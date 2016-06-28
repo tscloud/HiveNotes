@@ -255,10 +255,10 @@ CREATE TABLE 'GraphableData'
 /*  If TABLE/COLUMN given => data will be presented as that value vs time */
 /*  Otherwise => special action to be taken */
 /*  Only graphs that have TABLE/COLUMN can be presented against eachother */
-INSERT INTO 'GraphableData' ('_ID',	'TABLE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'Weather', 'POLLEN_COUNT', 'Pollen Count', 'Observed Weather');
-INSERT INTO 'GraphableData' ('_ID',	'TABLE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'Weather', 'TEMPERATURE', 'Temperature', 'Observed Weather');
-INSERT INTO 'GraphableData' ('_ID',	'TABLE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'Weather', 'PRESSURE', 'Pressure', 'Observed Weather');
-INSERT INTO 'GraphableData' ('_ID',	'TABLE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'N/A', 'N/A', 'Pollen Type', 'Observed Weather');
+INSERT INTO 'GraphableData' ('_ID',	'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (0, 'Weather', 'POLLEN_COUNT', 'Pollen Count', 'Observed Weather');
+INSERT INTO 'GraphableData' ('_ID',	'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (1, 'Weather', 'TEMPERATURE', 'Temperature', 'Observed Weather');
+INSERT INTO 'GraphableData' ('_ID',	'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (2, 'Weather', 'PRESSURE', 'Pressure', 'Observed Weather');
+INSERT INTO 'GraphableData' ('_ID',	'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY') VALUES (3, 'N/A', 'N/A', 'Pollen Type', 'Observed Weather');
 
 /* for testing ONLY  - just so we don't have to manually reenter when we drop the DB */
 /* INSERT INTO 'Profile' ('_ID', 'NAME', 'EMAIL') VALUES (0, 'TC', 'TC@mail.com');
