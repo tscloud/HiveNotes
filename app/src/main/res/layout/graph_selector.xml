@@ -13,11 +13,5 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.70" />
 
-    <Button
-        android:id="@+id/buttonSelection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_graph" />
-
 </LinearLayout>
 

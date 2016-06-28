@@ -29,6 +29,14 @@
         android:layout_alignParentEnd="true" />
 
     <Button
+        android:id="@+id/buttonSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/selector1"
+        android:text="@string/add_graph" />
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/graph"
