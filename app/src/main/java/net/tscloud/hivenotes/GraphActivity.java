@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 public class GraphActivity extends AppCompatActivity implements
-        GraphSelectionFragment.OnFragmentInteractionListener {
+        GraphSelectionFragment.OnGraphSelectionFragmentInteractionListener {
 
     private static final String TAG = "GraphActivity";
     private long mApiaryKey = -1;
@@ -51,7 +51,11 @@ public class GraphActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onGraphSelectionFragmentInteraction(
+            List<GraphableData> aToGraphList,
+            int aStartDate,
+            int aEndDate) {
+        Log.d(TAG, "back from GraphSelectionFragment");
 
     }
 }

@@ -53,11 +53,13 @@ public class GraphSelectionFragment extends Fragment {
     private long mHiveID = -1;
 
     // List pretty names for GraphableData
-    String[] mPrettyNames;
+    private List<GraphableData> mGraphableDataList;
     // List of graph directives that have been selected
-    HashMap<SpinnerAdapter, Integer> mSpinnerSelectionHash = new HashMap<>();
-    // the spinner which the next added spinned will be added after
-    int mAddAfterThisSpinner;
+    private HashMap<SpinnerAdapter, Integer> mSpinnerSelectionHash = new HashMap<>();
+    // stack of Spinners used to know which to add after as well as to have
+    //  reference to newly added
+    //private int mAddAfterThisSpinner;
+    private Stack<Integer> mSpinnerIdStack = new Stack<>();
 
     // task references - needed to kill tasks on Activity Destroy
     private GetGraphableData mTask = null;
@@ -110,11 +112,12 @@ public class GraphSelectionFragment extends Fragment {
         final Button btnSelector1 = (Button)view.findViewById(R.id.buttonSelection);
         final EditText edtGraphStartDate = (EditText)view.findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText)view.findViewById(R.id.editTextGraphEndDate);
+        final Button btnGraph = (Button)view.findViewById(R.id.btnGraph);
         spnSelector1.setEnabled(false);
         btnSelector1.setEnabled(false);
 
-        // set mAddAfterThisSpinner
-        mAddAfterThisSpinner = R.id.selector1;
+        // push the 1st Spinner onto our save stack
+        mSpinnerIdStack.push(R.id.selector1);
 
         /**
          * Listeners
@@ -153,6 +156,13 @@ public class GraphSelectionFragment extends Fragment {
             }
         });
 
+        btnGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onGraphButtonPressed(v);
+            }
+        });
+
         /**
          * AsyncTask to get pretty names from GraphableData
          */
@@ -176,16 +186,18 @@ public class GraphSelectionFragment extends Fragment {
 
         final Spinner spnSelectorNew = (Spinner)newSel.findViewById(R.id.spinnerSelection);
 
-        // Set the Spinner id - of course this is bad
-        newSel.setId(mAddAfterThisSpinner + 111);
+        // Set the Spinner id - use local gererator of View Ids - Google does
+        //  not provide one until API 17
+        newSel.setId(HiveUtil.generateViewId());
 
         ArrayAdapter<String> spinnerArrayAdapter = new DisableableArrayAdapter<String>
-        (getActivity(), android.R.layout.simple_spinner_dropdown_item, mPrettyNames);
+            (getActivity(), android.R.layout.simple_spinner_dropdown_item,
+                getPrettyNames(mGraphableDataList), mSpinnerSelectionHash);
 
         spnSelectorNew.setAdapter(spinnerArrayAdapter);
 
-        // determine other spinner's selected values
-        for (int i = 0; i < mPrettyNames.length; i++) {
+        // determine 1st unused entry of spinner's selected values
+        for (int i = 0; i < mSpinnerSelectionHash.values().length; i++) {
             if (!mSpinnerSelectionHash.values().contains(i)) {
                 spnSelectorNew.setSelection(i);
                 break;
@@ -206,17 +218,18 @@ public class GraphSelectionFragment extends Fragment {
 
         });
 
-        // Add new Spinner to base RelativeLayout
+        // Add new Spinner to base RelativeLayout - use LayoutParams to set the
+        //  the stuff normally set up in XML
         RelativeLayout rl = (RelativeLayout)aTopLevelView.findViewById(R.id.relLayGraphSelection);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.BELOW, mAddAfterThisSpinner);
+        params.addRule(RelativeLayout.BELOW, mSpinnerIdStack.peek());
 
         rl.addView(newSel, params);
 
-        // set the new spiner after
-        mAddAfterThisSpinner = newSel.getId();
+        // set the new spinner after
+        mSpinnerIdStack.push(newSel.getId());
     }
 
     /**
@@ -256,6 +269,49 @@ public class GraphSelectionFragment extends Fragment {
         ((EditText)aDateEditText).setTag(aCal.getTimeInMillis());
     }
 
+    /**
+     * Click Button -
+     *  go back to Activity w/ relevant data
+     */
+    private void onGraphButtonPressed() {
+        Log.d(TAG, "get ready to go back to Activity w/ data from this form");
+
+        List<GraphableData> returnList = new List<>();
+
+        final EditText edtGraphStartDate = (EditText)getView().findViewById(R.id.editTextGraphStartDate);
+        final EditText edtGraphEndDate = (EditText)getView().findViewById(R.id.editTextGraphEndDate);
+
+        // if the pretty name of the GraphableData matchs the Spinner's
+        //  selected item String => save off the GraphableData to send
+        //  back to the Actvity
+        for ( ; mSpinnerIdStack.empty(); ) {
+            View v = getView().findViewById(mSpinnerIdStack.pop());
+            Spinner s = v.findViewById(R.id.spinnerSelection);
+            for (GraphableData g : mGraphableDataList) {
+                if (g.getPrettyName().equals(s.getSelectedItem().toString())) {
+                    returnList.add(g);
+                    break;
+                }
+            }
+        }
+
+        mListener.onGraphSelectionFragmentInteraction(
+            returnList, edtGraphStartDate.getTag(), edtGraphEndDate.getTag());
+    }
+
+    /** used by those that need the prettyNames from a List of GraphableData
+     */
+    private String[] getPrettyNames(List<GraphableData> aGraphableDataList) {
+        String[] reply = new String[aGraphableDataList.size()];
+
+        int i = 0;
+        for (GraphableData dataElem : aGraphableDataList) {
+            reply[i++] = dataElem.getPrettyName();
+        }
+
+        return reply;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -288,9 +344,11 @@ public class GraphSelectionFragment extends Fragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnGraphSelectionFragmentInteractionListener {
+        void onGraphSelectionFragmentInteraction(
+            List<GraphableData> aToGraphList,
+            int aStartDate,
+            int aEndDate);
     }
 
     /**
@@ -316,15 +374,8 @@ public class GraphSelectionFragment extends Fragment {
             Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : doInBackground");
 
             GraphableDataDAO dao = new GraphableDataDAO(ctx);
-            List<GraphableData> listData = dao.getGraphableDataList();
-
-            // loading the member var for pretty names - this will be used now and later for other
-            //  spinners
-            mPrettyNames = new String[listData.size()];
-            int i = 0;
-            for (GraphableData dataElem : listData) {
-                mPrettyNames[i++] = dataElem.getPrettyName();
-            }
+            // Set the member var for holding GraphableData List
+            mGraphableDataList = dao.getGraphableDataList();
 
             return null;
         }
@@ -334,7 +385,8 @@ public class GraphSelectionFragment extends Fragment {
             Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : onPostExecute");
 
             ArrayAdapter<String> spinnerArrayAdapter = new DisableableArrayAdapter<String>
-                    (ctx, android.R.layout.simple_spinner_dropdown_item, mPrettyNames);
+                    (ctx, android.R.layout.simple_spinner_dropdown_item,
+                        getPrettyNames(mGraphableDataList), mSpinnerSelectionHash);
 
             spinner.setAdapter(spinnerArrayAdapter);
             spinner.setEnabled(true);
@@ -351,8 +403,13 @@ public class GraphSelectionFragment extends Fragment {
      */
     public class DisableableArrayAdapter<String> extends ArrayAdapter<String> {
 
-        public DisableableArrayAdapter(Context aCtx, int textViewResourceId, String[] objects) {
+        HashMap<SpinnerAdapter, Integer> spinnerSelectionHash = new HashMap<>();
+
+        public DisableableArrayAdapter(Context aCtx, int textViewResourceId,
+                                       String[] objects
+                                       HashMap<SpinnerAdapter, Integer> aHash) {
             super(aCtx, textViewResourceId, objects);
+            spinnerSelectionHash = aHash;
         }
 
         @Override
@@ -375,12 +432,14 @@ public class GraphSelectionFragment extends Fragment {
             return mView;
         }
 
+        /** Checks those values that are selected by other Spinner/SpinnerAdapters
+         */
         private boolean checkItemSelected(int pos) {
             boolean reply = false;
 
-            for (SpinnerAdapter a : mSpinnerSelectionHash.keySet()) {
+            for (SpinnerAdapter a : spinnerSelectionHash.keySet()) {
                 if (a != this) {
-                    if (pos == mSpinnerSelectionHash.get(a)) {
+                    if (pos == spinnerSelectionHash.get(a)) {
                         reply = true;
                     }
                 }
@@ -388,6 +447,5 @@ public class GraphSelectionFragment extends Fragment {
 
             return reply;
         }
-
     }
 }
