@@ -1,6 +1,8 @@
 package net.tscloud.hivenotes;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,14 +11,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.GraphableDataDAO;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -41,13 +55,9 @@ public class GraphSelectionFragment extends Fragment {
     // List pretty names for GraphableData
     String[] mPrettyNames;
     // List of graph directives that have been selected
-    ArrayList<Integer> mSelectedGraphItems;
-    // Position to add the next Graph Selector
-    // - in the initial layout this will be the 3rd elem in the root
-    //   RelativeLayout
-    // - this is NOT necessarily a great way to go
-    int mGraphSelectorPos = 2;
-    int mMaxGraphSelectorPos = 5;
+    HashMap<SpinnerAdapter, Integer> mSpinnerSelectionHash = new HashMap<>();
+    // the spinner which the next added spinned will be added after
+    int mAddAfterThisSpinner;
 
     // task references - needed to kill tasks on Activity Destroy
     private GetGraphableData mTask = null;
@@ -92,16 +102,19 @@ public class GraphSelectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_graph_selection, container, false);
+        final View view = inflater.inflate(R.layout.fragment_graph_selection, container, false);
 
         // disable the stuff inside the include - let AsyncTask enable after spinner is filled
         View layoutSelector1 = view.findViewById(R.id.selector1);
         final Spinner spnSelector1 = (Spinner)layoutSelector1.findViewById(R.id.spinnerSelection);
-        final Button btnSelector1 = (Button)layoutSelector1.findViewById(R.id.buttonSelection);
-        final EditText edtGraphStartDate = (EditText)layoutSelector1.findViewById(R.id.editTextGraphStartDate);
-        final EditText edtGraphEndDate = (EditText)layoutSelector1.findViewById(R.id.editTextGraphEndDate);
+        final Button btnSelector1 = (Button)view.findViewById(R.id.buttonSelection);
+        final EditText edtGraphStartDate = (EditText)view.findViewById(R.id.editTextGraphStartDate);
+        final EditText edtGraphEndDate = (EditText)view.findViewById(R.id.editTextGraphEndDate);
         spnSelector1.setEnabled(false);
         btnSelector1.setEnabled(false);
+
+        // set mAddAfterThisSpinner
+        mAddAfterThisSpinner = R.id.selector1;
 
         /**
          * Listeners
@@ -109,34 +122,31 @@ public class GraphSelectionFragment extends Fragment {
         btnSelector1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSelectorButtonPressed((ViewGroup)view, inflater);
+                onSelectorButtonPressed((ViewGroup)view);
             }
         });
 
-        spnSelector1.setOnItemSelectedListener(new OnItemSelectedListener() {
-            // NOTE: this should not be able to be selected prior to creation
-            //  of the array that holds the selected item positions, it's greyed
-            //  until thus happens
+        spnSelector1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                onSpinnerItemSelected(position);
+                mSpinnerSelectionHash.put(spnSelector1.getAdapter(), position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // do I need this?
+                // NOOP
             }
 
         });
 
-        edtGraphStartDate.setOnClickListener(new OnClickListener() {
+        edtGraphStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDateEditClicked(v);
             }
         });
 
-        edtGraphEndDate.setOnClickListener(new OnClickListener() {
+        edtGraphEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDateEditClicked(v);
@@ -156,59 +166,81 @@ public class GraphSelectionFragment extends Fragment {
      * Click Button -
      *  make new Selector group
      */
-    private void onSelectorButtonPressed(ViewGroup aTopLevelView,
-                                         LayoutInflater aInflater) {
+    private void onSelectorButtonPressed(ViewGroup aTopLevelView) {
         Log.d(TAG, "Creating another Graph Selector");
 
-        if (mGraphSelectorPos < mMaxGraphSelectorPos) {
-            View newSel = aInflater.inflate(R.layout.graph_selector, null);
-            aTopLevelView.addView(newSel, mGraphSelectorPos);
-            mGraphSelectorPos++;
+        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
 
-            final Spinner spnSelectorNew = (Spinner)newSel.findViewById(R.id.spinnerSelection);
+        View newSel = inflater.inflate(R.layout.graph_selector, null);
 
-            ArrayAdapter<String> spinnerArrayAdapter = new DisableableArrayAdapter<String>
-            (getActivity(), android.R.layout.simple_spinner_dropdown_item, mPrettyNames);
-            //remember to set the selected items of the adapter
-            spinnerArrayAdapter.setSelectedItems(mSelectedGraphItems);
+        final Spinner spnSelectorNew = (Spinner)newSel.findViewById(R.id.spinnerSelection);
 
-            spnSelectorNew.setAdapter(spinnerArrayAdapter);
+        // Set the Spinner id - of course this is bad
+        newSel.setId(mAddAfterThisSpinner + 111);
+
+        ArrayAdapter<String> spinnerArrayAdapter = new DisableableArrayAdapter<String>
+        (getActivity(), android.R.layout.simple_spinner_dropdown_item, mPrettyNames);
+
+        spnSelectorNew.setAdapter(spinnerArrayAdapter);
+
+        // determine other spinner's selected values
+        for (int i = 0; i < mPrettyNames.length; i++) {
+            if (!mSpinnerSelectionHash.values().contains(i)) {
+                spnSelectorNew.setSelection(i);
+                break;
+            }
         }
-    }
 
-    /**
-     * Click Spinner Item -
-     *  add this item position to the list of those items that cannot be
-     *  selected by future Spinners
-     */
-    private void onSpinnerItemSelected(int aPosition) {
-        Log.d(TAG, "Graph Selector Spinner item selected");
+        // Listener for new Spinner
+        spnSelectorNew.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                mSpinnerSelectionHash.put(spnSelectorNew.getAdapter(), position);
+            }
 
-        mSelectedGraphItems.add(aPosition);
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // NOOP
+            }
+
+        });
+
+        // Add new Spinner to base RelativeLayout
+        RelativeLayout rl = (RelativeLayout)aTopLevelView.findViewById(R.id.relLayGraphSelection);
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.BELOW, mAddAfterThisSpinner);
+
+        rl.addView(newSel, params);
+
+        // set the new spiner after
+        mAddAfterThisSpinner = newSel.getId();
     }
 
     /**
      * Click EditTexts for dates -
      *  throw up a DatePicker
      */
-    private void onDateEditClicked(View aDateEditText) {
+    private void onDateEditClicked(final View aDateEditText) {
         Log.d(TAG, "throw up DatePickers for graph date bounds");
 
-        Calendar myCalendar = Calendar.getInstance();
+        final Calendar myCalendar = Calendar.getInstance();
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
-                    int dayOfMonth) {
+                                  int dayOfMonth) {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel(aDateEditText);
+                updateLabel(aDateEditText, myCalendar);
             }
         };
 
-        new DatePickerDialog(classname.this, date, myCalendar
+        new DatePickerDialog(getActivity(), date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
@@ -273,10 +305,10 @@ public class GraphSelectionFragment extends Fragment {
         private Button button;
 
         public GetGraphableData(Context aCtx, Spinner aSpinner, Button aButton) {
+            Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : constructor");
             ctx = aCtx;
             spinner = aSpinner;
             button = aButton;
-            Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : constructor");
         }
 
         @Override
@@ -294,9 +326,6 @@ public class GraphSelectionFragment extends Fragment {
                 mPrettyNames[i++] = dataElem.getPrettyName();
             }
 
-            //create the instance var array that will contain the selected item positions
-            mSelectedGraphItems = new ArrayList<Integer>(mPrettyNames.length);
-
             return null;
         }
 
@@ -306,8 +335,6 @@ public class GraphSelectionFragment extends Fragment {
 
             ArrayAdapter<String> spinnerArrayAdapter = new DisableableArrayAdapter<String>
                     (ctx, android.R.layout.simple_spinner_dropdown_item, mPrettyNames);
-            //remember to set the selected items of the adapter
-            spinnerArrayAdapter.setSelectedItems(mSelectedGraphItems);
 
             spinner.setAdapter(spinnerArrayAdapter);
             spinner.setEnabled(true);
@@ -322,48 +349,45 @@ public class GraphSelectionFragment extends Fragment {
     /**
      * Inner Class - Custom ArrayAdapter to handle disabled items
      */
-    public class DisableableArrayAdapter extends ArrayAdapter {
+    public class DisableableArrayAdapter<String> extends ArrayAdapter<String> {
 
-        private ArrayList<Integer> selectedItems;
-
-        public ArrayList<Integer> getSelectedItems() {
-            return selectedItems;
-        }
-
-        public void setSelectedItems(ArrayList<Integer> aSelectedItems) {
-            this.selectedItems = aSelectedItems;
+        public DisableableArrayAdapter(Context aCtx, int textViewResourceId, String[] objects) {
+            super(aCtx, textViewResourceId, objects);
         }
 
         @Override
-        public boolean isEnabled(int position) throws IllegalStateException {
-            if (selectedItems == null) {
-                throw new IllegalStateException("selectedItems of
-                    DisableableArrayAdapter must not be null");
-            }
-            else if (selectedItems.contains(position)) {
-                return false;
-            }
-
-            return true;
+        public boolean isEnabled(int position) {
+            return !checkItemSelected(position);
         }
 
         @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) throws IllegalStateException {
-            if (selectedItems == null) {
-                throw new IllegalStateException("selectedItems of
-                    DisableableArrayAdapter must not be null");
-            }
-            else {
-                View mView = super.getDropDownView(position, convertView, parent);
-                TextView mTextView = (TextView) mView;
-                if (selectedItems.contains(position)) {
-                    mTextView.setTextColor(Color.GRAY);
-                } else {
-                    mTextView.setTextColor(Color.BLACK);
-                }
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View mView;
+
+            mView = super.getDropDownView(position, convertView, parent);
+            TextView mTextView = (TextView) mView;
+            if (checkItemSelected(position)) {
+                mTextView.setTextColor(Color.GRAY);
+            } else {
+                mTextView.setTextColor(Color.BLACK);
             }
 
             return mView;
         }
+
+        private boolean checkItemSelected(int pos) {
+            boolean reply = false;
+
+            for (SpinnerAdapter a : mSpinnerSelectionHash.keySet()) {
+                if (a != this) {
+                    if (pos == mSpinnerSelectionHash.get(a)) {
+                        reply = true;
+                    }
+                }
+            }
+
+            return reply;
+        }
+
     }
 }

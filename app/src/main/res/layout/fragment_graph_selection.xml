@@ -19,22 +19,23 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:id="@+id/buttonSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_graph"
+        android:layout_below="@+id/textGraphSelection"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <include
         android:id="@+id/selector1"
         layout="@layout/graph_selector"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textGraphSelection"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:id="@+id/buttonSelection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/selector1"
-        android:text="@string/add_graph" />
+        android:layout_below="@+id/buttonSelection"
+        android:layout_alignRight="@+id/editTextGraphEndDate"
+        android:layout_alignEnd="@+id/editTextGraphEndDate" />
 
     <Button
         android:layout_width="wrap_content"
@@ -48,11 +49,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editTextGraphStartDate"
-        android:layout_marginBottom="53dp"
+        android:text="Enter date"
         android:layout_above="@+id/btnGraph"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="Enter start date" />
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -61,6 +61,26 @@
         android:layout_alignBottom="@+id/editTextGraphStartDate"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:text="Enter end date" />
+        android:text="Enter date" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/start_date"
+        android:id="@+id/textView"
+        android:layout_above="@+id/editTextGraphStartDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/end_date"
+        android:id="@+id/textView2"
+        android:layout_above="@+id/editTextGraphEndDate"
+        android:layout_alignRight="@+id/editTextGraphEndDate"
+        android:layout_alignEnd="@+id/editTextGraphEndDate" />
 
 </RelativeLayout>
