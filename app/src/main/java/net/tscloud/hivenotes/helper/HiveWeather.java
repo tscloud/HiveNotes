@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import net.tscloud.hivenotes.db.Weather;
+import net.tscloud.hivenotes.db.WeatherHistory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,9 +18,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -39,6 +44,7 @@ public class HiveWeather {
 	public static final String WU_ROOT = "http://api.wunderground.com/api/";
 	public static final String WU_CONDITIONS = "conditions";
 	public static final String WU_GEOLOOKUP = "geolookup";
+	public static final String WU_HISTORY = "history_";
 	public static final String WU_PWS = "pws:";
 	public static final String WU_SETTINGS = null;
 	public static final String WU_QUERY = null;
@@ -50,13 +56,17 @@ public class HiveWeather {
     public static final int DATARETRIEVAL_TIMEOUT = 10000;
 
     // These are the JSON field we're interested in
-    private static String [] dataFields = {"temp_f", "precip_today_in", "pressure_in", "weather",
+    private static final String [] dataFields = {"temp_f", "precip_today_in", "pressure_in", "weather",
 		"wind_dir", "wind_mph", "relative_humidity", "dewpoint_f", "visibility_mi",
 		"solarradiation", "UV"};
 
-    private static String [] mergeFields = {"solarradiation", "UV"};
+    private static final String [] mergeFields = {"solarradiation", "UV"};
 
-	public static Weather requestWunderground(String aQuery) {
+    public HiveWeather() {
+
+    }
+
+	public Weather requestWunderground(String aQuery) {
         Log.d(TAG, "HiveWeather.requestWunderground()");
         Weather reply = new Weather();
 
@@ -80,7 +90,7 @@ public class HiveWeather {
         return reply;
 	}
 
-	public static Weather requestWundergroundExtended(String aQuery) {
+	public Weather requestWundergroundExtended(String aQuery) {
 		/** Here's the skinny:
 		 *   Not all weather station provide all data
 		 *    We've going to retrieve data from an array of nearby stations (how many?)
@@ -96,7 +106,7 @@ public class HiveWeather {
             // How many stations do we want to check?  This needs to be configurable
             int staThresh = 3;
             // this is where we are going to keep each station's conditions
-            List<Map<String, String>> staCondHashArray = new ArrayList<Map<String, String>>();
+            List<Map<String, String>> staCondHashArray = new ArrayList<>();
 
             // interate over the retrieved station list & use the top x
             for (int i=0; (i < jsonStationArray.length()) && (i < staThresh); i++) {
@@ -122,7 +132,46 @@ public class HiveWeather {
         return reply;
     }
 
-    private static JSONObject queryCondition(String aQuery) {
+    public WeatherHistory requestWundergroundHistory(String aLoc, long aDate) {
+        Log.d(TAG, "HiveWeather.requestWundergroundHistory()");
+        WeatherHistory reply = new WeatherHistory();
+
+        // convert date
+        Date date = new Date(aDate);
+        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        String newDate = formatter.format(date);
+
+        // Make the wunderground call to get weather stations - get JSON back
+        JSONObject jsonHead = queryHistory(aLoc, newDate);
+        if (jsonHead != null) {
+            reply.setSnapshot_date(aDate);
+            reply.setFog(Long.parseLong(jsonHead.optString("fog", "-1")));
+            reply.setRain(Long.parseLong(jsonHead.optString("rain", "-1")));
+            reply.setSnow(Long.parseLong(jsonHead.optString("snow", "-1")));
+            reply.setThunder(Long.parseLong(jsonHead.optString("thunder", "-1")));
+            reply.setHail(Long.parseLong(jsonHead.optString("hail", "-1")));
+            reply.setMaxtempi(Long.parseLong(jsonHead.optString("maxtempi", "-1")));
+            reply.setMintempi(Long.parseLong(jsonHead.optString("mintempi", "-1")));
+            reply.setMaxdewpti(Long.parseLong(jsonHead.optString("maxdewpti", "-1")));
+            reply.setMindewpti(Long.parseLong(jsonHead.optString("mindewpti", "-1")));
+            reply.setMaxpressurei(Float.parseFloat(jsonHead.optString("maxpressurei", "-1")));
+            reply.setMinpressurei(Float.parseFloat(jsonHead.optString("minpressurei", "-1")));
+            reply.setMaxwspdi(Long.parseLong(jsonHead.optString("maxwspdi", "-1")));
+            reply.setMinwspdi(Long.parseLong(jsonHead.optString("minwspdi", "-1")));
+            reply.setMeanwdird(Long.parseLong(jsonHead.optString("meanwdird", "-1")));
+            reply.setMaxhumidity(Long.parseLong(jsonHead.optString("maxhumidity", "-1")));
+            reply.setMinhumidity(Long.parseLong(jsonHead.optString("minhumidity", "-1")));
+            reply.setMaxvisi(Float.parseFloat(jsonHead.optString("maxvisi", "-1")));
+            reply.setMinvisi(Float.parseFloat(jsonHead.optString("minvisi", "-1")));
+            reply.setPrecipi(Float.parseFloat(jsonHead.optString("precipi", "-1")));
+            reply.setCoolingdegreedays(Long.parseLong(jsonHead.optString("coolingdegreedays", "-1")));
+            reply.setHeatingdegreedays(Long.parseLong(jsonHead.optString("heatingdegreedays", "-1")));
+        }
+
+        return reply;
+    }
+
+    private JSONObject queryCondition(String aQuery) {
         String url = WU_ROOT + WU_API_KEY + "/" + WU_CONDITIONS + "/q/" + aQuery +
                 "." + WU_FORMAT;
 
@@ -138,7 +187,7 @@ public class HiveWeather {
         return reply;
     }
 
-    private static JSONArray queryStationArray(String aQuery) {
+    private JSONArray queryStationArray(String aQuery) {
         String url = WU_ROOT + WU_API_KEY + "/" + WU_GEOLOOKUP + "/q/" + aQuery +
                 "." + WU_FORMAT;
 
@@ -162,7 +211,31 @@ public class HiveWeather {
         return reply;
     }
 
-    private static Weather mergeConditions(List<Map<String, String>> aConditions) {
+    private JSONObject queryHistory(String aLoc, String aDate) {
+        String url = WU_ROOT + WU_API_KEY + "/" + WU_HISTORY + aDate + "/q/" + aLoc +
+                "." + WU_FORMAT;
+
+        Log.d(TAG, "HiveWeather.queryHistory(): url: " + url);
+        JSONObject reply = null;
+
+        // Make the wunderground call to get history - get JSON back
+        JSONObject jsonCallResult = requestWebService(url);
+        if (jsonCallResult != null) {
+            try {
+                // "dailysummery" a one element array
+                reply = jsonCallResult.getJSONObject("history")
+                        .getJSONArray("dailysummary")
+                        .getJSONObject(0);
+            }
+            catch (JSONException e) {
+                Log.d(TAG, "JSONException thrown in queryHistory()", e);
+            }
+        }
+
+        return reply;
+    }
+
+    private Weather mergeConditions(List<Map<String, String>> aConditions) {
         Log.d(TAG, "HiveWeather.mergeConditions()");
         Weather reply = new Weather();
 
@@ -203,7 +276,7 @@ public class HiveWeather {
         return reply;
     }
 
-    private static boolean checkTag(String aTag) {
+    private boolean checkTag(String aTag) {
         // return true if the value appears to contain viable data
         boolean reply = true;
 
@@ -225,7 +298,7 @@ public class HiveWeather {
     }
 
 	@Nullable
-    private static JSONObject requestWebService(String serviceUrl) {
+    private JSONObject requestWebService(String serviceUrl) {
 	    disableConnectionReuseIfNecessary();
 
 	    HttpURLConnection urlConnection = null;
@@ -271,7 +344,7 @@ public class HiveWeather {
 	/**
 	 * required in order to prevent issues in earlier Android version.
 	 */
-	private static void disableConnectionReuseIfNecessary() {
+	private void disableConnectionReuseIfNecessary() {
 	    // see HttpURLConnection API doc
 	    if (Integer.parseInt(Build.VERSION.SDK)
 	            < Build.VERSION_CODES.FROYO) {
@@ -279,7 +352,7 @@ public class HiveWeather {
 	    }
 	}
 
-	private static String getResponseText(InputStream inStream) {
+	private String getResponseText(InputStream inStream) {
 	    // very nice trick from
 	    // http://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
 	    return new Scanner(inStream).useDelimiter("\\A").next();

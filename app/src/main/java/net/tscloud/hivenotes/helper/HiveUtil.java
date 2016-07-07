@@ -1,5 +1,7 @@
 package net.tscloud.hivenotes.helper;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Created by tscloud on 6/30/16.
  */
@@ -8,7 +10,7 @@ public class HiveUtil {
     private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 
     /**
-     * Generate a value suitable for use in {@link #setId(int)}.
+     * Generate a value suitable for use in View.setID.
      * This value will not collide with ID values generated at build time by aapt for R.id.
      *
      * @return a generated ID value

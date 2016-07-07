@@ -1,6 +1,5 @@
 package net.tscloud.hivenotes;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,10 +7,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
+import net.tscloud.hivenotes.db.GraphableData;
+
+import java.util.List;
+
 public class GraphActivity extends AppCompatActivity implements
-        GraphSelectionFragment.OnGraphSelectionFragmentInteractionListener {
+        GraphSelectionFragment.OnGraphSelectionFragmentInteractionListener,
+        GraphDisplayFragment.OnGraphDisplayFragmentInteractionListener{
 
     private static final String TAG = "GraphActivity";
     private long mApiaryKey = -1;
@@ -31,6 +36,7 @@ public class GraphActivity extends AppCompatActivity implements
         mApiaryKey = intent.getLongExtra(MainActivity.INTENT_APIARY_KEY, -1);
         mHiveKey = intent.getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
 
+        // go to the GraphSelectionFragment
         Fragment fragment = GraphSelectionFragment.newInstance(mApiaryKey, mHiveKey);
         String fragTag = "GRAPH_SELECTION_FRAG";
 
@@ -53,9 +59,23 @@ public class GraphActivity extends AppCompatActivity implements
     @Override
     public void onGraphSelectionFragmentInteraction(
             List<GraphableData> aToGraphList,
-            int aStartDate,
-            int aEndDate) {
-        Log.d(TAG, "back from GraphSelectionFragment");
+            long aStartDate,
+            long aEndDate) {
+        Log.d(TAG, "back from GraphSelectionFragment...Start Date: " + aStartDate +
+            " End Date: " + aEndDate);
+
+        // go to the GraphDisplayFragment
+        Fragment fragment = GraphDisplayFragment.newInstance(aToGraphList, aStartDate, aEndDate,
+                mApiaryKey, mHiveKey);
+        String fragTag = "GRAPH_DISPLAY_FRAG";
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.graph_container, fragment, fragTag);
+        ft.commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

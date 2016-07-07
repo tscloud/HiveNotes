@@ -26,8 +26,8 @@ public class WeatherHistory {
     private long meanwdird;
     private long maxhumidity;
     private long minhumidity;
-    private long maxvisi;
-    private long minvisi;
+    private float maxvisi;
+    private float minvisi;
     private float precipi;
     private long coolingdegreedays;
     private long heatingdegreedays;
@@ -112,11 +112,11 @@ public class WeatherHistory {
         this.maxtempi = maxtempi;
     }
 
-    public long getMaxvisi() {
+    public float getMaxvisi() {
         return maxvisi;
     }
 
-    public void setMaxvisi(long maxvisi) {
+    public void setMaxvisi(float maxvisi) {
         this.maxvisi = maxvisi;
     }
 
@@ -168,11 +168,11 @@ public class WeatherHistory {
         this.mintempi = mintempi;
     }
 
-    public long getMinvisi() {
+    public float getMinvisi() {
         return minvisi;
     }
 
-    public void setMinvisi(long minvisi) {
+    public void setMinvisi(float minvisi) {
         this.minvisi = minvisi;
     }
 

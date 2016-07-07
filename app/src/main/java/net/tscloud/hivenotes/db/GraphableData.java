@@ -1,9 +1,12 @@
 package net.tscloud.hivenotes.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by tscloud on 6/26/16.
  */
-public class GraphableData {
+public class GraphableData implements Parcelable {
 
     public static final String TAG = "GraphableData";
 
@@ -12,6 +15,7 @@ public class GraphableData {
     private String column;
     private String prettyName;
     private String category;
+    private String keyLevel;
 
     public String getCategory() {
         return category;
@@ -53,4 +57,51 @@ public class GraphableData {
         this.prettyName = prettyName;
     }
 
+    public String getKeyLevel() {
+        return keyLevel;
+    }
+
+    public void setKeyLevel(String keyLevel) {
+        this.keyLevel = keyLevel;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.directive);
+        dest.writeString(this.column);
+        dest.writeString(this.prettyName);
+        dest.writeString(this.category);
+        dest.writeString(this.keyLevel);
+    }
+
+    public GraphableData() {
+    }
+
+    protected GraphableData(Parcel in) {
+        this.id = in.readLong();
+        this.directive = in.readString();
+        this.column = in.readString();
+        this.prettyName = in.readString();
+        this.category = in.readString();
+        this.keyLevel = in.readString();
+    }
+
+    public static final Creator<GraphableData> CREATOR = new Creator<GraphableData>() {
+        @Override
+        public GraphableData createFromParcel(Parcel source) {
+            return new GraphableData(source);
+        }
+
+        @Override
+        public GraphableData[] newArray(int size) {
+            return new GraphableData[size];
+        }
+    };
 }

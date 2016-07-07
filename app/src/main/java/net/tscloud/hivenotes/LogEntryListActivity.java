@@ -259,7 +259,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         // Launch the Graph Activity
         Log.d(TAG, "hiveGeneralToolClickHandler called");
         Intent i = new Intent(this,GraphActivity.class);
-        i.putExtra(MainActivity.INTENT_APIARY_KEY, (long)-1);
+        i.putExtra(MainActivity.INTENT_APIARY_KEY, mHiveForName.getApiary());
         i.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
         startActivityForResult(i, GRAPH_REQ_CODE);
     }

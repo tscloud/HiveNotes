@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.GraphableDataDAO;
+import net.tscloud.hivenotes.helper.HiveUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,19 +32,20 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Stack;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GraphSelectionFragment.OnFragmentInteractionListener} interface
+ * {@link GraphSelectionFragment.OnGraphSelectionFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link GraphSelectionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class GraphSelectionFragment extends Fragment {
 
-    public static final String TAG = "EditApiaryFragment";
+    public static final String TAG = "GraphSelectionFragment";
 
     // the fragment initialization parameters
     private static final String APIARY_ID = "param1";
@@ -64,7 +66,7 @@ public class GraphSelectionFragment extends Fragment {
     // task references - needed to kill tasks on Activity Destroy
     private GetGraphableData mTask = null;
 
-    private OnFragmentInteractionListener mListener;
+    private OnGraphSelectionFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -73,7 +75,7 @@ public class GraphSelectionFragment extends Fragment {
      * @param hiveID
      */
     public static GraphSelectionFragment newInstance(long apiaryID, long hiveID) {
-        Log.d(TAG, "getting newInstance of GraphFragment...apiaryID: " + apiaryID +
+        Log.d(TAG, "getting newInstance of GraphSelectionFragment...apiaryID: " + apiaryID +
             " : hiveID: " + hiveID);
 
         GraphSelectionFragment fragment = new GraphSelectionFragment();
@@ -159,7 +161,7 @@ public class GraphSelectionFragment extends Fragment {
         btnGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onGraphButtonPressed(v);
+                onGraphButtonPressed();
             }
         });
 
@@ -197,7 +199,7 @@ public class GraphSelectionFragment extends Fragment {
         spnSelectorNew.setAdapter(spinnerArrayAdapter);
 
         // determine 1st unused entry of spinner's selected values
-        for (int i = 0; i < mSpinnerSelectionHash.values().length; i++) {
+        for (int i = 0; i < mGraphableDataList.size(); i++) {
             if (!mSpinnerSelectionHash.values().contains(i)) {
                 spnSelectorNew.setSelection(i);
                 break;
@@ -276,7 +278,7 @@ public class GraphSelectionFragment extends Fragment {
     private void onGraphButtonPressed() {
         Log.d(TAG, "get ready to go back to Activity w/ data from this form");
 
-        List<GraphableData> returnList = new List<>();
+        List<GraphableData> returnList = new ArrayList<>();
 
         final EditText edtGraphStartDate = (EditText)getView().findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText)getView().findViewById(R.id.editTextGraphEndDate);
@@ -284,9 +286,9 @@ public class GraphSelectionFragment extends Fragment {
         // if the pretty name of the GraphableData matchs the Spinner's
         //  selected item String => save off the GraphableData to send
         //  back to the Actvity
-        for ( ; mSpinnerIdStack.empty(); ) {
+        for ( ; !mSpinnerIdStack.empty(); ) {
             View v = getView().findViewById(mSpinnerIdStack.pop());
-            Spinner s = v.findViewById(R.id.spinnerSelection);
+            Spinner s = (Spinner)v.findViewById(R.id.spinnerSelection);
             for (GraphableData g : mGraphableDataList) {
                 if (g.getPrettyName().equals(s.getSelectedItem().toString())) {
                     returnList.add(g);
@@ -295,8 +297,25 @@ public class GraphSelectionFragment extends Fragment {
             }
         }
 
-        mListener.onGraphSelectionFragmentInteraction(
-            returnList, edtGraphStartDate.getTag(), edtGraphEndDate.getTag());
+        // check for required values - are there any?
+        boolean emptyText = false;
+
+        if (edtGraphStartDate.getTag() == null) {
+            edtGraphStartDate.setError("Must set start date");
+            emptyText = true;
+            Log.d(TAG, "Uh oh...Start Date empty");
+        }
+
+        if (edtGraphEndDate.getTag() == null) {
+            edtGraphEndDate.setError("Must set end date");
+            emptyText = true;
+            Log.d(TAG, "Uh oh...End Date empty");
+        }
+
+        if (!emptyText) {
+            mListener.onGraphSelectionFragmentInteraction(
+                returnList, (long)edtGraphStartDate.getTag(), (long)edtGraphEndDate.getTag());
+        }
     }
 
     /** used by those that need the prettyNames from a List of GraphableData
@@ -315,11 +334,11 @@ public class GraphSelectionFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnGraphSelectionFragmentInteractionListener) {
+            mListener = (OnGraphSelectionFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnGraphSelectionFragmentInteractionListener");
         }
     }
 
@@ -346,9 +365,9 @@ public class GraphSelectionFragment extends Fragment {
      */
     public interface OnGraphSelectionFragmentInteractionListener {
         void onGraphSelectionFragmentInteraction(
-            List<GraphableData> aToGraphList,
-            int aStartDate,
-            int aEndDate);
+                List<GraphableData> aToGraphList,
+                long aStartDate,
+                long aEndDate);
     }
 
     /**
@@ -406,7 +425,7 @@ public class GraphSelectionFragment extends Fragment {
         HashMap<SpinnerAdapter, Integer> spinnerSelectionHash = new HashMap<>();
 
         public DisableableArrayAdapter(Context aCtx, int textViewResourceId,
-                                       String[] objects
+                                       String[] objects,
                                        HashMap<SpinnerAdapter, Integer> aHash) {
             super(aCtx, textViewResourceId, objects);
             spinnerSelectionHash = aHash;

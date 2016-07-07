@@ -7,10 +7,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.TreeMap;
+
 /**
  * Created by tscloud on 8/15/15.
  */
-public class WeatherDAO {
+public class WeatherDAO extends GraphableDAO {
 
     public static final String TAG = "WeatherDAO";
 
@@ -176,6 +180,72 @@ public class WeatherDAO {
         }
 
         return cursorToWeather(cursor);
+    }
+
+    @Override
+    public TreeMap<Long, Double> getColDataByDateRangeForGraphing(String aCol, long aStartDate,
+                                                                  long aEndDate, long aKey)
+            throws SQLException {
+
+        Cursor cursor = mDatabase.query(TABLE_WEATHER, new String[] { COLUMN_WEATHER_SNAPSHOT_DATE, aCol },
+                COLUMN_WEATHER_SNAPSHOT_DATE + " >= ? AND " + COLUMN_WEATHER_SNAPSHOT_DATE + " <= ? AND " +
+                COLUMN_WEATHER_APIARY + " = ?",
+                new String[] { String.valueOf(aStartDate), String.valueOf(aEndDate), String.valueOf(aKey) },
+                null, null, COLUMN_WEATHER_SNAPSHOT_DATE + " ASC");
+
+        TreeMap<Long, Double> reply = new TreeMap<>();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    // need to call a method w/ knowledge of the individual column so that it can be
+                    //  converted to Double
+                    reply.put(cursor.getLong(0), scourToDouble(aCol, cursor));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+        }
+
+        return reply;
+    }
+
+    /** With knowledge of each column, we can return Double properly
+     *  IMPORTANT: if cols added or col types changed => this method MUST change in kind
+     */
+    private Double scourToDouble(String aCol, Cursor aCur) {
+        Double reply = null;
+
+        // These list sets must be mutully exclusive
+        String[] stringCols = { COLUMN_WEATHER_WEATHER, COLUMN_WEATHER_WINDDIRECTION,
+                COLUMN_WEATHER_VISIBILITY, COLUMN_WEATHER_SOLARRADIATION, COLUMN_WEATHER_UVINDEX,
+                COLUMN_WEATHER_POLLUTION };
+        String [] floatCols = { COLUMN_WEATHER_TEMPERATURE, COLUMN_WEATHER_RAINFALL,
+                COLUMN_WEATHER_PRESSURE, COLUMN_WEATHER_WINDMPH, COLUMN_WEATHER_DEWPOINT,
+                COLUMN_WEATHER_POLLEN_COUNT };
+        String[] specialCols = { COLUMN_WEATHER_HUMIDITY };
+
+        try {
+            // What we're interested in will always be at pos 1
+            if (Arrays.asList(stringCols).contains(aCol)) {
+                reply = Double.valueOf(aCur.getString(1));
+            }
+            else if (Arrays.asList(floatCols).contains(aCol)) {
+                reply = Double.valueOf(aCur.getFloat(1));
+            }
+            else if (Arrays.asList(specialCols).contains(aCol)) {
+                // humidity is the only special col
+                reply = Double.valueOf(aCur.getString(1).replace("%", ""));
+            }
+            else {
+                // col not found - weird?
+                throw new SQLException("Table: " + TABLE_WEATHER + " : Column: " + aCol + " not found");
+            }
+        }
+        catch (NumberFormatException e) {
+            Log.d(TAG, "Unexpected data/datatype found");
+        }
+
+        return reply;
     }
 
     protected Weather cursorToWeather(Cursor cursor) {

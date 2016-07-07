@@ -229,6 +229,15 @@ public class EditHiveActivity extends AppCompatActivity implements
                 .commit();
     }
 
+    @Override
+    public void onDestroy() {
+        if (mTask != null) {
+            mTask.cancel(false);
+        }
+
+        super.onDestroy();
+    }
+
     /** This is strictly for testing and curiosity **
      */
     @Override
@@ -258,6 +267,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         return mHiveList;
     }
+
     /** call weather WS to get weather data and persist
      */
     public class WeatherCallTask extends AsyncTask<Void, Void, Void> {
@@ -305,7 +315,8 @@ public class EditHiveActivity extends AppCompatActivity implements
                 Log.d(TAG, "about to make weather service calls");
 
                 // Call the weather service
-                Weather weatherDO = HiveWeather.requestWundergroundExtended(queryString);
+                HiveWeather myHiveWeather = new HiveWeather();
+                Weather weatherDO = myHiveWeather.requestWundergroundExtended(queryString);
                 Log.d(TAG, "returned from wunderground WS call");
 
                 // Call the pollen "service"

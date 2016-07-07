@@ -23,6 +23,7 @@ public class GraphableDataDAO {
     public static final String COLUMN_GRAPHABLEDATA_COLUMN = "column";
     public static final String COLUMN_GRAPHABLEDATA_PRETTYNAME = "pretty_name";
     public static final String COLUMN_GRAPHABLEDATA_CATEGORY = "category";
+    public static final String COLUMN_GRAPHABLEDATA_KEYLEVEL = "key_level";
 
     // Database fields
     private SQLiteDatabase mDatabase;
@@ -30,7 +31,7 @@ public class GraphableDataDAO {
     private Context mContext;
     private String[] mAllColumns = {COLUMN_GRAPHABLEDATA_ID, COLUMN_GRAPHABLEDATA_DIRECTIVE,
             COLUMN_GRAPHABLEDATA_COLUMN, COLUMN_GRAPHABLEDATA_PRETTYNAME,
-            COLUMN_GRAPHABLEDATA_CATEGORY };
+            COLUMN_GRAPHABLEDATA_CATEGORY, COLUMN_GRAPHABLEDATA_KEYLEVEL };
 
     public GraphableDataDAO(Context context) {
         this.mContext = context;
@@ -81,6 +82,7 @@ public class GraphableDataDAO {
         data.setColumn(cursor.getString(2));
         data.setPrettyName(cursor.getString(3));
         data.setCategory(cursor.getString(4));
+        data.setKeyLevel(cursor.getString(5));
 
         return data;
     }

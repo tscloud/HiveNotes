@@ -83,7 +83,7 @@ public class WeatherHistoryDAO {
                                                long mintempi, long maxdewpti, long mindewpti,
                                                float maxpressurei, float minpressurei, long maxwspdi,
                                                long minwspdi, long meanwdird, long maxhumidity,
-                                               long minhumidity, long maxvisi, long minvisi,
+                                               long minhumidity, float maxvisi, float minvisi,
                                                float precipi, long coolingdegreedays, long heatingdegreedays) {
 
         ContentValues values = new ContentValues();
@@ -139,8 +139,8 @@ public class WeatherHistoryDAO {
                                               long maxtempi, long mintempi, long maxdewpti,
                                               long mindewpti, float maxpressurei, float minpressurei,
                                               long maxwspdi, long minwspdi, long meanwdird,
-                                              long maxhumidity, long minhumidity, long maxvisi,
-                                              long minvisi, float precipi, long coolingdegreedays,
+                                              long maxhumidity, long minhumidity, float maxvisi,
+                                              float minvisi, float precipi, long coolingdegreedays,
                                               long heatingdegreedays) {
 
         ContentValues values = new ContentValues();

@@ -197,4 +197,5 @@
     <string name="graph">Graph</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
+    <string name="retrieve_graph_data">Please wait...Collecting data to graph</string>
 </resources>
