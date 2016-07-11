@@ -10,7 +10,7 @@ import android.util.Log;
 /**
  * Created by tscloud on 6/25/16.
  */
-public class WeatherHistoryDAO {
+public class WeatherHistoryDAO extends GraphableDAO {
     public static final String TAG = "WeatherHistoryDAO";
 
     // Database table columns
@@ -42,9 +42,6 @@ public class WeatherHistoryDAO {
     public static final String COLUMN_WEATHERHISTORY_HEATINGDEGREEDAYS = "heatingdegreedays";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = { COLUMN_WEATHERHISTORY_ID, COLUMN_WEATHERHISTORY_APIARY,
             COLUMN_WEATHERHISTORY_SNAPSHOT_DATE, COLUMN_WEATHERHISTORY_FOG, COLUMN_WEATHERHISTORY_RAIN,
             COLUMN_WEATHERHISTORY_SNOW, COLUMN_WEATHERHISTORY_THUNDER, COLUMN_WEATHERHISTORY_HAIL,
@@ -57,15 +54,23 @@ public class WeatherHistoryDAO {
             COLUMN_WEATHERHISTORY_COOLINGDEGREEDAYS, COLUMN_WEATHERHISTORY_HEATINGDEGREEDAYS };
 
     public WeatherHistoryDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
+        super(context);
+    }
+
+    // --implement abstract--
+    @Override
+    protected String getTable() {
+        return TABLE_WEATHERHISTORY;
+    }
+
+    @Override
+    protected String getColGraphKey() {
+        return COLUMN_WEATHERHISTORY_APIARY;
+    }
+
+    @Override
+    protected String getColSnapshotDate() {
+        return COLUMN_WEATHERHISTORY_SNAPSHOT_DATE;
     }
 
     public void open() throws SQLException {
@@ -211,6 +216,13 @@ public class WeatherHistoryDAO {
         }
 
         return cursorToWeatherHistory(cursor);
+    }
+    /** With knowledge of each column, we can return Double properly
+     *  IMPORTANT: if cols added or col types changed => this method MUST change in kind
+     */
+    @Override
+    protected Double scourToDouble(String aCol, Cursor aCur) {
+        return null;
     }
 
     protected WeatherHistory cursorToWeatherHistory(Cursor cursor) {

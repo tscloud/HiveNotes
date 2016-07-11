@@ -39,9 +39,6 @@ public class WeatherDAO extends GraphableDAO {
     public static final String COLUMN_WEATHER_POLLUTION = "pollution";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = { COLUMN_WEATHER_ID, COLUMN_WEATHER_APIARY,
             COLUMN_WEATHER_SNAPSHOT_DATE, COLUMN_WEATHER_TEMPERATURE, COLUMN_WEATHER_RAINFALL,
             COLUMN_WEATHER_PRESSURE, COLUMN_WEATHER_WEATHER, COLUMN_WEATHER_WINDDIRECTION,
@@ -49,24 +46,25 @@ public class WeatherDAO extends GraphableDAO {
             COLUMN_WEATHER_VISIBILITY, COLUMN_WEATHER_SOLARRADIATION, COLUMN_WEATHER_UVINDEX,
             COLUMN_WEATHER_POLLEN_COUNT, COLUMN_WEATHER_POLLUTION };
 
+    // --constructor--
     public WeatherDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
+        super(context);
     }
 
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
+    // --implement abstract--
+    @Override
+    protected String getTable() {
+        return TABLE_WEATHER;
     }
 
-    public void close() {
-        mDbHelper.close();
+    @Override
+    protected String getColGraphKey() {
+        return COLUMN_WEATHER_APIARY;
+    }
+
+    @Override
+    protected String getColSnapshotDate() {
+        return COLUMN_WEATHER_SNAPSHOT_DATE;
     }
 
     // --DB access methods--
@@ -182,37 +180,11 @@ public class WeatherDAO extends GraphableDAO {
         return cursorToWeather(cursor);
     }
 
-    @Override
-    public TreeMap<Long, Double> getColDataByDateRangeForGraphing(String aCol, long aStartDate,
-                                                                  long aEndDate, long aKey)
-            throws SQLException {
-
-        Cursor cursor = mDatabase.query(TABLE_WEATHER, new String[] { COLUMN_WEATHER_SNAPSHOT_DATE, aCol },
-                COLUMN_WEATHER_SNAPSHOT_DATE + " >= ? AND " + COLUMN_WEATHER_SNAPSHOT_DATE + " <= ? AND " +
-                COLUMN_WEATHER_APIARY + " = ?",
-                new String[] { String.valueOf(aStartDate), String.valueOf(aEndDate), String.valueOf(aKey) },
-                null, null, COLUMN_WEATHER_SNAPSHOT_DATE + " ASC");
-
-        TreeMap<Long, Double> reply = new TreeMap<>();
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    // need to call a method w/ knowledge of the individual column so that it can be
-                    //  converted to Double
-                    reply.put(cursor.getLong(0), scourToDouble(aCol, cursor));
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-        }
-
-        return reply;
-    }
-
     /** With knowledge of each column, we can return Double properly
      *  IMPORTANT: if cols added or col types changed => this method MUST change in kind
      */
-    private Double scourToDouble(String aCol, Cursor aCur) {
+    @Override
+    protected Double scourToDouble(String aCol, Cursor aCur) {
         Double reply = null;
 
         // These list sets must be mutully exclusive

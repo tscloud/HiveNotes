@@ -17,6 +17,8 @@ import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import net.tscloud.hivenotes.db.Apiary;
+import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.db.GraphableDAO;
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.WeatherHistory;
@@ -234,10 +236,18 @@ public class GraphDisplayFragment extends Fragment {
          */
         private DataPoint[] doWeatherHistory(GraphableData aData, long aApiary,
                                            long aStartDate, long aEndDate) {
-            // Get weather history - will have to read the Apiary to get location data
+            // Get weather history - may need to read the Apiary to get location data
             //  may have to read multiple times, may not have to read if we already have the data
             //  we need
             DataPoint[] reply = null;
+
+            // X) read apiary to get location data
+            Log.d(TAG, "reading Apiary table");
+            ApiaryDAO apiaryDAO = new ApiaryDAO(ctx);
+            Apiary myApiary = apiaryDAO.getApiaryById(aApiary);
+            apiaryDAO.close();
+
+
 
             HiveWeather myHiveWeather = new HiveWeather();
             WeatherHistory weatherHistoryDO = myHiveWeather.requestWundergroundHistory("02818", mStartDate);
@@ -248,8 +258,11 @@ public class GraphDisplayFragment extends Fragment {
 
         private DataPoint[] doStandardDirective(GraphableData aData, long aApiary, long aHive,
                                               long aStartDate, long aEndDate) {
+            // use DAOs that extend GraphableDAO - no need to know anything else about the data
             TreeMap<Long, Double> DAOReply = null;
             GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
+            // everything that has graphable data presently requires apiary - will hive every be
+            //  required?
             DAOReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
                     aStartDate, aEndDate, aApiary);
 
