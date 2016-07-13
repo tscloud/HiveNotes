@@ -10,7 +10,7 @@ import android.util.Log;
 /**
  * Created by tscloud on 8/15/15.
  */
-public class LogEntryGeneralDAO {
+public class LogEntryGeneralDAO extends AbstactDAO {
 
     public static final String TAG = "LogEntryGeneralDAO";
 
@@ -30,32 +30,13 @@ public class LogEntryGeneralDAO {
     public static final String COLUMN_LOGENTRYGENERAL_POLLEN_STORES = "pollen_stores";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = {COLUMN_LOGENTRYGENERAL_ID, COLUMN_LOGENTRYGENERAL_HIVE, COLUMN_LOGENTRYGENERAL_VISIT_DATE,
             COLUMN_LOGENTRYGENERAL_POPULATION, COLUMN_LOGENTRYGENERAL_TEMPERAMENT, COLUMN_LOGENTRYGENERAL_PESTS_DISEASE,
             COLUMN_LOGENTRYGENERAL_BROOD_FRAMES, COLUMN_LOGENTRYGENERAL_BROOD_PATTERN, COLUMN_LOGENTRYGENERAL_QUEEN,
             COLUMN_LOGENTRYGENERAL_HONEY_STORES, COLUMN_LOGENTRYGENERAL_POLLEN_STORES };
 
     public LogEntryGeneralDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDbHelper.close();
+        super(context);
     }
 
     // --DB access methods--

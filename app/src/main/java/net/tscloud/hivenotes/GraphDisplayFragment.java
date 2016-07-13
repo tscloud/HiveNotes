@@ -236,51 +236,93 @@ public class GraphDisplayFragment extends Fragment {
          */
         private DataPoint[] doWeatherHistory(GraphableData aData, long aApiary,
                                            long aStartDate, long aEndDate) {
+            Log.d(TAG, "RetrieveDataTask : doWeatherHistory()");
             // Get weather history - may need to read the Apiary to get location data
             //  may have to read multiple times, may not have to read if we already have the data
             //  we need
-            DataPoint[] reply = null;
 
-            // X) read apiary to get location data
-            Log.d(TAG, "reading Apiary table");
-            ApiaryDAO apiaryDAO = new ApiaryDAO(ctx);
-            Apiary myApiary = apiaryDAO.getApiaryById(aApiary);
-            apiaryDAO.close();
+            // 1) read WeatherHistory table to get the data we do have
+            GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
+            TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
+                    aStartDate, aEndDate, aApiary);
 
+            // 2) determine where the gaps are
+            for (long k : daoReply.keySet()) {
+                long nextKey = daoReply.higherKey(k);
+                //determine how many days b/w present key & the next key
+                long diffDays = TimeUnit.MILLISECONDS.toDays(nextKey) - TimeUnit.MILLISECONDS.toDays(k);
+                //list of WeatherHistory DOs that we will be persisting later
+                ArrayList<WeatherHistory> listWeatherHistory = new ArrayList<>();
+                //for every "gap day"...
+                for (int i = 0; i < diffDays; i++) {
+                    //for every day we do not have WeatherHistory -> call weather service
+                    WeatherHistory newWeatherHistory = getWeatherHistoryForDay(k + TimeUnit.DAYS.toMillis(i));
+                    //add the result to the list
+                    listWeatherHistory.put(newWeatherHistory);
+                    //update data to be graphed
+                    daoReply.put(reqDate, newWeatherHistory.getCol(aData.getColumn()));
+                }
+            }
 
+            return makePointArray(daoReply);
+        }
+
+        private WeatherHistory getWeatherHistoryForDay(long aDate) {
+            Log.d(TAG, "RetrieveDataTask : getWeatherHistoryForDay()");
 
             HiveWeather myHiveWeather = new HiveWeather();
-            WeatherHistory weatherHistoryDO = myHiveWeather.requestWundergroundHistory("02818", mStartDate);
+            WeatherHistory reply = myHiveWeather.requestWundergroundHistory(getLocation(), aDate);
             Log.d(TAG, "returned from wunderground WS call");
 
             return reply;
         }
 
+        private String getLocation() {
+            Log.d(TAG, "RetrieveDataTask : getLocation()");
+
+            String reply = null;
+            // read apiary to get location data
+            ApiaryDAO apiaryDAO = new ApiaryDAO(ctx);
+            Apiary myApiary = apiaryDAO.getApiaryById(mApiaryId);
+            apiaryDAO.close();
+
+            // build query string <-lat/lon should be present unless lat/lon
+            //  & zip are not present
+            if ((apiaryDAO.getLatitude() != 0) && (apiaryDAO.getLongitude() != 0)) {
+                reply = apiaryDAO.getLatitude() + "," + apiaryDAO.getLongitude();
+            }
+            else if ((apiaryDAO.getPostalCode() != null) && (apiaryDAO.getPostalCode().length() != 0)) {
+                reply = apiaryDAO.getPostalCode();
+            }
+
+            return = reply;
+        }
+
         private DataPoint[] doStandardDirective(GraphableData aData, long aApiary, long aHive,
                                               long aStartDate, long aEndDate) {
+            Log.d(TAG, "RetrieveDataTask : doStandardDirective()");
             // use DAOs that extend GraphableDAO - no need to know anything else about the data
-            TreeMap<Long, Double> DAOReply = null;
             GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
-            // everything that has graphable data presently requires apiary - will hive every be
-            //  required?
-            DAOReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
+            TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
                     aStartDate, aEndDate, aApiary);
 
-            return makePointArray(DAOReply);
+            return makePointArray(daoReply);
         }
 
         private DataPoint[] doSpecialDirective(GraphableData aData, long aApiary, long aHive,
                                              long aStartDate, long aEndDate) {
+            Log.d(TAG, "RetrieveDataTask : doSpecialDirective()");
             DataPoint[] reply = null;
 
             return reply;
         }
 
         private DataPoint[] makePointArray(TreeMap<Long, Double> in) {
+            Log.d(TAG, "RetrieveDataTask : makePointArray()");
             DataPoint[] out = new DataPoint[in.size()];
 
             int i = 0;
-            for (long k : in.navigableKeySet()) {
+            for (long k : in.keySet()) {
                 // make Date objects here
                 out[i++] = new DataPoint(new Date(k), in.get(k));
             }
@@ -289,6 +331,7 @@ public class GraphDisplayFragment extends Fragment {
         }
 
         private void doGraph(DataPoint[] aPoints) {
+            Log.d(TAG, "RetrieveDataTask : doGraph()");
             GraphView graph = (GraphView) view.findViewById(R.id.graph);
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
 

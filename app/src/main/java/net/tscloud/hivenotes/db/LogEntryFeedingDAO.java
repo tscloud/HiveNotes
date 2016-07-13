@@ -10,7 +10,7 @@ import android.util.Log;
 /**
  * Created by tscloud on 11/10/15.
  */
-public class LogEntryFeedingDAO {
+public class LogEntryFeedingDAO extends AbstactDAO {
 
     public static final String TAG = "LogEntryFeedingDAO";
 
@@ -27,32 +27,13 @@ public class LogEntryFeedingDAO {
     public static final String COLUMN_LOGENTRYFEEDING_OTHER_TYPE = "other_type";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = {COLUMN_LOGENTRYFEEDING_ID, COLUMN_LOGENTRYFEEDING_HIVE,
             COLUMN_LOGENTRYFEEDING_VISIT_DATE, COLUMN_LOGENTRYFEEDING_ONE_ONE_SUGAR_WATER,
             COLUMN_LOGENTRYFEEDING_TWO_ONE_SUGAR_WATER, COLUMN_LOGENTRYFEEDING_POLLEN_PATTY,
             COLUMN_LOGENTRYFEEDING_OTHER, COLUMN_LOGENTRYFEEDING_OTHER_TYPE};
 
     public LogEntryFeedingDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDbHelper.close();
+        super(context);
     }
 
     // --DB access methods--

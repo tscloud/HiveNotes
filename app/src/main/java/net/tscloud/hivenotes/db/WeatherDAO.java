@@ -46,6 +46,9 @@ public class WeatherDAO extends GraphableDAO {
             COLUMN_WEATHER_VISIBILITY, COLUMN_WEATHER_SOLARRADIATION, COLUMN_WEATHER_UVINDEX,
             COLUMN_WEATHER_POLLEN_COUNT, COLUMN_WEATHER_POLLUTION };
 
+    // Columns that require special processing
+    private String[] specialCols = { COLUMN_WEATHER_HUMIDITY };
+
     // --constructor--
     public WeatherDAO(Context context) {
         super(context);
@@ -65,6 +68,18 @@ public class WeatherDAO extends GraphableDAO {
     @Override
     protected String getColSnapshotDate() {
         return COLUMN_WEATHER_SNAPSHOT_DATE;
+    }
+
+    @Override
+    protected String[] getSpecialCols() {
+        return specialCols;
+    }
+
+    @Override
+    protected Double processSpecialCol(Cursor aCur) {
+        // humidity is the only special col
+        reply = Double.valueOf(aCur.getString(1).replace("%", ""));
+
     }
 
     // --DB access methods--
@@ -178,46 +193,6 @@ public class WeatherDAO extends GraphableDAO {
         }
 
         return cursorToWeather(cursor);
-    }
-
-    /** With knowledge of each column, we can return Double properly
-     *  IMPORTANT: if cols added or col types changed => this method MUST change in kind
-     */
-    @Override
-    protected Double scourToDouble(String aCol, Cursor aCur) {
-        Double reply = null;
-
-        // These list sets must be mutully exclusive
-        String[] stringCols = { COLUMN_WEATHER_WEATHER, COLUMN_WEATHER_WINDDIRECTION,
-                COLUMN_WEATHER_VISIBILITY, COLUMN_WEATHER_SOLARRADIATION, COLUMN_WEATHER_UVINDEX,
-                COLUMN_WEATHER_POLLUTION };
-        String [] floatCols = { COLUMN_WEATHER_TEMPERATURE, COLUMN_WEATHER_RAINFALL,
-                COLUMN_WEATHER_PRESSURE, COLUMN_WEATHER_WINDMPH, COLUMN_WEATHER_DEWPOINT,
-                COLUMN_WEATHER_POLLEN_COUNT };
-        String[] specialCols = { COLUMN_WEATHER_HUMIDITY };
-
-        try {
-            // What we're interested in will always be at pos 1
-            if (Arrays.asList(stringCols).contains(aCol)) {
-                reply = Double.valueOf(aCur.getString(1));
-            }
-            else if (Arrays.asList(floatCols).contains(aCol)) {
-                reply = Double.valueOf(aCur.getFloat(1));
-            }
-            else if (Arrays.asList(specialCols).contains(aCol)) {
-                // humidity is the only special col
-                reply = Double.valueOf(aCur.getString(1).replace("%", ""));
-            }
-            else {
-                // col not found - weird?
-                throw new SQLException("Table: " + TABLE_WEATHER + " : Column: " + aCol + " not found");
-            }
-        }
-        catch (NumberFormatException e) {
-            Log.d(TAG, "Unexpected data/datatype found");
-        }
-
-        return reply;
     }
 
     protected Weather cursorToWeather(Cursor cursor) {

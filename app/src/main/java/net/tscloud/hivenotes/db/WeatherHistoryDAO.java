@@ -53,6 +53,10 @@ public class WeatherHistoryDAO extends GraphableDAO {
             COLUMN_WEATHERHISTORY_MAXVISI, COLUMN_WEATHERHISTORY_MINVISI, COLUMN_WEATHERHISTORY_PRECIPI,
             COLUMN_WEATHERHISTORY_COOLINGDEGREEDAYS, COLUMN_WEATHERHISTORY_HEATINGDEGREEDAYS };
 
+    // Columns that require special processing
+    private String[] specialCols = {};
+
+    // --constructor--
     public WeatherHistoryDAO(Context context) {
         super(context);
     }
@@ -73,12 +77,16 @@ public class WeatherHistoryDAO extends GraphableDAO {
         return COLUMN_WEATHERHISTORY_SNAPSHOT_DATE;
     }
 
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
+    @Override
+    protected boolean getSpecialCols() {
+        return specialCols;
     }
 
-    public void close() {
-        mDbHelper.close();
+    @Override
+    protected Double processSpecialCol(Cursor aCur) {
+        // there are no special cols
+        reply = null;
+
     }
 
     // --DB access methods--
@@ -216,13 +224,6 @@ public class WeatherHistoryDAO extends GraphableDAO {
         }
 
         return cursorToWeatherHistory(cursor);
-    }
-    /** With knowledge of each column, we can return Double properly
-     *  IMPORTANT: if cols added or col types changed => this method MUST change in kind
-     */
-    @Override
-    protected Double scourToDouble(String aCol, Cursor aCur) {
-        return null;
     }
 
     protected WeatherHistory cursorToWeatherHistory(Cursor cursor) {

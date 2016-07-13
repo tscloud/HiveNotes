@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tscloud on 8/15/15.
  */
-public class ProfileDAO{
+public class ProfileDAO extends AbstactDAO {
 
     public static final String TAG = "ProfileDAO";
 
@@ -25,29 +25,10 @@ public class ProfileDAO{
     public static final String COLUMN_PROFILE_EMAIL = "email";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = { COLUMN_PROFILE_ID, COLUMN_PROFILE_NAME, COLUMN_PROFILE_EMAIL };
 
     public ProfileDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDbHelper.close();
+        super(context);
     }
 
     // --DB access methods--

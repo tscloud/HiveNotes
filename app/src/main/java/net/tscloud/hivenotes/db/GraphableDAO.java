@@ -24,7 +24,9 @@ public abstract class GraphableDAO extends AbstactDAO {
 
     protected abstract String getColGraphKey();
 
-    protected abstract Double scourToDouble(String aCol, Cursor aCur);
+    protected abstract String[] getSpecialCols();
+
+    protected abstract Double processSpecialCol(Cursor aCur);
 
     /** The method responsible for getting the time based data out of whatever table
      *
@@ -38,15 +40,16 @@ public abstract class GraphableDAO extends AbstactDAO {
         Cursor cursor = mDatabase.query(getTable(), new String[] { getColSnapshotDate(), aCol },
                 getColSnapshotDate() + " >= ? AND " + getColSnapshotDate() + " <= ? AND " +
                         getColGraphKey() + " = ?",
-                new String[] { String.valueOf(aStartDate), String.valueOf(aEndDate), String.valueOf(aKey) },
+                new String[] { String.valueOf(aStartDate), String.valueOf(aEndDate),
+                        String.valueOf(aKey) },
                 null, null, getColSnapshotDate() + " ASC");
 
         TreeMap<Long, Double> reply = new TreeMap<>();
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
-                    // need to call a method w/ knowledge of the individual column so that it can be
-                    //  converted to Double
+                    // need to call a method w/ knowledge of the individual
+                    //  column so that it can be converted to Double
                     reply.put(cursor.getLong(0), scourToDouble(aCol, cursor));
                     cursor.moveToNext();
                 }
@@ -55,6 +58,45 @@ public abstract class GraphableDAO extends AbstactDAO {
         }
 
         return reply;
+    }
+
+    /** With knowledge of each column, we can return Double properly
+     *  IMPORTANT: if cols added or col types changed => this method MUST change
+     *  in kind
+     */
+    @Override
+    protected Double scourToDouble(String aCol, Cursor aCur) throws SQLException {
+        Double reply = null;
+
+        try {
+            // What we're interested in will always be at pos 1
+            if (isSpecialCol(aCol)) {
+                reply = processSpecialCol(aCur);
+            }
+            else if (aCur.getType(1) == Cursor.FIELD_TYPE_STRING) {
+                reply = Double.valueOf(aCur.getString(1));
+            }
+            else if (aCur.getType(1) == Cursor.FIELD_TYPE_FLOAT) {
+                reply = Double.valueOf(aCur.getFloat(1));
+            }
+            else if (aCur.getType(1) == Cursor.FIELD_TYPE_INTEGER) {
+                reply = Double.valueOf(aCur.getInt(1));
+            }
+            else {
+                // col not found - weird?
+                throw new SQLException("Table: " + getTable() + " : Column: " +
+                    aCol + " unexpected datatype found");
+            }
+        }
+        catch (NumberFormatException e) {
+            Log.d(TAG, "Unexpected data/datatype found");
+        }
+
+        return reply;
+    }
+
+    protected boolean isSpecialCol(String aCol) {
+        return Arrays.asList(getSpecialCols()).contains(aCol));
     }
 
     /** Take the table name from the data to deliver the proper DAO - other check such as column

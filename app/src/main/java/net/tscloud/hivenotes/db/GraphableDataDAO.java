@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * Created by tscloud on 6/26/16.
  */
-public class GraphableDataDAO {
-    public static final String TAG = "WeatherHistoryDAO";
+public class GraphableDataDAO extends AbstactDAO {
+    public static final String TAG = "GraphableDataDAO";
 
     // Database table columns
     // columns of the WeatherHistory table
@@ -26,31 +26,13 @@ public class GraphableDataDAO {
     public static final String COLUMN_GRAPHABLEDATA_KEYLEVEL = "key_level";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = {COLUMN_GRAPHABLEDATA_ID, COLUMN_GRAPHABLEDATA_DIRECTIVE,
             COLUMN_GRAPHABLEDATA_COLUMN, COLUMN_GRAPHABLEDATA_PRETTYNAME,
             COLUMN_GRAPHABLEDATA_CATEGORY, COLUMN_GRAPHABLEDATA_KEYLEVEL };
 
+    // --constructor--
     public GraphableDataDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDbHelper.close();
+        super(context);
     }
 
     // --DB access methods--

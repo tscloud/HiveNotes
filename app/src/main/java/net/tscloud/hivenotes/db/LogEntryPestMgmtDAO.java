@@ -10,7 +10,7 @@ import android.util.Log;
 /**
  * Created by tscloud on 11/3/15.
  */
-public class LogEntryPestMgmtDAO {
+public class LogEntryPestMgmtDAO extends AbstactDAO {
 
     public static final String TAG = "LogEntryPestMgmtDAO";
 
@@ -32,9 +32,6 @@ public class LogEntryPestMgmtDAO {
     public static final String COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE = "other_type";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = { COLUMN_LOGENTRYPESTMGMT_ID, COLUMN_LOGENTRYPESTMGMT_HIVE,
             COLUMN_LOGENTRYPESTMGMT_VISIT_DATE, COLUMN_LOGENTRYPESTMGMT_DRONE_CELL_FNDN,
             COLUMN_LOGENTRYPESTMGMT_SMALL_HIVE_BEETLE_TRAP, COLUMN_LOGENTRYPESTMGMT_MITES_TRTMNT,
@@ -42,23 +39,7 @@ public class LogEntryPestMgmtDAO {
             COLUMN_LOGENTRYPESTMGMT_OTHER, COLUMN_LOGENTRYPESTMGMT_OTHER_TYPE };
 
     public LogEntryPestMgmtDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDbHelper.close();
+        super(context);
     }
 
     // --DB access methods--

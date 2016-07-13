@@ -10,7 +10,7 @@ import android.util.Log;
 /**
  * Created by tscloud on 8/15/15.
  */
-public class PictureDAO {
+public class PictureDAO extends AbstactDAO {
 
     public static final String TAG = "PictureDAO";
 
@@ -23,30 +23,11 @@ public class PictureDAO {
     public static final String COLUMN_PICTURE_IMAGE_URI = "image_uri";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = { COLUMN_PICTURE_ID, COLUMN_PICTURE_APIARY, COLUMN_PICTURE_HIVE,
             COLUMN_PICTURE_IMAGE_URI };
 
     public PictureDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDbHelper.close();
+        super(context);
     }
 
     // --DB access methods--

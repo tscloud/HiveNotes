@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tscloud on 8/15/15.
  */
-public class NotificationDAO {
+public class NotificationDAO extends AbstactDAO {
 
     public static final String TAG = "NotificationDAO";
 
@@ -27,30 +27,11 @@ public class NotificationDAO {
     public static final String COLUMN_NOTIFICATION_RMNDR_TYPE = "rmndr_type";
 
     // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
     private String[] mAllColumns = {COLUMN_NOTIFICATION_ID, COLUMN_NOTIFICATION_APIARY,
             COLUMN_NOTIFICATION_HIVE, COLUMN_NOTIFICATION_EVENT_ID, COLUMN_NOTIFICATION_RMNDR_TYPE};
 
     public NotificationDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDbHelper.close();
+        super(context);
     }
 
     // --DB access methods--

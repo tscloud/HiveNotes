@@ -13,14 +13,9 @@ import java.util.List;
 /**
  * Created by tscloud on 8/15/15.
  */
-public class LogDateDAO {
+public class LogDateDAO extends AbstactDAO {
 
     public static final String TAG = "LogDateDAO";
-
-    // Database fields
-    private SQLiteDatabase mDatabase;
-    private MyDBHandler mDbHelper;
-    private Context mContext;
 
     // compile time constant for big union query
     private static final String q = "SELECT VISIT_DATE FROM LogEntryGeneral " +
@@ -40,23 +35,7 @@ public class LogDateDAO {
             "ORDER BY VISIT_DATE DESC";
 
     public LogDateDAO(Context context) {
-        this.mContext = context;
-        mDbHelper = MyDBHandler.getInstance(context);
-        // open the database
-        try {
-            open();
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLException on openning database " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void open() throws SQLException {
-        mDatabase = mDbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        mDbHelper.close();
+        super(context);
     }
 
     // --DB access methods--
