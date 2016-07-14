@@ -78,7 +78,7 @@ public class WeatherDAO extends GraphableDAO {
     @Override
     protected Double processSpecialCol(Cursor aCur) {
         // humidity is the only special col
-        reply = Double.valueOf(aCur.getString(1).replace("%", ""));
+        return Double.valueOf(aCur.getString(1).replace("%", ""));
 
     }
 

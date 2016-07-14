@@ -78,15 +78,14 @@ public class WeatherHistoryDAO extends GraphableDAO {
     }
 
     @Override
-    protected boolean getSpecialCols() {
+    protected String[] getSpecialCols() {
         return specialCols;
     }
 
     @Override
     protected Double processSpecialCol(Cursor aCur) {
         // there are no special cols
-        reply = null;
-
+        return null;
     }
 
     // --DB access methods--

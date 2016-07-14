@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.TreeMap;
 
 /**
@@ -64,7 +65,6 @@ public abstract class GraphableDAO extends AbstactDAO {
      *  IMPORTANT: if cols added or col types changed => this method MUST change
      *  in kind
      */
-    @Override
     protected Double scourToDouble(String aCol, Cursor aCur) throws SQLException {
         Double reply = null;
 
@@ -96,7 +96,7 @@ public abstract class GraphableDAO extends AbstactDAO {
     }
 
     protected boolean isSpecialCol(String aCol) {
-        return Arrays.asList(getSpecialCols()).contains(aCol));
+        return Arrays.asList(getSpecialCols()).contains(aCol);
     }
 
     /** Take the table name from the data to deliver the proper DAO - other check such as column

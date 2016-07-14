@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -241,12 +242,13 @@ public class GraphDisplayFragment extends Fragment {
             //  may have to read multiple times, may not have to read if we already have the data
             //  we need
 
-            // 1) read WeatherHistory table to get the data we do have
+            // read WeatherHistory table to get the data we do have
             GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
             TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
                     aStartDate, aEndDate, aApiary);
 
-            // 2) determine where the gaps are
+            // determine where the gaps are
+            //TODO: need to check if aEndDate is in included in the keyset returned by DB read
             for (long k : daoReply.keySet()) {
                 long nextKey = daoReply.higherKey(k);
                 //determine how many days b/w present key & the next key
@@ -256,9 +258,10 @@ public class GraphDisplayFragment extends Fragment {
                 //for every "gap day"...
                 for (int i = 0; i < diffDays; i++) {
                     //for every day we do not have WeatherHistory -> call weather service
-                    WeatherHistory newWeatherHistory = getWeatherHistoryForDay(k + TimeUnit.DAYS.toMillis(i));
+                    long reqDate = k + TimeUnit.DAYS.toMillis(i);
+                    WeatherHistory newWeatherHistory = getWeatherHistoryForDay(reqDate);
                     //add the result to the list
-                    listWeatherHistory.put(newWeatherHistory);
+                    listWeatherHistory.add(newWeatherHistory);
                     //update data to be graphed
                     daoReply.put(reqDate, newWeatherHistory.getCol(aData.getColumn()));
                 }
@@ -288,14 +291,14 @@ public class GraphDisplayFragment extends Fragment {
 
             // build query string <-lat/lon should be present unless lat/lon
             //  & zip are not present
-            if ((apiaryDAO.getLatitude() != 0) && (apiaryDAO.getLongitude() != 0)) {
-                reply = apiaryDAO.getLatitude() + "," + apiaryDAO.getLongitude();
+            if ((myApiary.getLatitude() != 0) && (myApiary.getLongitude() != 0)) {
+                reply = myApiary.getLatitude() + "," + myApiary.getLongitude();
             }
-            else if ((apiaryDAO.getPostalCode() != null) && (apiaryDAO.getPostalCode().length() != 0)) {
-                reply = apiaryDAO.getPostalCode();
+            else if ((myApiary.getPostalCode() != null) && (myApiary.getPostalCode().length() != 0)) {
+                reply = myApiary.getPostalCode();
             }
 
-            return = reply;
+            return reply;
         }
 
         private DataPoint[] doStandardDirective(GraphableData aData, long aApiary, long aHive,

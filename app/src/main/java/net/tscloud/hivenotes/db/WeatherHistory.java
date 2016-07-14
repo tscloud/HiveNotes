@@ -1,5 +1,7 @@
 package net.tscloud.hivenotes.db;
 
+import java.util.HashMap;
+
 /**
  * Created by tscloud on 6/25/16.
  */
@@ -223,4 +225,15 @@ public class WeatherHistory {
     public void setThunder(long thunder) {
         this.thunder = thunder;
     }
+
+    /** Take a DB column name and return the DO data as Double
+     *   Needed by graphing routines
+     */
+    //TODO: make a big case statement <- crappy
+    public Double getCol(String aColName) {
+        Double reply = null;
+
+        return reply;
+    }
+
 }
