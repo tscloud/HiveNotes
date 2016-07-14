@@ -74,7 +74,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.tscloud.hivenotes.EditHiveActivity" />
         </activity>
-        <activity android:name=".GraphActivity"></activity>
+        <activity
+            android:name=".GraphActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

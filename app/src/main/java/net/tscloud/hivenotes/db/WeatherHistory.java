@@ -229,9 +229,75 @@ public class WeatherHistory {
     /** Take a DB column name and return the DO data as Double
      *   Needed by graphing routines
      */
-    //TODO: make a big case statement <- crappy
+    //make a big case statement <- crappy
     public Double getCol(String aColName) {
         Double reply = null;
+
+        switch (aColName) {
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_FOG:
+                reply = Double.valueOf(getFog());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_RAIN:
+                reply = Double.valueOf(getRain());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_SNOW:
+                reply = Double.valueOf(getSnow());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_THUNDER:
+                reply = Double.valueOf(getThunder());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_HAIL:
+                reply = Double.valueOf(getHail());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXTEMPI:
+                reply = Double.valueOf(getMaxtempi());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINTEMPI:
+                reply = Double.valueOf(getMintempi());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXDEWPTI:
+                reply = Double.valueOf(getMaxdewpti());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINDEWPTI:
+                reply = Double.valueOf(getMindewpti());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXPRESSUREI:
+                reply = Double.valueOf(getMaxpressurei());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINPRESSUREI:
+                reply = Double.valueOf(getMinpressurei());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXWSPDI:
+                reply = Double.valueOf(getMaxwspdi());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINWSPDI:
+                reply = Double.valueOf(getMinwspdi());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MEANWDIRD:
+                reply = Double.valueOf(getMeanwdird());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXHUMIDITY:
+                reply = Double.valueOf(getMaxhumidity());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINHUMIDITY:
+                reply = Double.valueOf(getMinhumidity());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXVISI:
+                reply = Double.valueOf(getMaxvisi());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINVISI:
+                reply = Double.valueOf(getMinvisi());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_PRECIPI:
+                reply = Double.valueOf(getPrecipi());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_COOLINGDEGREEDAYS:
+                reply = Double.valueOf(getCoolingdegreedays());
+                break;
+            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_HEATINGDEGREEDAYS:
+                reply = Double.valueOf(getHeatingdegreedays());
+                break;
+        }
 
         return reply;
     }

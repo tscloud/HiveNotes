@@ -225,6 +225,20 @@ public class WeatherHistoryDAO extends GraphableDAO {
         return cursorToWeatherHistory(cursor);
     }
 
+    public void createWeatherHistorySet(Set aDOSet) {
+        // do multiple insertions under transaction
+        try {
+            mDatabase.beginTransaction();
+            for (WeatherHistory w : aDOSet) {
+                createWeatherHistory(w);
+            }
+            mDatabase.setTransactionSuccessful();
+        }
+        finally {
+            mDatabase.endTransaction();
+        }
+    }
+
     protected WeatherHistory cursorToWeatherHistory(Cursor cursor) {
         WeatherHistory weatherHistory = new WeatherHistory();
         weatherHistory.setId(cursor.getLong(0));

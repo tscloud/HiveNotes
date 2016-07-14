@@ -110,18 +110,33 @@ public class GraphDisplayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_graph_display, container, false);
+        final View v = inflater.inflate(R.layout.fragment_graph_display, container, false);
+
+        // Set up the title(s)
+        final TextView textTitle = (TextView)v.findViewById(R.id.textTitle);
 
         // Cycle thru our list of GraphableData
         for (GraphableData data : mGraphList) {
             Log.d(TAG, "about to start RetrieveDataTask AsyncTask");
+
+            // Set up the title(s)
+            if ((textTitle.getText() == null) || (textTitle.getText().isEmpty())) {
+                textTitle.setText(data.getPrettyName());
+            }
+            else {
+                String newText = textTitle.getText() + "/" + data.getPrettyName();
+                textTitle.setText(newText);
+            }
+
             RetrieveDataTask mTask = new RetrieveDataTask(getActivity(), data, mStartDate,
                     mEndDate, v);
             // don't forget to set the reference to myself
             mTask.setTaskRef(mTask);
             mTaskList.add(mTask);
-            //mTask.execute();
-            mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            // Could execute on multiple threads but if doing WeatherHistory =>
+            //  we don't want them making redundant calls
+            mTask.execute();
+            //mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
         return v;
@@ -238,34 +253,56 @@ public class GraphDisplayFragment extends Fragment {
         private DataPoint[] doWeatherHistory(GraphableData aData, long aApiary,
                                            long aStartDate, long aEndDate) {
             Log.d(TAG, "RetrieveDataTask : doWeatherHistory()");
-            // Get weather history - may need to read the Apiary to get location data
-            //  may have to read multiple times, may not have to read if we already have the data
-            //  we need
 
-            // read WeatherHistory table to get the data we do have
+            /** read WeatherHistory table to get the data we have
+             */
             GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
             TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
                     aStartDate, aEndDate, aApiary);
 
-            // determine where the gaps are
-            //TODO: need to check if aEndDate is in included in the keyset returned by DB read
-            for (long k : daoReply.keySet()) {
-                long nextKey = daoReply.higherKey(k);
-                //determine how many days b/w present key & the next key
+            /** determine where the gaps are
+             */
+
+            /** RESTRICT total # of service calls/session **/
+            int GOV_THRESH = 30;
+            int callCount = 0;
+
+            //list of WeatherHistory DOs that we will be persisting later
+            ArrayList<WeatherHistory> listWeatherHistory = new ArrayList<>();
+
+            //need to make a new set of keys to iterate over as we may need to:
+            // 1) add new key (date) that corresponds w/ aEndDate
+            // 2) modify the underlying TreeMap w/ new entries
+            TreeSet newKeySet = new TreeSet(daoReply.navigableKeySet());
+            if (TimeUnit.MILLISECONDS.toDays(aEndDate) > TimeUnit.MILLISECONDS.toDays(newKeySet.last())){
+                newKeySet.add(aEndDate);
+            }
+
+            //iterate over all but last element in set
+            Outer:
+            for (long k : newKeySet.headSet(newKeySet.last())) {
+                long nextKey = newKeySet.higher(k);
+                //determine how many days b/w present key & next key
                 long diffDays = TimeUnit.MILLISECONDS.toDays(nextKey) - TimeUnit.MILLISECONDS.toDays(k);
-                //list of WeatherHistory DOs that we will be persisting later
-                ArrayList<WeatherHistory> listWeatherHistory = new ArrayList<>();
                 //for every "gap day"...
+                Inner:
                 for (int i = 0; i < diffDays; i++) {
                     //for every day we do not have WeatherHistory -> call weather service
-                    long reqDate = k + TimeUnit.DAYS.toMillis(i);
+                    long reqDate = k + TimeUnit.DAYS.toMillis(i+1);
                     WeatherHistory newWeatherHistory = getWeatherHistoryForDay(reqDate);
+                    callCount++;
+                    //check to see if we have exceeded our call count
+                    if (callCount > GOV_THRESH) { break Outer; }
                     //add the result to the list
                     listWeatherHistory.add(newWeatherHistory);
                     //update data to be graphed
                     daoReply.put(reqDate, newWeatherHistory.getCol(aData.getColumn()));
                 }
             }
+
+            //persist any new WeatherHistory
+            myDAO.createWeatherHistorySet(listWeatherHistory);
+            myDAO.close();
 
             return makePointArray(daoReply);
         }
@@ -308,6 +345,7 @@ public class GraphDisplayFragment extends Fragment {
             GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
             TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
                     aStartDate, aEndDate, aApiary);
+            myDAO.close();
 
             return makePointArray(daoReply);
         }
