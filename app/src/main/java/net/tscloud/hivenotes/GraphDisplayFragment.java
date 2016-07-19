@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
@@ -22,14 +23,19 @@ import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.db.GraphableDAO;
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.WeatherHistory;
+import net.tscloud.hivenotes.db.WeatherHistoryDAO;
 import net.tscloud.hivenotes.helper.HiveWeather;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 
@@ -120,7 +126,7 @@ public class GraphDisplayFragment extends Fragment {
             Log.d(TAG, "about to start RetrieveDataTask AsyncTask");
 
             // Set up the title(s)
-            if ((textTitle.getText() == null) || (textTitle.getText().isEmpty())) {
+            if ((textTitle.getText() == null) || (textTitle.getText().length() == 0)) {
                 textTitle.setText(data.getPrettyName());
             }
             else {
@@ -217,13 +223,13 @@ public class GraphDisplayFragment extends Fragment {
             // Determine the "type" of data we need to gather
             if (data.getDirective().equals("WeatherHistory")) {
                 // need to take special action w/ WeatherHistory
-                pointSet = doWeatherHistory(data, mApiaryId, startDate ,endDate);
+                pointSet = doWeatherHistory(data, mApiaryId, startDate, endDate);
             }
             else if (!data.getDirective().equals("N/A")) {
                 pointSet = doStandardDirective(data, mApiaryId, mHiveId, startDate ,endDate);
             }
             else {
-                pointSet = doSpecialDirective(data, mApiaryId, mHiveId, startDate ,endDate);
+                pointSet = doSpecialDirective(data, mApiaryId, mHiveId, startDate, endDate);
             }
 
             return pointSet;
@@ -254,11 +260,19 @@ public class GraphDisplayFragment extends Fragment {
                                            long aStartDate, long aEndDate) {
             Log.d(TAG, "RetrieveDataTask : doWeatherHistory()");
 
+            //--TESTING
+            DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault());
+
+            //--TESTING
+            Log.d(TAG, "aStartDate: " + formatter.format(new Date(aStartDate)) + " : " + aStartDate);
+            Log.d(TAG, "aEndDate: " + formatter.format(new Date(aEndDate)) + " : " + aEndDate);
+
             /** read WeatherHistory table to get the data we have
              */
-            GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
+            WeatherHistoryDAO myDAO = (WeatherHistoryDAO)GraphableDAO.getGraphableDAO(aData, ctx);
             TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
                     aStartDate, aEndDate, aApiary);
+            myDAO.close();
 
             /** determine where the gaps are
              */
@@ -271,11 +285,33 @@ public class GraphDisplayFragment extends Fragment {
             ArrayList<WeatherHistory> listWeatherHistory = new ArrayList<>();
 
             //need to make a new set of keys to iterate over as we may need to:
-            // 1) add new key (date) that corresponds w/ aEndDate
+            // 1) add new keys (dates) that correspond w/ aEndDate and/or aStartDate
             // 2) modify the underlying TreeMap w/ new entries
-            TreeSet newKeySet = new TreeSet(daoReply.navigableKeySet());
-            if (TimeUnit.MILLISECONDS.toDays(aEndDate) > TimeUnit.MILLISECONDS.toDays(newKeySet.last())){
+            TreeSet<Long> newKeySet = new TreeSet(daoReply.navigableKeySet());
+
+            //--TESTING
+            Log.d(TAG, "newKeySet before start/end time append");
+            for (Long l : newKeySet) {
+                Log.d(TAG, "---: " + formatter.format(new Date(l)) + " : " + l);
+            }
+
+            if (newKeySet.isEmpty()) {
+                newKeySet.add(aStartDate);
                 newKeySet.add(aEndDate);
+            }
+            else {
+                if (TimeUnit.MILLISECONDS.toDays(aStartDate) < TimeUnit.MILLISECONDS.toDays(newKeySet.first())){
+                    newKeySet.add(aStartDate);
+                }
+                if (TimeUnit.MILLISECONDS.toDays(aEndDate) > TimeUnit.MILLISECONDS.toDays(newKeySet.last())){
+                    newKeySet.add(aEndDate);
+                }
+            }
+
+            //--TESTING
+            Log.d(TAG, "newKeySet after start/end time append");
+            for (long l : newKeySet) {
+                Log.d(TAG, "---: " + formatter.format(new Date(l)) + " : " + l);
             }
 
             //iterate over all but last element in set
@@ -284,12 +320,18 @@ public class GraphDisplayFragment extends Fragment {
                 long nextKey = newKeySet.higher(k);
                 //determine how many days b/w present key & next key
                 long diffDays = TimeUnit.MILLISECONDS.toDays(nextKey) - TimeUnit.MILLISECONDS.toDays(k);
+                //--TESTING
+                Log.d(TAG, "diffDays: " + diffDays);
                 //for every "gap day"...
                 Inner:
                 for (int i = 0; i < diffDays; i++) {
                     //for every day we do not have WeatherHistory -> call weather service
                     long reqDate = k + TimeUnit.DAYS.toMillis(i+1);
+                    //--TESTING
+                    Log.d(TAG, "reqDate: " + formatter.format(new Date(reqDate)) + " : " + reqDate);
                     WeatherHistory newWeatherHistory = getWeatherHistoryForDay(reqDate);
+                    //don't forget to set the apiary
+                    newWeatherHistory.setApiary(aApiary);
                     callCount++;
                     //check to see if we have exceeded our call count
                     if (callCount > GOV_THRESH) { break Outer; }
@@ -301,6 +343,8 @@ public class GraphDisplayFragment extends Fragment {
             }
 
             //persist any new WeatherHistory
+            myDAO = new WeatherHistoryDAO(ctx);
+            //myDAO.open();
             myDAO.createWeatherHistorySet(listWeatherHistory);
             myDAO.close();
 
@@ -384,13 +428,20 @@ public class GraphDisplayFragment extends Fragment {
             graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(ctx));
             graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
+            /**/
             // set manual x bounds to have nice steps
-            graph.getViewport().setMinX(aPoints[0].getX());
-            graph.getViewport().setMaxX(aPoints[aPoints.length-1].getX());
-            graph.getViewport().setXAxisBoundsManual(true);
+            if (aPoints.length != 0) {
+                graph.getViewport().setMinX(aPoints[0].getX());
+                graph.getViewport().setMaxX(aPoints[aPoints.length - 1].getX());
+                graph.getViewport().setXAxisBoundsManual(true);
+
+                // ** via docs
+                graph.getViewport().setScrollable(true);
+            }
+            /**/
 
             // as we use dates as labels, the human rounding to nice readable numbers
-            // is not nessecary
+            // is not necessary
             graph.getGridLabelRenderer().setHumanRounding(false);
         }
     }

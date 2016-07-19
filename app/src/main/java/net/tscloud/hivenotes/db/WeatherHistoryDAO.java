@@ -7,6 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 /**
  * Created by tscloud on 6/25/16.
  */
@@ -16,7 +19,7 @@ public class WeatherHistoryDAO extends GraphableDAO {
     // Database table columns
     // columns of the WeatherHistory table
     public static final String TABLE_WEATHERHISTORY = "WeatherHistory";
-    public static final String COLUMN_WEATHERHISTORY_ID = "id";
+    public static final String COLUMN_WEATHERHISTORY_ID = "_id";
     public static final String COLUMN_WEATHERHISTORY_APIARY = "apiary";
     public static final String COLUMN_WEATHERHISTORY_SNAPSHOT_DATE = "snapshot_date";
     public static final String COLUMN_WEATHERHISTORY_FOG = "fog";
@@ -225,17 +228,10 @@ public class WeatherHistoryDAO extends GraphableDAO {
         return cursorToWeatherHistory(cursor);
     }
 
-    public void createWeatherHistorySet(Set aDOSet) {
-        // do multiple insertions under transaction
-        try {
-            mDatabase.beginTransaction();
-            for (WeatherHistory w : aDOSet) {
-                createWeatherHistory(w);
-            }
-            mDatabase.setTransactionSuccessful();
-        }
-        finally {
-            mDatabase.endTransaction();
+    public void createWeatherHistorySet(ArrayList<WeatherHistory> aDOSet) {
+        // do multiple insertions under transaction - or not
+        for (WeatherHistory w : aDOSet) {
+            createWeatherHistory(w);
         }
     }
 
