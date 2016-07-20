@@ -329,16 +329,11 @@ public class GraphDisplayFragment extends Fragment {
                     long reqDate = k + TimeUnit.DAYS.toMillis(i+1);
                     //--TESTING
                     Log.d(TAG, "reqDate: " + formatter.format(new Date(reqDate)) + " : " + reqDate);
-                    WeatherHistory newWeatherHistory = getWeatherHistoryForDay(reqDate);
-                    //don't forget to set the apiary
-                    newWeatherHistory.setApiary(aApiary);
-                    callCount++;
+                    //call the wether service & set all necessary stuff
+                    callCount = performWeatherHistory(reqDate, aApiary, callCount,
+                        listWeatherHistory, daoReply, aData);
                     //check to see if we have exceeded our call count
                     if (callCount > GOV_THRESH) { break Outer; }
-                    //add the result to the list
-                    listWeatherHistory.add(newWeatherHistory);
-                    //update data to be graphed
-                    daoReply.put(reqDate, newWeatherHistory.getCol(aData.getColumn()));
                 }
             }
 
@@ -349,6 +344,24 @@ public class GraphDisplayFragment extends Fragment {
             myDAO.close();
 
             return makePointArray(daoReply);
+        }
+
+        private int performWeatherHistory(long aDate, long aApiary, int aCallCount,
+            ArrayList<WeatherHistory> aListWeatherHistory, TreeMap<Long,
+            Double> aDaoReply, GraphableData aGraphableData) {
+            Log.d(TAG, "RetrieveDataTask : performWeatherHistory()");
+
+            //call the weather service
+            WeatherHistory newWeatherHistory = getWeatherHistoryForDay(aDate);
+            //set the apiary
+            newWeatherHistory.setApiary(aApiary);
+            aCallCount++;
+            //add the result to the list
+            aListWeatherHistory.add(newWeatherHistory);
+            //update data to be graphed
+            aDaoReply.put(aDate, newWeatherHistory.getCol(aGraphableData.getColumn()));
+
+            return aCallCount;
         }
 
         private WeatherHistory getWeatherHistoryForDay(long aDate) {
@@ -429,14 +442,14 @@ public class GraphDisplayFragment extends Fragment {
             graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
             /**/
-            // set manual x bounds to have nice steps
             if (aPoints.length != 0) {
+                // set manual x bounds
                 graph.getViewport().setMinX(aPoints[0].getX());
                 graph.getViewport().setMaxX(aPoints[aPoints.length - 1].getX());
                 graph.getViewport().setXAxisBoundsManual(true);
 
-                // ** via docs
-                graph.getViewport().setScrollable(true);
+                // set scrollable viewport
+                //graph.getViewport().setScrollable(true);
             }
             /**/
 
