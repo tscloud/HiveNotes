@@ -298,13 +298,25 @@ public class GraphDisplayFragment extends Fragment {
             if (newKeySet.isEmpty()) {
                 newKeySet.add(aStartDate);
                 newKeySet.add(aEndDate);
+                //retrieve data for new dates
+                callCount = performWeatherHistory(aStartDate, aApiary, callCount,
+                        listWeatherHistory, daoReply, aData);
+                callCount = performWeatherHistory(aEndDate, aApiary, callCount,
+                        listWeatherHistory, daoReply, aData);
+
             }
             else {
                 if (TimeUnit.MILLISECONDS.toDays(aStartDate) < TimeUnit.MILLISECONDS.toDays(newKeySet.first())){
                     newKeySet.add(aStartDate);
+                    //retrieve data for new dates
+                    callCount = performWeatherHistory(aStartDate, aApiary, callCount,
+                            listWeatherHistory, daoReply, aData);
                 }
                 if (TimeUnit.MILLISECONDS.toDays(aEndDate) > TimeUnit.MILLISECONDS.toDays(newKeySet.last())){
                     newKeySet.add(aEndDate);
+                    //retrieve data for new dates
+                    callCount = performWeatherHistory(aEndDate, aApiary, callCount,
+                            listWeatherHistory, daoReply, aData);
                 }
             }
 
