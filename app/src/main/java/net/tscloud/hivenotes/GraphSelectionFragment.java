@@ -61,7 +61,7 @@ public class GraphSelectionFragment extends Fragment {
     // stack of Spinners used to know which to add after as well as to have
     //  reference to newly added
     //private int mAddAfterThisSpinner;
-    private Stack<Integer> mSpinnerIdStack = new Stack<>();
+    private Deque<Integer> mSpinnerIdStack = new ArrayDeque<>();
 
     // task references - needed to kill tasks on Activity Destroy
     private GetGraphableData mTask = null;
@@ -119,7 +119,7 @@ public class GraphSelectionFragment extends Fragment {
         btnSelector1.setEnabled(false);
 
         // push the 1st Spinner onto our save stack
-        mSpinnerIdStack.push(R.id.selector1);
+        mSpinnerIdStack.addFirst(R.id.selector1);
 
         /**
          * Listeners
@@ -226,12 +226,12 @@ public class GraphSelectionFragment extends Fragment {
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.BELOW, mSpinnerIdStack.peek());
+        params.addRule(RelativeLayout.BELOW, mSpinnerIdStack.peekFirst());
 
         rl.addView(newSel, params);
 
         // set the new spinner after
-        mSpinnerIdStack.push(newSel.getId());
+        mSpinnerIdStack.addFirst(newSel.getId());
     }
 
     /**
@@ -286,8 +286,8 @@ public class GraphSelectionFragment extends Fragment {
         // if the pretty name of the GraphableData matchs the Spinner's
         //  selected item String => save off the GraphableData to send
         //  back to the Actvity
-        for ( ; !mSpinnerIdStack.empty(); ) {
-            View v = getView().findViewById(mSpinnerIdStack.pop());
+        for ( ; !mSpinnerIdStack.isEmpty(); ) {
+            View v = getView().findViewById(mSpinnerIdStack.removeFirst());
             Spinner s = (Spinner)v.findViewById(R.id.spinnerSelection);
             for (GraphableData g : mGraphableDataList) {
                 if (g.getPrettyName().equals(s.getSelectedItem().toString())) {
