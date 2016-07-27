@@ -173,7 +173,6 @@ public class GraphDisplayFragment extends Fragment {
             }
         }
 
-
         super.onDestroy();
     }
 
@@ -331,7 +330,9 @@ public class GraphDisplayFragment extends Fragment {
             for (long k : newKeySet.headSet(newKeySet.last())) {
                 long nextKey = newKeySet.higher(k);
                 //determine how many days b/w present key & next key
-                long diffDays = TimeUnit.MILLISECONDS.toDays(nextKey) - TimeUnit.MILLISECONDS.toDays(k);
+                // but subtract 1 as we do not to get data for the greater value again
+                long diffDays = (TimeUnit.MILLISECONDS.toDays(nextKey) -
+                        TimeUnit.MILLISECONDS.toDays(k)) - 1;
                 //--TESTING
                 Log.d(TAG, "diffDays: " + diffDays);
                 //for every "gap day"...
@@ -341,7 +342,7 @@ public class GraphDisplayFragment extends Fragment {
                     long reqDate = k + TimeUnit.DAYS.toMillis(i+1);
                     //--TESTING
                     Log.d(TAG, "reqDate: " + formatter.format(new Date(reqDate)) + " : " + reqDate);
-                    //call the wether service & set all necessary stuff
+                    //call the weather service & set all necessary stuff
                     callCount = performWeatherHistory(reqDate, aApiary, callCount,
                         listWeatherHistory, daoReply, aData);
                     //check to see if we have exceeded our call count
@@ -359,8 +360,9 @@ public class GraphDisplayFragment extends Fragment {
         }
 
         private int performWeatherHistory(long aDate, long aApiary, int aCallCount,
-            ArrayList<WeatherHistory> aListWeatherHistory, TreeMap<Long,
-            Double> aDaoReply, GraphableData aGraphableData) {
+                                          ArrayList<WeatherHistory> aListWeatherHistory,
+                                          TreeMap<Long, Double> aDaoReply,
+                                          GraphableData aGraphableData) {
             Log.d(TAG, "RetrieveDataTask : performWeatherHistory()");
 
             //call the weather service

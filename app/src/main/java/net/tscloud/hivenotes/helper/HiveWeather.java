@@ -138,7 +138,7 @@ public class HiveWeather {
 
         // convert date
         Date date = new Date(aDate);
-        DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+        DateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
         String newDate = formatter.format(date);
 
         // Make the wunderground call to get weather stations - get JSON back
