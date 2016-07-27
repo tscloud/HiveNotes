@@ -67,6 +67,8 @@ public abstract class GraphableDAO extends AbstactDAO {
      */
     protected Double scourToDouble(String aCol, Cursor aCur) throws SQLException {
         Double reply = null;
+        // For rounding
+        int PLACES = 2;
 
         try {
             // What we're interested in will always be at pos 1
@@ -74,13 +76,16 @@ public abstract class GraphableDAO extends AbstactDAO {
                 reply = processSpecialCol(aCur);
             }
             else if (aCur.getType(1) == Cursor.FIELD_TYPE_STRING) {
-                reply = Double.valueOf(aCur.getString(1));
+                reply = new BigDecimal(Double.valueOf(aCur.getString(1)))
+                    .setScale(PLACES, RoundingMode.HALF_UP).doubleValue();
             }
             else if (aCur.getType(1) == Cursor.FIELD_TYPE_FLOAT) {
-                reply = Double.valueOf(aCur.getFloat(1));
+                reply = new BigDecimal(Double.valueOf(aCur.getFloat(1)))
+                    .setScale(PLACES, RoundingMode.HALF_UP).doubleValue();
             }
             else if (aCur.getType(1) == Cursor.FIELD_TYPE_INTEGER) {
-                reply = Double.valueOf(aCur.getInt(1));
+                reply = new BigDecimal(Double.valueOf(aCur.getInt(1)))
+                    .setScale(PLACES, RoundingMode.HALF_UP).doubleValue();
             }
             else {
                 // col not found - weird?

@@ -431,6 +431,7 @@ public class GraphDisplayFragment extends Fragment {
 
         private DataPoint[] makePointArray(TreeMap<Long, Double> in) {
             Log.d(TAG, "RetrieveDataTask : makePointArray()");
+
             DataPoint[] out = new DataPoint[in.size()];
 
             int i = 0;
@@ -444,7 +445,8 @@ public class GraphDisplayFragment extends Fragment {
 
         private void doGraph(DataPoint[] aPoints) {
             Log.d(TAG, "RetrieveDataTask : doGraph()");
-            GraphView graph = (GraphView) view.findViewById(R.id.graph);
+
+            GraphView graph = (GraphView)view.findViewById(R.id.graph);
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
 
             series.setDrawDataPoints(true);
