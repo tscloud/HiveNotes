@@ -1,6 +1,9 @@
 package net.tscloud.hivenotes.db;
 
-import java.util.HashMap;
+import android.util.Log;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Created by tscloud on 6/25/16.
@@ -12,27 +15,27 @@ public class WeatherHistory {
     private long id;
     private long apiary;
     private long snapshot_date;
-    private long fog;
-    private long rain;
-    private long snow;
-    private long thunder;
-    private long hail;
-    private long maxtempi;
-    private long mintempi;
-    private long maxdewpti;
-    private long mindewpti;
-    private float maxpressurei;
-    private float minpressurei;
-    private long maxwspdi;
-    private long minwspdi;
-    private long meanwdird;
-    private long maxhumidity;
-    private long minhumidity;
-    private float maxvisi;
-    private float minvisi;
-    private float precipi;
-    private long coolingdegreedays;
-    private long heatingdegreedays;
+    private String fog;
+    private String rain;
+    private String snow;
+    private String thunder;
+    private String hail;
+    private String maxtempi;
+    private String mintempi;
+    private String maxdewpti;
+    private String mindewpti;
+    private String maxpressurei;
+    private String minpressurei;
+    private String maxwspdi;
+    private String minwspdi;
+    private String meanwdird;
+    private String maxhumidity;
+    private String minhumidity;
+    private String maxvisi;
+    private String minvisi;
+    private String precipi;
+    private String coolingdegreedays;
+    private String heatingdegreedays;
 
     public long getApiary() {
         return apiary;
@@ -42,35 +45,35 @@ public class WeatherHistory {
         this.apiary = apiary;
     }
 
-    public long getCoolingdegreedays() {
+    public String getCoolingdegreedays() {
         return coolingdegreedays;
     }
 
-    public void setCoolingdegreedays(long coolingdegreedays) {
+    public void setCoolingdegreedays(String coolingdegreedays) {
         this.coolingdegreedays = coolingdegreedays;
     }
 
-    public long getFog() {
+    public String getFog() {
         return fog;
     }
 
-    public void setFog(long fog) {
+    public void setFog(String fog) {
         this.fog = fog;
     }
 
-    public long getHail() {
+    public String getHail() {
         return hail;
     }
 
-    public void setHail(long hail) {
+    public void setHail(String hail) {
         this.hail = hail;
     }
 
-    public long getHeatingdegreedays() {
+    public String getHeatingdegreedays() {
         return heatingdegreedays;
     }
 
-    public void setHeatingdegreedays(long heatingdegreedays) {
+    public void setHeatingdegreedays(String heatingdegreedays) {
         this.heatingdegreedays = heatingdegreedays;
     }
 
@@ -82,123 +85,123 @@ public class WeatherHistory {
         this.id = id;
     }
 
-    public long getMaxdewpti() {
+    public String getMaxdewpti() {
         return maxdewpti;
     }
 
-    public void setMaxdewpti(long maxdewpti) {
+    public void setMaxdewpti(String maxdewpti) {
         this.maxdewpti = maxdewpti;
     }
 
-    public long getMaxhumidity() {
+    public String getMaxhumidity() {
         return maxhumidity;
     }
 
-    public void setMaxhumidity(long maxhumidity) {
+    public void setMaxhumidity(String maxhumidity) {
         this.maxhumidity = maxhumidity;
     }
 
-    public float getMaxpressurei() {
+    public String getMaxpressurei() {
         return maxpressurei;
     }
 
-    public void setMaxpressurei(float maxpressurei) {
+    public void setMaxpressurei(String maxpressurei) {
         this.maxpressurei = maxpressurei;
     }
 
-    public long getMaxtempi() {
+    public String getMaxtempi() {
         return maxtempi;
     }
 
-    public void setMaxtempi(long maxtempi) {
+    public void setMaxtempi(String maxtempi) {
         this.maxtempi = maxtempi;
     }
 
-    public float getMaxvisi() {
+    public String getMaxvisi() {
         return maxvisi;
     }
 
-    public void setMaxvisi(float maxvisi) {
+    public void setMaxvisi(String maxvisi) {
         this.maxvisi = maxvisi;
     }
 
-    public long getMaxwspdi() {
+    public String getMaxwspdi() {
         return maxwspdi;
     }
 
-    public void setMaxwspdi(long maxwspdi) {
+    public void setMaxwspdi(String maxwspdi) {
         this.maxwspdi = maxwspdi;
     }
 
-    public long getMeanwdird() {
+    public String getMeanwdird() {
         return meanwdird;
     }
 
-    public void setMeanwdird(long meanwdird) {
+    public void setMeanwdird(String meanwdird) {
         this.meanwdird = meanwdird;
     }
 
-    public long getMindewpti() {
+    public String getMindewpti() {
         return mindewpti;
     }
 
-    public void setMindewpti(long mindewpti) {
+    public void setMindewpti(String mindewpti) {
         this.mindewpti = mindewpti;
     }
 
-    public long getMinhumidity() {
+    public String getMinhumidity() {
         return minhumidity;
     }
 
-    public void setMinhumidity(long minhumidity) {
+    public void setMinhumidity(String minhumidity) {
         this.minhumidity = minhumidity;
     }
 
-    public float getMinpressurei() {
+    public String getMinpressurei() {
         return minpressurei;
     }
 
-    public void setMinpressurei(float minpressurei) {
+    public void setMinpressurei(String minpressurei) {
         this.minpressurei = minpressurei;
     }
 
-    public long getMintempi() {
+    public String getMintempi() {
         return mintempi;
     }
 
-    public void setMintempi(long mintempi) {
+    public void setMintempi(String mintempi) {
         this.mintempi = mintempi;
     }
 
-    public float getMinvisi() {
+    public String getMinvisi() {
         return minvisi;
     }
 
-    public void setMinvisi(float minvisi) {
+    public void setMinvisi(String minvisi) {
         this.minvisi = minvisi;
     }
 
-    public long getMinwspdi() {
+    public String getMinwspdi() {
         return minwspdi;
     }
 
-    public void setMinwspdi(long minwspdi) {
+    public void setMinwspdi(String minwspdi) {
         this.minwspdi = minwspdi;
     }
 
-    public float getPrecipi() {
+    public String getPrecipi() {
         return precipi;
     }
 
-    public void setPrecipi(float precipi) {
+    public void setPrecipi(String precipi) {
         this.precipi = precipi;
     }
 
-    public long getRain() {
+    public String getRain() {
         return rain;
     }
 
-    public void setRain(long rain) {
+    public void setRain(String rain) {
         this.rain = rain;
     }
 
@@ -210,19 +213,19 @@ public class WeatherHistory {
         this.snapshot_date = snapshot_date;
     }
 
-    public long getSnow() {
+    public String getSnow() {
         return snow;
     }
 
-    public void setSnow(long snow) {
+    public void setSnow(String snow) {
         this.snow = snow;
     }
 
-    public long getThunder() {
+    public String getThunder() {
         return thunder;
     }
 
-    public void setThunder(long thunder) {
+    public void setThunder(String thunder) {
         this.thunder = thunder;
     }
 
@@ -232,71 +235,84 @@ public class WeatherHistory {
     //make a big case statement <- crappy
     public Double getCol(String aColName) {
         Double reply = null;
+        // For rounding
+        int PLACES = 2;
 
-        switch (aColName) {
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_FOG:
-                reply = Double.valueOf(getFog());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_RAIN:
-                reply = Double.valueOf(getRain());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_SNOW:
-                reply = Double.valueOf(getSnow());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_THUNDER:
-                reply = Double.valueOf(getThunder());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_HAIL:
-                reply = Double.valueOf(getHail());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXTEMPI:
-                reply = Double.valueOf(getMaxtempi());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINTEMPI:
-                reply = Double.valueOf(getMintempi());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXDEWPTI:
-                reply = Double.valueOf(getMaxdewpti());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINDEWPTI:
-                reply = Double.valueOf(getMindewpti());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXPRESSUREI:
-                reply = Double.valueOf(getMaxpressurei());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINPRESSUREI:
-                reply = Double.valueOf(getMinpressurei());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXWSPDI:
-                reply = Double.valueOf(getMaxwspdi());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINWSPDI:
-                reply = Double.valueOf(getMinwspdi());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MEANWDIRD:
-                reply = Double.valueOf(getMeanwdird());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXHUMIDITY:
-                reply = Double.valueOf(getMaxhumidity());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINHUMIDITY:
-                reply = Double.valueOf(getMinhumidity());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXVISI:
-                reply = Double.valueOf(getMaxvisi());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINVISI:
-                reply = Double.valueOf(getMinvisi());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_PRECIPI:
-                reply = Double.valueOf(getPrecipi());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_COOLINGDEGREEDAYS:
-                reply = Double.valueOf(getCoolingdegreedays());
-                break;
-            case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_HEATINGDEGREEDAYS:
-                reply = Double.valueOf(getHeatingdegreedays());
-                break;
+        try {
+            switch (aColName) {
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_FOG:
+                    reply = Double.valueOf(getFog());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_RAIN:
+                    reply = Double.valueOf(getRain());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_SNOW:
+                    reply = Double.valueOf(getSnow());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_THUNDER:
+                    reply = Double.valueOf(getThunder());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_HAIL:
+                    reply = Double.valueOf(getHail());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXTEMPI:
+                    reply = Double.valueOf(getMaxtempi());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINTEMPI:
+                    reply = Double.valueOf(getMintempi());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXDEWPTI:
+                    reply = Double.valueOf(getMaxdewpti());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINDEWPTI:
+                    reply = Double.valueOf(getMindewpti());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXPRESSUREI:
+                    reply = Double.valueOf(getMaxpressurei());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINPRESSUREI:
+                    reply = Double.valueOf(getMinpressurei());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXWSPDI:
+                    reply = Double.valueOf(getMaxwspdi());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINWSPDI:
+                    reply = Double.valueOf(getMinwspdi());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MEANWDIRD:
+                    reply = Double.valueOf(getMeanwdird());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXHUMIDITY:
+                    reply = Double.valueOf(getMaxhumidity());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINHUMIDITY:
+                    reply = Double.valueOf(getMinhumidity());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MAXVISI:
+                    reply = Double.valueOf(getMaxvisi());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_MINVISI:
+                    reply = Double.valueOf(getMinvisi());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_PRECIPI:
+                    reply = Double.valueOf(getPrecipi());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_COOLINGDEGREEDAYS:
+                    reply = Double.valueOf(getCoolingdegreedays());
+                    break;
+                case WeatherHistoryDAO.COLUMN_WEATHERHISTORY_HEATINGDEGREEDAYS:
+                    reply = Double.valueOf(getHeatingdegreedays());
+                    break;
+            }
+
+            //round please: needed for graphing
+            if (reply != null) {
+                reply = new BigDecimal(reply).setScale(PLACES, RoundingMode.HALF_UP).doubleValue();
+            }
+        }
+
+        catch (NumberFormatException e) {
+            Log.d(TAG, "Data trying to be returned from getCol() cannot be converted to Double");
         }
 
         return reply;

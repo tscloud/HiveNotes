@@ -10,18 +10,18 @@ public class Weather {
     private long id;
     private long apiary;
     private long snapshotDate;
-    private float temperature;
-    private float rainfall;
-    private float pressure;
+    private String temperature;
+    private String rainfall;
+    private String pressure;
     private String weather;
     private String windDirection;
-    private float windMPH;
+    private String windMPH;
     private String humidity;
-    private float dewPoint;
+    private String dewPoint;
     private String visibility;
     private String solarRadiation;
     private String uvIndex;
-    private float pollenCount;
+    private String pollenCount;
     private String pollution;
 
     public long getApiary() {
@@ -32,11 +32,11 @@ public class Weather {
         this.apiary = apiary;
     }
 
-    public float getDewPoint() {
+    public String getDewPoint() {
         return dewPoint;
     }
 
-    public void setDewPoint(float dewPoint) {
+    public void setDewPoint(String dewPoint) {
         this.dewPoint = dewPoint;
     }
 
@@ -48,11 +48,11 @@ public class Weather {
         this.humidity = humidity;
     }
 
-    public float getPressure() {
+    public String getPressure() {
         return pressure;
     }
 
-    public void setPressure(float pressure) {
+    public void setPressure(String pressure) {
         this.pressure = pressure;
     }
 
@@ -96,19 +96,19 @@ public class Weather {
         this.windDirection = windDirection;
     }
 
-    public float getWindMPH() {
+    public String getWindMPH() {
         return windMPH;
     }
 
-    public void setWindMPH(float windMPH) {
+    public void setWindMPH(String windMPH) {
         this.windMPH = windMPH;
     }
 
-    public float getTemperature() {
+    public String getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(float temperature) {
+    public void setTemperature(String temperature) {
         this.temperature = temperature;
     }
 
@@ -120,11 +120,11 @@ public class Weather {
         this.snapshotDate = snapshotDate;
     }
 
-    public float getRainfall() {
+    public String getRainfall() {
         return rainfall;
     }
 
-    public void setRainfall(float rainfall) {
+    public void setRainfall(String rainfall) {
         this.rainfall = rainfall;
     }
 
@@ -136,11 +136,11 @@ public class Weather {
         this.pollution = pollution;
     }
 
-    public float getPollenCount() {
+    public String getPollenCount() {
         return pollenCount;
     }
 
-    public void setPollenCount(float pollenCount) {
+    public void setPollenCount(String pollenCount) {
         this.pollenCount = pollenCount;
     }
 

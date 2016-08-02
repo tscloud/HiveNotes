@@ -3,12 +3,8 @@ package net.tscloud.hivenotes.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * Created by tscloud on 6/25/16.
@@ -93,13 +89,13 @@ public class WeatherHistoryDAO extends GraphableDAO {
 
     // --DB access methods--
 
-    public WeatherHistory createWeatherHistory(long apiary, long snapshot_date, long fog, long rain,
-                                               long snow, long thunder, long hail, long maxtempi,
-                                               long mintempi, long maxdewpti, long mindewpti,
-                                               float maxpressurei, float minpressurei, long maxwspdi,
-                                               long minwspdi, long meanwdird, long maxhumidity,
-                                               long minhumidity, float maxvisi, float minvisi,
-                                               float precipi, long coolingdegreedays, long heatingdegreedays) {
+    public WeatherHistory createWeatherHistory(long apiary, long snapshot_date, String fog, String rain,
+                                               String snow, String thunder, String hail, String maxtempi,
+                                               String mintempi, String maxdewpti, String mindewpti,
+                                               String maxpressurei, String minpressurei, String maxwspdi,
+                                               String minwspdi, String meanwdird, String maxhumidity,
+                                               String minhumidity, String maxvisi, String minvisi,
+                                               String precipi, String coolingdegreedays, String heatingdegreedays) {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEATHERHISTORY_APIARY, apiary);
@@ -149,14 +145,14 @@ public class WeatherHistoryDAO extends GraphableDAO {
                 aDO.getCoolingdegreedays(), aDO.getHeatingdegreedays());
     }
 
-    public WeatherHistory updateWeatherHistory(long id, long apiary, long snapshot_date, long fog,
-                                              long rain, long snow, long thunder, long hail,
-                                              long maxtempi, long mintempi, long maxdewpti,
-                                              long mindewpti, float maxpressurei, float minpressurei,
-                                              long maxwspdi, long minwspdi, long meanwdird,
-                                              long maxhumidity, long minhumidity, float maxvisi,
-                                              float minvisi, float precipi, long coolingdegreedays,
-                                              long heatingdegreedays) {
+    public WeatherHistory updateWeatherHistory(long id, long apiary, long snapshot_date, String fog,
+                                              String rain, String snow, String thunder, String hail,
+                                              String maxtempi, String mintempi, String maxdewpti,
+                                              String mindewpti, String maxpressurei, String minpressurei,
+                                              String maxwspdi, String minwspdi, String meanwdird,
+                                              String maxhumidity, String minhumidity, String maxvisi,
+                                              String minvisi, String precipi, String coolingdegreedays,
+                                              String heatingdegreedays) {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEATHERHISTORY_APIARY, apiary);
@@ -240,27 +236,27 @@ public class WeatherHistoryDAO extends GraphableDAO {
         weatherHistory.setId(cursor.getLong(0));
         weatherHistory.setApiary(cursor.getLong(1));
         weatherHistory.setSnapshot_date(cursor.getLong(2));
-        weatherHistory.setFog(cursor.getLong(3));
-        weatherHistory.setRain(cursor.getLong(4));
-        weatherHistory.setSnow(cursor.getLong(5));
-        weatherHistory.setThunder(cursor.getLong(6));
-        weatherHistory.setHail(cursor.getLong(7));
-        weatherHistory.setMaxtempi(cursor.getLong(8));
-        weatherHistory.setMintempi(cursor.getLong(9));
-        weatherHistory.setMaxdewpti(cursor.getLong(10));
-        weatherHistory.setMindewpti(cursor.getLong(11));
-        weatherHistory.setMaxpressurei(cursor.getFloat(12));
-        weatherHistory.setMinpressurei(cursor.getFloat(13));
-        weatherHistory.setMaxwspdi(cursor.getLong(14));
-        weatherHistory.setMinwspdi(cursor.getLong(15));
-        weatherHistory.setMeanwdird(cursor.getLong(16));
-        weatherHistory.setMaxhumidity(cursor.getLong(17));
-        weatherHistory.setMinhumidity(cursor.getLong(18));
-        weatherHistory.setMaxvisi(cursor.getLong(19));
-        weatherHistory.setMinvisi(cursor.getLong(20));
-        weatherHistory.setPrecipi(cursor.getFloat(21));
-        weatherHistory.setCoolingdegreedays(cursor.getLong(22));
-        weatherHistory.setHeatingdegreedays(cursor.getLong(23));
+        weatherHistory.setFog(cursor.getString(3));
+        weatherHistory.setRain(cursor.getString(4));
+        weatherHistory.setSnow(cursor.getString(5));
+        weatherHistory.setThunder(cursor.getString(6));
+        weatherHistory.setHail(cursor.getString(7));
+        weatherHistory.setMaxtempi(cursor.getString(8));
+        weatherHistory.setMintempi(cursor.getString(9));
+        weatherHistory.setMaxdewpti(cursor.getString(10));
+        weatherHistory.setMindewpti(cursor.getString(11));
+        weatherHistory.setMaxpressurei(cursor.getString(12));
+        weatherHistory.setMinpressurei(cursor.getString(13));
+        weatherHistory.setMaxwspdi(cursor.getString(14));
+        weatherHistory.setMinwspdi(cursor.getString(15));
+        weatherHistory.setMeanwdird(cursor.getString(16));
+        weatherHistory.setMaxhumidity(cursor.getString(17));
+        weatherHistory.setMinhumidity(cursor.getString(18));
+        weatherHistory.setMaxvisi(cursor.getString(19));
+        weatherHistory.setMinvisi(cursor.getString(20));
+        weatherHistory.setPrecipi(cursor.getString(21));
+        weatherHistory.setCoolingdegreedays(cursor.getString(22));
+        weatherHistory.setHeatingdegreedays(cursor.getString(23));
 
         return weatherHistory;
     }

@@ -1,5 +1,7 @@
 package net.tscloud.hivenotes.helper;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -25,5 +27,26 @@ public class HiveUtil {
                 return result;
             }
         }
+    }
+
+    /**
+     * Align given date to midnight by zeroing out all but date portion
+     */
+    public static long alignDateToMidnight(long aDate) {
+        //Need to set dates to midnight to grab all for any given day
+        long reply;
+
+        Date dateDateMN = new Date(aDate);
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(dateDateMN);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        reply = cal.getTimeInMillis();
+
+        return reply;
     }
 }

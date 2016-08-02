@@ -38,11 +38,11 @@ public class HivePollen {
         return HivePollen.pollenMap.entrySet().iterator().next().getKey().toString();
     }
 
-    public float getPollenIndexToday()
+    public String getPollenIndexToday()
     {
-        float reply = 0;
+        String reply = null;
         try {
-            reply = Float.parseFloat(HivePollen.pollenMap.entrySet().iterator().next().getValue());
+            reply = HivePollen.pollenMap.entrySet().iterator().next().getValue();
         }
         catch (NumberFormatException e) {
             Log.e(TAG, "Pollen Index found cannot be coverted to float");

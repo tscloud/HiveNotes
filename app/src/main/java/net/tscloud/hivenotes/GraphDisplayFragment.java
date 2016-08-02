@@ -24,12 +24,14 @@ import net.tscloud.hivenotes.db.GraphableDAO;
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.WeatherHistory;
 import net.tscloud.hivenotes.db.WeatherHistoryDAO;
+import net.tscloud.hivenotes.helper.HiveUtil;
 import net.tscloud.hivenotes.helper.HiveWeather;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -266,11 +268,21 @@ public class GraphDisplayFragment extends Fragment {
             Log.d(TAG, "aStartDate: " + formatter.format(new Date(aStartDate)) + " : " + aStartDate);
             Log.d(TAG, "aEndDate: " + formatter.format(new Date(aEndDate)) + " : " + aEndDate);
 
+            //align dates to midnight
+            long startDateMN = HiveUtil.alignDateToMidnight(aStartDate);
+            long endDateMN = HiveUtil.alignDateToMidnight(aEndDate);
+
+            //--TESTING
+            Log.d(TAG, "startDateMN: " + formatter.format(new Date(startDateMN)) +
+                    " : " + startDateMN);
+            Log.d(TAG, "endDateMN: " + formatter.format(new Date(endDateMN)) +
+                    " : " + endDateMN);
+
             /** read WeatherHistory table to get the data we have
              */
             WeatherHistoryDAO myDAO = (WeatherHistoryDAO)GraphableDAO.getGraphableDAO(aData, ctx);
             TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
-                    aStartDate, aEndDate, aApiary);
+                    startDateMN, endDateMN, aApiary);
             myDAO.close();
 
             /** determine where the gaps are
@@ -284,7 +296,7 @@ public class GraphDisplayFragment extends Fragment {
             ArrayList<WeatherHistory> listWeatherHistory = new ArrayList<>();
 
             //need to make a new set of keys to iterate over as we may need to:
-            // 1) add new keys (dates) that correspond w/ aEndDate and/or aStartDate
+            // 1) add new keys (dates) that correspond w/ endDateMN and/or startDateMN
             // 2) modify the underlying TreeMap w/ new entries
             TreeSet<Long> newKeySet = new TreeSet(daoReply.navigableKeySet());
 
@@ -295,26 +307,27 @@ public class GraphDisplayFragment extends Fragment {
             }
 
             if (newKeySet.isEmpty()) {
-                newKeySet.add(aStartDate);
-                newKeySet.add(aEndDate);
-                //retrieve data for new dates
-                callCount = performWeatherHistory(aStartDate, aApiary, callCount,
+                //potentially add start/end dates & retrieve data
+                newKeySet.add(startDateMN);
+                callCount = performWeatherHistory(startDateMN, aApiary, callCount,
                         listWeatherHistory, daoReply, aData);
-                callCount = performWeatherHistory(aEndDate, aApiary, callCount,
-                        listWeatherHistory, daoReply, aData);
-
-            }
-            else {
-                if (TimeUnit.MILLISECONDS.toDays(aStartDate) < TimeUnit.MILLISECONDS.toDays(newKeySet.first())){
-                    newKeySet.add(aStartDate);
-                    //retrieve data for new dates
-                    callCount = performWeatherHistory(aStartDate, aApiary, callCount,
+                if (startDateMN != endDateMN) {
+                    newKeySet.add(endDateMN);
+                    callCount = performWeatherHistory(endDateMN, aApiary, callCount,
                             listWeatherHistory, daoReply, aData);
                 }
-                if (TimeUnit.MILLISECONDS.toDays(aEndDate) > TimeUnit.MILLISECONDS.toDays(newKeySet.last())){
-                    newKeySet.add(aEndDate);
+            }
+            else {
+                if (TimeUnit.MILLISECONDS.toDays(startDateMN) < TimeUnit.MILLISECONDS.toDays(newKeySet.first())){
+                    newKeySet.add(startDateMN);
                     //retrieve data for new dates
-                    callCount = performWeatherHistory(aEndDate, aApiary, callCount,
+                    callCount = performWeatherHistory(startDateMN, aApiary, callCount,
+                            listWeatherHistory, daoReply, aData);
+                }
+                if (TimeUnit.MILLISECONDS.toDays(endDateMN) > TimeUnit.MILLISECONDS.toDays(newKeySet.last())){
+                    newKeySet.add(endDateMN);
+                    //retrieve data for new dates
+                    callCount = performWeatherHistory(endDateMN, aApiary, callCount,
                             listWeatherHistory, daoReply, aData);
                 }
             }
@@ -326,17 +339,17 @@ public class GraphDisplayFragment extends Fragment {
             }
 
             //iterate over all but last element in set
-            Outer:
             for (long k : newKeySet.headSet(newKeySet.last())) {
+                //check to see if we have exceeded our call count
+                if (callCount > GOV_THRESH) { break; }
                 long nextKey = newKeySet.higher(k);
                 //determine how many days b/w present key & next key
-                // but subtract 1 as we do not to get data for the greater value again
+                // but subtract 1 as we do need not to get data for the greater value again
                 long diffDays = (TimeUnit.MILLISECONDS.toDays(nextKey) -
                         TimeUnit.MILLISECONDS.toDays(k)) - 1;
                 //--TESTING
                 Log.d(TAG, "diffDays: " + diffDays);
                 //for every "gap day"...
-                Inner:
                 for (int i = 0; i < diffDays; i++) {
                     //for every day we do not have WeatherHistory -> call weather service
                     long reqDate = k + TimeUnit.DAYS.toMillis(i+1);
@@ -345,8 +358,6 @@ public class GraphDisplayFragment extends Fragment {
                     //call the weather service & set all necessary stuff
                     callCount = performWeatherHistory(reqDate, aApiary, callCount,
                         listWeatherHistory, daoReply, aData);
-                    //check to see if we have exceeded our call count
-                    if (callCount > GOV_THRESH) { break Outer; }
                 }
             }
 
@@ -471,7 +482,7 @@ public class GraphDisplayFragment extends Fragment {
 
             // as we use dates as labels, the human rounding to nice readable numbers
             // is not necessary
-            graph.getGridLabelRenderer().setHumanRounding(false);
+            //graph.getGridLabelRenderer().setHumanRounding(false);
         }
     }
 

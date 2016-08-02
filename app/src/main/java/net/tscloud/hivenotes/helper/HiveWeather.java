@@ -74,17 +74,17 @@ public class HiveWeather {
         JSONObject jsonHead = queryCondition(aQuery);
         if (jsonHead != null) {
             reply.setSnapshotDate(System.currentTimeMillis());
-            reply.setTemperature((float)jsonHead.optDouble("temp_f", -1));
-            reply.setRainfall(Float.parseFloat(jsonHead.optString("precip_today_in", "-1")));
-            reply.setPressure(Float.parseFloat(jsonHead.optString("pressure_in", "-1")));
-            reply.setWeather(jsonHead.optString("weather", "weather conditions not available"));
-            reply.setWindDirection(jsonHead.optString("wind_dir", "wind direction not available"));
-            reply.setWindMPH((float)jsonHead.optDouble("wind_mph", -1));
-            reply.setHumidity(jsonHead.optString("relative_humidity", "humidity not available"));
-            reply.setDewPoint((float)jsonHead.optDouble("dewpoint_f", -1));
-            reply.setVisibility(jsonHead.optString("visibility_mi", "visibility not available"));
-            reply.setSolarRadiation(jsonHead.optString("solarradiation", "solar radiation not available"));
-            reply.setUvIndex(jsonHead.optString("UV", "UV index not available"));
+            reply.setTemperature(jsonHead.optString("temp_f", "-1"));
+            reply.setRainfall(jsonHead.optString("precip_today_in", "-1"));
+            reply.setPressure(jsonHead.optString("pressure_in", "-1"));
+            reply.setWeather(jsonHead.optString("weather", "-1"));
+            reply.setWindDirection(jsonHead.optString("wind_dir", "-1"));
+            reply.setWindMPH(jsonHead.optString("wind_mph", "-1"));
+            reply.setHumidity(jsonHead.optString("relative_humidity", "-1"));
+            reply.setDewPoint(jsonHead.optString("dewpoint_f", "-1"));
+            reply.setVisibility(jsonHead.optString("visibility_mi", "-1"));
+            reply.setSolarRadiation(jsonHead.optString("solarradiation", "-1"));
+            reply.setUvIndex(jsonHead.optString("UV", "-1"));
         }
 
         return reply;
@@ -145,27 +145,27 @@ public class HiveWeather {
         JSONObject jsonHead = queryHistory(aLoc, newDate);
         if (jsonHead != null) {
             reply.setSnapshot_date(aDate);
-            reply.setFog(Long.parseLong(jsonHead.optString("fog", "-1")));
-            reply.setRain(Long.parseLong(jsonHead.optString("rain", "-1")));
-            reply.setSnow(Long.parseLong(jsonHead.optString("snow", "-1")));
-            reply.setThunder(Long.parseLong(jsonHead.optString("thunder", "-1")));
-            reply.setHail(Long.parseLong(jsonHead.optString("hail", "-1")));
-            reply.setMaxtempi(Long.parseLong(jsonHead.optString("maxtempi", "-1")));
-            reply.setMintempi(Long.parseLong(jsonHead.optString("mintempi", "-1")));
-            reply.setMaxdewpti(Long.parseLong(jsonHead.optString("maxdewpti", "-1")));
-            reply.setMindewpti(Long.parseLong(jsonHead.optString("mindewpti", "-1")));
-            reply.setMaxpressurei(Float.parseFloat(jsonHead.optString("maxpressurei", "-1")));
-            reply.setMinpressurei(Float.parseFloat(jsonHead.optString("minpressurei", "-1")));
-            reply.setMaxwspdi(Long.parseLong(jsonHead.optString("maxwspdi", "-1")));
-            reply.setMinwspdi(Long.parseLong(jsonHead.optString("minwspdi", "-1")));
-            reply.setMeanwdird(Long.parseLong(jsonHead.optString("meanwdird", "-1")));
-            reply.setMaxhumidity(Long.parseLong(jsonHead.optString("maxhumidity", "-1")));
-            reply.setMinhumidity(Long.parseLong(jsonHead.optString("minhumidity", "-1")));
-            reply.setMaxvisi(Float.parseFloat(jsonHead.optString("maxvisi", "-1")));
-            reply.setMinvisi(Float.parseFloat(jsonHead.optString("minvisi", "-1")));
-            reply.setPrecipi(Float.parseFloat(jsonHead.optString("precipi", "-1")));
-            reply.setCoolingdegreedays(Long.parseLong(jsonHead.optString("coolingdegreedays", "-1")));
-            reply.setHeatingdegreedays(Long.parseLong(jsonHead.optString("heatingdegreedays", "-1")));
+            reply.setFog(jsonHead.optString("fog", "-1"));
+            reply.setRain(jsonHead.optString("rain", "-1"));
+            reply.setSnow(jsonHead.optString("snow", "-1"));
+            reply.setThunder(jsonHead.optString("thunder", "-1"));
+            reply.setHail(jsonHead.optString("hail", "-1"));
+            reply.setMaxtempi(jsonHead.optString("maxtempi", "-1"));
+            reply.setMintempi(jsonHead.optString("mintempi", "-1"));
+            reply.setMaxdewpti(jsonHead.optString("maxdewpti", "-1"));
+            reply.setMindewpti(jsonHead.optString("mindewpti", "-1"));
+            reply.setMaxpressurei(jsonHead.optString("maxpressurei", "-1"));
+            reply.setMinpressurei(jsonHead.optString("minpressurei", "-1"));
+            reply.setMaxwspdi(jsonHead.optString("maxwspdi", "-1"));
+            reply.setMinwspdi(jsonHead.optString("minwspdi", "-1"));
+            reply.setMeanwdird(jsonHead.optString("meanwdird", "-1"));
+            reply.setMaxhumidity(jsonHead.optString("maxhumidity", "-1"));
+            reply.setMinhumidity(jsonHead.optString("minhumidity", "-1"));
+            reply.setMaxvisi(jsonHead.optString("maxvisi", "-1"));
+            reply.setMinvisi(jsonHead.optString("minvisi", "-1"));
+            reply.setPrecipi(jsonHead.optString("precipi", "-1"));
+            reply.setCoolingdegreedays(jsonHead.optString("coolingdegreedays", "-1"));
+            reply.setHeatingdegreedays(jsonHead.optString("heatingdegreedays", "-1"));
         }
 
         return reply;
@@ -261,14 +261,14 @@ public class HiveWeather {
         }
 
         reply.setSnapshotDate(System.currentTimeMillis());
-        reply.setTemperature(Float.parseFloat(returnHash.get("temp_f")));
-        reply.setRainfall(Float.parseFloat(returnHash.get("precip_today_in")));
-        reply.setPressure(Float.parseFloat(returnHash.get("pressure_in")));
+        reply.setTemperature(returnHash.get("temp_f"));
+        reply.setRainfall(returnHash.get("precip_today_in"));
+        reply.setPressure(returnHash.get("pressure_in"));
         reply.setWeather(returnHash.get("weather"));
         reply.setWindDirection(returnHash.get("wind_dir"));
-        reply.setWindMPH(Float.parseFloat(returnHash.get("wind_mph")));
+        reply.setWindMPH(returnHash.get("wind_mph"));
         reply.setHumidity(returnHash.get("relative_humidity"));
-        reply.setDewPoint(Float.parseFloat(returnHash.get("dewpoint_f")));
+        reply.setDewPoint(returnHash.get("dewpoint_f"));
         reply.setVisibility(returnHash.get("visibility_mi"));
         reply.setSolarRadiation(returnHash.get("solarradiation"));
         reply.setUvIndex(returnHash.get("UV"));

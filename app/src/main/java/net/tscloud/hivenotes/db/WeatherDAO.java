@@ -3,13 +3,6 @@ package net.tscloud.hivenotes.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.TreeMap;
 
 /**
  * Created by tscloud on 8/15/15.
@@ -84,11 +77,11 @@ public class WeatherDAO extends GraphableDAO {
 
     // --DB access methods--
 
-    public Weather createWeather(long apiary, long snapshotDate, float temperature,
-                                float rainfall, float pressure, String weather,
-                                String windDirection, float windMPH, String humidity,
-                                float dewPoint, String visibility, String solarRadiation,
-                                String uvIndex, float pollenCount, String pollution) {
+    public Weather createWeather(long apiary, long snapshotDate, String temperature,
+                                String rainfall, String pressure, String weather,
+                                String windDirection, String windMPH, String humidity,
+                                String dewPoint, String visibility, String solarRadiation,
+                                String uvIndex, String pollenCount, String pollution) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEATHER_APIARY, apiary);
         values.put(COLUMN_WEATHER_SNAPSHOT_DATE, snapshotDate);
@@ -128,11 +121,11 @@ public class WeatherDAO extends GraphableDAO {
                 aDO.getUvIndex(), aDO.getPollenCount(), aDO.getPollution());
     }
 
-    public Weather updateWeather(long id, long apiary, long snapshotDate, float temperature,
-                                float rainfall, float pressure, String weather,
-                                String windDirection, float windMPH, String humidity,
-                                float dewPoint, String visibility, String solarRadiation,
-                                String uvIndex, float pollenCount, String pollution) {
+    public Weather updateWeather(long id, long apiary, long snapshotDate, String temperature,
+                                String rainfall, String pressure, String weather,
+                                String windDirection, String windMPH, String humidity,
+                                String dewPoint, String visibility, String solarRadiation,
+                                String uvIndex, String pollenCount, String pollution) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WEATHER_APIARY, apiary);
         values.put(COLUMN_WEATHER_SNAPSHOT_DATE, snapshotDate);
@@ -199,18 +192,18 @@ public class WeatherDAO extends GraphableDAO {
         Weather weather = new Weather();
         weather.setId(cursor.getLong(0));
         weather.setSnapshotDate(cursor.getLong(1));
-        weather.setTemperature(cursor.getFloat(2));
-        weather.setRainfall(cursor.getFloat(3));
-        weather.setPressure(cursor.getFloat(4));
+        weather.setTemperature(cursor.getString(2));
+        weather.setRainfall(cursor.getString(3));
+        weather.setPressure(cursor.getString(4));
         weather.setWeather(cursor.getString(5));
         weather.setWindDirection(cursor.getString(6));
-        weather.setWindMPH(cursor.getFloat(7));
+        weather.setWindMPH(cursor.getString(7));
         weather.setHumidity(cursor.getString(8));
-        weather.setDewPoint(cursor.getFloat(9));
+        weather.setDewPoint(cursor.getString(9));
         weather.setVisibility(cursor.getString(10));
         weather.setSolarRadiation(cursor.getString(11));
         weather.setUvIndex(cursor.getString(12));
-        weather.setPollenCount(cursor.getFloat(13));
+        weather.setPollenCount(cursor.getString(13));
         weather.setPollution(cursor.getString(14));
 
         return weather;
