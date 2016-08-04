@@ -261,6 +261,7 @@ INSERT INTO 'GraphableData' ('_ID', 'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEG
 INSERT INTO 'GraphableData' ('_ID', 'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY', 'KEY_LEVEL') VALUES (2, 'Weather', 'pressure', 'Pressure', 'Observed Weather', 'A');
 INSERT INTO 'GraphableData' ('_ID', 'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY', 'KEY_LEVEL') VALUES (3, 'N/A', 'N/A', 'Pollen Type', 'Observed Weather', 'A');
 INSERT INTO 'GraphableData' ('_ID', 'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY', 'KEY_LEVEL') VALUES (4, 'WeatherHistory', 'maxpressurei', 'Max Pressure', 'Historic Weather', 'A');
+INSERT INTO 'GraphableData' ('_ID', 'DIRECTIVE', 'COLUMN', 'PRETTY_NAME', 'CATEGORY', 'KEY_LEVEL') VALUES (5, 'WeatherHistory', 'minpressurei', 'Min Pressure', 'Historic Weather', 'A');
 
 /* for testing ONLY  - just so we don't have to manually reenter when we drop the DB */
 /* INSERT INTO 'Profile' ('_ID', 'NAME', 'EMAIL') VALUES (0, 'TC', 'TC@mail.com');
