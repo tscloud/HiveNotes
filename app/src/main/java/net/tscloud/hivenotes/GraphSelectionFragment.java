@@ -351,6 +351,11 @@ public class GraphSelectionFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // save off values potentially entered from screen
+    }
+
+    @Override
     public void onDestroy() {
         if (mTask != null) {
             mTask.cancel(false);

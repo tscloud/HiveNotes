@@ -29,11 +29,8 @@ import net.tscloud.hivenotes.helper.HiveWeather;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
@@ -457,7 +454,7 @@ public class GraphDisplayFragment extends Fragment {
         private void doGraph(DataPoint[] aPoints) {
             Log.d(TAG, "RetrieveDataTask : doGraph()");
 
-            GraphView graph = (GraphView)view.findViewById(R.id.graph);
+            GraphView graph = (GraphView)view.findViewById(R.id.graph1);
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
 
             series.setDrawDataPoints(true);

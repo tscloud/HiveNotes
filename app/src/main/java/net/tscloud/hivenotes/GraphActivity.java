@@ -70,7 +70,7 @@ public class GraphActivity extends AppCompatActivity implements
         String fragTag = "GRAPH_DISPLAY_FRAG";
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.graph_container, fragment, fragTag);
+        ft.replace(R.id.graph_container, fragment, fragTag).addToBackStack(null);
         ft.commit();
     }
 
