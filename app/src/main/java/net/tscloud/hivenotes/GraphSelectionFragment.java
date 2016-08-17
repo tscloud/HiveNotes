@@ -26,10 +26,12 @@ import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.GraphableDataDAO;
 import net.tscloud.hivenotes.helper.HiveUtil;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +54,9 @@ public class GraphSelectionFragment extends Fragment {
     // the fragment initialization parameters
     private static final String APIARY_ID = "param1";
     private static final String HIVE_ID = "param2";
+
+    private static String myFormat = "MM/dd/yy"; //In which you need put here
+
     // and instance var of same - needed?
     private long mApiaryID = -1;
     private long mHiveID = -1;
@@ -253,24 +258,16 @@ public class GraphSelectionFragment extends Fragment {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel(aDateEditText, myCalendar);
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                // Note setTag() is not used to store value in millis -- it cannot survive fragment
+                //  reload, e.g. orientation change, return from backstack, etc.
+                ((EditText)aDateEditText).setText(sdf.format(myCalendar.getTime()));
             }
         };
 
         new DatePickerDialog(getActivity(), date, myCalendar
                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-    }
-
-    // Needed by above method
-    private void updateLabel(View aDateEditText, Calendar aCal) {
-
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        ((EditText)aDateEditText).setText(sdf.format(aCal.getTime()));
-        //set the tag to time in millis for use later on down the road
-        ((EditText)aDateEditText).setTag(aCal.getTimeInMillis());
     }
 
     /**
@@ -285,7 +282,7 @@ public class GraphSelectionFragment extends Fragment {
         final EditText edtGraphStartDate = (EditText)getView().findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText)getView().findViewById(R.id.editTextGraphEndDate);
 
-        // if the pretty name of the GraphableData matchs the Spinner's
+        // if the pretty name of the GraphableData matches the Spinner's
         //  selected item String => save off the GraphableData to send
         //  back to the Actvity
         for ( ; !mSpinnerIdStack.isEmpty(); ) {
@@ -302,21 +299,41 @@ public class GraphSelectionFragment extends Fragment {
         // check for required values - are there any?
         boolean emptyText = false;
 
-        if (edtGraphStartDate.getTag() == null) {
+        if (edtGraphStartDate.getText() == null) {
             edtGraphStartDate.setError("Must set start date");
             emptyText = true;
             Log.d(TAG, "Uh oh...Start Date empty");
         }
 
-        if (edtGraphEndDate.getTag() == null) {
+        if (edtGraphEndDate.getText() == null) {
             edtGraphEndDate.setError("Must set end date");
             emptyText = true;
             Log.d(TAG, "Uh oh...End Date empty");
         }
 
+        // All this necessary b/c cannot store millis in tag
         if (!emptyText) {
-            mListener.onGraphSelectionFragmentInteraction(
-                returnList, (long)edtGraphStartDate.getTag(), (long)edtGraphEndDate.getTag());
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            long startTime = 0;
+            long endTime = 0;
+            try {
+                startTime = sdf.parse(edtGraphStartDate.getText().toString()).getTime();
+                endTime = sdf.parse(edtGraphEndDate.getText().toString()).getTime();
+            }
+            catch (ParseException e) {
+                String parseProb = "Parse Error encountered on start/end date";
+                edtGraphStartDate.setError(parseProb);
+                edtGraphEndDate.setError(parseProb);
+                emptyText = true;
+            }
+
+            if (!emptyText) {
+                // Need to clear the spinner selection hash so we can start anew upon return from
+                //  backstack, orientation change, etc.
+                mSpinnerSelectionHash.clear();
+                // Back to Activity
+                mListener.onGraphSelectionFragmentInteraction(returnList, startTime, endTime);
+            }
         }
     }
 
