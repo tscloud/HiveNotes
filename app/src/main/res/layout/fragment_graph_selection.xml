@@ -17,23 +17,22 @@
         android:text="@string/graph_selection"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:singleLine="false" />
 
     <Button
-        android:id="@+id/buttonSelection"
+        android:id="@+id/buttonSelection1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_graph"
-        android:layout_below="@+id/textGraphSelection"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/textView3" />
 
     <include
         android:id="@+id/selector1"
         layout="@layout/graph_selector"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonSelection"
+        android:layout_below="@+id/buttonSelection1"
         android:layout_alignRight="@+id/editTextGraphEndDate"
         android:layout_alignEnd="@+id/editTextGraphEndDate" />
 
@@ -82,5 +81,53 @@
         android:layout_above="@+id/editTextGraphEndDate"
         android:layout_alignRight="@+id/editTextGraphEndDate"
         android:layout_alignEnd="@+id/editTextGraphEndDate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Graph1"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textGraphSelection"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Graph2"
+        android:id="@+id/textView4"
+        android:layout_marginTop="60dp"
+        android:layout_below="@+id/selector1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD GARPH"
+        android:id="@+id/buttonSelection2"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton"
+        android:background="@android:drawable/ic_menu_my_calendar"
+        android:layout_alignTop="@+id/editTextGraphStartDate"
+        android:layout_toRightOf="@+id/editTextGraphStartDate"
+        android:layout_toEndOf="@+id/editTextGraphStartDate" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageButton2"
+        android:background="@android:drawable/ic_menu_my_calendar"
+        android:layout_alignTop="@+id/editTextGraphEndDate"
+        android:layout_toLeftOf="@+id/editTextGraphEndDate"
+        android:layout_toStartOf="@+id/editTextGraphEndDate" />
 
 </RelativeLayout>

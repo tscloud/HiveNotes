@@ -3,7 +3,6 @@ package net.tscloud.hivenotes;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.GraphableDataDAO;
@@ -31,12 +29,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Stack;
 
 
 /**
@@ -118,7 +114,7 @@ public class GraphSelectionFragment extends Fragment {
         // disable the stuff inside the include - let AsyncTask enable after spinner is filled
         View layoutSelector1 = view.findViewById(R.id.selector1);
         final Spinner spnSelector1 = (Spinner)layoutSelector1.findViewById(R.id.spinnerSelection);
-        final Button btnSelector1 = (Button)view.findViewById(R.id.buttonSelection);
+        final Button btnSelector1 = (Button)view.findViewById(R.id.buttonSelection1);
         final EditText edtGraphStartDate = (EditText)view.findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText)view.findViewById(R.id.editTextGraphEndDate);
         final Button btnGraph = (Button)view.findViewById(R.id.btnGraph);
