@@ -10,7 +10,7 @@
     tools:context="net.tscloud.hivenotes.GraphSelectionFragment">
 
     <TextView
-        android:id="@+id/textGraphSelection"
+        android:id="@+id/textGraphSelection1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -20,21 +20,82 @@
         android:layout_alignParentStart="true"
         android:singleLine="false" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Graph1"
+        android:id="@+id/textViewGraph1"
+        android:layout_below="@+id/textGraphSelection1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <Button
         android:id="@+id/buttonSelection1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_graph"
-        android:layout_below="@+id/textView3" />
+        android:layout_below="@+id/textViewGraph1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <include
-        android:id="@+id/selector1"
-        layout="@layout/graph_selector"
-        android:layout_width="fill_parent"
+    <Spinner
+        android:id="@+id/spinnerSelection1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.70"
         android:layout_below="@+id/buttonSelection1"
-        android:layout_alignRight="@+id/editTextGraphEndDate"
-        android:layout_alignEnd="@+id/editTextGraphEndDate" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Spinner
+        android:id="@+id/spinnerSelection2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.70"
+        android:visibility="invisible"
+        android:layout_below="@+id/spinnerSelection1"
+        android:layout_alignRight="@+id/textViewEndDate"
+        android:layout_alignEnd="@+id/textViewEndDate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Graph2"
+        android:id="@+id/textViewGraph2"
+        android:layout_below="@+id/spinnerSelection2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/buttonSelection2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_graph"
+        android:layout_below="@+id/textViewGraph2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/spinnerSelection3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.70"
+        android:visibility="invisible"
+        android:layout_below="@+id/buttonSelection2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/spinnerSelection4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.70"
+        android:visibility="invisible"
+        android:layout_below="@+id/spinnerSelection3"
+        android:layout_alignRight="@+id/textViewEndDate"
+        android:layout_alignEnd="@+id/textViewEndDate" />
 
     <Button
         android:layout_width="wrap_content"
@@ -67,7 +128,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/start_date"
-        android:id="@+id/textView"
+        android:id="@+id/textViewStartDate"
         android:layout_above="@+id/editTextGraphStartDate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -77,45 +138,15 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/end_date"
-        android:id="@+id/textView2"
+        android:id="@+id/textViewEndDate"
         android:layout_above="@+id/editTextGraphEndDate"
         android:layout_alignRight="@+id/editTextGraphEndDate"
         android:layout_alignEnd="@+id/editTextGraphEndDate" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Graph1"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textGraphSelection"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Graph2"
-        android:id="@+id/textView4"
-        android:layout_marginTop="60dp"
-        android:layout_below="@+id/selector1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ADD GARPH"
-        android:id="@+id/buttonSelection2"
-        android:layout_below="@+id/textView4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButtonStartDate"
         android:background="@android:drawable/ic_menu_my_calendar"
         android:layout_alignTop="@+id/editTextGraphStartDate"
         android:layout_toRightOf="@+id/editTextGraphStartDate"
@@ -124,7 +155,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton2"
+        android:id="@+id/imageButtonEndDate"
         android:background="@android:drawable/ic_menu_my_calendar"
         android:layout_alignTop="@+id/editTextGraphEndDate"
         android:layout_toLeftOf="@+id/editTextGraphEndDate"

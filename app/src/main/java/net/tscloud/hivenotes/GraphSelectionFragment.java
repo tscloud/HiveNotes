@@ -112,8 +112,7 @@ public class GraphSelectionFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_graph_selection, container, false);
 
         // disable the stuff inside the include - let AsyncTask enable after spinner is filled
-        View layoutSelector1 = view.findViewById(R.id.selector1);
-        final Spinner spnSelector1 = (Spinner)layoutSelector1.findViewById(R.id.spinnerSelection);
+        final Spinner spnSelector1 = (Spinner)view.findViewById(R.id.spinnerSelection1);
         final Button btnSelector1 = (Button)view.findViewById(R.id.buttonSelection1);
         final EditText edtGraphStartDate = (EditText)view.findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText)view.findViewById(R.id.editTextGraphEndDate);
@@ -122,7 +121,7 @@ public class GraphSelectionFragment extends Fragment {
         btnSelector1.setEnabled(false);
 
         // push the 1st Spinner onto our save stack
-        mSpinnerIdStack.addFirst(R.id.selector1);
+        mSpinnerIdStack.addFirst(R.id.spinnerSelection1);
 
         /**
          * Listeners
@@ -130,7 +129,7 @@ public class GraphSelectionFragment extends Fragment {
         btnSelector1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSelectorButtonPressed((ViewGroup)view);
+                onSelectorButtonPressed((ViewGroup)view, 2);
             }
         });
 
@@ -181,19 +180,24 @@ public class GraphSelectionFragment extends Fragment {
      * Click Button -
      *  make new Selector group
      */
-    private void onSelectorButtonPressed(ViewGroup aTopLevelView) {
+    private void onSelectorButtonPressed(ViewGroup aTopLevelView, int bntNumber) {
         Log.d(TAG, "Creating another Graph Selector");
 
+        /*
         LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
         View newSel = inflater.inflate(R.layout.graph_selector, null);
+        */
 
-        final Spinner spnSelectorNew = (Spinner)newSel.findViewById(R.id.spinnerSelection);
+        // Get reference id for spinner to make use & make visible
+        int spnRId = getResources().getIdentifier("spinnerSelection" + bntNumber, "id",
+                getContext().getPackageName());
+        final Spinner spnSelectorNew = (Spinner)aTopLevelView.findViewById(spnRId);
 
         // Set the Spinner id - use local gererator of View Ids - Google does
         //  not provide one until API 17
-        newSel.setId(HiveUtil.generateViewId());
+        //newSel.setId(HiveUtil.generateViewId());
 
         ArrayAdapter<String> spinnerArrayAdapter = new DisableableArrayAdapter<String>
             (getActivity(), android.R.layout.simple_spinner_dropdown_item,
@@ -225,6 +229,7 @@ public class GraphSelectionFragment extends Fragment {
 
         // Add new Spinner to base RelativeLayout - use LayoutParams to set the
         //  the stuff normally set up in XML
+        /*
         RelativeLayout rl = (RelativeLayout)aTopLevelView.findViewById(R.id.relLayGraphSelection);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
@@ -232,9 +237,13 @@ public class GraphSelectionFragment extends Fragment {
         params.addRule(RelativeLayout.BELOW, mSpinnerIdStack.peekFirst());
 
         rl.addView(newSel, params);
+        */
+
+        // Make the spinnner visible
+        spnSelectorNew.setVisibility(View.VISIBLE);
 
         // set the new spinner after
-        mSpinnerIdStack.addFirst(newSel.getId());
+        mSpinnerIdStack.addFirst(spnSelectorNew.getId());
     }
 
     /**
