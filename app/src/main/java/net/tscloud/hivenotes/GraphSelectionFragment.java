@@ -190,7 +190,7 @@ public class GraphSelectionFragment extends Fragment {
         View newSel = inflater.inflate(R.layout.graph_selector, null);
         */
 
-        // Get reference id for spinner to make use & make visible
+        // Get reference id for "new" spinner
         int spnRId = getResources().getIdentifier("spinnerSelection" + bntNumber, "id",
                 getContext().getPackageName());
         final Spinner spnSelectorNew = (Spinner)aTopLevelView.findViewById(spnRId);
@@ -291,8 +291,9 @@ public class GraphSelectionFragment extends Fragment {
         //  selected item String => save off the GraphableData to send
         //  back to the Actvity
         for ( ; !mSpinnerIdStack.isEmpty(); ) {
-            View v = getView().findViewById(mSpinnerIdStack.removeFirst());
-            Spinner s = (Spinner)v.findViewById(R.id.spinnerSelection);
+            //View v = getView().findViewById(mSpinnerIdStack.removeFirst());
+            //Spinner s = (Spinner)v.findViewById(R.id.spinnerSelection);
+            Spinner s = (Spinner)getView().findViewById(mSpinnerIdStack.removeFirst());
             for (GraphableData g : mGraphableDataList) {
                 if (g.getPrettyName().equals(s.getSelectedItem().toString())) {
                     returnList.add(g);
