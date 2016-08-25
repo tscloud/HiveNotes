@@ -118,23 +118,32 @@ public class GraphDisplayFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_graph_display, container, false);
 
         // Set up the title(s)
-        final TextView textTitle = (TextView)v.findViewById(R.id.textTitle);
+        final TextView textTitle1 = (TextView)v.findViewById(R.id.textTitle1);
+        final TextView textTitle2 = (TextView)v.findViewById(R.id.textTitle2);
+        //there can be 1 to 4 graphable things - to set up title(s) we need to
+        //  know where we're at
+        int item = 0;
 
         // Cycle thru our list of GraphableData
         for (GraphableData data : mGraphList) {
             Log.d(TAG, "about to start RetrieveDataTask AsyncTask");
 
             // Set up the title(s)
-            if ((textTitle.getText() == null) || (textTitle.getText().length() == 0)) {
-                textTitle.setText(data.getPrettyName());
-            }
-            else {
-                String newText = textTitle.getText() + "/" + data.getPrettyName();
-                textTitle.setText(newText);
+            switch (item) {
+                case (0):
+                    textTitle1.setText(data.getPrettyName());
+                case (1):
+                    String newText = textTitle1.getText() + "/" + data.getPrettyName();
+                    textTitle1.setText(newText);
+                case (2):
+                    textTitle2.setText(data.getPrettyName());
+                case (3):
+                    String newText = textTitle2.getText() + "/" + data.getPrettyName();
+                    textTitle2.setText(newText);
             }
 
             RetrieveDataTask mTask = new RetrieveDataTask(getActivity(), data, mStartDate,
-                    mEndDate, v);
+                    mEndDate, item, v);
             // don't forget to set the reference to myself
             mTask.setTaskRef(mTask);
             mTaskList.add(mTask);
@@ -142,6 +151,9 @@ public class GraphDisplayFragment extends Fragment {
             //  we don't want them making redundant calls
             mTask.execute();
             //mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+            //don't forget to increment the item counter
+            item++;
         }
 
         return v;
@@ -186,6 +198,7 @@ public class GraphDisplayFragment extends Fragment {
         private long startDate;
         private long endDate;
         private View view;
+        private int itemNum = 0;
         private RetrieveDataTask taskRef;
 
         public void setTaskRef(RetrieveDataTask taskRef) {
@@ -195,11 +208,12 @@ public class GraphDisplayFragment extends Fragment {
         private ProgressDialog dialog;
 
         public RetrieveDataTask(Context aCtx, GraphableData aData, long aStartDate, long aEndDate,
-                                View aView) {
+                                int aItem, View aView) {
             ctx = aCtx;
             data = aData;
             startDate = aStartDate;
             endDate = aEndDate;
+            itemNum = aItem;
             view = aView;
             Log.d(TAG, "RetrieveDataTask(" + Thread.currentThread().getId() + ") : constructor");
         }
@@ -454,7 +468,17 @@ public class GraphDisplayFragment extends Fragment {
         private void doGraph(DataPoint[] aPoints) {
             Log.d(TAG, "RetrieveDataTask : doGraph()");
 
-            GraphView graph = (GraphView)view.findViewById(R.id.graph1);
+            // determine which graph to draw upon based on item number
+            //  & make visible even if it already has
+            GraphView graph;
+            if (itemNum < 2) {
+                graph = (GraphView)view.findViewById(R.id.graph1);
+                graph.setVisibility(View.VISIBLE);
+            }
+            else {
+                graph = (GraphView)view.findViewById(R.id.graph2);
+                graph.setVisibility(View.VISIBLE);
+            }
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
 
             series.setDrawDataPoints(true);
