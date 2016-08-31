@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -114,13 +115,16 @@ public class GraphSelectionFragment extends Fragment {
         // disable the stuff inside the include - let AsyncTask enable after spinner is filled
         final Spinner spnSelector1 = (Spinner)view.findViewById(R.id.spinnerSelection1);
         final Button btnSelector1 = (Button)view.findViewById(R.id.buttonSelection1);
-        final EditText edtGraphStartDate = (EditText)view.findViewById(R.id.editTextGraphStartDate);
-        final EditText edtGraphEndDate = (EditText)view.findViewById(R.id.editTextGraphEndDate);
+        final Button btnSelector2 = (Button)view.findViewById(R.id.buttonSelection2);
+        final ImageButton imgGraphStartDate = (ImageButton) view.findViewById(R.id.imageButtonStartDate);
+        final ImageButton imgGraphEndDate = (ImageButton)view.findViewById(R.id.imageButtonEndDate);
+        final EditText edtGraphStartDate = (EditText) view.findViewById(R.id.editTextGraphStartDate);
+        final EditText edtGraphEndDate = (EditText) view.findViewById(R.id.editTextGraphEndDate);
         final Button btnGraph = (Button)view.findViewById(R.id.btnGraph);
         spnSelector1.setEnabled(false);
         btnSelector1.setEnabled(false);
 
-        // push the 1st Spinner onto our save stack
+        // push the 1st Spinner onto our save deque
         mSpinnerIdStack.addFirst(R.id.spinnerSelection1);
 
         /**
@@ -129,7 +133,22 @@ public class GraphSelectionFragment extends Fragment {
         btnSelector1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // disable the button for we do not want to add any more spinners
+                btnSelector1.setEnabled(false);
                 onSelectorButtonPressed((ViewGroup)view, 2);
+            }
+        });
+
+        btnSelector2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int spnNum = 3;
+                if (mSpinnerIdStack.contains(R.id.spinnerSelection3)) {
+                    // disable the button for we do not want to add any more spinners
+                    btnSelector2.setEnabled(false);
+                    spnNum = 4;
+                }
+                onSelectorButtonPressed((ViewGroup)view, spnNum);
             }
         });
 
@@ -146,17 +165,17 @@ public class GraphSelectionFragment extends Fragment {
 
         });
 
-        edtGraphStartDate.setOnClickListener(new View.OnClickListener() {
+        imgGraphStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDateEditClicked(v);
+                onDateEditClicked(edtGraphStartDate);
             }
         });
 
-        edtGraphEndDate.setOnClickListener(new View.OnClickListener() {
+        imgGraphEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDateEditClicked(v);
+                onDateEditClicked(edtGraphEndDate);
             }
         });
 
@@ -180,7 +199,7 @@ public class GraphSelectionFragment extends Fragment {
      * Click Button -
      *  make new Selector group
      */
-    private void onSelectorButtonPressed(ViewGroup aTopLevelView, int bntNumber) {
+    private void onSelectorButtonPressed(ViewGroup aTopLevelView, int aSpnNumber) {
         Log.d(TAG, "Creating another Graph Selector");
 
         /*
@@ -191,7 +210,7 @@ public class GraphSelectionFragment extends Fragment {
         */
 
         // Get reference id for "new" spinner
-        int spnRId = getResources().getIdentifier("spinnerSelection" + bntNumber, "id",
+        int spnRId = getResources().getIdentifier("spinnerSelection" + aSpnNumber, "id",
                 getContext().getPackageName());
         final Spinner spnSelectorNew = (Spinner)aTopLevelView.findViewById(spnRId);
 
@@ -239,10 +258,10 @@ public class GraphSelectionFragment extends Fragment {
         rl.addView(newSel, params);
         */
 
-        // Make the spinnner visible
+        // Make the spinner visible
         spnSelectorNew.setVisibility(View.VISIBLE);
 
-        // set the new spinner after
+        // add the spinner to the deque
         mSpinnerIdStack.addFirst(spnSelectorNew.getId());
     }
 

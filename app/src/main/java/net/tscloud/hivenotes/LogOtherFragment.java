@@ -326,10 +326,13 @@ public class LogOtherFragment extends LogFragment {
                 switch (timeLbl.getId()) {
                     case R.id.textRequeenRmndr:
                         timeLbl.setText(R.string.other_requeen_rmndr);
+                        break;
                     case R.id.textSwarmRmndr:
                         timeLbl.setText(R.string.other_swarm_rmndr);
+                        break;
                     case R.id.textSplitHiveRmndr:
                         timeLbl.setText(R.string.other_split_hive_rmndr);
+                        break;
                 }
                 timeLbl.setTag((long)-1);
 

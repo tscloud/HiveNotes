@@ -132,14 +132,18 @@ public class GraphDisplayFragment extends Fragment {
             switch (item) {
                 case (0):
                     textTitle1.setText(data.getPrettyName());
+                    break;
                 case (1):
-                    String newText = textTitle1.getText() + "/" + data.getPrettyName();
-                    textTitle1.setText(newText);
+                    String newText1 = textTitle1.getText() + "/" + data.getPrettyName();
+                    textTitle1.setText(newText1);
+                    break;
                 case (2):
                     textTitle2.setText(data.getPrettyName());
+                    textTitle2.setVisibility(View.VISIBLE);
+                    break;
                 case (3):
-                    String newText = textTitle2.getText() + "/" + data.getPrettyName();
-                    textTitle2.setText(newText);
+                    String newText2 = textTitle2.getText() + "/" + data.getPrettyName();
+                    textTitle2.setText(newText2);
             }
 
             RetrieveDataTask mTask = new RetrieveDataTask(getActivity(), data, mStartDate,
@@ -255,7 +259,7 @@ public class GraphDisplayFragment extends Fragment {
                 dialog.dismiss();
             }
 
-            Toast.makeText(ctx, "Retrieve graphable data complete...",
+            Toast.makeText(ctx, R.string.retrieve_graph_data_complete,
                     Toast.LENGTH_SHORT).show();
 
             // Draw the graph

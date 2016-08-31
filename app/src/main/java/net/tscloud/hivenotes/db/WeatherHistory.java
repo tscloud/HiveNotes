@@ -14,7 +14,7 @@ public class WeatherHistory {
 
     private long id;
     private long apiary;
-    private long snapshot_date;
+    private long snapshotDate;
     private String fog;
     private String rain;
     private String snow;
@@ -205,12 +205,12 @@ public class WeatherHistory {
         this.rain = rain;
     }
 
-    public long getSnapshot_date() {
-        return snapshot_date;
+    public long getSnapshotDate() {
+        return snapshotDate;
     }
 
-    public void setSnapshot_date(long snapshot_date) {
-        this.snapshot_date = snapshot_date;
+    public void setSnapshotDate(long snapshotDate) {
+        this.snapshotDate = snapshotDate;
     }
 
     public String getSnow() {

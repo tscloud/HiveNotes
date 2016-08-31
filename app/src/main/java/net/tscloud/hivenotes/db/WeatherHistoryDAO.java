@@ -137,7 +137,7 @@ public class WeatherHistoryDAO extends GraphableDAO {
     }
 
     public WeatherHistory createWeatherHistory(WeatherHistory aDO) {
-        return createWeatherHistory(aDO.getApiary(), aDO.getSnapshot_date(), aDO.getFog(), aDO.getRain(),
+        return createWeatherHistory(aDO.getApiary(), aDO.getSnapshotDate(), aDO.getFog(), aDO.getRain(),
                 aDO.getSnow(), aDO.getThunder(), aDO.getHail(), aDO.getMaxtempi(), aDO.getMintempi(),
                 aDO.getMaxdewpti(), aDO.getMindewpti(), aDO.getMaxpressurei(), aDO.getMinpressurei(),
                 aDO.getMaxwspdi(), aDO.getMinwspdi(), aDO.getMeanwdird(), aDO.getMaxhumidity(),
@@ -195,7 +195,7 @@ public class WeatherHistoryDAO extends GraphableDAO {
     }
 
     public WeatherHistory updateWeatherHistory(WeatherHistory aDO) {
-        return updateWeatherHistory(aDO.getId(), aDO.getApiary(), aDO.getSnapshot_date(), aDO.getFog(),
+        return updateWeatherHistory(aDO.getId(), aDO.getApiary(), aDO.getSnapshotDate(), aDO.getFog(),
                 aDO.getRain(), aDO.getSnow(), aDO.getThunder(), aDO.getHail(), aDO.getMaxtempi(),
                 aDO.getMintempi(), aDO.getMaxdewpti(), aDO.getMindewpti(), aDO.getMaxpressurei(),
                 aDO.getMinpressurei(), aDO.getMaxwspdi(), aDO.getMinwspdi(), aDO.getMeanwdird(),
@@ -235,7 +235,7 @@ public class WeatherHistoryDAO extends GraphableDAO {
         WeatherHistory weatherHistory = new WeatherHistory();
         weatherHistory.setId(cursor.getLong(0));
         weatherHistory.setApiary(cursor.getLong(1));
-        weatherHistory.setSnapshot_date(cursor.getLong(2));
+        weatherHistory.setSnapshotDate(cursor.getLong(2));
         weatherHistory.setFog(cursor.getString(3));
         weatherHistory.setRain(cursor.getString(4));
         weatherHistory.setSnow(cursor.getString(5));

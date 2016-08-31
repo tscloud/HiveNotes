@@ -144,7 +144,7 @@ public class HiveWeather {
         // Make the wunderground call to get weather stations - get JSON back
         JSONObject jsonHead = queryHistory(aLoc, newDate);
         if (jsonHead != null) {
-            reply.setSnapshot_date(aDate);
+            reply.setSnapshotDate(aDate);
             reply.setFog(jsonHead.optString("fog", "-1"));
             reply.setRain(jsonHead.optString("rain", "-1"));
             reply.setSnow(jsonHead.optString("snow", "-1"));
