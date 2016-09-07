@@ -35,7 +35,14 @@ public class HivePollen {
 
     public String getDateToday()
     {
-        return HivePollen.pollenMap.entrySet().iterator().next().getKey().toString();
+        String reply = null;
+        try {
+            reply = HivePollen.pollenMap.entrySet().iterator().next().getKey().toString();
+        }
+        catch (NoSuchElementException e) {
+            Log.e(TAG, "Pollen Date not found for today");
+        }
+        return reply;
     }
 
     public String getPollenIndexToday()
@@ -46,6 +53,9 @@ public class HivePollen {
         }
         catch (NumberFormatException e) {
             Log.e(TAG, "Pollen Index found cannot be coverted to float");
+        }
+        catch (NoSuchElementException e) {
+            Log.e(TAG, "Pollen Index not found for today");
         }
         return reply;
     }
