@@ -15,56 +15,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/linearLayout1"
-        android:weightSum="1"
-        android:layout_above="@+id/editApiaryButton">
+        android:layout_above="@+id/editApiaryButton"
+        android:weightSum="30">
 
         <TextView
             android:textColor="#FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Welcome To"
+            android:layout_height="match_parent"
+            android:text="@string/welcome_to"
             android:id="@+id/textWelcome"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_weight="5" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="86dp"
-            android:layout_height="16dp"
-            android:text="Drop DB"
+            android:layout_height="match_parent"
+            android:text="@string/drop_db"
             android:id="@+id/btnDropDB"
             android:layout_gravity="right"
-            android:layout_weight="0.09"
-            android:textSize="8sp" />
+            android:textSize="8sp"
+            android:layout_weight="5" />
 
         <TextView
             android:textColor="#FFFFFF"
             android:layout_width="192dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Hive Notes"
+            android:text="@string/hive_notes"
             android:id="@+id/textHiveNotes"
             android:layout_gravity="center_horizontal"
             android:typeface="normal"
-            android:layout_weight="0.18"
             android:gravity="center"
             android:textStyle="italic"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:layout_weight="5" />
 
         <ImageView
             android:src="@drawable/profile_white_100x100"
             android:layout_width="137dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/imageView"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.44" />
+            android:layout_weight="5" />
 
         <TextView
             android:textColor="#FFFFFF"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Profile"
+            android:layout_height="match_parent"
+            android:text="@string/create_profile"
             android:id="@+id/textCreateEdit"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="5" />
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollApiaryList"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="5">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayoutApiaryList">
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 

@@ -199,4 +199,8 @@
     <string name="end_date">End Date</string>
     <string name="retrieve_graph_data">Please wait...Collecting data to graph</string>
     <string name="retrieve_graph_data_complete">Retrieve graphable data complete...</string>
+    <string name="welcome_to">Welcome To</string>
+    <string name="drop_db">Drop DB</string>
+    <string name="hive_notes">Hive Notes</string>
+    <string name="create_profile">Create Profile</string>
 </resources>

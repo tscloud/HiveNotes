@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment {
 
         // check for list of apiaries and add TextViews as necessary
         if (!(mApiaryList == null) && !(mApiaryList.isEmpty())){
-            ViewGroup layout = (ViewGroup) v.findViewById(R.id.linearLayout1);
+            ViewGroup layout = (ViewGroup) v.findViewById(R.id.linearLayoutApiaryList);
             for (Apiary a : mApiaryList){
                 TextView tv = new TextView(getActivity());
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
