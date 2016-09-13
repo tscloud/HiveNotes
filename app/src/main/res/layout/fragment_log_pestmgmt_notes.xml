@@ -20,7 +20,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutDroneCellFndn"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textPestMgmt"
@@ -39,7 +39,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutDroneCellFndnRmndr"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutDroneCellFndn"
@@ -64,7 +64,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutSmallHiveBeetleTrap"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/linearLayoutDroneCellFndnRmndr"
@@ -83,7 +83,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutMitesTrtmntCheck"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutSmallHiveBeetleTrap"
@@ -109,7 +109,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutMitesTrtmntRmndr"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutMitesTrtmntCheck"
@@ -134,7 +134,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutScreenedBottomBoard"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutMitesTrtmntRmndr"
@@ -153,7 +153,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutPestOther"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/linearLayoutScreenedBottomBoard"
@@ -179,7 +179,7 @@
     <include
         android:id="@+id/savePestMgmtButton"
         layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 

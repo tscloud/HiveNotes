@@ -32,7 +32,7 @@
         android:id="@+id/logEntryToolbar"
         layout="@layout/hive_tool_bar"
         android:layout_below="@+id/textOtherTitle"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"

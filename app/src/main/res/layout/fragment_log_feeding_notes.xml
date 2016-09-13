@@ -20,7 +20,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutOneOneSugar"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textFeeding"
@@ -38,7 +38,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutTwoOneSugar"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutOneOneSugar"
@@ -56,7 +56,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutPollenPatty"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutTwoOneSugar"
@@ -74,7 +74,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutFeedingOther"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/linearLayoutPollenPatty"
@@ -93,7 +93,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutFeedingOtherText"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutFeedingOther"
@@ -111,7 +111,7 @@
     <include
         android:id="@+id/saveFeedingButton"
         layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 

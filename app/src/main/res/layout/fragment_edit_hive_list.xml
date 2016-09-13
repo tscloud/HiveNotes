@@ -34,7 +34,7 @@
         android:layout_marginTop="0dp" />
 
     <View
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:id="@+id/hiveLine1"
@@ -43,7 +43,7 @@
         android:layout_alignParentStart="true" />
 
     <View
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:id="@+id/hiveLine2"
@@ -52,7 +52,7 @@
         android:layout_alignParentStart="true" />
 
     <View
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:id="@+id/hiveLine3"
@@ -63,7 +63,7 @@
     <include
         android:id="@+id/newHiveListButton"
         layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -72,7 +72,7 @@
     <include
         android:id="@+id/updateApiaryListButton"
         layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/hiveLine1"
         android:layout_alignParentRight="true"
@@ -81,7 +81,7 @@
     <include
         android:id="@+id/weatherListButton"
         layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/hiveLine3"
         android:layout_alignParentRight="true"

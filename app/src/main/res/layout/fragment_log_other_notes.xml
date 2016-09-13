@@ -29,7 +29,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutRequeen"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textRequeen"
@@ -47,7 +47,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutRequeenRmndr"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutRequeen"
@@ -81,7 +81,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutSwarmRmndr"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textSwarm"
@@ -115,7 +115,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutSplitHiveRmndr"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textSplitHive"
@@ -141,7 +141,7 @@
     <include
         android:id="@+id/saveOtherButton"
         layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 

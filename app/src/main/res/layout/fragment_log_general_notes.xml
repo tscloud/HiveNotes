@@ -10,8 +10,8 @@
 
     <ScrollView
         android:id="@+id/scrollLogGeneral"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
         >
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -36,7 +36,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutPopulation"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/textGeneralNotes"
@@ -62,7 +62,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutTemperament"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@+id/linearLayoutPopulation"
@@ -88,7 +88,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutQueen"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@+id/linearLayoutTemperament"
@@ -115,7 +115,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutBroodFrames"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_alignParentRight="true"
@@ -139,7 +139,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutBroodPattern"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@+id/linearLayoutBroodFrames"
@@ -164,7 +164,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutHoneyStores"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@+id/linearLayoutBroodPattern"
@@ -189,7 +189,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutPollenStores"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@+id/linearLayoutHoneyStores"
@@ -213,7 +213,7 @@
             </LinearLayout>
         <!--
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:id="@+id/linearLayoutPestsDisease"
@@ -249,7 +249,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutPestsDisease1"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/textPestsDisease"
@@ -274,7 +274,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutPestsDisease2"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/linearLayoutPestsDisease1"
@@ -299,7 +299,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutPestsDisease3"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/linearLayoutPestsDisease2"
@@ -324,7 +324,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutPestsDisease4"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/linearLayoutPestsDisease3"
@@ -342,7 +342,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayoutPestsDisease5"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@id/linearLayoutPestsDisease4"
@@ -372,7 +372,7 @@
 
     <View
         android:id="@+id/hiveLine1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:layout_above="@+id/saveGeneralNotesButton"
@@ -381,7 +381,7 @@
 
     <View
         android:id="@+id/hiveLine2"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:layout_below="@+id/saveGeneralNotesButton"
@@ -392,7 +392,7 @@
     <include
         android:id="@+id/saveGeneralNotesButton"
         layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 

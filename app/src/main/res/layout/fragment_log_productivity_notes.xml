@@ -30,7 +30,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutSupersText"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textHoney"
@@ -57,7 +57,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutHoneySpinners"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutSupersText"
@@ -80,7 +80,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutExtractedHoney"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutHoneySpinners"
@@ -116,7 +116,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutPollen"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/textPollen"
@@ -141,7 +141,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutPollenCollected"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutPollen"
@@ -168,7 +168,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutBeeswaxCollected"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/linearLayoutPollenCollected"
@@ -195,7 +195,7 @@
 
     <View
         android:id="@+id/hiveLine1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:layout_above="@+id/saveProductivityButton"
@@ -204,7 +204,7 @@
 
     <View
         android:id="@+id/hiveLine2"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:layout_below="@+id/saveProductivityButton"
@@ -215,7 +215,7 @@
     <include
         android:id="@+id/saveProductivityButton"
         layout="@layout/hive_note_button"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 
