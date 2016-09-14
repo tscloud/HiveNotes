@@ -3,6 +3,7 @@ package net.tscloud.hivenotes;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,14 +102,6 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_hive, container, false);
 
-        // must qualify b/c button inside include
-        View layoutCreateHive = view.findViewById(R.id.newHiveListButton);
-        final Button btnCreateHive = (Button)layoutCreateHive.findViewById(R.id.hiveNoteButtton);
-        View layoutUpdateApiary = view.findViewById(R.id.updateApiaryListButton);
-        final Button btnUpdateApiary = (Button)layoutUpdateApiary.findViewById(R.id.hiveNoteButtton);
-        View layoutWeather = view.findViewById(R.id.weatherListButton);
-        final Button btnWeather = (Button)layoutWeather.findViewById(R.id.hiveNoteButtton);
-
         // --Set the Adapter--
         mListView = (AbsListView) view.findViewById(android.R.id.list); // get the ListView
         mListView.setEmptyView(view.findViewById(android.R.id.empty)); // when there is nothing to show
@@ -123,55 +116,39 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
             setEmptyText(emptyTextMsg);
         }
 
-        // set button text
-        btnCreateHive.setText(getResources().getString(R.string.create_hive_string));
-        btnUpdateApiary.setText(getResources().getString(R.string.update_apiary_string));
-        btnWeather.setText(getResources().getString(R.string.weather_string));
-
-        // set (3) button listeners
-        btnCreateHive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCreateHiveButtonPressed();
-            }
-        });
-
-        btnUpdateApiary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onUpdateApiaryButtonPressed();
-            }
-        });
-
-        btnWeather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onWeatherButtonPressed();
-            }
-        });
-
         return view;
     }
 
-    public void onCreateHiveButtonPressed() {
+    /**
+     * Toolbar click handlers
+     */
+   public void hiveFeedingToolClickHandler (View v) {
         if (mListener != null) {
             // means we want to make a new Hive
             mListener.onEditHiveListFragmentCreateHive(-1);
         }
     }
 
-    public void onUpdateApiaryButtonPressed() {
+    public void hiveGeneralToolClickHandler (View v) {
         if (mListener != null) {
             // means we want to update the Apiary
             mListener.onEditHiveListFragmentUpdateApiary(mApiaryKey);
         }
     }
 
-    public void onWeatherButtonPressed() {
+    public void hiveOtherToolClickHandler (View v) {
         if (mListener != null) {
             // means we want do some weather
             mListener.onEditHiveListFragmentWeather(mApiaryKey);
         }
+    }
+
+    public void hiveProductionToolClickHandler (View v) {
+        Log.d(TAG, "hiveProductionToolClickHandler called");
+    }
+
+    public void hivePestToolClickHandler (View v) {
+        Log.d(TAG, "hivePestToolClickHandler called");
     }
 
     @Override

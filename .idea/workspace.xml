@@ -86,11 +86,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5ca4e5e2-3ed5-48e4-9429-4e5b4b4764ee" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/HomeFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/HomeFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_log_entry_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_log_entry_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml" />
     </list>
     <ignored path="HiveNotes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -118,7 +115,7 @@
     <favorites_list name="HiveNotes" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.50015926">
+    <splitter split-orientation="horizontal" split-proportion="0.49952215">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="525">
           <file leaf-file-name="create.sql" pinned="true" current-in-tab="false">
@@ -135,7 +132,7 @@
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="259" column="57" selection-start-line="259" selection-start-column="57" selection-end-line="259" selection-end-column="57" />
+                  <caret line="241" column="80" selection-start-line="241" selection-start-column="80" selection-end-line="241" selection-end-column="80" />
                   <folding>
                     <element signature="e#11202#11203#0" expanded="true" />
                     <element signature="e#11263#11264#0" expanded="true" />
@@ -180,8 +177,8 @@
           <file leaf-file-name="fragment_log_entry_list.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_entry_list.xml">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-11.723684">
-                  <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+                <state vertical-scroll-proportion="-13.5">
+                  <caret line="38" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -193,8 +190,8 @@
           <file leaf-file-name="hive_tool_bar.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/hive_tool_bar.xml">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-5.3289475">
-                  <caret line="15" column="43" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="52" />
+                <state vertical-scroll-proportion="-3.5526316">
+                  <caret line="15" column="52" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="52" />
                   <folding />
                 </state>
               </provider>
@@ -206,9 +203,12 @@
           <file leaf-file-name="EditHiveListFragment.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.8090278">
-                  <caret line="127" column="89" selection-start-line="127" selection-start-column="89" selection-end-line="127" selection-end-column="89" />
-                  <folding />
+                <state vertical-scroll-proportion="0.15972222">
+                  <caret line="121" column="7" selection-start-line="121" selection-start-column="7" selection-end-line="121" selection-end-column="7" />
+                  <folding>
+                    <element signature="e#4971#4972#0" expanded="true" />
+                    <element signature="e#5032#5033#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -216,9 +216,11 @@
           <file leaf-file-name="fragment_edit_hive_list.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-10.210526">
-                  <caret line="63" column="42" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="42" />
-                  <folding />
+                <state vertical-scroll-proportion="-12.789474">
+                  <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+                  <folding>
+                    <element signature="e#1081#1106#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
               <provider editor-type-id="android-designer">
@@ -360,7 +362,7 @@
           <file leaf-file-name="HivePollen.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HivePollen.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.47386172">
+                <state vertical-scroll-proportion="0.9519393">
                   <caret line="98" column="13" selection-start-line="98" selection-start-column="13" selection-end-line="98" selection-end-column="13" />
                   <folding />
                 </state>
@@ -2227,8 +2229,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/hive_tool_bar.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_grid.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/Apiary.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogPestMgmtFragment.java" />
@@ -2265,6 +2265,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_log_entry_list.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java" />
       </list>
     </option>
   </component>
@@ -3069,12 +3071,6 @@
       <option name="number" value="Default" />
       <updated>1439340940336</updated>
     </task>
-    <task id="LOCAL-00076" summary="More Calendar updates.  Some revamp needed.">
-      <created>1461127782569</created>
-      <option name="number" value="00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1461127782569</updated>
-    </task>
     <task id="LOCAL-00077" summary="More Calendar updates.  Need to move Notifications to Hive level.&#10;Also move DB access to Activity.">
       <created>1461209584586</created>
       <option name="number" value="00077" />
@@ -3363,7 +3359,13 @@
       <option name="project" value="LOCAL" />
       <updated>1473783086126</updated>
     </task>
-    <option name="localTasksCounter" value="125" />
+    <task id="LOCAL-00125" summary="HomeFragment changes -&gt; scrollable apiary list, edit profile button.">
+      <created>1473819054582</created>
+      <option name="number" value="00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1473819054582</updated>
+    </task>
+    <option name="localTasksCounter" value="126" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -3458,7 +3460,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="wunderground call complete." />
     <MESSAGE value="Pollen data persistence." />
     <MESSAGE value="Calendar Intent working (?) and Reminder bug fix." />
     <MESSAGE value="Weather and location stuff." />
@@ -3483,7 +3484,8 @@
     <MESSAGE value="Fix get pollen bug when no data found." />
     <MESSAGE value="Start home fragment changes &lt;- scrollable Apiary list." />
     <MESSAGE value="Global change fill_parent -&gt; match_parent." />
-    <option name="LAST_COMMIT_MESSAGE" value="Global change fill_parent -&gt; match_parent." />
+    <MESSAGE value="HomeFragment changes -&gt; scrollable apiary list, edit profile button." />
+    <option name="LAST_COMMIT_MESSAGE" value="HomeFragment changes -&gt; scrollable apiary list, edit profile button." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -4039,40 +4041,10 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/hive_tool_bar.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.3289475">
-          <caret line="15" column="43" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HivePollen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47386172">
+        <state vertical-scroll-proportion="0.9519393">
           <caret line="98" column="13" selection-start-line="98" selection-start-column="13" selection-end-line="98" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="259" column="57" selection-start-line="259" selection-start-column="57" selection-end-line="259" selection-end-column="57" />
-          <folding>
-            <element signature="e#11202#11203#0" expanded="true" />
-            <element signature="e#11263#11264#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -4090,8 +4062,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_entry_list.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.723684">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        <state vertical-scroll-proportion="-13.5">
+          <caret line="38" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -4101,8 +4073,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_hive_list.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.210526">
-          <caret line="63" column="42" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="42" />
+        <state vertical-scroll-proportion="-12.789474">
+          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding>
+            <element signature="e#1081#1106#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="180" column="0" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/hive_tool_bar.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.5526316">
+          <caret line="15" column="52" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="52" />
           <folding />
         </state>
       </provider>
@@ -4110,11 +4103,25 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="241" column="80" selection-start-line="241" selection-start-column="80" selection-end-line="241" selection-end-column="80" />
+          <folding>
+            <element signature="e#11202#11203#0" expanded="true" />
+            <element signature="e#11263#11264#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8090278">
-          <caret line="127" column="89" selection-start-line="127" selection-start-column="89" selection-end-line="127" selection-end-column="89" />
-          <folding />
+        <state vertical-scroll-proportion="0.15972222">
+          <caret line="121" column="7" selection-start-line="121" selection-start-column="7" selection-end-line="121" selection-end-column="7" />
+          <folding>
+            <element signature="e#4971#4972#0" expanded="true" />
+            <element signature="e#5032#5033#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
