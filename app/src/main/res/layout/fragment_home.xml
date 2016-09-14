@@ -1,46 +1,36 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="net.tscloud.hivenotes.HomeFragment">
-
-    <ImageView
-        android:src="@drawable/background_small2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="net.tscloud.hivenotes.HomeFragment"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/linearLayout1"
-        android:layout_above="@+id/editApiaryButton"
-        android:weightSum="30">
+        android:layout_above="@+id/btnEditApiary"
+        android:background="@drawable/background_small2">
 
         <TextView
             android:textColor="#FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:text="@string/welcome_to"
             android:id="@+id/textWelcome"
             android:gravity="center"
-            android:layout_weight="5" />
+            android:layout_weight="1" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="86dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:text="@string/drop_db"
             android:id="@+id/btnDropDB"
             android:layout_gravity="right"
             android:textSize="8sp"
-            android:layout_weight="5" />
+            android:layout_weight="1.5" />
 
         <TextView
             android:textColor="#FFFFFF"
             android:layout_width="192dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/hive_notes"
             android:id="@+id/textHiveNotes"
@@ -49,12 +39,12 @@
             android:gravity="center"
             android:textStyle="italic"
             android:textSize="30sp"
-            android:layout_weight="5" />
+            android:layout_weight="3" />
 
         <ImageView
             android:src="@drawable/profile_white_100x100"
             android:layout_width="137dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:id="@+id/imageView"
             android:layout_gravity="center_horizontal"
             android:layout_weight="5" />
@@ -62,15 +52,15 @@
         <TextView
             android:textColor="#FFFFFF"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:text="@string/create_profile"
             android:id="@+id/textCreateEdit"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="5" />
+            android:layout_weight="1" />
 
         <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:id="@+id/scrollApiaryList"
             android:layout_gravity="center_horizontal"
             android:layout_weight="5">
@@ -85,15 +75,35 @@
 
         </ScrollView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/linearLayoutButton"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/new_apiary_string"
+                android:id="@+id/btnEditApiary"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_profile"
+                android:id="@+id/btnEditProfile"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+
     </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_apiary_button_text"
-        android:id="@+id/editApiaryButton"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp" />
-
-</RelativeLayout>

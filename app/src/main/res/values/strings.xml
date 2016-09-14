@@ -203,4 +203,5 @@
     <string name="drop_db">Drop DB</string>
     <string name="hive_notes">Hive Notes</string>
     <string name="create_profile">Create Profile</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

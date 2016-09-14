@@ -79,18 +79,18 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         // set some text
-        final Button btnEditApiary = (Button)v.findViewById(R.id.editApiaryButton);
+        final Button btnEditApiary = (Button)v.findViewById(R.id.btnEditApiary);
+        final Button btnEditProfile = (Button)v.findViewById(R.id.btnEditProfile);
         final TextView textListApiary = (TextView)v.findViewById(R.id.textCreateEdit);
         final Button btnDropDB = (Button)v.findViewById(R.id.btnDropDB);
 
         if (mProfileID == -1){
             String s = getResources().getString(R.string.create_profile_string);
-            btnEditApiary.setText(s);
+            btnEditApiary.setEnabled(false);
             textListApiary.setText(s);
         }
         else {
             String s = getResources().getString(R.string.new_apiary_string);
-            btnEditApiary.setText(s);
             textListApiary.setText(s);
         }
 
@@ -131,6 +131,14 @@ public class HomeFragment extends Fragment {
         });
 
         // set button listener
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEditProfileButtonPressed();
+            }
+        });
+
+        // set button listener
         btnDropDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,19 +151,25 @@ public class HomeFragment extends Fragment {
 
     private void onApiaryPressed(TextView apiaryNameTextView) {
         if (mListener != null) {
-            mListener.onHomeFragmentInteraction((Long)apiaryNameTextView.getTag(), false);
+            mListener.onHomeFragmentInteraction((Long)apiaryNameTextView.getTag(), false, false);
         }
     }
 
     private void onEditApiaryButtonPressed() {
         if (mListener != null) {
-            mListener.onHomeFragmentInteraction(null, false);
+            mListener.onHomeFragmentInteraction(null, false, false);
+        }
+    }
+
+    private void onEditProfileButtonPressed() {
+        if (mListener != null) {
+            mListener.onHomeFragmentInteraction(null, false, true);
         }
     }
 
     private void onDropDBButtonPressed() {
         if (mListener != null) {
-            mListener.onHomeFragmentInteraction(null, true);
+            mListener.onHomeFragmentInteraction(null, true, false);
         }
     }
 
@@ -184,7 +198,7 @@ public class HomeFragment extends Fragment {
      */
     public interface OnHomeFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
-        void onHomeFragmentInteraction(Long apiaryId, boolean deleteDB);
+        void onHomeFragmentInteraction(Long apiaryId, boolean deleteDB, boolean editProfile);
 
         // For getting Apiary data
         List<Apiary> deliverApiaryList(long aProfileID);

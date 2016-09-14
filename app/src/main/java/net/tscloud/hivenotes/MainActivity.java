@@ -118,9 +118,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onHomeFragmentInteraction(Long apiaryId, boolean deleteDB) {
+    public void onHomeFragmentInteraction(Long apiaryId, boolean deleteDB, boolean editProfile) {
         Log.d(TAG, "MainActivity.onHomeFragmentInteraction called...Apiary name: " + apiaryId);
-
 
         if (deleteDB){
             // FOR TESTING ONLY
@@ -149,15 +148,20 @@ public class MainActivity extends AppCompatActivity implements
             Fragment fragment = null;
             String fragTag = null;
 
-            if (mProfile == null) {
-                Intent i = new Intent(this,EditProfileActivity.class);
-                i.putExtra(INTENT_PROFILE_KEY, (long)-1);
+            if (editProfile) {
+                //if no profile => make a new one
+                long profileId = -1;
+                if (mProfile != null) {
+                    //if we have a Profile => edit it
+                    profileId = mProfile.getId();
+                }
+                Intent i = new Intent(this, EditProfileActivity.class);
+                i.putExtra(INTENT_PROFILE_KEY, profileId);
                 startActivityForResult(i, PROFILE_REQ_CODE);
-            }
-            else {
-                Intent i = new Intent(this,EditApiaryActivity.class);
+            } else {
+                Intent i = new Intent(this, EditApiaryActivity.class);
                 i.putExtra(INTENT_PROFILE_KEY, mProfile.getId());
-                i.putExtra(INTENT_APIARY_KEY, (long)-1);
+                i.putExtra(INTENT_APIARY_KEY, (long) -1);
                 startActivityForResult(i, APIARY_REQ_CODE);
             }
         }
