@@ -109,6 +109,9 @@ public class EditHiveActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Hive list image button click handlers
+     */
     public void hiveFeedingClickHandler (View v) {
         Log.d(TAG, "hiveFeedingClickHandler called");
 
@@ -147,6 +150,39 @@ public class EditHiveActivity extends AppCompatActivity implements
         TextView tv = (TextView)linLay1.findViewById(R.id.hiveEditTextView);
 
         Log.d(TAG, "HiveName: " + tv.getText());
+    }
+
+    /**
+     * Toolbar click handlers
+     *  Note: Functions these click handlers provide originally implemented in click
+     *        handlers defined in fragment attached to buttons replaced by toolbar.
+     *        Fragment defined interface specifying these methods not really necessary
+     *        but we'll keep it around.
+     */
+   public void hiveFeedingToolClickHandler (View v) {
+        // means we want to make a new Hive
+        Log.d(TAG, "hiveFeedingToolClickHandler called");
+        onEditHiveListFragmentCreateHive(-1);
+    }
+
+    public void hiveGeneralToolClickHandler (View v) {
+        // means we want to update the Apiary
+        Log.d(TAG, "hiveGeneralToolClickHandler called");
+        onEditHiveListFragmentUpdateApiary(mApiaryKey);
+    }
+
+    public void hiveOtherToolClickHandler (View v) {
+        // means we want do some weather
+        Log.d(TAG, "hiveOtherToolClickHandler called");
+        onEditHiveListFragmentWeather(mApiaryKey);
+    }
+
+    public void hiveProductionToolClickHandler (View v) {
+        Log.d(TAG, "hiveProductionToolClickHandler called");
+    }
+
+    public void hivePestToolClickHandler (View v) {
+        Log.d(TAG, "hivePestToolClickHandler called");
     }
 
     @Override

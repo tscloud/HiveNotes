@@ -119,38 +119,6 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         return view;
     }
 
-    /**
-     * Toolbar click handlers
-     */
-   public void hiveFeedingToolClickHandler (View v) {
-        if (mListener != null) {
-            // means we want to make a new Hive
-            mListener.onEditHiveListFragmentCreateHive(-1);
-        }
-    }
-
-    public void hiveGeneralToolClickHandler (View v) {
-        if (mListener != null) {
-            // means we want to update the Apiary
-            mListener.onEditHiveListFragmentUpdateApiary(mApiaryKey);
-        }
-    }
-
-    public void hiveOtherToolClickHandler (View v) {
-        if (mListener != null) {
-            // means we want do some weather
-            mListener.onEditHiveListFragmentWeather(mApiaryKey);
-        }
-    }
-
-    public void hiveProductionToolClickHandler (View v) {
-        Log.d(TAG, "hiveProductionToolClickHandler called");
-    }
-
-    public void hivePestToolClickHandler (View v) {
-        Log.d(TAG, "hivePestToolClickHandler called");
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -199,12 +167,12 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      */
     public interface OnEditHiveListFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
-        public void onEditHiveListFragmentCreateHive(long hiveID);
-        public void onEditHiveListFragmentUpdateApiary(long apiaryID);
-        public void onEditHiveListFragmentWeather(long apiaryID);
+        void onEditHiveListFragmentCreateHive(long hiveID);
+        void onEditHiveListFragmentUpdateApiary(long apiaryID);
+        void onEditHiveListFragmentWeather(long apiaryID);
 
         // For getting Hive data
-        public List<Hive> deliverHiveList(long anApiaryKey, boolean reread);
+        List<Hive> deliverHiveList(long anApiaryKey, boolean reread);
     }
 
 }
