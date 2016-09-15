@@ -81,11 +81,13 @@ public class EditProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-        // set button listener
         final Button b1 = (Button) v.findViewById(R.id.hiveNoteButtton);
-            b1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        final TextView t1 = (TextView) v.findViewById(R.id.textNewProfile);
+
+        // set button listener
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 onButtonPressed(b1);
             }
         });
@@ -119,7 +121,12 @@ public class EditProfileFragment extends Fragment {
             nameEdit.setText(mProfile.getName());
             emailEdit.setText(mProfile.getEmail());
 
+            b1.setText(getResources().getString(R.string.save_profile_string));
+            t1.setText(getResources().getString(R.string.update_profile_string));
+        }
+        else {
             b1.setText(getResources().getString(R.string.create_profile_string));
+
         }
 
         return v;

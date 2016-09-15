@@ -98,8 +98,9 @@ public class EditApiaryFragment extends Fragment implements
         View v = inflater.inflate(R.layout.fragment_edit_apiary, container, false);
 
         // set button listener and text
+        final TextView t1 = (TextView)v.findViewById(R.id.textNewApiary);
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.create_apiary_string));
+
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +109,7 @@ public class EditApiaryFragment extends Fragment implements
         });
 
         final Button bComputeLatLon = (Button)v.findViewById(R.id.buttonComputeLatLon);
+
         bComputeLatLon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +129,11 @@ public class EditApiaryFragment extends Fragment implements
             latitudeEdit.setText(Float.toString(mApiary.getLatitude()));
             longitudeEdit.setText(Float.toString(mApiary.getLongitude()));
 
-            b1.setText(getResources().getString(R.string.new_apiary_button_text));
+            b1.setText(getResources().getString(R.string.save_apiary_button_text));
+        }
+        else {
+            b1.setText(getResources().getString(R.string.create_apiary_string));
+
         }
 
         return v;

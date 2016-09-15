@@ -89,6 +89,7 @@ public class EditHiveSingleFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_single_hive, container, false);
 
+        final TextView textNew = v.findViewById(R.id.textNewHive);
         final View viewNew = v.findViewById(R.id.newHiveButton);
         final View viewDelete = v.findViewById(R.id.deleteHiveButton);
         final Button btnNew = (Button)viewNew.findViewById(R.id.hiveNoteButtton);
@@ -99,6 +100,7 @@ public class EditHiveSingleFragment extends Fragment {
         if (mHive != null) {
             Log.d(TAG, "successfully retrieved Hive data");
             btnNew.setText(getResources().getString(R.string.save_hive_string));
+            textNew.setText(getResources().getString(R.string.update_hive_string));
 
             // fill the form
             EditText nameEdit = (EditText)v.findViewById(R.id.editTextHiveName);
@@ -113,6 +115,8 @@ public class EditHiveSingleFragment extends Fragment {
         }
         else {
             btnNew.setText(getResources().getString(R.string.create_hive_string));
+            //get rid of Delete button
+            viewDelete.setVisibility(View.INVISIBLE);
         }
 
         // set button listeners
