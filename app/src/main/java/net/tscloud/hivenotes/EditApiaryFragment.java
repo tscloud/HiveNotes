@@ -2,6 +2,7 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
+import net.tscloud.hivenotes.helper.HiveDeleteDialog;
 import net.tscloud.hivenotes.helper.TimeoutableLocationListener;
 
 import java.io.IOException;
@@ -98,26 +101,21 @@ public class EditApiaryFragment extends Fragment implements
         View v = inflater.inflate(R.layout.fragment_edit_apiary, container, false);
 
         // set button listener and text
-        final TextView t1 = (TextView)v.findViewById(R.id.textNewApiary);
-        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCreateApiaryButtonPressed(mProfileID);
-            }
-        });
+        final TextView textNew = (TextView)v.findViewById(R.id.textNewApiary);
+        final View viewNew = v.findViewById(R.id.newApiaryButton);
+        final View viewDelete = v.findViewById(R.id.deleteApiaryButton);
+        final Button btnNew = (Button)viewNew.findViewById(R.id.hiveNoteButtton);
+        final Button btnDelete = (Button)viewDelete.findViewById(R.id.hiveNoteButtton);
 
         final Button bComputeLatLon = (Button)v.findViewById(R.id.buttonComputeLatLon);
 
-        bComputeLatLon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onComputeLatLonButtonPressed(mProfileID);
-            }
-        });
+        btnDelete.setText(getResources().getString(R.string.delete_apiary_string));
 
         if (mApiary != null) {
+            Log.d(TAG, "successfully retrieved Apiary data");
+            btnNew.setText(getResources().getString(R.string.save_apiary_string));
+            textNew.setText(getResources().getString(R.string.update_apiary_string));
+
             // fill the form
             final EditText nameEdit = (EditText)v.findViewById(R.id.editTextApiaryName);
             final EditText postalCodeEdit = (EditText)v.findViewById(R.id.editTextApiaryPostalCode);
@@ -128,18 +126,40 @@ public class EditApiaryFragment extends Fragment implements
             postalCodeEdit.setText(mApiary.getPostalCode());
             latitudeEdit.setText(Float.toString(mApiary.getLatitude()));
             longitudeEdit.setText(Float.toString(mApiary.getLongitude()));
-
-            b1.setText(getResources().getString(R.string.save_apiary_button_text));
         }
         else {
-            b1.setText(getResources().getString(R.string.create_apiary_string));
-
+            btnNew.setText(getResources().getString(R.string.create_apiary_string));
+            //get rid of Delete button
+            btnDelete.setEnabled(false);
+            btnDelete.setTextColor(Color.GRAY);
         }
+
+        // set button listeners
+        btnNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onUpdateButtonPressed(mProfileID);
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new HiveApiaryDeleteDialog().doDeleteDialog();
+            }
+        });
+
+        bComputeLatLon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onComputeLatLonButtonPressed(mProfileID);
+            }
+        });
 
         return v;
     }
 
-    public void onCreateApiaryButtonPressed(long profileID) {
+    private void onUpdateButtonPressed(long profileID) {
         // get name and email and put to DB
         Log.d(TAG, "about to persist apiary");
 
@@ -264,7 +284,21 @@ public class EditApiaryFragment extends Fragment implements
         }
     }
 
-    public void onComputeLatLonButtonPressed(long profileID) {
+    private void onDeleteButtonPressed() {
+        // delete hive from DB
+        Log.d(TAG, "about to delete apiary");
+        ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
+        Apiary apiary = new Apiary();
+        apiary.setId(mApiaryID);
+        apiaryDAO.deleteApiary(apiary);
+        apiaryDAO.close();
+
+        if (mListener != null) {
+            mListener.onEditApiaryFragmentInteraction(apiary);
+        }
+    }
+
+    private void onComputeLatLonButtonPressed(long profileID) {
         Log.d(TAG, "trying to get lat/lon");
         try {
             mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -343,6 +377,17 @@ public class EditApiaryFragment extends Fragment implements
         apiaryDAO.close();
 
         return reply;
+    }
+
+    public class HiveApiaryDeleteDialog extends HiveDeleteDialog {
+
+        protected HiveApiaryDeleteDialog() {
+            super(getActivity(), "Are you sure you want to delete this Apiary?");
+        }
+
+        protected void doDelete(){
+            onDeleteButtonPressed();
+        }
     }
 
     /**

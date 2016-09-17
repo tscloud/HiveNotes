@@ -1,8 +1,10 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
+import net.tscloud.hivenotes.helper.HiveDeleteDialog;
 
 
 /**
@@ -89,7 +93,7 @@ public class EditHiveSingleFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_single_hive, container, false);
 
-        final TextView textNew = v.findViewById(R.id.textNewHive);
+        final TextView textNew = (TextView)v.findViewById(R.id.textNewHive);
         final View viewNew = v.findViewById(R.id.newHiveButton);
         final View viewDelete = v.findViewById(R.id.deleteHiveButton);
         final Button btnNew = (Button)viewNew.findViewById(R.id.hiveNoteButtton);
@@ -116,7 +120,8 @@ public class EditHiveSingleFragment extends Fragment {
         else {
             btnNew.setText(getResources().getString(R.string.create_hive_string));
             //get rid of Delete button
-            viewDelete.setVisibility(View.INVISIBLE);
+            btnDelete.setEnabled(false);
+            btnDelete.setTextColor(Color.GRAY);
         }
 
         // set button listeners
@@ -126,17 +131,18 @@ public class EditHiveSingleFragment extends Fragment {
                 onUpdateButtonPressed();
             }
         });
+
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDeleteButtonPressed();
+                new HiveHiveDeleteDialog().doDeleteDialog();
             }
         });
 
         return v;
     }
 
-    public void onUpdateButtonPressed() {
+    private void onUpdateButtonPressed() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist hive");
 
@@ -198,7 +204,7 @@ public class EditHiveSingleFragment extends Fragment {
         }
     }
 
-    public void onDeleteButtonPressed() {
+    private void onDeleteButtonPressed() {
         // delete hive from DB
         Log.d(TAG, "about to delete hive");
         HiveDAO hiveDAO = new HiveDAO(getActivity());
@@ -240,6 +246,17 @@ public class EditHiveSingleFragment extends Fragment {
         return reply;
     }
 
+    public class HiveHiveDeleteDialog extends HiveDeleteDialog {
+
+        protected HiveHiveDeleteDialog() {
+            super(getActivity(), "Are you sure you want to delete this Hive?");
+        }
+
+        protected void doDelete(){
+            onDeleteButtonPressed();
+        }
+
+    }
 
     /**
      * This interface must be implemented by activities that contain this

@@ -16,7 +16,7 @@
     <string name="new_apiary_string">New Apiary</string>
     <string name="create_apiary_string">Create Apiary</string>
     <string name="update_apiary_string">Update Apiary</string>
-    <string name="save_apiary_button_text">Save Apiary</string>
+    <string name="save_apiary_string">Save Apiary</string>
     <string name="delete_apiary_string">Delete Apiary</string>
     <string name="apiary_list_text">Apiary List:</string>
     <string name="postal_code_string">Postal Code:</string>
@@ -27,7 +27,7 @@
     <string name="new_profile_string">New Profile</string>
     <string name="create_profile_string">Create Profile</string>
     <string name="update_profile_string">Update Profile</string>
-    <string name="save_profile_button_text">Save Profile</string>
+    <string name="save_profile_string">Save Profile</string>
     <string name="delete_profile_string">Delete Profile</string>
     <string name="new_profile_name_text">Name:</string>
     <string name="new_profile_email_text">Email:</string>

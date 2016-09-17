@@ -306,7 +306,7 @@ public class EditHiveActivity extends AppCompatActivity implements
 
     /** call weather WS to get weather data and persist
      */
-    public class WeatherCallTask extends AsyncTask<Void, Void, Void> {
+    public class WeatherCallTask extends AsyncTask<Void, Void, Integer> {
 
         public static final String TAG = "WeatherCallTask";
 
@@ -333,7 +333,9 @@ public class EditHiveActivity extends AppCompatActivity implements
         }
 
         @Override
-        protected Void doInBackground(Void... unused) {
+        protected Integer doInBackground(Void... unused) {
+            Integer reply = 0;
+
             Log.d(TAG, "WeatherCallTask("+ Thread.currentThread().getId() + ") : doInBackground");
             // Call the weather service
             // build query string <-lat/lon should be present unless lat/lon
@@ -385,25 +387,29 @@ public class EditHiveActivity extends AppCompatActivity implements
                 weatherDAO.createWeather(weatherDO);
             }
             else {
-                String msg = "no loaction data : unable to make weather service calls";
-                Log.d(TAG, msg);
-                Toast.makeText(getApplicationContext(), msg,
-                                Toast.LENGTH_SHORT).show();
+                reply = -1;
             }
 
-            return(null);
+            return(reply);
         }
 
         @Override
-        protected void onPostExecute(Void unused) {
+        protected void onPostExecute(Integer ret) {
             Log.d(TAG, "WeatherCallTask("+ Thread.currentThread().getId() + ") : onPostExecute");
 
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
 
-            Toast.makeText(getApplicationContext(), "Weather service call complete...data persisted",
-                    Toast.LENGTH_SHORT).show();
+            String msg = null;
+            if (ret >= 0) {
+                msg = "Weather service call complete...data persisted";
+            }
+            else {
+                msg = "no loaction data : unable to make weather service calls";
+            }
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
 
             // all we need to do is nullify the Task reference
             mTask = null;
