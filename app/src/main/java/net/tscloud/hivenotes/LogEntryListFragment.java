@@ -120,6 +120,14 @@ public class LogEntryListFragment extends ListFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log_entry_list, container, false);
 
+        // Set-up toolbar
+        //TextView textToolbarHome = (TextView)v.findViewById(R.id.toolbarHomeText);
+        ((TextView)v.findViewById(R.id.toolbarHomeText)).setText(R.string.reminders);
+        ((TextView)v.findViewById(R.id.toolbarLogText)).setText(R.string.graph);
+        ((TextView)v.findViewById(R.id.toolbarAnalysisText)).setText(R.string.not_applicable);
+        ((TextView)v.findViewById(R.id.toolbarReminderText)).setText(R.string.not_applicable);
+        ((TextView)v.findViewById(R.id.toolbarPicsText)).setText(R.string.not_applicable);
+
         // Set up log date text view
         mTextViewLogDate = (TextView)v.findViewById(R.id.textLogDate);
 

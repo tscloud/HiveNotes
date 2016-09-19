@@ -5,59 +5,149 @@
     android:layout_height="wrap_content"
     android:weightSum="1">
 
-    <ImageView
-        android:src="@drawable/feeding_icon"
-        android:adjustViewBounds="true"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="70dp"
         android:layout_weight="0.20"
-        android:id="@+id/toolbarHomeImage"
-        android:contentDescription="Home"
-        android:onClick="hiveFeedingToolClickHandler"
-        android:clickable="true" />
+        android:weightSum="1">
 
-    <ImageView
-        android:src="@drawable/general_icon"
-        android:adjustViewBounds="true"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_weight="0.20"
-        android:id="@+id/toolbarLogImage"
-        android:contentDescription="Past Log Entries"
-        android:onClick="hiveGeneralToolClickHandler"
-        android:clickable="true" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:textColor="@android:color/white"
+            android:text="Home"
+            android:id="@+id/toolbarHomeText"
+            android:gravity="center" />
 
-    <ImageView
-        android:src="@drawable/other_icon"
-        android:adjustViewBounds="true"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_weight="0.20"
-        android:id="@+id/toolbarAnalysisImage"
-        android:contentDescription="Analysis"
-        android:onClick="hiveOtherToolClickHandler"
-        android:clickable="true" />
+        <ImageView
+            android:src="@drawable/feeding_icon"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:id="@+id/toolbarHomeImage"
+            android:contentDescription="Home"
+            android:onClick="hiveFeedingToolClickHandler"
+            android:clickable="true" />
 
-    <ImageView
-        android:src="@drawable/production_icon"
-        android:adjustViewBounds="true"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_weight="0.20"
-        android:id="@+id/toolbarReminderImage"
-        android:contentDescription="Reminders"
-        android:onClick="hiveProductionToolClickHandler"
-        android:clickable="true" />
+    </LinearLayout>
 
-    <ImageView
-        android:src="@drawable/pest_icon"
-        android:adjustViewBounds="true"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="70dp"
         android:layout_weight="0.20"
-        android:id="@+id/toolbarPicsImage"
-        android:contentDescription="Pics"
-        android:onClick="hivePestToolClickHandler"
-        android:clickable="true" />
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:textColor="@android:color/white"
+            android:text="Log"
+            android:id="@+id/toolbarLogText"
+            android:gravity="center" />
+
+        <ImageView
+            android:src="@drawable/general_icon"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:id="@+id/toolbarLogImage"
+            android:contentDescription="Past Log Entries"
+            android:onClick="hiveGeneralToolClickHandler"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.20"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:textColor="@android:color/white"
+            android:text="Analysis"
+            android:id="@+id/toolbarAnalysisText"
+            android:gravity="center" />
+
+        <ImageView
+            android:src="@drawable/other_icon"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:id="@+id/toolbarAnalysisImage"
+            android:contentDescription="Analysis"
+            android:onClick="hiveOtherToolClickHandler"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.20"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:textColor="@android:color/white"
+            android:text="Reminder"
+            android:id="@+id/toolbarReminderText"
+            android:gravity="center" />
+
+        <ImageView
+            android:src="@drawable/production_icon"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:id="@+id/toolbarReminderImage"
+            android:contentDescription="Reminders"
+            android:onClick="hiveProductionToolClickHandler"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.20"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:textColor="@android:color/white"
+            android:text="Pics"
+            android:id="@+id/toolbarPicsText"
+            android:gravity="center" />
+
+        <ImageView
+            android:src="@drawable/pest_icon"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:id="@+id/toolbarPicsImage"
+            android:contentDescription="Pics"
+            android:onClick="hivePestToolClickHandler"
+            android:clickable="true" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -102,6 +102,14 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_hive, container, false);
 
+        // Set-up toolbar
+        //TextView textToolbarHome = (TextView)v.findViewById(R.id.toolbarHomeText);
+        ((TextView)view.findViewById(R.id.toolbarHomeText)).setText(R.string.new_hive_string);
+        ((TextView)view.findViewById(R.id.toolbarLogText)).setText(R.string.update_apiary_string);
+        ((TextView)view.findViewById(R.id.toolbarAnalysisText)).setText(R.string.weather_string);
+        ((TextView)view.findViewById(R.id.toolbarReminderText)).setText(R.string.not_applicable);
+        ((TextView)view.findViewById(R.id.toolbarPicsText)).setText(R.string.not_applicable);
+
         // --Set the Adapter--
         mListView = (AbsListView) view.findViewById(android.R.id.list); // get the ListView
         mListView.setEmptyView(view.findViewById(android.R.id.empty)); // when there is nothing to show

@@ -208,4 +208,6 @@
     <string name="hive_notes">Hive Notes</string>
     <string name="create_profile">Create Profile</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="reminders">Reminders</string>
+    <string name="not_applicable">N/A</string>
 </resources>
