@@ -59,7 +59,7 @@ public class WeatherDAO extends GraphableDAO {
     }
 
     @Override
-    protected String getColSnapshotDate() {
+    protected String getColGraphDate() {
         return COLUMN_WEATHER_SNAPSHOT_DATE;
     }
 

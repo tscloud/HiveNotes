@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <ImageView
-        android:src="@drawable/plus_icon"
-        android:adjustViewBounds="true"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.10"
-        android:id="@+id/hiveNoteImage"
-        android:contentDescription="@string/create_profile_string"
-        android:background="@android:color/white"
-        android:clickable="true" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/hiveLine" />
 
-    <Button
-        android:background="@android:color/white"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.90"
-        android:text="@string/create_profile_string"
-        android:id="@+id/hiveNoteButtton" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:src="@drawable/plus_icon"
+            android:adjustViewBounds="true"
+            android:cropToPadding="false"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.10"
+            android:id="@+id/hiveNoteImage"
+            android:contentDescription="@string/create_profile_string"
+            android:background="@android:color/white"
+            android:clickable="true" />
+
+        <Button
+            android:background="@android:color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.90"
+            android:text="@string/create_profile_string"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/hiveNoteButtton" />
+
+    </LinearLayout>
 
 </LinearLayout>

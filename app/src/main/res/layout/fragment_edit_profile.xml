@@ -75,16 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:id="@+id/hiveLine1"
-        android:layout_above="@+id/saveGeneralNotesButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:id="@+id/hiveLine2"
+        android:id="@+id/hiveLine"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -94,6 +85,6 @@
         layout="@layout/hive_note_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_above="@id/hiveLine" />
 
 </RelativeLayout>

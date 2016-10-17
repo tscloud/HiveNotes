@@ -10,7 +10,7 @@ import android.util.Log;
 /**
  * Created by tscloud on 10/17/15.
  */
-public class LogEntryProductivityDAO extends AbstactDAO {
+public class LogEntryProductivityDAO extends GraphableDAO {
 
     public static final String TAG = "LogEntryGeneralDAO";
 
@@ -35,8 +35,39 @@ public class LogEntryProductivityDAO extends AbstactDAO {
             COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP, COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP,
             COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED };
 
+    // Columns that require special processing
+    private String[] specialCols = {};
+
+    // --constructor--
     public LogEntryProductivityDAO(Context context) {
         super(context);
+    }
+
+    // --implement abstract--
+    @Override
+    protected String getTable() {
+        return TABLE_LOGENTRYPRODUCTIVITY;
+    }
+
+    @Override
+    protected String getColGraphKey() {
+        return COLUMN_LOGENTRYPRODUCTIVITY_HIVE;
+    }
+
+    @Override
+    protected String getColGraphDate() {
+        return COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE;
+    }
+
+    @Override
+    protected String[] getSpecialCols() {
+        return specialCols;
+    }
+
+    @Override
+    protected Double processSpecialCol(Cursor aCur) {
+        // there are no special cols
+        return null;
     }
 
     // --DB access methods--

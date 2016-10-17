@@ -15,6 +15,10 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/textLogDate"
+        android:paddingLeft="@dimen/list_horizontal_margin"
+        android:paddingRight="@dimen/list_horizontal_margin"
+        android:paddingTop="@dimen/list_vertical_margin"
+        android:paddingBottom="@dimen/list_vertical_margin"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

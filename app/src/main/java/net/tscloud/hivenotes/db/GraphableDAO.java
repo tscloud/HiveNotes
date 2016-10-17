@@ -23,7 +23,7 @@ public abstract class GraphableDAO extends AbstactDAO {
 
     protected abstract String getTable();
 
-    protected abstract String getColSnapshotDate();
+    protected abstract String getColGraphDate();
 
     protected abstract String getColGraphKey();
 
@@ -40,12 +40,12 @@ public abstract class GraphableDAO extends AbstactDAO {
                                                                   long aEndDate, long aKey)
             throws SQLException {
 
-        Cursor cursor = mDatabase.query(getTable(), new String[] { getColSnapshotDate(), aCol },
-                getColSnapshotDate() + " >= ? AND " + getColSnapshotDate() + " <= ? AND " +
+        Cursor cursor = mDatabase.query(getTable(), new String[] { getColGraphDate(), aCol },
+                getColGraphDate() + " >= ? AND " + getColGraphDate() + " <= ? AND " +
                         getColGraphKey() + " = ?",
                 new String[] { String.valueOf(aStartDate), String.valueOf(aEndDate),
                         String.valueOf(aKey) },
-                null, null, getColSnapshotDate() + " ASC");
+                null, null, getColGraphDate() + " ASC");
 
         TreeMap<Long, Double> reply = new TreeMap<>();
         if (cursor != null) {
@@ -121,6 +121,9 @@ public abstract class GraphableDAO extends AbstactDAO {
                 break;
             case "WeatherHistory":
                 reply = new WeatherHistoryDAO(aCtx);
+                break;
+            case "LogEntryProductivity":
+                reply = new LogEntryProductivityDAO(aCtx);
                 break;
         }
 
