@@ -310,12 +310,14 @@ public class GraphSelectionFragment extends Fragment {
         //  selected item String => save off the GraphableData to send
         //  back to the Actvity
         for ( ; !mSpinnerIdStack.isEmpty(); ) {
-            //View v = getView().findViewById(mSpinnerIdStack.removeFirst());
-            //Spinner s = (Spinner)v.findViewById(R.id.spinnerSelection);
             Spinner s = (Spinner)getView().findViewById(mSpinnerIdStack.removeFirst());
             for (GraphableData g : mGraphableDataList) {
                 if (g.getPrettyName().equals(s.getSelectedItem().toString())) {
-                    returnList.add(g);
+                    // Each Spinner has a tag indicating its position and in turn the
+                    //  position the related GraphableData's graph should inhabit
+                    //  in the GraphDisplayFragment. This position is indicated by
+                    //  the GraphableData's position w/in the ArrayList sent back to the Activity
+                    returnList.add(s.getTag(), g);
                     break;
                 }
             }
