@@ -301,7 +301,11 @@ public class GraphSelectionFragment extends Fragment {
     private void onGraphButtonPressed() {
         Log.d(TAG, "get ready to go back to Activity w/ data from this form");
 
-        List<GraphableData> returnList = new ArrayList<>();
+        // Have to do load the returnList to get it to the "size" (as opposed to "capacity") we want
+        //  otherwise we'll have an empty List & since we may be adding stuff at specific indecies...
+        int returnListCap = 4; //no ArrayList method that returns capacity
+        List<GraphableData> returnList = new ArrayList<>(returnListCap);
+        while(returnList.size() < returnListCap) returnList.add(null);
 
         final EditText edtGraphStartDate = (EditText)getView().findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText)getView().findViewById(R.id.editTextGraphEndDate);
@@ -317,7 +321,7 @@ public class GraphSelectionFragment extends Fragment {
                     //  position the related GraphableData's graph should inhabit
                     //  in the GraphDisplayFragment. This position is indicated by
                     //  the GraphableData's position w/in the ArrayList sent back to the Activity
-                    returnList.add(s.getTag(), g);
+                    returnList.set(Integer.parseInt((String)s.getTag()), g); //cockammamy cast
                     break;
                 }
             }

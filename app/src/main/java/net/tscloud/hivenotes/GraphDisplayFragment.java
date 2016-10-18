@@ -131,6 +131,8 @@ public class GraphDisplayFragment extends Fragment {
             //this can be null if, for instance, we want to display 1 upper and 1
             // lower graph
             if (data == null) {
+                //don't forget to increment the item counter
+                item++;
                 continue;
             }
 

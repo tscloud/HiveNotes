@@ -25,22 +25,22 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/graph2"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textTitle2"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="invisible"
-        android:layout_below="@+id/graph1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <com.jjoe64.graphview.GraphView
-        android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/graph2"
-        android:visibility="invisible"
-        android:layout_below="@+id/textTitle2"
+        android:layout_above="@+id/graph2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
