@@ -26,7 +26,8 @@
         android:text="@string/productivity_honey"
         android:layout_below="@+id/textProductivity"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
         android:id="@+id/linearLayoutSupersText"
@@ -112,7 +113,8 @@
         android:text="@string/productivity_pollen"
         android:layout_below="@+id/linearLayoutExtractedHoney"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <LinearLayout
         android:id="@+id/linearLayoutPollen"
