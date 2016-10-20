@@ -265,14 +265,17 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     public void hiveOtherToolClickHandler (View v) {
+        Toast.makeText(getApplicationContext(), R.string.na_msg, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "hiveOtherToolClickHandler called");
     }
 
     public void hiveProductionToolClickHandler (View v) {
+        Toast.makeText(getApplicationContext(), R.string.na_msg, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "hiveProductionToolClickHandler called");
     }
 
     public void hivePestToolClickHandler (View v) {
+        Toast.makeText(getApplicationContext(), R.string.na_msg, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "hivePestToolClickHandler called");
     }
 

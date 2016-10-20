@@ -131,11 +131,8 @@ public class LogEntryListFragment extends ListFragment {
         // Set up log date text view
         mTextViewLogDate = (TextView)v.findViewById(R.id.textLogDate);
 
-        // Initially set to current time
-        long time = setTextViewDate(-1);
-        Log.d(TAG, "Set to current Time (initial): " + time);
-        //set the activity's LogDate
-        mCallbacks.setActivityLogDate(time);
+        //set the activity's LogDate to current time
+        mCallbacks.setActivityLogDate(setTextViewDate(-1));
 
         mTextViewLogDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +151,7 @@ public class LogEntryListFragment extends ListFragment {
                             case R.id.itemEnterDate:
                                 // launch date/time picker
                                 onReminderPressed(mTextViewLogDate);
+                                Log.d(TAG, "mTextViewLogDate:Set to CHOSEN Time: " + (long)mTextViewLogDate.getTag());
                                 // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
                                 mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
                                 break;
@@ -167,13 +165,13 @@ public class LogEntryListFragment extends ListFragment {
                                 // set to current date
                                 long time = System.currentTimeMillis();
                                 calendar.setTimeInMillis(time);
-                                Log.d(TAG, "Set to current Time (menu): " + time);
 
                                 // label has a human readable value; tag has millis value for DB
                                 String timeString = dateFormat.format(calendar.getTime()) + ' ' +
                                         timeFormat.format(calendar.getTime());
                                 mTextViewLogDate.setText(timeString);
                                 mTextViewLogDate.setTag(time);
+                                Log.d(TAG, "mTextViewLogDate:Set to CURRENT Time: " + (long)mTextViewLogDate.getTag());
                                 // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
                                 mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
                                 break;
@@ -289,17 +287,18 @@ public class LogEntryListFragment extends ListFragment {
     private long setTextViewDate(long aTime) {
 
         if (aTime == -1) {
+            Log.d(TAG, "mTextViewLogDate:Initial Set - using current time: " + aTime);
             aTime = System.currentTimeMillis();
         }
-        // Initially set to current time
+
         calendar.setTimeInMillis(aTime);
-        Log.d(TAG, "Set to current Time: " + aTime);
 
         // label has a human readable value; tag has millis value for DB
         String timeString = dateFormat.format(calendar.getTime()) + ' ' +
                 timeFormat.format(calendar.getTime());
         mTextViewLogDate.setText(timeString);
         mTextViewLogDate.setTag(aTime);
+        Log.d(TAG, "mTextViewLogDate:Initial Set: " + aTime);
 
         return aTime;
     }
@@ -377,7 +376,6 @@ public class LogEntryListFragment extends ListFragment {
                 if (mTextViewLogDate != null) {
                     long time = data.getLongExtra(LogDateListActivity.INTENT_LOGENTRY_HISTORY_TIME, -1);
                     calendar.setTimeInMillis(time);
-                    Log.d(TAG, "Historic Time received: " + time);
 
                     // label has a human readable value; tag has millis value for DB
                     String timeString = dateFormat.format(calendar.getTime()) + ' ' +
@@ -385,6 +383,7 @@ public class LogEntryListFragment extends ListFragment {
                     mTextViewLogDate.setText(timeString + getResources().getString(R.string.existing));
                     mTextViewLogDate.setTag(time);
 
+                    Log.d(TAG, "mTextViewLogDate:Set to HISTORIC Time: " + (long)mTextViewLogDate.getTag(time));
                     // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
                     mCallbacks.setActivityLogDate(time);
                 }

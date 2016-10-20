@@ -312,7 +312,7 @@ public class GraphDisplayFragment extends Fragment {
              */
 
             /** RESTRICT total # of service calls/session **/
-            int GOV_THRESH = 30;
+            int GOV_THRESH = 10;
             int callCount = 0;
 
             //list of WeatherHistory DOs that we will be persisting later

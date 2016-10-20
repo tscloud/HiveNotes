@@ -178,10 +178,12 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     public void hiveProductionToolClickHandler (View v) {
+        Toast.makeText(getApplicationContext(), R.string.na_msg, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "hiveProductionToolClickHandler called");
     }
 
     public void hivePestToolClickHandler (View v) {
+        Toast.makeText(getApplicationContext(), R.string.na_msg, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "hivePestToolClickHandler called");
     }
 

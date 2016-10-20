@@ -346,6 +346,7 @@ public class LogGeneralNotesFragment extends LogFragment {
     protected LogEntryGeneral getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
         Log.d(TAG, "reading LogEntryGeneral table");
+        Log.d(TAG, "aKey: " + aKey + "....." + "aDate: " + aDate);
         LogEntryGeneralDAO logEntryGeneralDAO = new LogEntryGeneralDAO(getActivity());
         LogEntryGeneral reply = null;
 
@@ -357,6 +358,10 @@ public class LogGeneralNotesFragment extends LogFragment {
         }
 
         logEntryGeneralDAO.close();
+
+        if (reply != null) {
+            Log.d(TAG, "DO date: " + reply.getVisitDate);
+        }
 
         return reply;
     }
