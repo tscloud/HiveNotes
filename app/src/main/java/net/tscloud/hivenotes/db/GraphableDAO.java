@@ -48,12 +48,18 @@ public abstract class GraphableDAO extends AbstactDAO {
                 null, null, getColGraphDate() + " ASC");
 
         TreeMap<Long, Double> reply = new TreeMap<>();
+        Double retDouble = null;
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     // need to call a method w/ knowledge of the individual
                     //  column so that it can be converted to Double
-                    reply.put(cursor.getLong(0), scourToDouble(aCol, cursor));
+                    //1st need to check if query returned null
+                    // if so => just throw out that value <- is this OK?
+                    retDouble = scourToDouble(aCol, cursor);
+                    if (retDouble != null) {
+                        reply.put(cursor.getLong(0), retDouble);
+                    }
                     cursor.moveToNext();
                 }
             }
@@ -73,13 +79,18 @@ public abstract class GraphableDAO extends AbstactDAO {
         int PLACES = 2;
 
         try {
+            //--DEBUG--
+            //Log.d(TAG, "aCur.getType(1): " + aCur.getType(1));
             // What we're interested in will always be at pos 1
             if (isSpecialCol(aCol)) {
                 reply = processSpecialCol(aCur);
             }
+            else if (aCur.getType(1) == Cursor.FIELD_TYPE_NULL) {
+                // NOOP
+            }
             else if (aCur.getType(1) == Cursor.FIELD_TYPE_STRING) {
                 reply = new BigDecimal(Double.valueOf(aCur.getString(1)))
-                    .setScale(PLACES, RoundingMode.HALF_UP).doubleValue();
+                        .setScale(PLACES, RoundingMode.HALF_UP).doubleValue();
             }
             else if (aCur.getType(1) == Cursor.FIELD_TYPE_FLOAT) {
                 reply = new BigDecimal(Double.valueOf(aCur.getFloat(1)))

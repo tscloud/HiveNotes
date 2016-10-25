@@ -108,6 +108,7 @@ public class GraphDisplayFragment extends Fragment {
             mStartDate = getArguments().getLong(START_DATE);
             mEndDate = getArguments().getLong(END_DATE);
             mApiaryId = getArguments().getLong(APIARY_ID);
+            mHiveId = getArguments().getLong(HIVE_ID);
         }
     }
 
@@ -446,10 +447,24 @@ public class GraphDisplayFragment extends Fragment {
         private DataPoint[] doStandardDirective(GraphableData aData, long aApiary, long aHive,
                                               long aStartDate, long aEndDate) {
             Log.d(TAG, "RetrieveDataTask : doStandardDirective()");
+
             // use DAOs that extend GraphableDAO - no need to know anything else about the data
             GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
+
+            // determine which key to use (Apiary, Hive, ..)
+            long readKey = 0;
+            switch (aData.getKeyLevel()) {
+                case "A":
+                    readKey = aApiary;
+                    break;
+                case "H":
+                    readKey = aHive;
+                    break;
+            }
+
+            // do the read
             TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
-                    aStartDate, aEndDate, aApiary);
+                    aStartDate, aEndDate, readKey);
             myDAO.close();
 
             return makePointArray(daoReply);

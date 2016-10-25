@@ -350,6 +350,8 @@ public class GraphSelectionFragment extends Fragment {
             try {
                 startTime = sdf.parse(edtGraphStartDate.getText().toString()).getTime();
                 endTime = sdf.parse(edtGraphEndDate.getText().toString()).getTime();
+                //add # of millis in a day to make the end date inclusive
+                endTime = endTime + 86400000;
             }
             catch (ParseException e) {
                 String parseProb = "Parse Error encountered on start/end date";

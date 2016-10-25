@@ -360,7 +360,7 @@ public class LogGeneralNotesFragment extends LogFragment {
         logEntryGeneralDAO.close();
 
         if (reply != null) {
-            Log.d(TAG, "DO date: " + reply.getVisitDate);
+            Log.d(TAG, "DO date: " + reply.getVisitDate());
         }
 
         return reply;

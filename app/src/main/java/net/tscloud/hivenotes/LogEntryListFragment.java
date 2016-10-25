@@ -151,9 +151,6 @@ public class LogEntryListFragment extends ListFragment {
                             case R.id.itemEnterDate:
                                 // launch date/time picker
                                 onReminderPressed(mTextViewLogDate);
-                                Log.d(TAG, "mTextViewLogDate:Set to CHOSEN Time: " + (long)mTextViewLogDate.getTag());
-                                // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
-                                mCallbacks.setActivityLogDate((long)mTextViewLogDate.getTag());
                                 break;
                             case R.id.itemSelectDate:
                                 // launch LogDateListActivity
@@ -326,13 +323,16 @@ public class LogEntryListFragment extends ListFragment {
                         timePicker.getCurrentMinute());
 
                 long time = calendar.getTimeInMillis();
-                Log.d(TAG, "Time picked: " + time);
 
                 // label has a human readable value; tag has millis value for DB
                 String timeString = dateFormat.format(calendar.getTime()) + ' ' +
                         timeFormat.format(calendar.getTime());
                 timeLbl.setText(timeString);
                 timeLbl.setTag(time);
+
+                Log.d(TAG, "mTextViewLogDate:Set to CHOSEN Time: " + (long)timeLbl.getTag());
+                // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
+                mCallbacks.setActivityLogDate((long)timeLbl.getTag());
 
                 alertDialog.dismiss();
             }
@@ -383,7 +383,7 @@ public class LogEntryListFragment extends ListFragment {
                     mTextViewLogDate.setText(timeString + getResources().getString(R.string.existing));
                     mTextViewLogDate.setTag(time);
 
-                    Log.d(TAG, "mTextViewLogDate:Set to HISTORIC Time: " + (long)mTextViewLogDate.getTag(time));
+                    Log.d(TAG, "mTextViewLogDate:Set to HISTORIC Time: " + (long)mTextViewLogDate.getTag());
                     // IMPORTANT: set the Activity's log date so it can be used thoughout the universe
                     mCallbacks.setActivityLogDate(time);
                 }

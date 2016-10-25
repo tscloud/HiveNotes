@@ -362,6 +362,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
     @Override
     public void setActivityLogDate(long aLogDate) {
+        Log.d(TAG, "setActivityLogDate:mLogDate: " + aLogDate);
         mLogDate = aLogDate;
         // Do we need to do this every time we set mLogDate?
         mLogEntryGeneralData = null;
