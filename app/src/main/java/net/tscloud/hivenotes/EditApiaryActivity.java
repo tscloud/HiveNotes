@@ -45,12 +45,15 @@ public class EditApiaryActivity extends AppCompatActivity implements
 
     @Override
     public void onEditApiaryFragmentInteraction(Apiary aApiary) {
-        Log.d(TAG, "...update Apiary - return to MainActivity");
+        Log.d(TAG, "...update Apiary - return to MainActivity/EditHiveActivity");
 
-        Intent data = new Intent();
-        Bundle bundleData = new Bundle();
-        bundleData.putParcelable(INTENT_APIARY_DATA, aApiary);
-        data.putExtras(bundleData);
+        Intent data = null;
+        if (aApiary != null) {
+            data = new Intent();
+            Bundle bundleData = new Bundle();
+            bundleData.putParcelable(INTENT_APIARY_DATA, aApiary);
+            data.putExtras(bundleData);
+        }
         setResult(RESULT_OK, data);
         finish();
     }

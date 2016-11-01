@@ -46,7 +46,7 @@ public class EditHiveActivity extends AppCompatActivity implements
     private static final int HIVE_SINGLE_REQ_CODE = 9;
     private static final int APIARY_REQ_CODE = 10;
 
-    private long mApiaryKey;
+    private long mApiaryKey = -1;
     private List<Hive> mHiveList;
     private Apiary mApiary;
 
@@ -250,21 +250,33 @@ public class EditHiveActivity extends AppCompatActivity implements
         switch (requestCode) {
             case (APIARY_REQ_CODE):
                 // if we are returning from editing the Apiary => reset our member var
+                //  throw up EditHiveListFragment
                 if (data != null) {
                     Bundle bundleData = data.getExtras();
                     if (bundleData.keySet().contains(EditApiaryActivity.INTENT_APIARY_DATA)) {
-                        Log.d(TAG, "received LogEntryGeneral data object");
+                        Log.d(TAG, "received Apiary data object");
                         mApiary = bundleData.getParcelable(EditApiaryActivity.INTENT_APIARY_DATA);
+                        if (mApiary != null) {
+                            mApiaryKey = mApiary.getId();
+                        }
+                        else {
+                            mApiaryKey = -1;
+                        }
                     }
+                    //Create List Fragment and present
+                    Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
+                    getSupportFragmentManager().beginTransaction()
+                            //.addToBackStack(null)
+                            .replace(R.id.hive_list_container, listFrag)
+                            .commit();
+                }
+                else {
+                    // if we are returning from deleting the Apiary => reset our member var
+                    //  do what would happen if back button pressed
+                    mApiary = null;
+                    this.onBackPressed();
                 }
         }
-
-        //Create List Fragment and present
-        Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
-        getSupportFragmentManager().beginTransaction()
-                //.addToBackStack(null)
-                .replace(R.id.hive_list_container, listFrag)
-                .commit();
     }
 
     @Override
@@ -285,7 +297,7 @@ public class EditHiveActivity extends AppCompatActivity implements
         FragmentManager fm = getSupportFragmentManager();
         int count = fm.getBackStackEntryCount();
 
-        if (count == 0) {
+        if (count != 0) {
             for (int i=0; i<count; i++) {
                 FragmentManager.BackStackEntry backEntry = fm.getBackStackEntryAt(i);
                 Log.d(TAG, "onBackPressed(): backEntry name: " + backEntry.getName());

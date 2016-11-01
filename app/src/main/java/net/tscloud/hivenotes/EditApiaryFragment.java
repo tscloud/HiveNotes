@@ -294,7 +294,8 @@ public class EditApiaryFragment extends Fragment implements
         apiaryDAO.close();
 
         if (mListener != null) {
-            mListener.onEditApiaryFragmentInteraction(apiary);
+            // return w/ null => this indicates a delete as apposed to an update
+            mListener.onEditApiaryFragmentInteraction(null);
         }
     }
 
