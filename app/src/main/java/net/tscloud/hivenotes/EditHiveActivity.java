@@ -249,8 +249,14 @@ public class EditHiveActivity extends AppCompatActivity implements
 
         switch (requestCode) {
             case (APIARY_REQ_CODE):
-                // if we are returning from editing the Apiary => reset our member var
-                //  throw up EditHiveListFragment
+                boolean doBackPressed = true;
+
+                // Intent <- Bundle <- Parcelable (Apiary)
+                // 3 scenarios:
+                //  Intent is null => back button pressed => present Home
+                //  Parcelable (Apiary) is null => Apiary deleted => present Home
+                //  Parcelable (Apiary) is not null => Apiary updated => present HiveList
+
                 if (data != null) {
                     Bundle bundleData = data.getExtras();
                     if (bundleData.keySet().contains(EditApiaryActivity.INTENT_APIARY_DATA)) {
@@ -258,24 +264,28 @@ public class EditHiveActivity extends AppCompatActivity implements
                         mApiary = bundleData.getParcelable(EditApiaryActivity.INTENT_APIARY_DATA);
                         if (mApiary != null) {
                             mApiaryKey = mApiary.getId();
+                            doBackPressed = false;
                         }
                         else {
                             mApiaryKey = -1;
                         }
                     }
-                    //Create List Fragment and present
+                }
+
+                if (doBackPressed) {
+                    // do what would happen if back button pressed
+                    mApiary = null;
+                    this.onBackPressed();
+                }
+                else {
+                    // create List Fragment and present
                     Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
                     getSupportFragmentManager().beginTransaction()
                             //.addToBackStack(null)
                             .replace(R.id.hive_list_container, listFrag)
                             .commit();
                 }
-                else {
-                    // if we are returning from deleting the Apiary => reset our member var
-                    //  do what would happen if back button pressed
-                    mApiary = null;
-                    this.onBackPressed();
-                }
+            }
         }
     }
 

@@ -211,9 +211,9 @@ public class EditApiaryFragment extends Fragment implements
 
             /** Before we write the Apiary, we need zip/latlon checks
              *   if lat/lon => geocode to get zip potentially overwriting an
-             *    existing zip <- these need to match at weather data will be
-             *    got be lat/lon (it may be more accurate) but pollen data can
-             *    only be got be zip
+             *    existing zip <- these need to match as weather data will be
+             *    got by lat/lon (it may be more accurate) but pollen data can
+             *    only be got by zip
              *   if zip & no lat/lon => geocode to get lat/lon <- technically not
              *    necessary but we can consistently retrieve weather by lat/lon
              */
