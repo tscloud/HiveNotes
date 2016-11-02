@@ -134,13 +134,7 @@ public class LogOtherFragment extends LogFragment {
             //do Reminders
 
             // If we have a time --> use it...
-            //  it could be -2 indicating that an UNSET operation has occurred
-            if (mLogEntryOther.getRequeenRmndrTime() == -2) {
-                requeenRmndrText.setText(R.string.other_requeen_rmndr);
-                // don't forget to set the tag
-                requeenRmndrText.setTag(mLogEntryOther.getRequeenRmndrTime());
-            }
-            else if (mLogEntryOther.getRequeenRmndrTime() != -1) {
+            if (mLogEntryOther.getRequeenRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryOther.getRequeenRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
                 String droneTime = timeFormat.format(calendar.getTime());
@@ -150,12 +144,7 @@ public class LogOtherFragment extends LogFragment {
                 requeenRmndrText.setTag(mLogEntryOther.getRequeenRmndrTime());
             }
 
-            if (mLogEntryOther.getSwarmRmndrTime() == -2) {
-                swarmRmndrText.setText(R.string.no_reminder_set);
-                // don't forget to set the tag
-                swarmRmndrText.setTag(mLogEntryOther.getSwarmRmndrTime());
-            }
-            else if (mLogEntryOther.getSwarmRmndrTime() != -1) {
+            if (mLogEntryOther.getSwarmRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryOther.getSwarmRmndrTime());
                 String swarmDate = dateFormat.format(calendar.getTime());
                 String swarmTime = timeFormat.format(calendar.getTime());
@@ -165,12 +154,7 @@ public class LogOtherFragment extends LogFragment {
                 swarmRmndrText.setTag(mLogEntryOther.getSwarmRmndrTime());
             }
 
-            if (mLogEntryOther.getSplitHiveRmndrTime() == -2) {
-                splitHiveRmndrText.setText(R.string.other_split_hive_rmndr);
-                // don't forget to set the tag
-                splitHiveRmndrText.setTag(mLogEntryOther.getSplitHiveRmndrTime());
-            }
-            else if (mLogEntryOther.getSplitHiveRmndrTime() != -1) {
+            if (mLogEntryOther.getSplitHiveRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryOther.getSplitHiveRmndrTime());
                 String splitHiveDate = dateFormat.format(calendar.getTime());
                 String splitHiveTime = timeFormat.format(calendar.getTime());
@@ -182,8 +166,6 @@ public class LogOtherFragment extends LogFragment {
         }
 
         // ...Otherwise --> spin up a task to get and set
-        //  this check need be made regardless of nullness of DO -> Reminders are at the Hive level and may exist
-        //   even if a log entry has not been made yet
         if ((mLogEntryOther == null) || (mLogEntryOther.getRequeenRmndrTime() == -1)) {
             //disable the button until task is thru
             requeenRmndrBtn.setEnabled(false);
@@ -352,8 +334,7 @@ public class LogOtherFragment extends LogFragment {
                         timeLbl.setText(R.string.other_split_hive_rmndr);
                         break;
                 }
-                // IMPORTANT: -2 indicator of occurrence of UNSET operation
-                timeLbl.setTag((long)-2);
+                timeLbl.setTag((long)-1);
 
                 alertDialog.dismiss();
             }

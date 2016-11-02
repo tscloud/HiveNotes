@@ -247,45 +247,43 @@ public class EditHiveActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        boolean doBackPressed = false;
+
         switch (requestCode) {
             case (APIARY_REQ_CODE):
-                boolean doBackPressed = true;
-
                 // Intent <- Bundle <- Parcelable (Apiary)
-                // 3 scenarios:
+                // 3 Apiary scenarios (present HiveList if not coming back from Apiary):
                 //  Intent is null => back button pressed => present Home
                 //  Parcelable (Apiary) is null => Apiary deleted => present Home
                 //  Parcelable (Apiary) is not null => Apiary updated => present HiveList
-
                 if (data != null) {
                     Bundle bundleData = data.getExtras();
                     if (bundleData.keySet().contains(EditApiaryActivity.INTENT_APIARY_DATA)) {
                         Log.d(TAG, "received Apiary data object");
                         mApiary = bundleData.getParcelable(EditApiaryActivity.INTENT_APIARY_DATA);
-                        if (mApiary != null) {
-                            mApiaryKey = mApiary.getId();
-                            doBackPressed = false;
-                        }
-                        else {
+                        //this should be an Apiary delete
+                        if (mApiary == null) {
                             mApiaryKey = -1;
+                            doBackPressed = true;
                         }
                     }
                 }
-
-                if (doBackPressed) {
-                    // do what would happen if back button pressed
-                    mApiary = null;
-                    this.onBackPressed();
-                }
                 else {
-                    // create List Fragment and present
-                    Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
-                    getSupportFragmentManager().beginTransaction()
-                            //.addToBackStack(null)
-                            .replace(R.id.hive_list_container, listFrag)
-                            .commit();
+                    doBackPressed = true;
                 }
-            }
+        }
+
+        if (doBackPressed) {
+            // do what would happen if back button pressed
+            this.onBackPressed();
+        }
+        else {
+            // create List Fragment and present
+            Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
+            getSupportFragmentManager().beginTransaction()
+                    //.addToBackStack(null)
+                    .replace(R.id.hive_list_container, listFrag)
+                    .commit();
         }
     }
 

@@ -55,6 +55,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            db.execSQL("PRAGMA foreign_keys=ON;");
+        }
+    }
+
     protected void execSqlFile(String sqlFile, SQLiteDatabase db) throws SQLException, IOException {
         Log.d(TAG, "  exec sql file: " + sqlFile);
         for( String sqlInstruction : SqlParser.parseSqlFile(SQL_DIR + "/" + sqlFile, this.context.getAssets())) {

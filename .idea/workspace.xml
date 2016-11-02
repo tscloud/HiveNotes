@@ -87,15 +87,16 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" line="213" />
     <bookmark url="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" line="232" />
+    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java" line="339" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ca4e5e2-3ed5-48e4-9429-4e5b4b4764ee" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogOtherFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogOtherFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogPestMgmtFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogPestMgmtFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/MyDBHandler.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/MyDBHandler.java" />
     </list>
     <ignored path="HiveNotes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -134,18 +135,18 @@
           <file leaf-file-name="create.sql" pinned="true" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/assets/sql/create.sql">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="211">
-                  <caret line="223" column="25" selection-start-line="223" selection-start-column="25" selection-end-line="223" selection-end-column="25" />
+                <state relative-caret-position="729">
+                  <caret line="59" column="100" selection-start-line="59" selection-start-column="83" selection-end-line="59" selection-end-column="100" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="LogEntryListActivity.java" pinned="true" current-in-tab="false">
+          <file leaf-file-name="LogEntryListActivity.java" pinned="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="8802">
-                  <caret line="364" column="63" selection-start-line="364" selection-start-column="63" selection-end-line="364" selection-end-column="63" />
+                <state relative-caret-position="336">
+                  <caret line="561" column="68" selection-start-line="561" selection-start-column="68" selection-end-line="561" selection-end-column="68" />
                   <folding />
                 </state>
               </provider>
@@ -154,46 +155,19 @@
           <file leaf-file-name="LogEntryListFragment.java" pinned="true" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1195">
+                <state relative-caret-position="8289">
                   <caret line="334" column="59" selection-start-line="334" selection-start-column="59" selection-end-line="334" selection-end-column="59" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="LogDateListActivity.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogDateListActivity.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1377">
-                  <caret line="62" column="35" selection-start-line="62" selection-start-column="35" selection-end-line="62" selection-end-column="35" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="GraphDisplayFragment.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="11205">
-                  <caret line="452" column="0" selection-start-line="452" selection-start-column="0" selection-end-line="452" selection-end-column="0" />
-                  <folding>
-                    <element signature="imports" expanded="false" />
-                    <element signature="e#7579#7580#0" expanded="false" />
-                    <element signature="e#7625#7626#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="EditApiaryFragment.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="EditApiaryFragment.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="547">
+                <state relative-caret-position="196">
                   <caret line="295" column="0" selection-start-line="295" selection-start-column="0" selection-end-line="295" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#15562#15563#0" expanded="true" />
-                    <element signature="e#15609#15610#0" expanded="true" />
-                  </folding>
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -201,25 +175,9 @@
           <file leaf-file-name="EditApiaryActivity.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1204">
-                  <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+                <state relative-caret-position="1188">
+                  <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
                   <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="EditHiveListFragment.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1441">
-                  <caret line="100" column="32" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
-                  <folding>
-                    <element signature="e#3582#3606#0" expanded="true" />
-                    <element signature="e#3676#3705#0" expanded="true" />
-                    <element signature="e#3878#3901#0" expanded="true" />
-                    <element signature="e#3878#3901#0" expanded="true" />
-                    <element signature="e#3972#3995#0" expanded="true" />
-                  </folding>
                 </state>
               </provider>
             </entry>
@@ -227,8 +185,77 @@
           <file leaf-file-name="EditHiveActivity.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1081">
-                  <caret line="274" column="49" selection-start-line="274" selection-start-column="49" selection-end-line="274" selection-end-column="49" />
+                <state relative-caret-position="-1636">
+                  <caret line="251" column="0" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LogOtherFragment.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogOtherFragment.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="5454">
+                  <caret line="328" column="30" selection-start-line="328" selection-start-column="30" selection-end-line="328" selection-end-column="30" />
+                  <folding>
+                    <element signature="e#9218#9380#0" expanded="true" />
+                    <element signature="e#9379#9380#0" expanded="true" />
+                    <element signature="e#9427#9596#0" expanded="true" />
+                    <element signature="e#9595#9596#0" expanded="true" />
+                    <element signature="e#9641#9808#0" expanded="true" />
+                    <element signature="e#9807#9808#0" expanded="true" />
+                    <element signature="e#9857#10028#0" expanded="true" />
+                    <element signature="e#10027#10028#0" expanded="true" />
+                    <element signature="e#12154#13212#0" expanded="true" />
+                    <element signature="e#13211#13212#0" expanded="true" />
+                    <element signature="e#13289#14154#0" expanded="true" />
+                    <element signature="e#13668#13696#0" expanded="true" />
+                    <element signature="e#13816#13842#0" expanded="true" />
+                    <element signature="e#13966#13997#0" expanded="true" />
+                    <element signature="e#14153#14154#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LogPestMgmtFragment.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogPestMgmtFragment.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="621">
+                  <caret line="154" column="13" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#4330#4376#0" expanded="true" />
+                    <element signature="e#9410#9576#0" expanded="true" />
+                    <element signature="e#9575#9576#0" expanded="true" />
+                    <element signature="e#9624#9889#0" expanded="true" />
+                    <element signature="e#9888#9889#0" expanded="true" />
+                    <element signature="e#9935#10108#0" expanded="true" />
+                    <element signature="e#10107#10108#0" expanded="true" />
+                    <element signature="e#14221#15278#0" expanded="true" />
+                    <element signature="e#15277#15278#0" expanded="true" />
+                    <element signature="e#15355#15706#0" expanded="true" />
+                    <element signature="e#15574#15598#0" expanded="true" />
+                    <element signature="e#15705#15706#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="EditHiveSingleFragment.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveSingleFragment.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-3294">
+                  <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="EditHiveSingleActivity.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveSingleActivity.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-216">
+                  <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
                   <folding />
                 </state>
               </provider>
@@ -241,7 +268,7 @@
           <file leaf-file-name="fragment_home.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1641">
+                <state relative-caret-position="1836">
                   <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
                   <folding />
                 </state>
@@ -293,7 +320,7 @@
           <file leaf-file-name="fragment_log_feeding_notes.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_feeding_notes.xml">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="295">
+                <state relative-caret-position="1755">
                   <caret line="65" column="17" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="17" />
                   <folding />
                 </state>
@@ -303,15 +330,49 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="HiveDeleteDialog.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="HiveDeleteDialog.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveDeleteDialog.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1188">
+                <state relative-caret-position="1134">
                   <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
                   <folding>
-                    <element signature="e#1055#1440#0" expanded="true" />
-                    <element signature="e#1439#1440#0" expanded="true" />
+                    <element signature="imports" expanded="false" />
+                    <element signature="e#1527#1861#0" expanded="false" />
+                    <element signature="e#1860#1861#0" expanded="false" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="HiveWeather.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="416">
+                  <caret line="227" column="0" selection-start-line="227" selection-start-column="0" selection-end-line="227" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="GraphDisplayFragment.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="537">
+                  <caret line="391" column="26" selection-start-line="391" selection-start-column="26" selection-end-line="391" selection-end-column="26" />
+                  <folding>
+                    <element signature="e#8241#8295#0" expanded="true" />
+                    <element signature="e#9480#9517#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="MyDBHandler.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/MyDBHandler.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1069">
+                  <caret line="55" column="5" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -2046,8 +2107,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_graph.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/graph_selector.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/GraphableData.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/GraphableDataDAO.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/AbstactDAO.java" />
@@ -2057,7 +2116,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherHistoryDAO.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogOtherFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/WeatherHistory.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HivePollen.java" />
@@ -2091,12 +2149,15 @@
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListFragment.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphSelectionFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/GraphableDAO.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/MyDBHandler.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogPestMgmtFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogOtherFragment.java" />
       </list>
     </option>
   </component>
@@ -2179,17 +2240,8 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HiveNotes" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -2360,7 +2412,80 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HiveNotes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HiveNotes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HiveNotes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HiveNotes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hivenotes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HiveNotes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="hivenotes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2807,13 +2932,6 @@
       <option name="presentableId" value="Default" />
       <updated>1439340940336</updated>
     </task>
-    <task id="LOCAL-00085" summary="Finish updateDB AsynchTask.">
-      <created>1463274056797</created>
-      <option name="number" value="00085" />
-      <option name="presentableId" value="LOCAL-00085" />
-      <option name="project" value="LOCAL" />
-      <updated>1463274056798</updated>
-    </task>
     <task id="LOCAL-00086" summary="Store dates as long.  Start LogDateList.">
       <created>1463372816737</created>
       <option name="number" value="00086" />
@@ -3150,7 +3268,14 @@
       <option name="project" value="LOCAL" />
       <updated>1477364917108</updated>
     </task>
-    <option name="localTasksCounter" value="134" />
+    <task id="LOCAL-00134" summary="Working on returning properly from apiary delete.">
+      <created>1477974856214</created>
+      <option name="number" value="00134" />
+      <option name="presentableId" value="LOCAL-00134" />
+      <option name="project" value="LOCAL" />
+      <updated>1477974856215</updated>
+    </task>
+    <option name="localTasksCounter" value="135" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -3169,7 +3294,7 @@
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16755037" sideWeight="0.5080386" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3257329" sideWeight="0.5066278" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36950624" sideWeight="0.48992577" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36950624" sideWeight="0.48992577" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -3177,18 +3302,17 @@
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32952735" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28323385" sideWeight="0.49893954" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32918245" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881173" sideWeight="0.4925532" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881173" sideWeight="0.4925532" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297929" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34563214" sideWeight="0.4917553" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31578946" sideWeight="0.49045599" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32826912" sideWeight="0.4989356" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31578946" sideWeight="0.49045599" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32826912" sideWeight="0.4989356" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295334" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28857607" sideWeight="0.5010604" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16861391" sideWeight="0.5020048" order="7" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32555616" sideWeight="0.4949468" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32555616" sideWeight="0.4949468" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
@@ -3201,7 +3325,8 @@
       <window_info id="Assistant" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297929" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934173" sideWeight="0.49893618" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914162" sideWeight="0.49281916" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297929" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914162" sideWeight="0.49281916" order="10" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -3254,7 +3379,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="GraphS displaying." />
     <MESSAGE value="Introduce DAO class hierarchy." />
     <MESSAGE value="Fix last changes." />
     <MESSAGE value="WeatherHistory and graphing." />
@@ -3279,26 +3403,15 @@
     <MESSAGE value="Get 4 graphs and 2 grids working" />
     <MESSAGE value="Log fragment tweaking." />
     <MESSAGE value="When graphing, throw out null values; be sure to pass hive as well as apiary to graphdisplay and use accordingly; up end graph date bound to make specified date inclusive; fix set chosen log date." />
-    <option name="LAST_COMMIT_MESSAGE" value="When graphing, throw out null values; be sure to pass hive as well as apiary to graphdisplay and use accordingly; up end graph date bound to make specified date inclusive; fix set chosen log date." />
+    <MESSAGE value="Working on returning properly from apiary delete." />
+    <option name="LAST_COMMIT_MESSAGE" value="Working on returning properly from apiary delete." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java</url>
-          <line>249</line>
-          <properties />
-          <option name="timeStamp" value="337" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java</url>
-          <line>295</line>
-          <properties />
-          <option name="timeStamp" value="339" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java</url>
-          <line>47</line>
+          <line>44</line>
           <properties />
           <option name="timeStamp" value="340" />
         </line-breakpoint>
@@ -3316,46 +3429,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_edit_apiary.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_apiary.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3375">
-          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_single_hive.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3645">
-          <caret line="135" column="51" selection-start-line="135" selection-start-column="51" selection-end-line="135" selection-end-column="51" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_edit_profile.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2349">
-          <caret line="87" column="39" selection-start-line="87" selection-start-column="39" selection-end-line="87" selection-end-column="39" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/pest_icon.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -3443,13 +3516,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2916">
-          <caret line="134" column="26" selection-start-line="134" selection-start-column="26" selection-end-line="134" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_general_notes.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6642">
@@ -3458,13 +3524,6 @@
       </provider>
       <provider editor-type-id="android-designer2">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveSingleActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_graph_display.xml">
@@ -3540,7 +3599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8640">
           <caret line="347" column="0" selection-start-line="347" selection-start-column="0" selection-end-line="347" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3564,14 +3622,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
           <caret line="291" column="0" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8802">
-          <caret line="364" column="63" selection-start-line="364" selection-start-column="63" selection-end-line="364" selection-end-column="63" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3599,7 +3649,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1641">
+        <state relative-caret-position="1836">
           <caret line="68" column="0" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
           <folding />
         </state>
@@ -3660,29 +3710,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8478">
           <caret line="353" column="45" selection-start-line="353" selection-start-column="45" selection-end-line="353" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#6374#6375#0" expanded="false" />
-            <element signature="e#6442#6443#0" expanded="false" />
-            <element signature="e#6591#6592#0" expanded="false" />
-            <element signature="e#6657#6658#0" expanded="false" />
-            <element signature="e#6799#6800#0" expanded="false" />
-            <element signature="e#6853#6854#0" expanded="false" />
-            <element signature="e#18531#18532#0" expanded="false" />
-            <element signature="e#18590#18591#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11205">
-          <caret line="452" column="0" selection-start-line="452" selection-start-column="0" selection-end-line="452" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#7579#7580#0" expanded="false" />
-            <element signature="e#7625#7626#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3690,14 +3717,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1377">
           <caret line="62" column="35" selection-start-line="62" selection-start-column="35" selection-end-line="62" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sql/create.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="223" column="25" selection-start-line="223" selection-start-column="25" selection-end-line="223" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -3714,13 +3733,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="416">
           <caret line="1066" column="0" selection-start-line="1066" selection-start-column="0" selection-end-line="1066" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_feeding_notes.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
+        <state relative-caret-position="1755">
           <caret line="65" column="17" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="17" />
           <folding />
         </state>
@@ -3731,7 +3749,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1195">
+        <state relative-caret-position="8289">
           <caret line="334" column="59" selection-start-line="334" selection-start-column="59" selection-end-line="334" selection-end-column="59" />
           <folding />
         </state>
@@ -3741,59 +3759,156 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="416">
           <caret line="156" column="0" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveDeleteDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1188">
+        <state relative-caret-position="1134">
           <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
           <folding>
-            <element signature="e#1055#1440#0" expanded="true" />
-            <element signature="e#1439#1440#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#1527#1861#0" expanded="false" />
+            <element signature="e#1860#1861#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveListFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1441">
+        <state relative-caret-position="2241">
           <caret line="100" column="32" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
           <folding>
-            <element signature="e#3582#3606#0" expanded="true" />
-            <element signature="e#3676#3705#0" expanded="true" />
-            <element signature="e#3878#3901#0" expanded="true" />
-            <element signature="e#3878#3901#0" expanded="true" />
-            <element signature="e#3972#3995#0" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1081">
-          <caret line="274" column="49" selection-start-line="274" selection-start-column="49" selection-end-line="274" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1204">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+        <state relative-caret-position="1188">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="227" column="0" selection-start-line="227" selection-start-column="0" selection-end-line="227" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveSingleFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3294">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveSingleActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-216">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="537">
+          <caret line="391" column="26" selection-start-line="391" selection-start-column="26" selection-end-line="391" selection-end-column="26" />
+          <folding>
+            <element signature="e#8241#8295#0" expanded="true" />
+            <element signature="e#9480#9517#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sql/create.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="729">
+          <caret line="59" column="100" selection-start-line="59" selection-start-column="83" selection-end-line="59" selection-end-column="100" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditApiaryFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="547">
+        <state relative-caret-position="196">
           <caret line="295" column="0" selection-start-line="295" selection-start-column="0" selection-end-line="295" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1636">
+          <caret line="251" column="0" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/db/MyDBHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1069">
+          <caret line="55" column="5" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogPestMgmtFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="154" column="13" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="13" />
           <folding>
-            <element signature="e#15562#15563#0" expanded="true" />
-            <element signature="e#15609#15610#0" expanded="true" />
+            <element signature="e#4330#4376#0" expanded="true" />
+            <element signature="e#9410#9576#0" expanded="true" />
+            <element signature="e#9575#9576#0" expanded="true" />
+            <element signature="e#9624#9889#0" expanded="true" />
+            <element signature="e#9888#9889#0" expanded="true" />
+            <element signature="e#9935#10108#0" expanded="true" />
+            <element signature="e#10107#10108#0" expanded="true" />
+            <element signature="e#14221#15278#0" expanded="true" />
+            <element signature="e#15277#15278#0" expanded="true" />
+            <element signature="e#15355#15706#0" expanded="true" />
+            <element signature="e#15574#15598#0" expanded="true" />
+            <element signature="e#15705#15706#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogOtherFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5454">
+          <caret line="328" column="30" selection-start-line="328" selection-start-column="30" selection-end-line="328" selection-end-column="30" />
+          <folding>
+            <element signature="e#9218#9380#0" expanded="true" />
+            <element signature="e#9379#9380#0" expanded="true" />
+            <element signature="e#9427#9596#0" expanded="true" />
+            <element signature="e#9595#9596#0" expanded="true" />
+            <element signature="e#9641#9808#0" expanded="true" />
+            <element signature="e#9807#9808#0" expanded="true" />
+            <element signature="e#9857#10028#0" expanded="true" />
+            <element signature="e#10027#10028#0" expanded="true" />
+            <element signature="e#12154#13212#0" expanded="true" />
+            <element signature="e#13211#13212#0" expanded="true" />
+            <element signature="e#13289#14154#0" expanded="true" />
+            <element signature="e#13668#13696#0" expanded="true" />
+            <element signature="e#13816#13842#0" expanded="true" />
+            <element signature="e#13966#13997#0" expanded="true" />
+            <element signature="e#14153#14154#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogEntryListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="561" column="68" selection-start-line="561" selection-start-column="68" selection-end-line="561" selection-end-column="68" />
+          <folding />
         </state>
       </provider>
     </entry>

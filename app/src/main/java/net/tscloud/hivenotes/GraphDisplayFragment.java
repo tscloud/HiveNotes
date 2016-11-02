@@ -400,15 +400,21 @@ public class GraphDisplayFragment extends Fragment {
                                           GraphableData aGraphableData) {
             Log.d(TAG, "RetrieveDataTask : performWeatherHistory()");
 
-            //call the weather service
-            WeatherHistory newWeatherHistory = getWeatherHistoryForDay(aDate);
-            //set the apiary
-            newWeatherHistory.setApiary(aApiary);
-            aCallCount++;
-            //add the result to the list
-            aListWeatherHistory.add(newWeatherHistory);
-            //update data to be graphed
-            aDaoReply.put(aDate, newWeatherHistory.getCol(aGraphableData.getColumn()));
+            if (aDate > HiveUtil.alignDateToMidnight(System.currentTimeMillis())) {
+                Log.d(TAG, "RetrieveDataTask : date > today...ignoring");
+            }
+            else {
+                Log.d(TAG, "RetrieveDataTask : date < today...processing");
+                //call the weather service
+                WeatherHistory newWeatherHistory = getWeatherHistoryForDay(aDate);
+                //set the apiary
+                newWeatherHistory.setApiary(aApiary);
+                aCallCount++;
+                //add the result to the list
+                aListWeatherHistory.add(newWeatherHistory);
+                //update data to be graphed
+                aDaoReply.put(aDate, newWeatherHistory.getCol(aGraphableData.getColumn()));
+            }
 
             return aCallCount;
         }
