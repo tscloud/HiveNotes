@@ -159,7 +159,7 @@ public class EditHiveActivity extends AppCompatActivity implements
      *        Fragment defined interface specifying these methods not really necessary
      *        but we'll keep it around.
      */
-   public void hiveFeedingToolClickHandler (View v) {
+    public void hiveFeedingToolClickHandler (View v) {
         // means we want to make a new Hive
         Log.d(TAG, "hiveFeedingToolClickHandler called");
         onEditHiveListFragmentCreateHive(-1);
@@ -178,7 +178,8 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     public void hiveProductionToolClickHandler (View v) {
-        Toast.makeText(getApplicationContext(), R.string.na_msg, Toast.LENGTH_SHORT).show();
+        // means we want do some exporting
+        Toast.makeText(getApplicationContext(), "Export function not yet implemented", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "hiveProductionToolClickHandler called");
     }
 

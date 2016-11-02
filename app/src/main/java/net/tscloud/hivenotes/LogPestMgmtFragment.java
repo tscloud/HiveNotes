@@ -144,6 +144,12 @@ public class LogPestMgmtFragment extends LogFragment {
             // do Reminders
 
             // If we have a time --> use it...
+            //  it could be -2 indicating that an UNSET operation has occurred
+            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -2) {
+                droneCellFndnRmndrText.setText(R.string.no_reminder_set);
+                // don't forget to set the tag
+                droneCellFndnRmndrText.setTag(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
+            }
             if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
@@ -154,6 +160,11 @@ public class LogPestMgmtFragment extends LogFragment {
                 droneCellFndnRmndrText.setTag(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
             }
 
+            if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -2) {
+                mitesTrtmntRmndrText.setText(R.string.no_reminder_set);
+                // don't forget to set the tag
+                mitesTrtmntRmndrText.setTag(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
+            }
             if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
                 String mitesDate = dateFormat.format(calendar.getTime());
@@ -166,6 +177,8 @@ public class LogPestMgmtFragment extends LogFragment {
         }
 
         // ...Otherwise --> spin up a task to get and set
+        //  this check need be made regardless of nullness of DO -> Reminders are at the Hive level and may exist
+        //   even if a log entry has not been made yet
         if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == -1)) {
             //disable the button until task is thru
             droneCellFndnBtn.setEnabled(false);
@@ -333,9 +346,9 @@ public class LogPestMgmtFragment extends LogFragment {
             public void onClick(View view) {
                 Log.d(TAG, "Time UNpicked: ");
 
-                // "unset" tag to indicate
                 timeLbl.setText(R.string.no_reminder_set);
-                timeLbl.setTag((long)-1);
+                // IMPORTANT: -2 indicator of occurrence of UNSET operation
+                timeLbl.setTag((long)-2);
 
                 alertDialog.dismiss();
             }

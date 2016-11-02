@@ -107,7 +107,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
         ((TextView)view.findViewById(R.id.toolbarHomeText)).setText(R.string.new_hive_string);
         ((TextView)view.findViewById(R.id.toolbarLogText)).setText(R.string.update_apiary_string);
         ((TextView)view.findViewById(R.id.toolbarAnalysisText)).setText(R.string.weather_string);
-        ((TextView)view.findViewById(R.id.toolbarReminderText)).setText(R.string.not_applicable);
+        ((TextView)view.findViewById(R.id.toolbarReminderText)).setText(R.string.export);
         ((TextView)view.findViewById(R.id.toolbarPicsText)).setText(R.string.not_applicable);
 
         // --Set the Adapter--

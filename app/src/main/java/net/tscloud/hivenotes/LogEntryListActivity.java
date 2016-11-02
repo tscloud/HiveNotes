@@ -563,7 +563,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 HiveCalendar.deleteEvent(ctx, wNot.getEventId());
             }
 
-            if (aStartTime != -1) {
+            if (aStartTime > -1) {
                 // create new Event - hardcode endtime
                 eventId = HiveCalendar.addEntryPublic(ctx,
                         aStartTime,
@@ -578,7 +578,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 // we don't have a Notification -> make a new one
                 Log.d(TAG, "createNotification(): eventId:" + eventId);
                 wNot = wNotDAO.createNotification(-1, aHiveKey, eventId, aNotType);
-            } else if (aStartTime != -1){
+            } else if (aStartTime > -1){
                 // we already have a Notification -> update it w/ new event id
                 Log.d(TAG, "updateNotification(): eventId:" + eventId);
                 wNot.setEventId(eventId);
