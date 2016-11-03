@@ -210,5 +210,6 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="reminders">Reminders</string>
     <string name="not_applicable">N/A</string>
+    <string name="na_msg">tollbar button not implemented</string>
     <string name="export">Export</string>
 </resources>

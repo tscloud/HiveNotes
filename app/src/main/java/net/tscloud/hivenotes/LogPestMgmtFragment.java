@@ -145,12 +145,12 @@ public class LogPestMgmtFragment extends LogFragment {
 
             // If we have a time --> use it...
             //  it could be -2 indicating that an UNSET operation has occurred
-            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -2) {
+            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == -2) {
                 droneCellFndnRmndrText.setText(R.string.no_reminder_set);
                 // don't forget to set the tag
                 droneCellFndnRmndrText.setTag(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
             }
-            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
+            else if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
                 String droneTime = timeFormat.format(calendar.getTime());
@@ -160,12 +160,12 @@ public class LogPestMgmtFragment extends LogFragment {
                 droneCellFndnRmndrText.setTag(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
             }
 
-            if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -2) {
+            if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == -2) {
                 mitesTrtmntRmndrText.setText(R.string.no_reminder_set);
                 // don't forget to set the tag
                 mitesTrtmntRmndrText.setTag(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
             }
-            if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1) {
+            else if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1) {
                 calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
                 String mitesDate = dateFormat.format(calendar.getTime());
                 String mitesTime = timeFormat.format(calendar.getTime());

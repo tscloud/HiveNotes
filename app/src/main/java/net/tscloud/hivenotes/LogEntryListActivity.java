@@ -468,6 +468,17 @@ public class LogEntryListActivity extends AppCompatActivity implements
                         NotificationType.NOTIFY_PEST_REMOVE_MITES,
                         mHiveKey);
 
+                // ** Notification time cleanup **
+                //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
+                //  however.  It either needs to be a real time or -1 indicating that a Notification
+                //  table read is necessary as a real time may have been set elsewhere.
+                if (mLogEntryPestMgmtData.getDroneCellFndnRmndrTime() == -2) {
+                    mLogEntryPestMgmtData.setDroneCellFndnRmndrTime(-1);
+                }
+                if (mLogEntryPestMgmtData.getMitesTrtmntRmndrTime() == -2) {
+                    mLogEntryPestMgmtData.setMitesTrtmntRmndrTime(-1);
+                }
+
                 if (mLogEntryPestMgmtData.getId() == -1) {
                     mLogEntryPestMgmtDAO.createLogEntry(mLogEntryPestMgmtData);
                 }
@@ -520,6 +531,20 @@ public class LogEntryListActivity extends AppCompatActivity implements
                         mLogEntryOtherData.getSplitHiveRmndrTime(),
                         NotificationType.NOTIFY_OTHER_SPLIT_HIVE,
                         mHiveKey);
+
+                // ** Notification time cleanup **
+                //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
+                //  however.  It either needs to be a real time or -1 indicating that a Notification
+                //  table read is necessary as a real time may have been set elsewhere.
+                if (mLogEntryOtherData.getRequeenRmndrTime() == -2) {
+                    mLogEntryOtherData.setRequeenRmndrTime(-1);
+                }
+                if (mLogEntryOtherData.getSwarmRmndrTime() == -2) {
+                    mLogEntryOtherData.setSwarmRmndrTime(-1);
+                }
+                if (mLogEntryOtherData.getSplitHiveRmndrTime() == -2) {
+                    mLogEntryOtherData.setSplitHiveRmndrTime(-1);
+                }
 
                 if (mLogEntryOtherData.getId() == -1) {
                     mLogEntryOtherDAO.createLogEntry(mLogEntryOtherData);

@@ -34,8 +34,9 @@ public class PictureDAO extends AbstactDAO {
 
     public Picture createPicture(long apiary, long hive, String imageURI) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_PICTURE_APIARY, apiary);
-        values.put(COLUMN_PICTURE_HIVE, hive);
+        // Needed b/c rows in this table can be linked to Apiary OR Hive
+        values.put(COLUMN_PICTURE_APIARY, (apiary == -1) ? null : apiary);
+        values.put(COLUMN_PICTURE_HIVE, (hive == -1) ? null : hive);
         values.put(COLUMN_PICTURE_IMAGE_URI, imageURI);
         long insertId = mDatabase.insert(TABLE_PICTURE, null, values);
 
@@ -58,8 +59,9 @@ public class PictureDAO extends AbstactDAO {
 
     public Picture updatePicture(long id, long apiary, long hive, String imageURI) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_PICTURE_APIARY, apiary);
-        values.put(COLUMN_PICTURE_HIVE, hive);
+        // Needed b/c rows in this table can be linked to Apiary OR Hive
+        values.put(COLUMN_PICTURE_APIARY, (apiary == -1) ? null : apiary);
+        values.put(COLUMN_PICTURE_HIVE, (hive == -1) ? null : hive);
         values.put(COLUMN_PICTURE_IMAGE_URI, imageURI);
         int rowsUpdated = mDatabase.update(TABLE_PICTURE, values,
                 COLUMN_PICTURE_ID + "=" + id, null);

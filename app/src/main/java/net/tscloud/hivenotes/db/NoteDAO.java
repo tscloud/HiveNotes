@@ -35,8 +35,9 @@ public class NoteDAO extends AbstactDAO {
 
     public Note createNote(long apiary, long hive, String type, String noteText) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NOTE_APIARY, apiary);
-        values.put(COLUMN_NOTE_HIVE, hive);
+        // Needed b/c rows in this table can be linked to Apiary OR Hive
+        values.put(COLUMN_NOTE_APIARY, (apiary == -1) ? null : apiary);
+        values.put(COLUMN_NOTE_HIVE, (hive == -1) ? null : hive);
         values.put(COLUMN_NOTE_TYPE, type);
         values.put(COLUMN_NOTE_NOTE_TEXT, noteText);
         long insertId = mDatabase.insert(TABLE_NOTE, null, values);
