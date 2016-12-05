@@ -118,7 +118,14 @@ public class HiveWeather {
                 HashMap<String, String> staCondHash = new HashMap<>();
                 staCondHash.put("station", staId);
                 for (String tag : dataFields) {
-                    staCondHash.put(tag, staCond.optString(tag));
+                    // JSONObject staCond may be null if the read from weather service didn't return
+                    //  anything => still need to iterate & put a null value for the tag?
+                    if (staCond == null) {
+                        staCondHash.put(tag, null);
+                    }
+                    else {
+                        staCondHash.put(tag, staCond.optString(tag));
+                    }
                 }
                 staCondHashArray.add(staCondHash);
             }

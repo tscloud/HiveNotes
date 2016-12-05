@@ -364,8 +364,8 @@ public class GraphDisplayFragment extends Fragment {
 
             //iterate over all but last element in set
             for (long k : newKeySet.headSet(newKeySet.last())) {
-                //check to see if we have exceeded our call count
-                if (callCount > GOV_THRESH) { break; }
+                //***check to see if we have exceeded our call count
+                if (callCount >= GOV_THRESH) { break; }
                 long nextKey = newKeySet.higher(k);
                 //determine how many days b/w present key & next key
                 // but subtract 1 as we do need not to get data for the greater value again
@@ -375,6 +375,8 @@ public class GraphDisplayFragment extends Fragment {
                 Log.d(TAG, "diffDays: " + diffDays);
                 //for every "gap day"...
                 for (int i = 0; i < diffDays; i++) {
+                    //***check to see if we have exceeded our call count
+                    if (callCount >= GOV_THRESH) { break; }
                     //for every day we do not have WeatherHistory -> call weather service
                     long reqDate = k + TimeUnit.DAYS.toMillis(i+1);
                     //--TESTING

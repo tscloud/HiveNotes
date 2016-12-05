@@ -253,8 +253,8 @@ public class EditHiveActivity extends AppCompatActivity implements
         switch (requestCode) {
             case (APIARY_REQ_CODE):
                 // Intent <- Bundle <- Parcelable (Apiary)
-                // 3 Apiary scenarios (present HiveList if not coming back from Apiary):
-                //  Intent is null => back button pressed => present Home
+                // 3 Apiary scenarios
+                //  Intent is null => back button pressed => present HiveList
                 //  Parcelable (Apiary) is null => Apiary deleted => present Home
                 //  Parcelable (Apiary) is not null => Apiary updated => present HiveList
                 if (data != null) {
@@ -270,7 +270,7 @@ public class EditHiveActivity extends AppCompatActivity implements
                     }
                 }
                 else {
-                    doBackPressed = true;
+                    doBackPressed = false;
                 }
         }
 
