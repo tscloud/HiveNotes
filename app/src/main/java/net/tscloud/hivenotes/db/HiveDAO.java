@@ -24,12 +24,13 @@ public class HiveDAO extends AbstactDAO {
     public static final String COLUMN_HIVE_APIARY = "apiary";
     public static final String COLUMN_HIVE_NAME = "name";
     public static final String COLUMN_HIVE_SPECIES = "species";
+    public static final String COLUMN_HIVE_REQUEEN = "requeen";
     public static final String COLUMN_HIVE_FOUNDATION_TYPE = "foundation_type";
     public static final String COLUMN_HIVE_NOTE = "note";
 
     // Database fields
     private String[] mAllColumns = {COLUMN_HIVE_ID, COLUMN_HIVE_APIARY, COLUMN_HIVE_NAME,
-            COLUMN_HIVE_SPECIES, COLUMN_HIVE_FOUNDATION_TYPE, COLUMN_HIVE_NOTE};
+            COLUMN_HIVE_SPECIES, COLUMN_HIVE_REQUEEN, COLUMN_HIVE_FOUNDATION_TYPE, COLUMN_HIVE_NOTE};
 
     public HiveDAO(Context context) {
         super(context);
@@ -37,11 +38,13 @@ public class HiveDAO extends AbstactDAO {
 
     // --DB access methods--
 
-    public Hive createHive(long apiary, String name, String species, String foundationType, String note) {
+    public Hive createHive(long apiary, String name, String species, String requeen,
+                           String foundationType, String note) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_HIVE_APIARY, apiary);
         values.put(COLUMN_HIVE_NAME, name);
         values.put(COLUMN_HIVE_SPECIES, species);
+        values.put(COLUMN_HIVE_REQUEEN, requeen);
         values.put(COLUMN_HIVE_FOUNDATION_TYPE, foundationType);
         values.put(COLUMN_HIVE_NOTE, note);
         long insertId = mDatabase.insert(TABLE_HIVE, null, values);
@@ -60,16 +63,17 @@ public class HiveDAO extends AbstactDAO {
     }
 
     public Hive createHive(Hive aDO) {
-        return createHive(aDO.getApiary(), aDO.getName(), aDO.getSpecies(), aDO.getFoundationType(),
-                          aDO.getNote());
+        return createHive(aDO.getApiary(), aDO.getName(), aDO.getSpecies(), aDO.getRequeen(),
+                          aDO.getFoundationType(), aDO.getNote());
     }
 
-    public Hive updateHive(long id, long apiary, String name, String species, String foundationType,
-                           String note) {
+    public Hive updateHive(long id, long apiary, String name, String species, String requeen,
+                           String foundationType, String note) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_HIVE_APIARY, apiary);
         values.put(COLUMN_HIVE_NAME, name);
         values.put(COLUMN_HIVE_SPECIES, species);
+        values.put(COLUMN_HIVE_REQUEEN, requeen);
         values.put(COLUMN_HIVE_FOUNDATION_TYPE, foundationType);
         values.put(COLUMN_HIVE_NOTE, note);
         int rowsUpdated = mDatabase.update(TABLE_HIVE, values, COLUMN_HIVE_ID + "=" + id, null);
@@ -88,7 +92,7 @@ public class HiveDAO extends AbstactDAO {
     }
 
     public Hive updateHive(Hive aDO) {
-        return updateHive(aDO.getId(), aDO.getApiary(), aDO.getName(), aDO.getSpecies(),
+        return updateHive(aDO.getId(), aDO.getApiary(), aDO.getName(), aDO.getSpecies(), aDO.getRequeen(),
                                   aDO.getFoundationType(), aDO.getNote());
     }
 
@@ -141,8 +145,9 @@ public class HiveDAO extends AbstactDAO {
         hive.setApiary(cursor.getLong(1));
         hive.setName(cursor.getString(2));
         hive.setSpecies(cursor.getString(3));
-        hive.setFoundationType(cursor.getString(4));
-        hive.setNote(cursor.getString(5));
+        hive.setRequeen(cursor.getString(4));
+        hive.setFoundationType(cursor.getString(5));
+        hive.setNote(cursor.getString(6));
 
         return hive;
     }

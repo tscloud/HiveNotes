@@ -75,6 +75,24 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutRequeen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/linearLayoutSpecies"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <Spinner
+            android:id="@+id/spinnerRequeen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:entries="@array/requeen_array"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

@@ -11,6 +11,7 @@ public class Hive {
     private long apiary;
     private String name;
     private String species;
+    private String requeen;
     private String foundationType;
     private String note;
 
@@ -29,6 +30,14 @@ public class Hive {
 
     public void setFoundationType(String foundationType) {
         this.foundationType = foundationType;
+    }
+
+    public String getRequeen() {
+        return requeen;
+    }
+
+    public void setRequeen(String requeen) {
+        this.requeen = requeen;
     }
 
     public long getId() {

@@ -109,11 +109,13 @@ public class EditHiveSingleFragment extends Fragment {
             // fill the form
             EditText nameEdit = (EditText)v.findViewById(R.id.editTextHiveName);
             EditText speciesEdit = (EditText)v.findViewById(R.id.editTextHiveSpecies);
+            Spinner requeenSpinner = (Spinner)v.findViewById(R.id.spinnerRequeen);
             Spinner foundationTypeSpinner = (Spinner)v.findViewById(R.id.spinnerHiveFoundationType);
             EditText noteEdit = (EditText)v.findViewById(R.id.editTextHiveNote);
 
             nameEdit.setText(mHive.getName());
             speciesEdit.setText(mHive.getSpecies());
+            requeenSpinner.setSelection(((ArrayAdapter) requeenSpinner.getAdapter()).getPosition(mHive.getRequeen()));
             foundationTypeSpinner.setSelection(((ArrayAdapter) foundationTypeSpinner.getAdapter()).getPosition(mHive.getFoundationType()));
             noteEdit.setText(mHive.getNote());
         }
@@ -150,11 +152,13 @@ public class EditHiveSingleFragment extends Fragment {
 
         EditText nameEdit = (EditText)getView().findViewById(R.id.editTextHiveName);
         EditText speciesEdit = (EditText)getView().findViewById(R.id.editTextHiveSpecies);
+        Spinner requeenSpinner = (Spinner)getView().findViewById(R.id.spinnerRequeen);
         Spinner foundationTypeSpinner = (Spinner)getView().findViewById(R.id.spinnerHiveFoundationType);
         EditText noteEdit = (EditText)getView().findViewById(R.id.editTextHiveNote);
 
         String nameText = nameEdit.getText().toString();
         String speciesText = speciesEdit.getText().toString();
+        String requeenText = requeenTypeSpinner.getSelectedItem().toString();
         String foundationTypeText = foundationTypeSpinner.getSelectedItem().toString();
         String noteText = noteEdit.getText().toString();
 
@@ -177,11 +181,11 @@ public class EditHiveSingleFragment extends Fragment {
             HiveDAO hiveDAO = new HiveDAO(getActivity());
             Hive hive;
             if (mHiveKey == -1) {
-                hive = hiveDAO.createHive(mApiaryKey, nameText, speciesText, foundationTypeText, noteText);
+                hive = hiveDAO.createHive(mApiaryKey, nameText, speciesText, requeenText, foundationTypeText, noteText);
                 lNewHive = true;
             }
             else {
-                hive = hiveDAO.updateHive(mHiveKey, mApiaryKey, nameText, speciesText, foundationTypeText, noteText);
+                hive = hiveDAO.updateHive(mHiveKey, mApiaryKey, nameText, speciesText, requeenText, foundationTypeText, noteText);
             }
             hiveDAO.close();
 
@@ -192,6 +196,7 @@ public class EditHiveSingleFragment extends Fragment {
 
                 Log.d(TAG, "Hive Name: " + hive.getName() + " persisted");
                 Log.d(TAG, "Hive Species: " + hive.getSpecies() + " persisted");
+                Log.d(TAG, "Hive Requeen: " + hive.getRequeen() + " persisted");
                 Log.d(TAG, "Hive Foundation Type: " + hive.getFoundationType() + " persisted");
             }
             else  {
