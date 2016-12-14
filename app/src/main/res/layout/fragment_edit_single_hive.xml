@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/textNewHive"
+        android:layout_below="@id/textNewHive"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/linearLayoutName">
@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/linearLayoutName"
+        android:layout_below="@id/linearLayoutName"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:id="@+id/linearLayoutSpecies">
@@ -83,8 +83,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="@string/general_notes_queen_text"
+            android:id="@+id/textHiveRequeen"
+            android:layout_gravity="center_vertical" />
+
         <Spinner
-            android:id="@+id/spinnerRequeen"
+            android:id="@+id/spinnerHiveRequeen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
@@ -97,7 +105,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/linearLayoutFoundation"
-        android:layout_below="@+id/linearLayoutSpecies"
+        android:layout_below="@id/linearLayoutRequeen"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
@@ -108,7 +116,6 @@
             android:text="@string/hive_foundation_type_string"
             android:id="@+id/textHiveFoundationType"
             android:layout_gravity="center_vertical" />
-
 
         <Spinner
             android:layout_width="0dp"

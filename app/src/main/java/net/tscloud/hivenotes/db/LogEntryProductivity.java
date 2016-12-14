@@ -13,21 +13,9 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
     private long id;
     private long hive;
     private long visitDate;
-    private String honeyAddSupers;
-    private String honeyRemoveSupers;
     private float extractedHoney;
-    private int addPollenTrap;
-    private int removePollenTrap;
     private float pollenCollected;
     private float beeswaxCollected;
-
-    public int getAddPollenTrap() {
-        return addPollenTrap;
-    }
-
-    public void setAddPollenTrap(int addPollenTrap) {
-        this.addPollenTrap = addPollenTrap;
-    }
 
     public float getBeeswaxCollected() {
         return beeswaxCollected;
@@ -55,28 +43,12 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
         this.hive = hive;
     }
 
-    public String getHoneyAddSupers() {
-        return honeyAddSupers;
-    }
-
-    public void setHoneyAddSupers(String honeyAddSupers) {
-        this.honeyAddSupers = honeyAddSupers;
-    }
-
     public float getPollenCollected() {
         return pollenCollected;
     }
 
     public void setPollenCollected(float pollenCollected) {
         this.pollenCollected = pollenCollected;
-    }
-
-    public String getHoneyRemoveSupers() {
-        return honeyRemoveSupers;
-    }
-
-    public void setHoneyRemoveSupers(String honeyRemoveSupers) {
-        this.honeyRemoveSupers = honeyRemoveSupers;
     }
 
     @Override
@@ -87,14 +59,6 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
     @Override
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getRemovePollenTrap() {
-        return removePollenTrap;
-    }
-
-    public void setRemovePollenTrap(int removePollenTrap) {
-        this.removePollenTrap = removePollenTrap;
     }
 
     public long getVisitDate() {
@@ -115,11 +79,7 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
         dest.writeLong(this.id);
         dest.writeLong(this.hive);
         dest.writeLong(this.visitDate);
-        dest.writeString(this.honeyAddSupers);
-        dest.writeString(this.honeyRemoveSupers);
         dest.writeFloat(this.extractedHoney);
-        dest.writeInt(this.addPollenTrap);
-        dest.writeInt(this.removePollenTrap);
         dest.writeFloat(this.pollenCollected);
         dest.writeFloat(this.beeswaxCollected);
     }
@@ -131,11 +91,7 @@ public class LogEntryProductivity implements HiveNotesLogDO, Parcelable {
         this.id = in.readLong();
         this.hive = in.readLong();
         this.visitDate = in.readLong();
-        this.honeyAddSupers = in.readString();
-        this.honeyRemoveSupers = in.readString();
         this.extractedHoney = in.readFloat();
-        this.addPollenTrap = in.readInt();
-        this.removePollenTrap = in.readInt();
         this.pollenCollected = in.readFloat();
         this.beeswaxCollected = in.readFloat();
     }

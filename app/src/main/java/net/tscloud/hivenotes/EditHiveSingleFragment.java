@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,7 +108,7 @@ public class EditHiveSingleFragment extends Fragment {
             // fill the form
             EditText nameEdit = (EditText)v.findViewById(R.id.editTextHiveName);
             EditText speciesEdit = (EditText)v.findViewById(R.id.editTextHiveSpecies);
-            Spinner requeenSpinner = (Spinner)v.findViewById(R.id.spinnerRequeen);
+            Spinner requeenSpinner = (Spinner)v.findViewById(R.id.spinnerHiveRequeen);
             Spinner foundationTypeSpinner = (Spinner)v.findViewById(R.id.spinnerHiveFoundationType);
             EditText noteEdit = (EditText)v.findViewById(R.id.editTextHiveNote);
 
@@ -152,13 +151,13 @@ public class EditHiveSingleFragment extends Fragment {
 
         EditText nameEdit = (EditText)getView().findViewById(R.id.editTextHiveName);
         EditText speciesEdit = (EditText)getView().findViewById(R.id.editTextHiveSpecies);
-        Spinner requeenSpinner = (Spinner)getView().findViewById(R.id.spinnerRequeen);
+        Spinner requeenSpinner = (Spinner)getView().findViewById(R.id.spinnerHiveRequeen);
         Spinner foundationTypeSpinner = (Spinner)getView().findViewById(R.id.spinnerHiveFoundationType);
         EditText noteEdit = (EditText)getView().findViewById(R.id.editTextHiveNote);
 
         String nameText = nameEdit.getText().toString();
         String speciesText = speciesEdit.getText().toString();
-        String requeenText = requeenTypeSpinner.getSelectedItem().toString();
+        String requeenText = requeenSpinner.getSelectedItem().toString();
         String foundationTypeText = foundationTypeSpinner.getSelectedItem().toString();
         String noteText = noteEdit.getText().toString();
 

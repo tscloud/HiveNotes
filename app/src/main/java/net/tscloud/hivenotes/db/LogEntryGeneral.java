@@ -15,20 +15,10 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
     private long visitDate;
     private String population;
     private String temperament;
-    private String pestsDisease;
-    private int broodFrames;
     private String broodPattern;
     private String queen;
     private String honeyStores;
     private String pollenStores;
-
-    public int getBroodFrames() {
-        return broodFrames;
-    }
-
-    public void setBroodFrames(int broodFrames) {
-        this.broodFrames = broodFrames;
-    }
 
     public String getBroodPattern() {
         return broodPattern;
@@ -36,14 +26,6 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
 
     public void setBroodPattern(String broodPattern) {
         this.broodPattern = broodPattern;
-    }
-
-    public String getPestsDisease() {
-        return pestsDisease;
-    }
-
-    public void setPestsDisease(String pestsDisease) {
-        this.pestsDisease = pestsDisease;
     }
 
     @Override
@@ -126,8 +108,6 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
         dest.writeLong(this.visitDate);
         dest.writeString(this.population);
         dest.writeString(this.temperament);
-        dest.writeString(this.pestsDisease);
-        dest.writeInt(this.broodFrames);
         dest.writeString(this.broodPattern);
         dest.writeString(this.queen);
         dest.writeString(this.honeyStores);
@@ -143,8 +123,6 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
         this.visitDate = in.readLong();
         this.population = in.readString();
         this.temperament = in.readString();
-        this.pestsDisease = in.readString();
-        this.broodFrames = in.readInt();
         this.broodPattern = in.readString();
         this.queen = in.readString();
         this.honeyStores = in.readString();

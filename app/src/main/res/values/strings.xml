@@ -212,4 +212,5 @@
     <string name="not_applicable">N/A</string>
     <string name="na_msg">tollbar button not implemented</string>
     <string name="export">Export</string>
+    <string name="add_photo">Add Photo</string>
 </resources>

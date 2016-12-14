@@ -22,18 +22,16 @@ public class LogEntryGeneralDAO extends AbstactDAO {
     public static final String COLUMN_LOGENTRYGENERAL_VISIT_DATE = "visit_date";
     public static final String COLUMN_LOGENTRYGENERAL_POPULATION = "population";
     public static final String COLUMN_LOGENTRYGENERAL_TEMPERAMENT = "temperament";
-    public static final String COLUMN_LOGENTRYGENERAL_PESTS_DISEASE = "pests_disease";
-    public static final String COLUMN_LOGENTRYGENERAL_BROOD_FRAMES = "brood_frames";
     public static final String COLUMN_LOGENTRYGENERAL_BROOD_PATTERN = "brood_pattern";
     public static final String COLUMN_LOGENTRYGENERAL_QUEEN = "queen";
     public static final String COLUMN_LOGENTRYGENERAL_HONEY_STORES = "honey_stores";
     public static final String COLUMN_LOGENTRYGENERAL_POLLEN_STORES = "pollen_stores";
 
     // Database fields
-    private String[] mAllColumns = {COLUMN_LOGENTRYGENERAL_ID, COLUMN_LOGENTRYGENERAL_HIVE, COLUMN_LOGENTRYGENERAL_VISIT_DATE,
-            COLUMN_LOGENTRYGENERAL_POPULATION, COLUMN_LOGENTRYGENERAL_TEMPERAMENT, COLUMN_LOGENTRYGENERAL_PESTS_DISEASE,
-            COLUMN_LOGENTRYGENERAL_BROOD_FRAMES, COLUMN_LOGENTRYGENERAL_BROOD_PATTERN, COLUMN_LOGENTRYGENERAL_QUEEN,
-            COLUMN_LOGENTRYGENERAL_HONEY_STORES, COLUMN_LOGENTRYGENERAL_POLLEN_STORES };
+    private String[] mAllColumns = {COLUMN_LOGENTRYGENERAL_ID, COLUMN_LOGENTRYGENERAL_HIVE,
+            COLUMN_LOGENTRYGENERAL_VISIT_DATE, COLUMN_LOGENTRYGENERAL_POPULATION, COLUMN_LOGENTRYGENERAL_TEMPERAMENT,
+            COLUMN_LOGENTRYGENERAL_BROOD_PATTERN, COLUMN_LOGENTRYGENERAL_QUEEN, COLUMN_LOGENTRYGENERAL_HONEY_STORES,
+            COLUMN_LOGENTRYGENERAL_POLLEN_STORES };
 
     public LogEntryGeneralDAO(Context context) {
         super(context);
@@ -42,15 +40,12 @@ public class LogEntryGeneralDAO extends AbstactDAO {
     // --DB access methods--
 
     public LogEntryGeneral createLogEntry(long hive, long visitDate, String population, String temperament,
-                                   String pestsDisease, int broodFrames, String broodPattern,
-                                   String queen, String honeyStores, String pollenStores) {
+                                   String broodPattern, String queen, String honeyStores, String pollenStores) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYGENERAL_HIVE, hive);
         values.put(COLUMN_LOGENTRYGENERAL_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRYGENERAL_POPULATION, population);
         values.put(COLUMN_LOGENTRYGENERAL_TEMPERAMENT, temperament);
-        values.put(COLUMN_LOGENTRYGENERAL_PESTS_DISEASE, pestsDisease);
-        values.put(COLUMN_LOGENTRYGENERAL_BROOD_FRAMES, broodFrames);
         values.put(COLUMN_LOGENTRYGENERAL_BROOD_PATTERN, broodPattern);
         values.put(COLUMN_LOGENTRYGENERAL_QUEEN, queen);
         values.put(COLUMN_LOGENTRYGENERAL_HONEY_STORES, honeyStores);
@@ -72,13 +67,11 @@ public class LogEntryGeneralDAO extends AbstactDAO {
 
     public LogEntryGeneral createLogEntry(LogEntryGeneral aDO) {
         return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getPopulation(), aDO.getTemperament(),
-                aDO.getPestsDisease(), aDO.getBroodFrames(), aDO.getBroodPattern(),aDO.getQueen(),
-                aDO.getHoneyStores(), aDO.getPollenStores());
+                aDO.getBroodPattern(),aDO.getQueen(), aDO.getHoneyStores(), aDO.getPollenStores());
     }
 
     public LogEntryGeneral updateLogEntry(long id, long hive, long visitDate, String population,
-                                   String temperament, String pestsDisease, int broodFrames,
-                                   String broodPattern, String queen, String honeyStores,
+                                   String temperament, String broodPattern, String queen, String honeyStores,
                                    String pollenStores) {
 
         ContentValues values = new ContentValues();
@@ -86,8 +79,6 @@ public class LogEntryGeneralDAO extends AbstactDAO {
         values.put(COLUMN_LOGENTRYGENERAL_VISIT_DATE, visitDate);
         values.put(COLUMN_LOGENTRYGENERAL_POPULATION, population);
         values.put(COLUMN_LOGENTRYGENERAL_TEMPERAMENT, temperament);
-        values.put(COLUMN_LOGENTRYGENERAL_PESTS_DISEASE, pestsDisease);
-        values.put(COLUMN_LOGENTRYGENERAL_BROOD_FRAMES, broodFrames);
         values.put(COLUMN_LOGENTRYGENERAL_BROOD_PATTERN, broodPattern);
         values.put(COLUMN_LOGENTRYGENERAL_QUEEN, queen);
         values.put(COLUMN_LOGENTRYGENERAL_HONEY_STORES, honeyStores);
@@ -110,8 +101,7 @@ public class LogEntryGeneralDAO extends AbstactDAO {
 
     public LogEntryGeneral updateLogEntry(LogEntryGeneral aDO) {
         return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getPopulation(), aDO.getTemperament(),
-                aDO.getPestsDisease(), aDO.getBroodFrames(), aDO.getBroodPattern(),aDO.getQueen(),
-                aDO.getHoneyStores(), aDO.getPollenStores());
+                aDO.getBroodPattern(),aDO.getQueen(), aDO.getHoneyStores(), aDO.getPollenStores());
     }
 
     public void deleteLogEntry(LogEntryGeneral logEntryGeneral) {
@@ -158,12 +148,10 @@ public class LogEntryGeneralDAO extends AbstactDAO {
         logEntryGeneral.setVisitDate(cursor.getLong(2));
         logEntryGeneral.setPopulation(cursor.getString(3));
         logEntryGeneral.setTemperament(cursor.getString(4));
-        logEntryGeneral.setPestsDisease(cursor.getString(5));
-        logEntryGeneral.setBroodFrames(cursor.getInt(6));
-        logEntryGeneral.setBroodPattern(cursor.getString(7));
-        logEntryGeneral.setQueen(cursor.getString(8));
-        logEntryGeneral.setHoneyStores(cursor.getString(9));
-        logEntryGeneral.setPollenStores(cursor.getString(10));
+        logEntryGeneral.setBroodPattern(cursor.getString(5));
+        logEntryGeneral.setQueen(cursor.getString(6));
+        logEntryGeneral.setHoneyStores(cursor.getString(7));
+        logEntryGeneral.setPollenStores(cursor.getString(8));
 
         return logEntryGeneral;
     }

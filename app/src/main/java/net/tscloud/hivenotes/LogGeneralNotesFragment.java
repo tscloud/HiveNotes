@@ -13,15 +13,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,8 +69,6 @@ public class LogGeneralNotesFragment extends LogFragment {
             mLogEntryGeneral.setVisitDate(savedInstanceState.getLong("visitDate"));
             mLogEntryGeneral.setPopulation(savedInstanceState.getString("population"));
             mLogEntryGeneral.setTemperament(savedInstanceState.getString("temperament"));
-            mLogEntryGeneral.setPestsDisease(savedInstanceState.getString("pestsDisease"));
-            mLogEntryGeneral.setBroodFrames(savedInstanceState.getInt("broodFrames"));
             mLogEntryGeneral.setBroodPattern(savedInstanceState.getString("broodPattern"));
             mLogEntryGeneral.setQueen(savedInstanceState.getString("queen"));
             mLogEntryGeneral.setHoneyStores(savedInstanceState.getString("honeyStores"));
@@ -95,29 +89,7 @@ public class LogGeneralNotesFragment extends LogFragment {
         final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
         hiveNoteBtn.setText(getResources().getString(R.string.done_string));
 
-        // enable "Other" EditText only if corresponding CheckBox checked
-        final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkPestOther);
-        final EditText otherEdit = (EditText)v.findViewById(R.id.editTextOther);
-
-        otherCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onOtherCheckChecked(v, otherEdit);
-            }
-        });
-
-        // setup numeric Spinner values
-        final Spinner broodFramesSpinner = (Spinner)v.findViewById(R.id.spinnerBroodFrames);
-
-        String [] a = new String[31];
-        for (int i=0;i<a.length;++i) {
-            a[i] = Integer.toString(i);
-        }
-
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
-                (getActivity(),android.R.layout.simple_spinner_item, a);
-
-        broodFramesSpinner.setAdapter(spinnerArrayAdapter);
+        final Button addPhotoBtn = (Button)v.findViewById(R.id.buttonAddPhoto);
 
         /**
          * call super method to get DO via best means
@@ -126,9 +98,6 @@ public class LogGeneralNotesFragment extends LogFragment {
 
         if (mLogEntryGeneral != null) {
 
-            // setup for disease checkboxes
-            String diseaseSetDBString = mLogEntryGeneral.getPestsDisease();
-
             // fill the form
             final Spinner populationSpinner = (Spinner)v.findViewById(R.id.spinnerPopulation);
             final Spinner temperamentSpinner = (Spinner)v.findViewById(R.id.spinnerTemperament);
@@ -136,13 +105,6 @@ public class LogGeneralNotesFragment extends LogFragment {
             final Spinner queenSpinner = (Spinner)v.findViewById(R.id.spinnerQueen);
             final Spinner honeyStoresSpinner = (Spinner)v.findViewById(R.id.spinnerHoneyStores);
             final Spinner pollenStoresSpinner = (Spinner)v.findViewById(R.id.spinnerPollenStores);
-            final CheckBox varroaMiteCheck = (CheckBox)v.findViewById(R.id.checkVarroaMite);
-            final CheckBox smallHiveBeetleCheck = (CheckBox)v.findViewById(R.id.checkSmallHiveBeetle);
-            final CheckBox waxMothCheck = (CheckBox)v.findViewById(R.id.checkWaxMoth);
-            final CheckBox deformedWingCheck = (CheckBox)v.findViewById(R.id.checkDeformedWing);
-            final CheckBox americanFoulbroodCheck = (CheckBox)v.findViewById(R.id.checkAmericalFoulbrood);
-            final CheckBox europeanFoulbroodCheck = (CheckBox)v.findViewById(R.id.checkEuropeanFoulbrood);
-            final CheckBox chalkbroodCheck = (CheckBox)v.findViewById(R.id.checkChalkbrood);
 
             populationSpinner.setSelection(
                     ((ArrayAdapter) populationSpinner.getAdapter()).getPosition(
@@ -150,9 +112,6 @@ public class LogGeneralNotesFragment extends LogFragment {
             temperamentSpinner.setSelection(
                     ((ArrayAdapter) temperamentSpinner.getAdapter()).getPosition(
                             mLogEntryGeneral.getTemperament()));
-            broodFramesSpinner.setSelection(
-                    ((ArrayAdapter) broodFramesSpinner.getAdapter()).getPosition(
-                            Integer.toString(mLogEntryGeneral.getBroodFrames())));
             broodPatternSpinner.setSelection(
                     ((ArrayAdapter) broodPatternSpinner.getAdapter()).getPosition(
                             mLogEntryGeneral.getBroodPattern()));
@@ -165,29 +124,27 @@ public class LogGeneralNotesFragment extends LogFragment {
             pollenStoresSpinner.setSelection(
                     ((ArrayAdapter) pollenStoresSpinner.getAdapter()).getPosition(
                             mLogEntryGeneral.getPollenStores()));
-
-            varroaMiteCheck.setChecked(diseaseSetDBString.contains(varroaMiteCheck.getText()));
-            smallHiveBeetleCheck.setChecked(diseaseSetDBString.contains(smallHiveBeetleCheck.getText()));
-            waxMothCheck.setChecked(diseaseSetDBString.contains(waxMothCheck.getText()));
-            deformedWingCheck.setChecked(diseaseSetDBString.contains(deformedWingCheck.getText()));
-            americanFoulbroodCheck.setChecked(diseaseSetDBString.contains(americanFoulbroodCheck.getText()));
-            europeanFoulbroodCheck.setChecked(diseaseSetDBString.contains(europeanFoulbroodCheck.getText()));
-            chalkbroodCheck.setChecked(diseaseSetDBString.contains(chalkbroodCheck.getText()));
-            otherCheck.setChecked(diseaseSetDBString.contains(otherCheck.getText()));
         }
 
-        // set button listener
+        // set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed();
+                onHiveNoteBtnButtonPressed();
+            }
+        });
+
+        addPhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onAddPhotoBtnButtonPressed();
             }
         });
 
         return v;
     }
 
-    private void onButtonPressed() {
+    private void onHiveNoteBtnButtonPressed() {
         // get log entry data and put to DB
         Log.d(TAG, "about to persist logentry");
 
@@ -195,77 +152,21 @@ public class LogGeneralNotesFragment extends LogFragment {
 
         final Spinner populationSpinner = (Spinner)getView().findViewById(R.id.spinnerPopulation);
         final Spinner temperamentSpinner = (Spinner)getView().findViewById(R.id.spinnerTemperament);
-        final Spinner broodFramesSpinner = (Spinner)getView().findViewById(R.id.spinnerBroodFrames);
         final Spinner broodPatternSpinner = (Spinner)getView().findViewById(R.id.spinnerBroodPattern);
         final Spinner queenSpinner = (Spinner)getView().findViewById(R.id.spinnerQueen);
         final Spinner honeyStoresSpinner = (Spinner)getView().findViewById(R.id.spinnerHoneyStores);
         final Spinner pollenStoresSpinner = (Spinner)getView().findViewById(R.id.spinnerPollenStores);
-        final CheckBox varroaMiteCheck = (CheckBox)getView().findViewById(R.id.checkVarroaMite);
-        final CheckBox smallHiveBeetleCheck = (CheckBox)getView().findViewById(R.id.checkSmallHiveBeetle);
-        final CheckBox waxMothCheck = (CheckBox)getView().findViewById(R.id.checkWaxMoth);
-        final CheckBox deformedWingCheck = (CheckBox)getView().findViewById(R.id.checkDeformedWing);
-        final CheckBox americanFoulbroodCheck = (CheckBox)getView().findViewById(R.id.checkAmericalFoulbrood);
-        final CheckBox europeanFoulbroodCheck = (CheckBox)getView().findViewById(R.id.checkEuropeanFoulbrood);
-        final CheckBox chalkbroodCheck = (CheckBox)getView().findViewById(R.id.checkChalkbrood);
-        final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkPestOther);
-        final EditText otherEdit = (EditText)getView().findViewById(R.id.editTextOther);
 
         String populationText = populationSpinner.getSelectedItem().toString();
         String temperamentText = temperamentSpinner.getSelectedItem().toString();
-
-        String broodFramesText = broodFramesSpinner.getSelectedItem().toString();
-        int broodFramesInt = Integer.parseInt(broodFramesText);
 
         String broodPatternText = broodPatternSpinner.getSelectedItem().toString();
         String queenText = queenSpinner.getSelectedItem().toString();
         String honeyStoresText = honeyStoresSpinner.getSelectedItem().toString();
         String pollenStoresText = pollenStoresSpinner.getSelectedItem().toString();
-        String otherText = otherEdit.getText().toString();
-
-        StringBuffer pestsDiseaseTextBuf = new StringBuffer();
-        if (varroaMiteCheck.isChecked()) {
-            pestsDiseaseTextBuf.append(varroaMiteCheck.getText());
-            pestsDiseaseTextBuf.append(",");
-        }
-        if (smallHiveBeetleCheck.isChecked()) {
-            pestsDiseaseTextBuf.append(smallHiveBeetleCheck.getText());
-            pestsDiseaseTextBuf.append(",");
-        }
-        if (waxMothCheck.isChecked()) {
-            pestsDiseaseTextBuf.append(waxMothCheck.getText());
-            pestsDiseaseTextBuf.append(",");
-        }
-        if (deformedWingCheck.isChecked()) {
-            pestsDiseaseTextBuf.append(deformedWingCheck.getText());
-            pestsDiseaseTextBuf.append(",");
-        }
-        if (americanFoulbroodCheck.isChecked()) {
-            pestsDiseaseTextBuf.append(americanFoulbroodCheck.getText());
-            pestsDiseaseTextBuf.append(",");
-        }
-        if (europeanFoulbroodCheck.isChecked()) {
-            pestsDiseaseTextBuf.append(europeanFoulbroodCheck.getText());
-            pestsDiseaseTextBuf.append(",");
-        }
-        if (chalkbroodCheck.isChecked()) {
-            pestsDiseaseTextBuf.append(chalkbroodCheck.getText());
-            pestsDiseaseTextBuf.append(",");
-        }
 
         // check for required values - are there any?
         boolean emptyText = false;
-
-        // cannot go if otherCheck is checked and otherEdit empty
-        if (otherCheck.isChecked()) {
-            if (otherText.length() == 0) {
-                otherEdit.setError("Must provide Other disease");
-                emptyText = true;
-                Log.d(TAG, "Uh oh...Other disease empty");
-            }
-            else {
-                pestsDiseaseTextBuf.append(otherText);
-            }
-        }
 
         if (!emptyText) {
             LogEntryGeneralDAO logEntryGeneralDAO = new LogEntryGeneralDAO(getActivity());
@@ -278,8 +179,6 @@ public class LogGeneralNotesFragment extends LogFragment {
             mLogEntryGeneral.setVisitDate(mLogEntryDate);
             mLogEntryGeneral.setPopulation(populationText);
             mLogEntryGeneral.setTemperament(temperamentText);
-            mLogEntryGeneral.setPestsDisease(pestsDiseaseTextBuf.toString().replaceAll(" ,$", ""));
-            mLogEntryGeneral.setBroodFrames(broodFramesInt);
             mLogEntryGeneral.setBroodPattern(broodPatternText);
             mLogEntryGeneral.setQueen(queenText);
             mLogEntryGeneral.setHoneyStores(honeyStoresText);
@@ -291,20 +190,8 @@ public class LogGeneralNotesFragment extends LogFragment {
         }
     }
 
-    private void onOtherCheckChecked(View v, EditText e) {
-        if (((CheckBox)v).isChecked()) {
-            e.setFocusable(true);
-            e.setFocusableInTouchMode(true);
-            e.setClickable(true);
-            e.setBackgroundColor(Color.RED);
-        }
-        else {
-            e.setFocusable(false);
-            e.setFocusableInTouchMode(false);
-            e.setClickable(false);
-            e.setBackgroundColor(Color.WHITE);
-        }
-
+    private void onAddPhotoBtnButtonPressed() {
+        Toast.makeText(getActivity(),"Add Photo button clicked", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -331,8 +218,6 @@ public class LogGeneralNotesFragment extends LogFragment {
             outState.putLong("visitDate", mLogEntryGeneral.getVisitDate());
             outState.putString("population", mLogEntryGeneral.getPopulation());
             outState.putString("temperament", mLogEntryGeneral.getTemperament());
-            outState.putString("pestsDisease", mLogEntryGeneral.getPestsDisease());
-            outState.putInt("broodFrames", mLogEntryGeneral.getBroodFrames());
             outState.putString("broodPattern", mLogEntryGeneral.getBroodPattern());
             outState.putString("queen", mLogEntryGeneral.getQueen());
             outState.putString("honeyStores", mLogEntryGeneral.getHoneyStores());

@@ -18,18 +18,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
-import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryOtherDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 
 /**
@@ -126,7 +122,7 @@ public class LogOtherFragment extends LogFragment {
         if (mLogEntryOther != null) {
 
             // fill the form
-            final Spinner requeenSpinner = (Spinner)v.findViewById(R.id.spinnerRequeen);
+            final Spinner requeenSpinner = (Spinner)v.findViewById(R.id.spinnerHiveRequeen);
 
             requeenSpinner.setSelection(
                     ((ArrayAdapter) requeenSpinner.getAdapter()).getPosition(
@@ -267,7 +263,7 @@ public class LogOtherFragment extends LogFragment {
 
         boolean lNewLogEntry = false;
 
-        final Spinner requeenSpinner = (Spinner)getView().findViewById(R.id.spinnerRequeen);
+        final Spinner requeenSpinner = (Spinner)getView().findViewById(R.id.spinnerHiveRequeen);
         final TextView requeenRmndrText = (TextView)getView().findViewById(R.id.textRequeenRmndr);
         final TextView swarmRmndrText = (TextView)getView().findViewById(R.id.textSwarmRmndr);
         final TextView splitHiveRmndrText = (TextView)getView().findViewById(R.id.textSplitHiveRmndr);

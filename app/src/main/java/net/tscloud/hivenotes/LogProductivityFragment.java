@@ -67,11 +67,7 @@ public class LogProductivityFragment extends LogFragment {
         if (savedInstanceState != null) {
             mLogEntryProductivity = new LogEntryProductivity();
             mLogEntryProductivity.setVisitDate(savedInstanceState.getLong("visitDate"));
-            mLogEntryProductivity.setHoneyAddSupers(savedInstanceState.getString("honeyAddSupers"));
-            mLogEntryProductivity.setHoneyRemoveSupers(savedInstanceState.getString("honeyRemoveSupers"));
             mLogEntryProductivity.setExtractedHoney(savedInstanceState.getInt("extractedHoney"));
-            mLogEntryProductivity.setAddPollenTrap(savedInstanceState.getInt("addPollenTrap"));
-            mLogEntryProductivity.setRemovePollenTrap(savedInstanceState.getInt("removePollenTrap"));
             mLogEntryProductivity.setPollenCollected(savedInstanceState.getLong("pollenCollected"));
             mLogEntryProductivity.setBeeswaxCollected(savedInstanceState.getInt("beeswaxCollected"));
         }
@@ -90,21 +86,6 @@ public class LogProductivityFragment extends LogFragment {
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
         b1.setText(getResources().getString(R.string.done_string));
 
-        // setup numeric Spinner values
-        final Spinner addSupersSpinner = (Spinner)v.findViewById(R.id.spinnerAddSupers);
-        final Spinner removeSupersSpinner = (Spinner)v.findViewById(R.id.spinnerRemoveSupers);
-
-        String [] a = new String[6];
-        for (int i=0;i<a.length;++i) {
-            a[i] = Integer.toString(i);
-        }
-
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
-                (getActivity(),android.R.layout.simple_spinner_item, a);
-
-        addSupersSpinner.setAdapter(spinnerArrayAdapter);
-        removeSupersSpinner.setAdapter(spinnerArrayAdapter);
-
         /**
          * call super method to get DO via best means
          */
@@ -114,20 +95,10 @@ public class LogProductivityFragment extends LogFragment {
 
             // fill the form
             final EditText extractedHoneyEdit = (EditText)v.findViewById(R.id.editTextExtractedHoney);
-            final CheckBox pollenAddTrapCheck = (CheckBox)v.findViewById(R.id.checkPollenAddTrap);
-            final CheckBox pollenRemoveTrapCheck = (CheckBox)v.findViewById(R.id.checkPollenRemoveTrap);
             final EditText pollenCollectedEdit = (EditText)v.findViewById(R.id.editTextPollenCollected);
             final EditText beeswaxCollectedEdit = (EditText)v.findViewById(R.id.editTextBeeswaxCollected);
 
-            addSupersSpinner.setSelection(
-                    ((ArrayAdapter) addSupersSpinner.getAdapter()).getPosition(
-                            mLogEntryProductivity.getHoneyAddSupers()));
-            removeSupersSpinner.setSelection(
-                    ((ArrayAdapter) removeSupersSpinner.getAdapter()).getPosition(
-                            mLogEntryProductivity.getHoneyAddSupers()));
             extractedHoneyEdit.setText(Float.toString(mLogEntryProductivity.getExtractedHoney()));
-            pollenAddTrapCheck.setChecked(mLogEntryProductivity.getAddPollenTrap() != 0);
-            pollenRemoveTrapCheck.setChecked(mLogEntryProductivity.getRemovePollenTrap()!=0);
             pollenCollectedEdit.setText(Float.toString(mLogEntryProductivity.getPollenCollected()));
             beeswaxCollectedEdit.setText(Float.toString(mLogEntryProductivity.getBeeswaxCollected()));
         }
@@ -149,35 +120,25 @@ public class LogProductivityFragment extends LogFragment {
 
         boolean lNewLogEntry = false;
 
-        final Spinner addSupersSpinner = (Spinner)getView().findViewById(R.id.spinnerAddSupers);
-        final Spinner removeSupersSpinner = (Spinner)getView().findViewById(R.id.spinnerRemoveSupers);
         final EditText extractedHoneyEdit = (EditText)getView().findViewById(R.id.editTextExtractedHoney);
-        final CheckBox pollenAddTrapCheck = (CheckBox)getView().findViewById(R.id.checkPollenAddTrap);
-        final CheckBox pollenRemoveTrapCheck = (CheckBox)getView().findViewById(R.id.checkPollenRemoveTrap);
         final EditText pollenCollectedEdit = (EditText)getView().findViewById(R.id.editTextPollenCollected);
         final EditText beeswaxCollectedEdit = (EditText)getView().findViewById(R.id.editTextBeeswaxCollected);
 
-        String addSupersText = addSupersSpinner.getSelectedItem().toString();
-        String removeSupersText = removeSupersSpinner.getSelectedItem().toString();
-
         String extractedHoneyString = extractedHoneyEdit.getText().toString();
         float extractedHoneyFloat = 0;
-        if ((extractedHoneyString != null) && (extractedHoneyString.length() != 0)) {
+        if (extractedHoneyString.length() != 0) {
             extractedHoneyFloat = Float.parseFloat(extractedHoneyString);
         }
 
-        int pollenAddTrapInt = (pollenAddTrapCheck.isChecked()) ? 1 : 0;
-        int pollenRemoveTrapInt = (pollenRemoveTrapCheck.isChecked()) ? 1 : 0;
-
         String pollenCollectedString = pollenCollectedEdit.getText().toString();
         float pollenCollectedFloat = 0;
-        if ((pollenCollectedString != null) && (pollenCollectedString.length() != 0)) {
+        if (pollenCollectedString.length() != 0) {
             pollenCollectedFloat = Float.parseFloat(pollenCollectedString);
         }
 
         String beeswaxCollectedString = beeswaxCollectedEdit.getText().toString();
         float beeswaxCollectedFloat = 0;
-        if ((beeswaxCollectedString != null) && (beeswaxCollectedString.length() != 0)) {
+        if (beeswaxCollectedString.length() != 0) {
             beeswaxCollectedFloat = Float.parseFloat(beeswaxCollectedString);
         }
 
@@ -193,11 +154,7 @@ public class LogProductivityFragment extends LogFragment {
             mLogEntryProductivity.setId(mLogEntryKey);
             mLogEntryProductivity.setHive(mHiveID);
             mLogEntryProductivity.setVisitDate(mLogEntryDate);
-            mLogEntryProductivity.setHoneyAddSupers(addSupersText);
-            mLogEntryProductivity.setHoneyRemoveSupers(removeSupersText);
             mLogEntryProductivity.setExtractedHoney(extractedHoneyFloat);
-            mLogEntryProductivity.setAddPollenTrap(pollenAddTrapInt);
-            mLogEntryProductivity.setRemovePollenTrap(pollenRemoveTrapInt);
             mLogEntryProductivity.setPollenCollected(pollenCollectedFloat);
             mLogEntryProductivity.setBeeswaxCollected(beeswaxCollectedFloat);
 
@@ -229,11 +186,7 @@ public class LogProductivityFragment extends LogFragment {
         // save off values potentially entered from screen
         if (mLogEntryProductivity != null) {
             outState.putLong("visitDate", mLogEntryProductivity.getVisitDate());
-            outState.putString("honeyAddSupers", mLogEntryProductivity.getHoneyAddSupers());
-            outState.putString("honeyRemoveSupers", mLogEntryProductivity.getHoneyRemoveSupers());
             outState.putFloat("extractedHoney", mLogEntryProductivity.getExtractedHoney());
-            outState.putInt("addPollenTrap", mLogEntryProductivity.getAddPollenTrap());
-            outState.putInt("removePollenTrap", mLogEntryProductivity.getRemovePollenTrap());
             outState.putFloat("pollenCollected", mLogEntryProductivity.getPollenCollected());
             outState.putFloat("beeswaxCollected", mLogEntryProductivity.getBeeswaxCollected());
         }

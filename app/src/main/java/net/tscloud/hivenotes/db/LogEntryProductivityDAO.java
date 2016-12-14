@@ -20,19 +20,13 @@ public class LogEntryProductivityDAO extends GraphableDAO {
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_ID = "_id";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_HIVE = "hive";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE = "visit_date";
-    public static final String COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS = "honey_add_supers";
-    public static final String COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS = "honey_remove_supers";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY = "extracted_honey";
-    public static final String COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP = "add_pollen_trap";
-    public static final String COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP = "remove_pollen_trap";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED = "pollen_collected";
     public static final String COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED = "beeswax_collected";
 
     // Database fields
     private String[] mAllColumns = { COLUMN_LOGENTRYPRODUCTIVITY_ID, COLUMN_LOGENTRYPRODUCTIVITY_HIVE,
-            COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE, COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS,
-            COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS, COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,
-            COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP, COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP,
+            COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE, COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,
             COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED };
 
     // Columns that require special processing
@@ -72,18 +66,12 @@ public class LogEntryProductivityDAO extends GraphableDAO {
 
     // --DB access methods--
 
-    public LogEntryProductivity createLogEntry(long hive, long visitDate, String honeyAddSupers,
-                                               String honeyRemoveSupers, float extractedHoney,
-                                               int addPollenTrap, int removePollenTrap,
+    public LogEntryProductivity createLogEntry(long hive, long visitDate, float extractedHoney,
                                                float pollenCollected, float beeswaxCollected) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HIVE, hive);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE, visitDate);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS, honeyAddSupers);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS, honeyRemoveSupers);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,extractedHoney);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP, addPollenTrap);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP, removePollenTrap);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, pollenCollected);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED, beeswaxCollected);
         long insertId = mDatabase.insert(TABLE_LOGENTRYPRODUCTIVITY, null, values);
@@ -102,23 +90,16 @@ public class LogEntryProductivityDAO extends GraphableDAO {
     }
 
     public LogEntryProductivity createLogEntry(LogEntryProductivity aDO) {
-        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getHoneyAddSupers(),
-                aDO.getHoneyRemoveSupers(), aDO.getExtractedHoney(), aDO.getAddPollenTrap(),
-                aDO.getRemovePollenTrap(), aDO.getPollenCollected(), aDO.getBeeswaxCollected());
+        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getExtractedHoney(),
+                aDO.getPollenCollected(), aDO.getBeeswaxCollected());
     }
 
-    public LogEntryProductivity updateLogEntry(long id, long hive, long visitDate, String honeyAddSupers,
-                                               String honeyRemoveSupers, float extractedHoney,
-                                               int addPollenTrap, int removePollenTrap,
+    public LogEntryProductivity updateLogEntry(long id, long hive, long visitDate, float extractedHoney,
                                                float pollenColected, float beeswaxColected) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_HIVE, hive);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_VISIT_DATE, visitDate);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_ADD_SUPERS, honeyAddSupers);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_HONEY_REMOVE_SUPERS, honeyRemoveSupers);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_EXTRACTED_HONEY,extractedHoney);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_ADD_POLLEN_TRAP, addPollenTrap);
-        values.put(COLUMN_LOGENTRYPRODUCTIVITY_REMOVE_POLLEN_TRAP, removePollenTrap);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_POLLEN_COLLECTED, pollenColected);
         values.put(COLUMN_LOGENTRYPRODUCTIVITY_BEESWAX_COLLECTED, beeswaxColected);
         int rowsUpdated = mDatabase.update(TABLE_LOGENTRYPRODUCTIVITY, values,
@@ -138,9 +119,8 @@ public class LogEntryProductivityDAO extends GraphableDAO {
     }
 
     public LogEntryProductivity updateLogEntry(LogEntryProductivity aDO) {
-        return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getHoneyAddSupers(),
-                aDO.getHoneyRemoveSupers(), aDO.getExtractedHoney(), aDO.getAddPollenTrap(),
-                aDO.getRemovePollenTrap(), aDO.getPollenCollected(), aDO.getBeeswaxCollected());
+        return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getExtractedHoney(),
+                aDO.getPollenCollected(), aDO.getBeeswaxCollected());
     }
 
     public void deleteLogEntry(LogEntryProductivity logEntryProductivity) {
@@ -185,13 +165,9 @@ public class LogEntryProductivityDAO extends GraphableDAO {
         logEntryProductivity.setId(cursor.getLong(0));
         logEntryProductivity.setHive(cursor.getLong(1));
         logEntryProductivity.setVisitDate(cursor.getLong(2));
-        logEntryProductivity.setHoneyAddSupers(cursor.getString(3));
-        logEntryProductivity.setHoneyRemoveSupers(cursor.getString(4));
-        logEntryProductivity.setExtractedHoney(cursor.getFloat(5));
-        logEntryProductivity.setAddPollenTrap(cursor.getInt(6));
-        logEntryProductivity.setRemovePollenTrap(cursor.getInt(7));
-        logEntryProductivity.setPollenCollected(cursor.getFloat(8));
-        logEntryProductivity.setBeeswaxCollected(cursor.getFloat(9));
+        logEntryProductivity.setExtractedHoney(cursor.getFloat(3));
+        logEntryProductivity.setPollenCollected(cursor.getFloat(4));
+        logEntryProductivity.setBeeswaxCollected(cursor.getFloat(5));
 
         return logEntryProductivity;
     }

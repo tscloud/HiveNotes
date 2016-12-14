@@ -19,72 +19,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/textHoney"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/productivity_honey"
-        android:layout_below="@+id/textProductivity"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <LinearLayout
-        android:id="@+id/linearLayoutSupersText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/textHoney"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <TextView
-            android:id="@+id/textAddSupers"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:text="@string/productivity_add_supers"
-            android:layout_gravity="center_vertical" />
-
-        <TextView
-            android:id="@+id/textRemoveSupers"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:text="@string/productivity_remove_supers"
-            android:layout_gravity="center_vertical" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutHoneySpinners"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutSupersText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <Spinner
-            android:id="@+id/spinnerAddSupers"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50" />
-
-        <Spinner
-            android:id="@+id/spinnerRemoveSupers"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50" />
-
-    </LinearLayout>
-
     <LinearLayout
         android:id="@+id/linearLayoutExtractedHoney"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutHoneySpinners"
+        android:layout_below="@id/textProductivity"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
@@ -106,47 +46,12 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textPollen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/productivity_pollen"
-        android:layout_below="@+id/linearLayoutExtractedHoney"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <LinearLayout
-        android:id="@+id/linearLayoutPollen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/textPollen"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <CheckBox
-            android:id="@+id/checkPollenAddTrap"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:text="@string/productivity_add_trap" />
-
-        <CheckBox
-            android:id="@+id/checkPollenRemoveTrap"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:text="@string/productivity_remove_trap" />
-
-    </LinearLayout>
-
     <LinearLayout
         android:id="@+id/linearLayoutPollenCollected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutPollen"
+        android:layout_below="@id/linearLayoutExtractedHoney"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
