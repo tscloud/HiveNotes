@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
+import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryOther;
-import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 
 /**
@@ -26,7 +26,7 @@ import net.tscloud.hivenotes.db.LogEntryProductivity;
 public class LogEntryDetailActivity extends AppCompatActivity implements
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
-        LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener,
+        LogHiveHealthFragment.OnLogPestMgmntFragmentInteractionListener,
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
         LogOtherFragment.OnLogOtherFragmentInteractionListener,
         LogFragment.PreviousLogDataProvider {
@@ -84,7 +84,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                     fragTag = "LOG_PRODUCTIVITY_FRAG";
                     break;
                 case "3":
-                    fragment = LogPestMgmtFragment.newInstance(hiveKey, logEntryDate, logKey);
+                    fragment = LogHiveHealthFragment.newInstance(hiveKey, logEntryDate, logKey);
                     fragTag = "LOG_PEST_FRAG";
                     break;
                 case "4":
@@ -154,12 +154,12 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogPestMgmtFragmentInteraction(LogEntryPestMgmt alogEntryPestMgmt) {
+    public void onLogPestMgmtFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth) {
         Log.d(TAG, "return from LogPestMgmntFragment...finish LogEntryDetailActivity");
 
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
-        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_PESTMGMT_DATA, alogEntryPestMgmt);
+        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_PESTMGMT_DATA, alogEntryHiveHealth);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();

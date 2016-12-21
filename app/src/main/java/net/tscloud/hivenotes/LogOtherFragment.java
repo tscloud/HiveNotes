@@ -410,7 +410,7 @@ public class LogOtherFragment extends LogFragment {
     @Override
     protected LogEntryOther getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
-        Log.d(TAG, "reading LogEntryPestMgmt table - by date");
+        Log.d(TAG, "reading LogEntryHiveHealth table - by date");
         LogEntryOtherDAO logEntryOtherDAO = new LogEntryOtherDAO(getActivity());
         LogEntryOther reply = null;
 

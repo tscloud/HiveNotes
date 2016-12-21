@@ -7,15 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
-import net.tscloud.hivenotes.db.LogEntryGeneral;
-import net.tscloud.hivenotes.db.LogEntryPestMgmt;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
 

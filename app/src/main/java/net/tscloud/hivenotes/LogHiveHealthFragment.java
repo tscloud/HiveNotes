@@ -2,11 +2,15 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +18,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
-import net.tscloud.hivenotes.db.LogEntryPestMgmt;
-import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
+import net.tscloud.hivenotes.db.LogEntryHiveHealth;
+import net.tscloud.hivenotes.db.LogEntryHiveHealthDAO;
 import net.tscloud.hivenotes.db.NotificationType;
-import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
+import net.tscloud.hivenotes.helper.MultiSelectOtherDialog;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -34,15 +39,15 @@ import java.util.GregorianCalendar;
  * Activities that contain this fragment must implement the
  * {@link OnLogPestMgmntFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LogPestMgmtFragment#newInstance} factory method to
+ * Use the {@link LogHiveHealthFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LogPestMgmtFragment extends LogFragment {
+public class LogHiveHealthFragment extends LogFragment {
 
-    public static final String TAG = "LogPestMgmtFragment";
+    public static final String TAG = "LogHiveHealthFragment";
 
     // DO for this particular Fragment
-    private LogEntryPestMgmt mLogEntryPestMgmt;
+    private LogEntryHiveHealth mLogEntryHiveHealth;
 
     // reference to Activity that should have started me
     private OnLogPestMgmntFragmentInteractionListener mListener;
@@ -54,25 +59,25 @@ public class LogPestMgmtFragment extends LogFragment {
     private static final int TASK_MITES = 1;
 
     // Factory method to create a new instance of this fragment using the provided parameters.
-    public static LogPestMgmtFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
-        LogPestMgmtFragment fragment = new LogPestMgmtFragment();
+    public static LogHiveHealthFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
+        LogHiveHealthFragment fragment = new LogHiveHealthFragment();
 
-        return (LogPestMgmtFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
+        return (LogHiveHealthFragment)setLogFragArgs(fragment, hiveID, logEntryDate, logEntryID);
     }
 
-    public LogPestMgmtFragment() {
+    public LogHiveHealthFragment() {
         // Required empty public constructor
     }
 
     // Accessors needed by super class
     @Override
     protected HiveNotesLogDO getLogEntryDO() {
-        return mLogEntryPestMgmt;
+        return mLogEntryHiveHealth;
     }
 
     @Override
     protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
-        mLogEntryPestMgmt = (LogEntryPestMgmt)aDataObj;
+        mLogEntryHiveHealth = (LogEntryHiveHealth)aDataObj;
     }
 
     @Override
@@ -81,17 +86,11 @@ public class LogPestMgmtFragment extends LogFragment {
 
         // populate dataobject from Bundle
         if (savedInstanceState != null) {
-            mLogEntryPestMgmt = new LogEntryPestMgmt();
-            mLogEntryPestMgmt.setVisitDate(savedInstanceState.getLong("visitDate"));
-            mLogEntryPestMgmt.setDroneCellFndn(savedInstanceState.getInt("droneCellFndn"));
-            mLogEntryPestMgmt.setSmallHiveBeetleTrap(savedInstanceState.getInt("smallHiveBeetleTrap"));
-            mLogEntryPestMgmt.setMitesTrtmnt(savedInstanceState.getInt("mitesTrtmnt"));
-            mLogEntryPestMgmt.setMitesTrtmntType(savedInstanceState.getString("mitesTrtmntType"));
-            mLogEntryPestMgmt.setScreenedBottomBoard(savedInstanceState.getInt("screenedBottomBoard"));
-            mLogEntryPestMgmt.setOther(savedInstanceState.getInt("other"));
-            mLogEntryPestMgmt.setOtherType(savedInstanceState.getString("otherType"));
-            mLogEntryPestMgmt.setDroneCellFndnRmndrTime(savedInstanceState.getLong("droneCellFndnRmndrTime"));
-            mLogEntryPestMgmt.setMitesTrtmntRmndrTime(savedInstanceState.getLong("mitesTrtmntRmndrTime"));
+            mLogEntryHiveHealth = new LogEntryHiveHealth();
+            mLogEntryHiveHealth.setVisitDate(savedInstanceState.getLong("visitDate"));
+            mLogEntryHiveHealth.setPestsDetected(savedInstanceState.getString("pestsDetected"));
+            mLogEntryHiveHealth.setDiseaseDetected(savedInstanceState.getString("diseaseDetected"));
+            mLogEntryHiveHealth.setPestsDetected(savedInstanceState.getString("pestsDetected"));
         }
 
         // save off arguments via super method
@@ -102,7 +101,7 @@ public class LogPestMgmtFragment extends LogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_log_pestmgmt_notes, container, false);
+        View v = inflater.inflate(R.layout.fragment_log_hivehealth_notes, container, false);
 
         // set button listeners and text
         final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
@@ -110,6 +109,9 @@ public class LogPestMgmtFragment extends LogFragment {
 
         final Button droneCellFndnBtn = (Button)v.findViewById(R.id.buttonDroneCellFndn);
         final Button mitesTrtmntBtn = (Button)v.findViewById(R.id.buttonMitesTrtmnt);
+
+        // **TEST**
+        final Button dialogTestBtn = (Button)v.findViewById(R.id.buttonDiagTest);
 
         // labels for showing reminder time; be sure to init the tag as this is what goes into the DB
         final TextView droneCellFndnRmndrText = (TextView)v.findViewById(R.id.textViewDroneCellFndnRmndr);
@@ -122,64 +124,49 @@ public class LogPestMgmtFragment extends LogFragment {
          */
         getLogEntry(mListener);
 
-        if (mLogEntryPestMgmt != null) {
+        if (mLogEntryHiveHealth != null) {
 
             // fill the form
-            final CheckBox droneCellFndnCheck = (CheckBox)v.findViewById(R.id.checkDroneCellFndn);
-            final CheckBox smallHiveBeetleTrapCheck = (CheckBox)v.findViewById(R.id.checkSmallHiveBeetleTrap);
-            final CheckBox mitesTrtmntCheck = (CheckBox)v.findViewById(R.id.checkMitesTrtmnt);
-            final EditText mitesTrtmntEdit = (EditText)v.findViewById(R.id.editTextMitesTrtmnt);
-            final CheckBox screenedBottomBoardCheck = (CheckBox)v.findViewById(R.id.checkScreenedBottomBoard);
-            final CheckBox otherCheck = (CheckBox)v.findViewById(R.id.checkPestOther);
-            final EditText otherEdit = (EditText)v.findViewById(R.id.editTextPestOther);
-
-            droneCellFndnCheck.setChecked(mLogEntryPestMgmt.getDroneCellFndn() != 0);
-            smallHiveBeetleTrapCheck.setChecked(mLogEntryPestMgmt.getSmallHiveBeetleTrap() != 0);
-            mitesTrtmntCheck.setChecked(mLogEntryPestMgmt.getMitesTrtmnt() != 0);
-            mitesTrtmntEdit.setText(mLogEntryPestMgmt.getMitesTrtmntType());
-            screenedBottomBoardCheck.setChecked(mLogEntryPestMgmt.getScreenedBottomBoard() != 0);
-            otherCheck.setChecked(mLogEntryPestMgmt.getOther() != 0);
-            otherEdit.setText(mLogEntryPestMgmt.getOtherType());
 
             // do Reminders
 
             // If we have a time --> use it...
             //  it could be -2 indicating that an UNSET operation has occurred
-            if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == -2) {
+            if (mLogEntryHiveHealth.getDroneCellFndnRmndrTime() == -2) {
                 droneCellFndnRmndrText.setText(R.string.no_reminder_set);
                 // don't forget to set the tag
-                droneCellFndnRmndrText.setTag(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
+                droneCellFndnRmndrText.setTag(mLogEntryHiveHealth.getDroneCellFndnRmndrTime());
             }
-            else if (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() != -1) {
-                calendar.setTimeInMillis(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
+            else if (mLogEntryHiveHealth.getDroneCellFndnRmndrTime() != -1) {
+                calendar.setTimeInMillis(mLogEntryHiveHealth.getDroneCellFndnRmndrTime());
                 String droneDate = dateFormat.format(calendar.getTime());
                 String droneTime = timeFormat.format(calendar.getTime());
                 String droneDateTime = droneDate + ' ' + droneTime;
                 droneCellFndnRmndrText.setText(droneDateTime);
                 // don't forget to set the tag
-                droneCellFndnRmndrText.setTag(mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
+                droneCellFndnRmndrText.setTag(mLogEntryHiveHealth.getDroneCellFndnRmndrTime());
             }
 
-            if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == -2) {
+            if (mLogEntryHiveHealth.getMitesTrtmntRmndrTime() == -2) {
                 mitesTrtmntRmndrText.setText(R.string.no_reminder_set);
                 // don't forget to set the tag
-                mitesTrtmntRmndrText.setTag(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
+                mitesTrtmntRmndrText.setTag(mLogEntryHiveHealth.getMitesTrtmntRmndrTime());
             }
-            else if (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() != -1) {
-                calendar.setTimeInMillis(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
+            else if (mLogEntryHiveHealth.getMitesTrtmntRmndrTime() != -1) {
+                calendar.setTimeInMillis(mLogEntryHiveHealth.getMitesTrtmntRmndrTime());
                 String mitesDate = dateFormat.format(calendar.getTime());
                 String mitesTime = timeFormat.format(calendar.getTime());
                 String mitesDateTime = mitesDate + ' ' + mitesTime;
                 mitesTrtmntRmndrText.setText(mitesDateTime);
                 // don't forget to set the tag
-                mitesTrtmntRmndrText.setTag(mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
+                mitesTrtmntRmndrText.setTag(mLogEntryHiveHealth.getMitesTrtmntRmndrTime());
             }
         }
 
         // ...Otherwise --> spin up a task to get and set
-        //  this check need be made regardless of nullness of DO -> Reminders are at the Hive level and may exist
-        //   even if a log entry has not been made yet
-        if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getDroneCellFndnRmndrTime() == -1)) {
+        //  this check need be made regardless of nullness of DO -> Reminders are at the Hive level
+        //   and may exist even if a log entry has not been made yet
+        if ((mLogEntryHiveHealth == null) || (mLogEntryHiveHealth.getDroneCellFndnRmndrTime() == -1)) {
             //disable the button until task is thru
             droneCellFndnBtn.setEnabled(false);
 
@@ -194,7 +181,7 @@ public class LogPestMgmtFragment extends LogFragment {
             mTaskDrone.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
-        if ((mLogEntryPestMgmt == null) || (mLogEntryPestMgmt.getMitesTrtmntRmndrTime() == -1)) {
+        if ((mLogEntryHiveHealth == null) || (mLogEntryHiveHealth.getMitesTrtmntRmndrTime() == -1)) {
             //disable the button until task is thru
             mitesTrtmntBtn.setEnabled(false);
 
@@ -232,6 +219,17 @@ public class LogPestMgmtFragment extends LogFragment {
             }
         });
 
+        dialogTestBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = getResources().getString(R.string.hivehealth_notes_string);
+                String[] elems = getResources().getStringArray(R.array.pests_disease_array);
+
+                MultiSelectOtherDialog diagFragment = MultiSelectOtherDialog.newInstance(title, elems);
+                diagFragment.show(getActivity().getSupportFragmentManager(), "missiles");
+            }
+        });
+
         return v;
     }
 
@@ -241,26 +239,8 @@ public class LogPestMgmtFragment extends LogFragment {
 
         boolean lNewLogEntry = false;
 
-        final CheckBox droneCellFndnCheck = (CheckBox)getView().findViewById(R.id.checkDroneCellFndn);
-        final CheckBox smallHiveBeetleTrapCheck = (CheckBox)getView().findViewById(R.id.checkSmallHiveBeetleTrap);
-        final CheckBox mitesTrtmntCheck = (CheckBox)getView().findViewById(R.id.checkMitesTrtmnt);
-        final EditText mitesTrtmntEdit = (EditText)getView().findViewById(R.id.editTextMitesTrtmnt);
-        final CheckBox screenedBottomBoardCheck = (CheckBox)getView().findViewById(R.id.checkScreenedBottomBoard);
-        final CheckBox otherCheck = (CheckBox)getView().findViewById(R.id.checkPestOther);
-        final EditText otherEdit = (EditText)getView().findViewById(R.id.editTextPestOther);
         final TextView droneCellFndnRmndrText = (TextView)getView().findViewById(R.id.textViewDroneCellFndnRmndr);
         final TextView mitesTrtmntRmndrText = (TextView)getView().findViewById(R.id.textViewMitesTrtmntRmndr);
-
-        int droneCellFndnInt = (droneCellFndnCheck.isChecked()) ? 1 : 0;
-        int smallHiveBeetleTrapInt = (smallHiveBeetleTrapCheck.isChecked()) ? 1 : 0;
-        int mitesTrtmntInt = (mitesTrtmntCheck.isChecked()) ? 1 : 0;
-
-        String mitesTrtmntString = mitesTrtmntEdit.getText().toString();
-
-        int screenedBottomBoardInt = (screenedBottomBoardCheck.isChecked()) ? 1 : 0;
-        int otherInt = (otherCheck.isChecked()) ? 1 : 0;
-
-        String otherString = otherEdit.getText().toString();
 
         // Get the times in millis from the TextView tag
         long droneCellFndnRmndrLong = (long)droneCellFndnRmndrText.getTag();
@@ -269,43 +249,20 @@ public class LogPestMgmtFragment extends LogFragment {
         // check for required values - are there any?
         boolean emptyText = false;
 
-        if (mitesTrtmntCheck.isChecked()) {
-            if ((mitesTrtmntString == null) || (mitesTrtmntString.length() == 0)) {
-                mitesTrtmntEdit.setError("Mites Treatment cannot be empty");
-                emptyText = true;
-                Log.d(TAG, "Uh oh...Mites Treatment empty");
-            }
-        }
-
-        if (otherCheck.isChecked()) {
-            if ((otherString == null) || (otherString.length() == 0)) {
-                otherEdit.setError("Other Treatment cannot be empty");
-                emptyText = true;
-                Log.d(TAG, "Uh oh...Other Treatment empty");
-            }
-        }
-
         if (!emptyText) {
-            LogEntryPestMgmtDAO logEntryPestMgmtDAO = new LogEntryPestMgmtDAO(getActivity());
-            if (mLogEntryPestMgmt == null) {
-                mLogEntryPestMgmt = new LogEntryPestMgmt();
+            LogEntryHiveHealthDAO logEntryHiveHealthDAO = new LogEntryHiveHealthDAO(getActivity());
+            if (mLogEntryHiveHealth == null) {
+                mLogEntryHiveHealth = new LogEntryHiveHealth();
             }
 
-            mLogEntryPestMgmt.setId(mLogEntryKey);
-            mLogEntryPestMgmt.setHive(mHiveID);
-            mLogEntryPestMgmt.setVisitDate(mLogEntryDate);
-            mLogEntryPestMgmt.setDroneCellFndn(droneCellFndnInt);
-            mLogEntryPestMgmt.setSmallHiveBeetleTrap(smallHiveBeetleTrapInt);
-            mLogEntryPestMgmt.setMitesTrtmnt(mitesTrtmntInt);
-            mLogEntryPestMgmt.setMitesTrtmntType(mitesTrtmntString);
-            mLogEntryPestMgmt.setScreenedBottomBoard(screenedBottomBoardInt);
-            mLogEntryPestMgmt.setOther(otherInt);
-            mLogEntryPestMgmt.setOtherType(otherString);
-            mLogEntryPestMgmt.setDroneCellFndnRmndrTime(droneCellFndnRmndrLong);
-            mLogEntryPestMgmt.setMitesTrtmntRmndrTime(mitesTrtmntRmndrLong);
+            mLogEntryHiveHealth.setId(mLogEntryKey);
+            mLogEntryHiveHealth.setHive(mHiveID);
+            mLogEntryHiveHealth.setVisitDate(mLogEntryDate);
+            mLogEntryHiveHealth.setDroneCellFndnRmndrTime(droneCellFndnRmndrLong);
+            mLogEntryHiveHealth.setMitesTrtmntRmndrTime(mitesTrtmntRmndrLong);
 
             if (mListener != null) {
-                mListener.onLogPestMgmtFragmentInteraction(mLogEntryPestMgmt);
+                mListener.onLogPestMgmtFragmentInteraction(mLogEntryHiveHealth);
             }
         }
     }
@@ -378,17 +335,11 @@ public class LogPestMgmtFragment extends LogFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         // save off values potentially entered from screen
-        if (mLogEntryPestMgmt != null) {
-            outState.putLong("visitDate", mLogEntryPestMgmt.getVisitDate());
-            outState.putInt("droneCellFndn", mLogEntryPestMgmt.getDroneCellFndn());
-            outState.putInt("smallHiveBeetleTrap", mLogEntryPestMgmt.getSmallHiveBeetleTrap());
-            outState.putInt("mitesTrtmnt", mLogEntryPestMgmt.getMitesTrtmnt());
-            outState.putString("mitesTrtmntType", mLogEntryPestMgmt.getMitesTrtmntType());
-            outState.putInt("screenedBottomBoard", mLogEntryPestMgmt.getScreenedBottomBoard());
-            outState.putInt("other", mLogEntryPestMgmt.getOther());
-            outState.putString("otherType", mLogEntryPestMgmt.getOtherType());
-            outState.putLong("droneCellFndnRmndrTime", mLogEntryPestMgmt.getDroneCellFndnRmndrTime());
-            outState.putLong("mitesTrtmntRmndrTime", mLogEntryPestMgmt.getMitesTrtmntRmndrTime());
+        if (mLogEntryHiveHealth != null) {
+            outState.putLong("visitDate", mLogEntryHiveHealth.getVisitDate());
+            outState.putString("mitesTrtmntType", mLogEntryHiveHealth.getPestsDetected());
+            outState.putString("diseaseDetected", mLogEntryHiveHealth.getDiseaseDetected());
+            outState.putString("VarroaTreatment", mLogEntryHiveHealth.getVarroaTreatment());
         }
 
         super.onSaveInstanceState(outState);
@@ -408,20 +359,20 @@ public class LogPestMgmtFragment extends LogFragment {
     }
 
     @Override
-    protected LogEntryPestMgmt getLogEntryFromDB(long aKey, long aDate) {
+    protected LogEntryHiveHealth getLogEntryFromDB(long aKey, long aDate) {
         // read log Entry
-        Log.d(TAG, "reading LogEntryPestMgmt table");
-        LogEntryPestMgmtDAO logEntryPestMgmtDAO = new LogEntryPestMgmtDAO(getActivity());
-        LogEntryPestMgmt reply = null;
+        Log.d(TAG, "reading LogEntryHiveHealth table");
+        LogEntryHiveHealthDAO logEntryHiveHealthDAO = new LogEntryHiveHealthDAO(getActivity());
+        LogEntryHiveHealth reply = null;
 
         if (aKey != -1) {
-            reply = logEntryPestMgmtDAO.getLogEntryById(aKey);
+            reply = logEntryHiveHealthDAO.getLogEntryById(aKey);
         }
         else if (aDate != -1) {
-            reply = logEntryPestMgmtDAO.getLogEntryByDate(aDate);
+            reply = logEntryHiveHealthDAO.getLogEntryByDate(aDate);
         }
 
-        logEntryPestMgmtDAO.close();
+        logEntryHiveHealthDAO.close();
 
         return reply;
     }
@@ -434,7 +385,7 @@ public class LogPestMgmtFragment extends LogFragment {
      */
     public interface OnLogPestMgmntFragmentInteractionListener extends
             LogFragment.PreviousLogDataProvider {
-        void onLogPestMgmtFragmentInteraction(LogEntryPestMgmt alogEntryPestMgmt);
+        void onLogPestMgmtFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth);
     }
 
     /** subclass of the GetReminderTimeTask

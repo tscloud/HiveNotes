@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 public class LogEntryOther implements HiveNotesLogDO, Parcelable {
 
-    public static final String TAG = "LogEntryPestMgmt";
+    public static final String TAG = "LogEntryHiveHealth";
 
     /* Reminders children of Hive */
     private long id;

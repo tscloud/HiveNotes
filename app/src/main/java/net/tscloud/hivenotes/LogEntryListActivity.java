@@ -20,21 +20,16 @@ import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
+import net.tscloud.hivenotes.db.LogEntryHiveHealthDAO;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryOtherDAO;
-import net.tscloud.hivenotes.db.LogEntryPestMgmt;
-import net.tscloud.hivenotes.db.LogEntryPestMgmtDAO;
+import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
 import net.tscloud.hivenotes.db.Notification;
 import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -57,7 +52,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         LogEntryListFragment.Callbacks,
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
-        LogPestMgmtFragment.OnLogPestMgmntFragmentInteractionListener,
+        LogHiveHealthFragment.OnLogPestMgmntFragmentInteractionListener,
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
         LogOtherFragment.OnLogOtherFragmentInteractionListener {
 
@@ -88,7 +83,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     public static String INTENT_LOGENTRY_PRODUCTIVITY_DATA = "logentryProductivityData";
     private LogEntryProductivity mLogEntryProductivityData;
     public static String INTENT_LOGENTRY_PESTMGMT_DATA = "logentryPestMGMTData";
-    private LogEntryPestMgmt mLogEntryPestMgmtData;
+    private LogEntryHiveHealth mLogEntryHiveHealthData;
     public static String INTENT_LOGENTRY_FEEDING_DATA = "logentryFeedingData";
     private LogEntryFeeding mLogEntryFeedingData;
     public static String INTENT_LOGENTRY_OTHER_DATA = "logentryOtherData";
@@ -176,8 +171,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mPreviousLogData = mLogEntryProductivityData;
                     break;
                 case "3":
-                    fragment = LogPestMgmtFragment.newInstance(mHiveKey, mLogDate, -1);
-                    mPreviousLogData = mLogEntryPestMgmtData;
+                    fragment = LogHiveHealthFragment.newInstance(mHiveKey, mLogDate, -1);
+                    mPreviousLogData = mLogEntryHiveHealthData;
                     break;
                 case "4":
                     fragment = LogFeedingFragment.newInstance(mHiveKey, mLogDate, -1);
@@ -225,7 +220,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryProductivityData);
                     break;
                 case "3":
-                    intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryPestMgmtData);
+                    intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryHiveHealthData);
                     break;
                 case "4":
                     intent.putExtra(INTENT_PREVIOUS_DATA, mLogEntryFeedingData);
@@ -292,9 +287,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogPestMgmtFragmentInteraction(LogEntryPestMgmt alogEntryPestMgmt) {
-        Log.d(TAG, "received LogEntryPestMgmt data object");
-        mLogEntryPestMgmtData = alogEntryPestMgmt;
+    public void onLogPestMgmtFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth) {
+        Log.d(TAG, "received LogEntryHiveHealth data object");
+        mLogEntryHiveHealthData = alogEntryHiveHealth;
     }
 
     @Override
@@ -333,9 +328,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryProductivityData =
                             (LogEntryProductivity) bundleData.getParcelable(INTENT_LOGENTRY_PRODUCTIVITY_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_PESTMGMT_DATA)) {
-                    Log.d(TAG, "received LogEntryPestMgmt data object");
-                    mLogEntryPestMgmtData =
-                            (LogEntryPestMgmt) bundleData.getParcelable(INTENT_LOGENTRY_PESTMGMT_DATA);
+                    Log.d(TAG, "received LogEntryHiveHealth data object");
+                    mLogEntryHiveHealthData =
+                            (LogEntryHiveHealth) bundleData.getParcelable(INTENT_LOGENTRY_PESTMGMT_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_FEEDING_DATA)) {
                     Log.d(TAG, "received LogEntryFeeding data object");
                     mLogEntryFeedingData =
@@ -367,7 +362,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         // Do we need to do this every time we set mLogDate?
         mLogEntryGeneralData = null;
         mLogEntryProductivityData = null;
-        mLogEntryPestMgmtData = null;
+        mLogEntryHiveHealthData = null;
         mLogEntryFeedingData = null;
         mLogEntryOtherData = null;
     }
@@ -450,21 +445,21 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 mLogEntryProductivityData = null;
             }
 
-            if (mLogEntryPestMgmtData != null) {
-                Log.d(TAG, "about to persist LogEntryPestMgmt");
-                LogEntryPestMgmtDAO mLogEntryPestMgmtDAO = new LogEntryPestMgmtDAO(ctx);
+            if (mLogEntryHiveHealthData != null) {
+                Log.d(TAG, "about to persist LogEntryHiveHealth");
+                LogEntryHiveHealthDAO mLogEntryHiveHealthDAO = new LogEntryHiveHealthDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
-                mLogEntryPestMgmtData.setVisitDate(mLogDate);
+                mLogEntryHiveHealthData.setVisitDate(mLogDate);
 
                 // need to potentially do Notification 1st as its key may need
                 //   creation prior to Log entry write
                 createNotification(
-                        mLogEntryPestMgmtData.getDroneCellFndnRmndrTime(),
+                        mLogEntryHiveHealthData.getDroneCellFndnRmndrTime(),
                         NotificationType.NOTIFY_PEST_REMOVE_DRONE,
                         mHiveKey);
 
                 createNotification(
-                        mLogEntryPestMgmtData.getMitesTrtmntRmndrTime(),
+                        mLogEntryHiveHealthData.getMitesTrtmntRmndrTime(),
                         NotificationType.NOTIFY_PEST_REMOVE_MITES,
                         mHiveKey);
 
@@ -472,23 +467,23 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
                 //  however.  It either needs to be a real time or -1 indicating that a Notification
                 //  table read is necessary as a real time may have been set elsewhere.
-                if (mLogEntryPestMgmtData.getDroneCellFndnRmndrTime() == -2) {
-                    mLogEntryPestMgmtData.setDroneCellFndnRmndrTime(-1);
+                if (mLogEntryHiveHealthData.getDroneCellFndnRmndrTime() == -2) {
+                    mLogEntryHiveHealthData.setDroneCellFndnRmndrTime(-1);
                 }
-                if (mLogEntryPestMgmtData.getMitesTrtmntRmndrTime() == -2) {
-                    mLogEntryPestMgmtData.setMitesTrtmntRmndrTime(-1);
+                if (mLogEntryHiveHealthData.getMitesTrtmntRmndrTime() == -2) {
+                    mLogEntryHiveHealthData.setMitesTrtmntRmndrTime(-1);
                 }
 
-                if (mLogEntryPestMgmtData.getId() == -1) {
-                    mLogEntryPestMgmtDAO.createLogEntry(mLogEntryPestMgmtData);
+                if (mLogEntryHiveHealthData.getId() == -1) {
+                    mLogEntryHiveHealthDAO.createLogEntry(mLogEntryHiveHealthData);
                 }
                 else {
-                    mLogEntryPestMgmtDAO.updateLogEntry(mLogEntryPestMgmtData);
+                    mLogEntryHiveHealthDAO.updateLogEntry(mLogEntryHiveHealthData);
                 }
-                mLogEntryPestMgmtDAO.close();
+                mLogEntryHiveHealthDAO.close();
 
                 //clear member vars
-                mLogEntryPestMgmtData = null;
+                mLogEntryHiveHealthData = null;
             }
 
             if (mLogEntryFeedingData != null) {

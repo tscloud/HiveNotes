@@ -149,7 +149,6 @@
         <item>Poor Pattern</item>
     </string-array>
 
-    <!-- not currently needed
     <string-array name="pests_disease_array">
         <item>@string/productivity_varroa_mite</item>
         <item>@string/productivity_small_hive_beetle</item>
@@ -157,10 +156,7 @@
         <item>@string/productivity_deformed_wing</item>
         <item>@string/productivity_american_foulbrood</item>
         <item>@string/productivity_european_foalbrood</item>
-        <item>@string/productivity_other</item>
-        <item>Other</item>
     </string-array>
-    -->
 
     <string-array name="stores_array">
         <item></item>
@@ -182,6 +178,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="general_notes_string">General Notes</string>
     <string name="pestmgmt_notes_string">Pest Management</string>
+    <string name="hivehealth_notes_string">Hive Health</string>
     <string name="productivity_notes_string">Productivity</string>
     <string name="feeding_notes_string">Feeding</string>
     <string name="other_notes_string">Other</string>
@@ -213,4 +210,6 @@
     <string name="na_msg">tollbar button not implemented</string>
     <string name="export">Export</string>
     <string name="add_photo">Add Photo</string>
+    <string name="ok_string">OK</string>
+    <string name="cancel_string">Cancel</string>
 </resources>

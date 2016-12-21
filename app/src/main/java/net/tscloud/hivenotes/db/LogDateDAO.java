@@ -24,7 +24,7 @@ public class LogDateDAO extends AbstactDAO {
             "SELECT VISIT_DATE FROM LogEntryProductivity " +
             "WHERE HIVE = ? " +
             "UNION " +
-            "SELECT VISIT_DATE FROM LogEntryPestMgmt " +
+            "SELECT VISIT_DATE FROM LogEntryHiveHealth " +
             "WHERE HIVE = ? " +
             "UNION " +
             "SELECT VISIT_DATE FROM LogEntryFeeding " +
