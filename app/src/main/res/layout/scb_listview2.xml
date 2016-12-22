@@ -6,7 +6,7 @@
 
     <ListView
         android:id="@+id/lvScb"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:cacheColorHint="#0000"
         android:divider="@android:color/transparent"
@@ -23,14 +23,17 @@
         android:id="@+id/bottonRowScb"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:measureWithLargestChild="true"
+        android:paddingTop="0dip"
         android:orientation="horizontal" >
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/buttonOKScb"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/ok_string" />
 
@@ -43,8 +46,9 @@
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/buttonCancelScb"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@string/cancel_string" />
     </LinearLayout>

@@ -223,7 +223,7 @@ public class LogHiveHealthFragment extends LogFragment {
             @Override
             public void onClick(View v) {
                 String title = getResources().getString(R.string.hivehealth_notes_string);
-                String[] elems = getResources().getStringArray(R.array.pests_disease_array);
+                String[] elems = getResources().getStringArray(R.array.test_array);
 
                 MultiSelectOtherDialog diagFragment = MultiSelectOtherDialog.newInstance(title, elems);
                 diagFragment.show(getActivity().getSupportFragmentManager(), "missiles");

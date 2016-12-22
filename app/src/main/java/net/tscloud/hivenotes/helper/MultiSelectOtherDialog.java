@@ -44,42 +44,24 @@ public class MultiSelectOtherDialog extends DialogFragment {
 
         // length of this list determines how many items to present - need an extra for the EditText
         //  at the end for "Other"
-        int mListLen = (getArguments().getStringArray("elems").length) + 1;
+        //int mListLen = (getArguments().getStringArray("elems").length) + 1;
+        int mListLen = (getArguments().getStringArray("elems").length);
         for (int i = 0; i < mListLen; i++) {
             mList.add(new Bean());
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        ListView listViewItems = new ListView(getActivity());
+        View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview2, null);
+        ListView listViewItems = (ListView)view.findViewById(R.id.lvScb);
+
         listViewItems.setAdapter(new MultiSelectOtherAdapter());
         listViewItems.setOnItemClickListener(new OnItemClickListenerListViewItem());
 
         builder.setTitle(R.string.hivehealth_notes_string)
-                .setView(listViewItems)
-                .setPositiveButton(R.string.ok_string, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK, so save the mSelectedItems results somewhere
-                        // or return them to the component that opened the dialog
-                    }
-                })
-                .setNegativeButton(R.string.cancel_string, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
+                .setView(view);
 
         AlertDialog diagFragDialog = builder.create();
-
-        /*
-        diagFragDialog.show();
-
-        final Button positiveButton = diagFragDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
-        positiveButtonLL.gravity = Gravity.CENTER;
-        positiveButton.setLayoutParams(positiveButtonLL);
-        */
 
         return diagFragDialog;
     }
@@ -107,12 +89,12 @@ public class MultiSelectOtherDialog extends DialogFragment {
             if (convertView == null) {
                 holder = new ViewHolder();
                 // needed for the "Other" EditText at the end
-                if (position < mList.size() - 1) {
+                //if (position < mList.size() - 1) {
                     convertView = View.inflate(getActivity(), R.layout.scb_item, null);
-                }
-                else {
-                    convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
-                }
+                //}
+                //else {
+                //    convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
+                //}
                 holder.tv = (TextView) convertView.findViewById(R.id.tv);
                 holder.cb = (SmoothCheckBox) convertView.findViewById(R.id.scb);
                 convertView.setTag(holder);

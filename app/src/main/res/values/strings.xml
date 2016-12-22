@@ -175,6 +175,15 @@
         <item>Marked - Blue</item>
     </string-array>
 
+    <string-array name="test_array">
+        <item>Unmarked - Unmarked</item>
+        <item>Unmarked - Marked</item>
+        <item>Marked - White or Grey</item>
+        <item>Marked - Yellow</item>
+        <item>Marked - Red</item>
+        <item>Marked - Green</item>
+    </string-array>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="general_notes_string">General Notes</string>
     <string name="pestmgmt_notes_string">Pest Management</string>
