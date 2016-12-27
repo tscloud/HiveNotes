@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/svScb"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:cacheColorHint="#0000"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:scrollbars="none"
+        android:layout_above="@+id/viewLineHoriz" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayoutScb">
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/viewLineHoriz"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="0dp"
+        android:layout_above="@+id/bottonRowScb"
+        android:background="?android:attr/dividerVertical" />
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:id="@+id/bottonRowScb"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:measureWithLargestChild="true"
+        android:paddingTop="0dip"
+        android:orientation="horizontal" >
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/buttonOKScb"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ok_string" />
+
+        <View
+            android:id="@+id/viewLineVert"
+            android:layout_height="fill_parent"
+            android:layout_width="1dp"
+            android:layout_marginBottom="0dp"
+            android:background="?android:attr/dividerVertical" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/buttonCancelScb"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel_string" />
+    </LinearLayout>
+</RelativeLayout>
