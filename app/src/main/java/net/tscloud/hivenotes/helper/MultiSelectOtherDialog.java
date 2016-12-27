@@ -5,12 +5,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +30,8 @@ import cn.refactor.library.SmoothCheckBox;
 
 public class MultiSelectOtherDialog extends DialogFragment {
 
+    public static final String TAG = "MultiSelectOtherDialog";
+
     private ArrayList<Bean> mList = new ArrayList<>();
 
     public static MultiSelectOtherDialog newInstance(String aTitle, String[] aElems) {
@@ -44,8 +48,8 @@ public class MultiSelectOtherDialog extends DialogFragment {
 
         // length of this list determines how many items to present - need an extra for the EditText
         //  at the end for "Other"
-        //int mListLen = (getArguments().getStringArray("elems").length) + 1;
-        int mListLen = (getArguments().getStringArray("elems").length);
+        int mListLen = (getArguments().getStringArray("elems").length) + 1;
+        //int mListLen = (getArguments().getStringArray("elems").length);
         for (int i = 0; i < mListLen; i++) {
             mList.add(new Bean());
         }
@@ -53,13 +57,12 @@ public class MultiSelectOtherDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview2, null);
-        ListView listViewItems = (ListView)view.findViewById(R.id.lvScb);
 
+        ListView listViewItems = (ListView)view.findViewById(R.id.lvScb);
         listViewItems.setAdapter(new MultiSelectOtherAdapter());
         listViewItems.setOnItemClickListener(new OnItemClickListenerListViewItem());
 
-        builder.setTitle(R.string.hivehealth_notes_string)
-                .setView(view);
+        builder.setTitle(getArguments().getString("title")).setView(view);
 
         AlertDialog diagFragDialog = builder.create();
 
@@ -89,17 +92,21 @@ public class MultiSelectOtherDialog extends DialogFragment {
             if (convertView == null) {
                 holder = new ViewHolder();
                 // needed for the "Other" EditText at the end
-                //if (position < mList.size() - 1) {
+                if (position < mList.size() - 1) {
                     convertView = View.inflate(getActivity(), R.layout.scb_item, null);
-                //}
-                //else {
-                //    convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
-                //}
-                holder.tv = (TextView) convertView.findViewById(R.id.tv);
+                    holder.tv = (TextView) convertView.findViewById(R.id.tv);
+                    Log.d(TAG, "1)");
+                }
+                else {
+                    convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
+                    holder.tv = (TextView) convertView.findViewById(R.id.et);
+                    Log.d(TAG, "2)");
+                }
                 holder.cb = (SmoothCheckBox) convertView.findViewById(R.id.scb);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
+                Log.d(TAG, "3)");
             }
 
             final Bean bean = mList.get(position);
@@ -113,8 +120,18 @@ public class MultiSelectOtherDialog extends DialogFragment {
             if (position < getArguments().getStringArray("elems").length) {
                 String text = getArguments().getStringArray("elems")[position];
                 holder.tv.setText(text);
+                Log.d(TAG, "4)");
             }
+            else {
+                convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
+                holder.tv = (TextView) convertView.findViewById(R.id.et);
+                holder.cb = (SmoothCheckBox) convertView.findViewById(R.id.scb);
+                convertView.setTag(holder);
+                Log.d(TAG, "5)");
+            }
+
             holder.cb.setChecked(bean.isChecked);
+            Log.d(TAG, "6)");
 
             return convertView;
         }

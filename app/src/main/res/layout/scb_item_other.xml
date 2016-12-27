@@ -11,7 +11,7 @@
     android:orientation="horizontal">
 
     <EditText
-        android:id="@+id/tv"
+        android:id="@+id/et"
         android:hint="@string/other_notes_string"
         android:layout_weight="100"
         android:layout_width="match_parent"

@@ -14,11 +14,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -227,6 +229,19 @@ public class LogHiveHealthFragment extends LogFragment {
 
                 MultiSelectOtherDialog diagFragment = MultiSelectOtherDialog.newInstance(title, elems);
                 diagFragment.show(getActivity().getSupportFragmentManager(), "missiles");
+
+                /*
+                String names[] ={"A","B","C","D","D","D","D","D","D","D","D","D","D","D","D","D"};
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View convertView = (View) inflater.inflate(R.layout.scb_listview2, null);
+                alertDialog.setView(convertView);
+                alertDialog.setTitle("List");
+                ListView lv = (ListView) convertView.findViewById(R.id.lvScb);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,names);
+                lv.setAdapter(adapter);
+                alertDialog.show();
+                */
             }
         });
 

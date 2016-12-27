@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -10,12 +10,15 @@
         android:layout_width="match_parent"
         android:cacheColorHint="#0000"
         android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" />
+        android:dividerHeight="0dp"
+        android:layout_above="@+id/viewLineHoriz" />
 
     <View
+        android:id="@+id/viewLineHoriz"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="0dp"
+        android:layout_above="@+id/bottonRowScb"
         android:background="?android:attr/dividerVertical" />
 
     <LinearLayout
@@ -24,6 +27,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:measureWithLargestChild="true"
         android:paddingTop="0dip"
         android:orientation="horizontal" >
@@ -38,6 +42,7 @@
             android:text="@string/ok_string" />
 
         <View
+            android:id="@+id/viewLineVert"
             android:layout_height="fill_parent"
             android:layout_width="1dp"
             android:layout_marginBottom="0dp"
@@ -52,5 +57,4 @@
             android:gravity="center"
             android:text="@string/cancel_string" />
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
