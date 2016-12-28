@@ -83,13 +83,14 @@ public class MultiSelectOtherDialog extends DialogFragment {
 
         @Override
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
-            if (convertView == null) {
+            convertView = null;
+            //if (convertView == null) {
                 holder = new ViewHolder();
                 // needed for the "Other" EditText at the end
                 if (position < mList.size() - 1) {
@@ -103,19 +104,21 @@ public class MultiSelectOtherDialog extends DialogFragment {
                     Log.d(TAG, "2)");
                 }
                 holder.cb = (SmoothCheckBox) convertView.findViewById(R.id.scb);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-                Log.d(TAG, "3)");
-            }
+            //    convertView.setTag(holder);
+            //} else {
+            //    holder = (ViewHolder) convertView.getTag();
+            //    Log.d(TAG, "3)");
+            //}
 
             final Bean bean = mList.get(position);
+
             holder.cb.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
                     bean.isChecked = isChecked;
                 }
             });
+
             // needed for the "Other" EditText at the end
             if (position < getArguments().getStringArray("elems").length) {
                 String text = getArguments().getStringArray("elems")[position];
@@ -123,15 +126,17 @@ public class MultiSelectOtherDialog extends DialogFragment {
                 Log.d(TAG, "4)");
             }
             else {
-                convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
-                holder.tv = (TextView) convertView.findViewById(R.id.et);
-                holder.cb = (SmoothCheckBox) convertView.findViewById(R.id.scb);
-                convertView.setTag(holder);
+                //convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
+                //holder.tv = (TextView) convertView.findViewById(R.id.et);
+                //holder.cb = (SmoothCheckBox) convertView.findViewById(R.id.scb);
+                //convertView.setTag(holder);
                 Log.d(TAG, "5)");
             }
 
             holder.cb.setChecked(bean.isChecked);
             Log.d(TAG, "6)");
+            Log.d(TAG, "holder.tv: " + holder.tv.getText());
+            Log.d(TAG, "holder.cb: " + holder.cb.isChecked());
 
             return convertView;
         }

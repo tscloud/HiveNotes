@@ -90,14 +90,12 @@
     <bookmark url="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java" line="339" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ca4e5e2-3ed5-48e4-9429-4e5b4b4764ee" name="Default" comment="">
+    <list default="true" id="5ca4e5e2-3ed5-48e4-9429-4e5b4b4764ee" name="Default" comment="Pre-punt Dialog adapter.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogHiveHealthFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogHiveHealthFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialog.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/scb_item_other.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/scb_item_other.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/scb_listview2.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/scb_listview2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialogNoAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialogNoAdapter.java" />
     </list>
     <ignored path="HiveNotes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -135,27 +133,27 @@
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="525">
           <file leaf-file-name="fragment_log_general_notes.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_general_notes.xml">
+              <provider editor-type-id="android-designer2">
+                <state />
+              </provider>
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="4374">
                   <caret line="162" column="2" selection-start-line="162" selection-start-column="2" selection-end-line="162" selection-end-column="2" />
                   <folding />
                 </state>
               </provider>
-              <provider editor-type-id="android-designer2">
-                <state />
-              </provider>
             </entry>
           </file>
           <file leaf-file-name="dialog_multiselect_edittext.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_multiselect_edittext.xml">
+              <provider editor-type-id="android-designer2">
+                <state />
+              </provider>
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="756">
                   <caret line="28" column="26" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
                   <folding />
                 </state>
-              </provider>
-              <provider editor-type-id="android-designer2">
-                <state />
               </provider>
             </entry>
           </file>
@@ -182,8 +180,8 @@
           <file leaf-file-name="MultiSelectOtherDialog.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialog.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1701">
-                  <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+                <state relative-caret-position="513">
+                  <caret line="106" column="45" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -193,53 +191,66 @@
           </file>
           <file leaf-file-name="scb_item.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/scb_item.xml">
+              <provider editor-type-id="android-designer2">
+                <state />
+              </provider>
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="783">
                   <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
-              <provider editor-type-id="android-designer2">
-                <state />
-              </provider>
             </entry>
           </file>
           <file leaf-file-name="scb_item_other.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/scb_item_other.xml">
+              <provider editor-type-id="android-designer2">
+                <state />
+              </provider>
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="837">
                   <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
-              <provider editor-type-id="android-designer2">
-                <state />
-              </provider>
             </entry>
           </file>
           <file leaf-file-name="scb_listview.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/scb_listview.xml">
+              <provider editor-type-id="android-designer2">
+                <state />
+              </provider>
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="297">
                   <caret line="11" column="28" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
-              <provider editor-type-id="android-designer2">
-                <state />
-              </provider>
             </entry>
           </file>
           <file leaf-file-name="scb_listview2.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/scb_listview2.xml">
+              <provider editor-type-id="android-designer2">
+                <state />
+              </provider>
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1350">
                   <caret line="50" column="15" selection-start-line="50" selection-start-column="15" selection-end-line="50" selection-end-column="15" />
                   <folding />
                 </state>
               </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="scb_listview3.xml" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/scb_listview3.xml">
               <provider editor-type-id="android-designer2">
                 <state />
+              </provider>
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="0">
+                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <folding />
+                </state>
               </provider>
             </entry>
           </file>
@@ -250,8 +261,8 @@
           <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4617">
-                  <caret line="171" column="36" selection-start-line="171" selection-start-column="36" selection-end-line="171" selection-end-column="36" />
+                <state relative-caret-position="658">
+                  <caret line="181" column="8" selection-start-line="181" selection-start-column="8" selection-end-line="181" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -259,22 +270,22 @@
           </file>
           <file leaf-file-name="fragment_log_hivehealth_notes.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_hivehealth_notes.xml">
+              <provider editor-type-id="android-designer2">
+                <state />
+              </provider>
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="675">
                   <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
-              <provider editor-type-id="android-designer2">
-                <state />
-              </provider>
             </entry>
           </file>
-          <file leaf-file-name="LogHiveHealthFragment.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="LogHiveHealthFragment.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogHiveHealthFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4482">
-                  <caret line="203" column="41" selection-start-line="203" selection-start-column="41" selection-end-line="203" selection-end-column="41" />
+                <state relative-caret-position="408">
+                  <caret line="232" column="47" selection-start-line="232" selection-start-column="47" selection-end-line="232" selection-end-column="47" />
                   <folding />
                 </state>
               </provider>
@@ -290,16 +301,30 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="fragment_home.xml" pinned="false" current-in-tab="true">
+          <file leaf-file-name="fragment_home.xml" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_home.xml">
+              <provider editor-type-id="android-designer2">
+                <state />
+              </provider>
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1377">
                   <caret line="51" column="17" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="17" />
                   <folding />
                 </state>
               </provider>
-              <provider editor-type-id="android-designer2">
-                <state />
+            </entry>
+          </file>
+          <file leaf-file-name="MultiSelectOtherDialogNoAdapter.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialogNoAdapter.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="16">
+                  <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#2259#2512#0" expanded="true" />
+                    <element signature="e#2511#2512#0" expanded="true" />
+                  </folding>
+                </state>
               </provider>
             </entry>
           </file>
@@ -2851,7 +2876,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_log_feeding_notes.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_log_other_notes.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/hive_note_button.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_log_entry_list.xml" />
@@ -2898,9 +2922,10 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/scb_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/scb_listview.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/scb_listview2.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogHiveHealthFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/scb_item_other.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialogNoAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogHiveHealthFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialog.java" />
       </list>
     </option>
@@ -2995,39 +3020,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane />
-      </pane>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
-      <pane id="Scratches" />
-      <pane id="Scope">
-        <subPane subId="Problems">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="app">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="src/main/java">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="net/tscloud/hivenotes">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -3102,6 +3094,39 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="ProjectPane">
+        <subPane />
+      </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane">
+        <subPane />
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Problems">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="app">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="app">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src/main/java">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="net/tscloud/hivenotes">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -3171,6 +3196,118 @@
       <recent name="" />
       <recent name="net.tscloud.hivenotes.EditHiveActivity" />
     </key>
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogHiveHealthFragment.java</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialogNoAdapter.java</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/app/src/main/res/layout/scb_listview3.xml</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
   </component>
   <component name="RunManager" selected="Android App.app">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
@@ -3558,13 +3695,6 @@
       <option name="presentableId" value="Default" />
       <updated>1439340940336</updated>
     </task>
-    <task id="LOCAL-00092" summary="LogDate hell.">
-      <created>1464755128103</created>
-      <option name="number" value="00092" />
-      <option name="presentableId" value="LOCAL-00092" />
-      <option name="project" value="LOCAL" />
-      <updated>1464755128104</updated>
-    </task>
     <task id="LOCAL-00093" summary="Only thing left in Log is RecyclerView for history selection?">
       <created>1465005722208</created>
       <option name="number" value="00093" />
@@ -3901,7 +4031,14 @@
       <option name="project" value="LOCAL" />
       <updated>1482384070274</updated>
     </task>
-    <option name="localTasksCounter" value="141" />
+    <task id="LOCAL-00141" summary="Pre-punt Dialog adapter.">
+      <created>1482811980186</created>
+      <option name="number" value="00141" />
+      <option name="presentableId" value="LOCAL-00141" />
+      <option name="project" value="LOCAL" />
+      <updated>1482811980187</updated>
+    </task>
+    <option name="localTasksCounter" value="142" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -3920,7 +4057,7 @@
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.16755037" sideWeight="0.5080386" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28230184" sideWeight="0.50663835" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36924744" sideWeight="0.48992577" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36896366" sideWeight="0.48992577" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -3934,11 +4071,12 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297929" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3478025" sideWeight="0.4917553" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31348133" sideWeight="0.4899097" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3136191" sideWeight="0.4899097" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32826912" sideWeight="0.4989356" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295334" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28857607" sideWeight="0.5010604" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17180032" sideWeight="0.5020048" order="7" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3253925" sideWeight="0.4949468" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
@@ -3952,7 +4090,6 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39934173" sideWeight="0.49893618" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914162" sideWeight="0.49281916" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3253925" sideWeight="0.4949468" order="10" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -4006,7 +4143,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="New graph entry in creatw.sql." />
     <MESSAGE value="Start 2nd graph and GraphSelection to backstack (need to fix dates)." />
     <MESSAGE value="Fix GraphSelection dates for orientation change, back from backstack, etc." />
     <MESSAGE value="2nd graph selector in XML." />
@@ -4031,7 +4167,8 @@
     <MESSAGE value="Continue DB and screen changes." />
     <MESSAGE value="More data objects and start Dialog.  Work in progress." />
     <MESSAGE value="More AlertDialog work." />
-    <option name="LAST_COMMIT_MESSAGE" value="More AlertDialog work." />
+    <MESSAGE value="Pre-punt Dialog adapter." />
+    <option name="LAST_COMMIT_MESSAGE" value="Pre-punt Dialog adapter." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -4056,21 +4193,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/HiveWeather.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2349">
-          <caret line="113" column="55" selection-start-line="113" selection-start-column="55" selection-end-line="113" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/EditHiveActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5616">
-          <caret line="241" column="39" selection-start-line="241" selection-start-column="39" selection-end-line="241" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_feeding_notes.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="965">
@@ -4333,16 +4455,8 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hivenotes_stuff/screenshots/Screenshot from 2016-12-22 00:18:16.png" />
-    <entry file="file://$PROJECT_DIR$/hivenotes_stuff/screenshots/Screenshot from 2016-12-22 00:19:28.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hivenotes_stuff/screenshots/Screenshot from 2016-12-22 00:16:07.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/hivenotes_stuff/screenshots/Screenshot from 2016-12-22 00:19:28.png" />
+    <entry file="file://$PROJECT_DIR$/hivenotes_stuff/screenshots/Screenshot from 2016-12-22 00:16:07.png" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_log_hivehealth_notes.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="675">
@@ -4358,14 +4472,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
           <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4617">
-          <caret line="171" column="36" selection-start-line="171" selection-start-column="36" selection-end-line="171" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -4427,29 +4533,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogHiveHealthFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4482">
-          <caret line="203" column="41" selection-start-line="203" selection-start-column="41" selection-end-line="203" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/HomeFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2241">
           <caret line="98" column="80" selection-start-line="98" selection-start-column="80" selection-end-line="98" selection-end-column="80" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1701">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -4462,6 +4550,55 @@
       </provider>
       <provider editor-type-id="android-designer2">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/scb_listview3.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="658">
+          <caret line="181" column="8" selection-start-line="181" selection-start-column="8" selection-end-line="181" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialogNoAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2259#2512#0" expanded="true" />
+            <element signature="e#2511#2512#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/LogHiveHealthFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="232" column="47" selection-start-line="232" selection-start-column="47" selection-end-line="232" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/helper/MultiSelectOtherDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="106" column="45" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>

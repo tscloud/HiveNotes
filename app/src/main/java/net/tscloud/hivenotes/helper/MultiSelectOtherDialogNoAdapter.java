@@ -32,8 +32,6 @@ public class MultiSelectOtherDialogNoAdapter extends DialogFragment {
 
     public static final String TAG = "MultiSelectOtherDialogNoAdapter";
 
-    private ArrayList<Bean> mList = new ArrayList<>();
-
     public static MultiSelectOtherDialogNoAdapter newInstance(String aTitle, String[] aElems) {
         MultiSelectOtherDialogNoAdapter frag = new MultiSelectOtherDialogNoAdapter();
         Bundle args = new Bundle();
@@ -45,7 +43,6 @@ public class MultiSelectOtherDialogNoAdapter extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        ViewHolder holder;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -57,6 +54,7 @@ public class MultiSelectOtherDialogNoAdapter extends DialogFragment {
 
         // load the "list"
         for (String s : getArguments().getStringArray("elems")) {
+            ViewHolder holder = new ViewHolder();
             View item = View.inflate(getActivity(), R.layout.scb_item, null);
             holder.tv = (TextView)item.findViewById(R.id.tv);
             holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
@@ -69,7 +67,7 @@ public class MultiSelectOtherDialogNoAdapter extends DialogFragment {
             holder.cb.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
-                    checkbox.isChecked = isChecked;
+                    checkBox.setChecked(isChecked, true);
                 }
             });
 
@@ -79,7 +77,7 @@ public class MultiSelectOtherDialogNoAdapter extends DialogFragment {
                 public void onClick(View v) {
                     TextView tv = ((TextView)v);
                     SmoothCheckBox scb = (SmoothCheckBox)tv.getTag();
-                    scb.isChecked = !scb.isChecked;
+                    scb.setChecked(!scb.isChecked(), true);
                 }
             });
         }

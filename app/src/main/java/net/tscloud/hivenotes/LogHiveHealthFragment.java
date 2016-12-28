@@ -31,6 +31,7 @@ import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
 import net.tscloud.hivenotes.helper.MultiSelectOtherDialog;
+import net.tscloud.hivenotes.helper.MultiSelectOtherDialogNoAdapter;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -227,8 +228,8 @@ public class LogHiveHealthFragment extends LogFragment {
                 String title = getResources().getString(R.string.hivehealth_notes_string);
                 String[] elems = getResources().getStringArray(R.array.test_array);
 
-                MultiSelectOtherDialogNoAdapter diagFragment =
-                    MultiSelectOtherDialogNoAdapter.newInstance(title, elems);
+                MultiSelectOtherDialog diagFragment =
+                    MultiSelectOtherDialog.newInstance(title, elems);
                 diagFragment.show(getActivity().getSupportFragmentManager(), "missiles");
 
                 /*
