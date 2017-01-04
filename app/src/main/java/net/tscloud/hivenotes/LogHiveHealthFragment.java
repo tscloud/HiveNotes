@@ -2,25 +2,17 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -30,8 +22,8 @@ import net.tscloud.hivenotes.db.LogEntryHiveHealthDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
-import net.tscloud.hivenotes.helper.MultiSelectOtherDialog;
-import net.tscloud.hivenotes.helper.MultiSelectOtherDialogNoAdapter;
+
+import org.jsoup.helper.StringUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -40,7 +32,7 @@ import java.util.GregorianCalendar;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnLogPestMgmntFragmentInteractionListener} interface
+ * {@link OnLogHiveHealthFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link LogHiveHealthFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -53,7 +45,7 @@ public class LogHiveHealthFragment extends LogFragment {
     private LogEntryHiveHealth mLogEntryHiveHealth;
 
     // reference to Activity that should have started me
-    private OnLogPestMgmntFragmentInteractionListener mListener;
+    private OnLogHiveHealthFragmentInteractionListener mListener;
 
     // task references - needed to kill tasks on Fragment Destroy
     private GetReminderTimeTask mTaskDrone = null;
@@ -225,25 +217,14 @@ public class LogHiveHealthFragment extends LogFragment {
         dialogTestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = getResources().getString(R.string.hivehealth_notes_string);
-                String[] elems = getResources().getStringArray(R.array.test_array);
-
-                MultiSelectOtherDialog diagFragment =
-                    MultiSelectOtherDialog.newInstance(title, elems);
-                diagFragment.show(getActivity().getSupportFragmentManager(), "missiles");
-
-                /*
-                String names[] ={"A","B","C","D","D","D","D","D","D","D","D","D","D","D","D","D"};
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View convertView = (View) inflater.inflate(R.layout.scb_listview2, null);
-                alertDialog.setView(convertView);
-                alertDialog.setTitle("List");
-                ListView lv = (ListView) convertView.findViewById(R.id.lvScb);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,names);
-                lv.setAdapter(adapter);
-                alertDialog.show();
-                */
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryHiveHealth != null) {
+                        checked = mLogEntryHiveHealth.getPestsDetected();
+                    }
+                    mListener.onLogHiveHealthLaunchDialog(checked, "pests");
+                }
             }
         });
 
@@ -256,8 +237,10 @@ public class LogHiveHealthFragment extends LogFragment {
 
         boolean lNewLogEntry = false;
 
-        final TextView droneCellFndnRmndrText = (TextView)getView().findViewById(R.id.textViewDroneCellFndnRmndr);
-        final TextView mitesTrtmntRmndrText = (TextView)getView().findViewById(R.id.textViewMitesTrtmntRmndr);
+        final TextView droneCellFndnRmndrText = (TextView)getView().
+                findViewById(R.id.textViewDroneCellFndnRmndr);
+        final TextView mitesTrtmntRmndrText = (TextView)getView().
+                findViewById(R.id.textViewMitesTrtmntRmndr);
 
         // Get the times in millis from the TextView tag
         long droneCellFndnRmndrLong = (long)droneCellFndnRmndrText.getTag();
@@ -279,7 +262,7 @@ public class LogHiveHealthFragment extends LogFragment {
             mLogEntryHiveHealth.setMitesTrtmntRmndrTime(mitesTrtmntRmndrLong);
 
             if (mListener != null) {
-                mListener.onLogPestMgmtFragmentInteraction(mLogEntryHiveHealth);
+                mListener.onLogHiveHealthFragmentInteraction(mLogEntryHiveHealth);
             }
         }
     }
@@ -336,10 +319,10 @@ public class LogHiveHealthFragment extends LogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnLogPestMgmntFragmentInteractionListener) activity;
+            mListener = (OnLogHiveHealthFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnLogPestMgmntFragmentInteractionListener");
+                    + " must implement OnLogHiveHealthFragmentInteractionListener");
         }
     }
 
@@ -395,21 +378,34 @@ public class LogHiveHealthFragment extends LogFragment {
     }
 
     /**
+     * Method that passes data back to Fragment that was collected by Dialog
+     */
+    public void setDialogData (String[] aData, String aTag) {
+        //may have to create the DO here - if we're a new entry and Dialog work was done before
+        // anything else
+        if (mLogEntryHiveHealth == null) {
+            mLogEntryHiveHealth = new LogEntryHiveHealth();
+        }
+        mLogEntryHiveHealth.setPestsDetected(TextUtils.join(",", aData));
+    }
+
+    /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnLogPestMgmntFragmentInteractionListener extends
+    public interface OnLogHiveHealthFragmentInteractionListener extends
             LogFragment.PreviousLogDataProvider {
-        void onLogPestMgmtFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth);
+        void onLogHiveHealthFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth);
+        void onLogHiveHealthLaunchDialog(String aCheckedSet, String aTag);
     }
 
     /** subclass of the GetReminderTimeTask
      */
     class MyGetReminderTimeTask extends GetReminderTimeTask {
 
-        public MyGetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
+        MyGetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
            super(aData, aCtx);
         }
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -48,11 +49,13 @@ public class MultiSelectOtherDialog extends DialogFragment {
 
         // length of this list determines how many items to present - need an extra for the EditText
         //  at the end for "Other"
-        int mListLen = (getArguments().getStringArray("elems").length) + 1;
+        //int mListLen = (getArguments().getStringArray("elems").length) + 1;
         //int mListLen = (getArguments().getStringArray("elems").length);
-        for (int i = 0; i < mListLen; i++) {
-            mList.add(new Bean());
+        for (int i = 0; i < getArguments().getStringArray("elems").length; i++) {
+            mList.add(new Bean(getArguments().getStringArray("elems")[i]));
         }
+        // needed for the EditText at the end
+        mList.add(new Bean());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -88,27 +91,46 @@ public class MultiSelectOtherDialog extends DialogFragment {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            convertView = null;
-            //if (convertView == null) {
-                holder = new ViewHolder();
-                // needed for the "Other" EditText at the end
-                if (position < mList.size() - 1) {
-                    convertView = View.inflate(getActivity(), R.layout.scb_item, null);
-                    holder.tv = (TextView) convertView.findViewById(R.id.tv);
-                    Log.d(TAG, "1)");
+
+            if (convertView != null) {
+                Log.d(TAG, "position: " + position);
+                View otherChildView = ((ViewGroup)convertView).getChildAt(0);
+                Log.d(TAG, "type: " + otherChildView);
+                if (otherChildView instanceof EditText) {
+                    (mList.get(mList.size() - 1)).text =
+                            ((EditText)otherChildView).getText().toString();
                 }
-                else {
-                    convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
-                    holder.tv = (TextView) convertView.findViewById(R.id.et);
-                    Log.d(TAG, "2)");
+            }
+
+            ViewHolder holder = new ViewHolder();
+            // needed for the "Other" EditText at the end
+            if (position < mList.size() - 1) {
+                convertView = View.inflate(getActivity(), R.layout.scb_item, null);
+                holder.tv = (TextView) convertView.findViewById(R.id.tv);
+                Log.d(TAG, "1)");
+            }
+            else {
+                String otherText = null;
+                if (convertView != null) {
+                    View otherChildView = ((ViewGroup)convertView).getChildAt(0);
+                    //otherText = ((EditText)otherChildView).getText().toString();
                 }
-                holder.cb = (SmoothCheckBox) convertView.findViewById(R.id.scb);
-            //    convertView.setTag(holder);
-            //} else {
-            //    holder = (ViewHolder) convertView.getTag();
-            //    Log.d(TAG, "3)");
-            //}
+                convertView = View.inflate(getActivity(), R.layout.scb_item_other, null);
+                holder.tv = (TextView) convertView.findViewById(R.id.et);
+
+                ViewTreeObserver vto = holder.tv.getViewTreeObserver();
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                    @Override
+                    public void onGlobalLayout() {
+                        Log.d(TAG, "onGlobalLayout");
+                    }
+                });
+
+
+                Log.d(TAG, "2)");
+            }
+            holder.cb = (SmoothCheckBox) convertView.findViewById(R.id.scb);
 
             final Bean bean = mList.get(position);
 
@@ -120,9 +142,8 @@ public class MultiSelectOtherDialog extends DialogFragment {
             });
 
             // needed for the "Other" EditText at the end
-            if (position < getArguments().getStringArray("elems").length) {
-                String text = getArguments().getStringArray("elems")[position];
-                holder.tv.setText(text);
+            if (position < mList.size()) {
+                holder.tv.setText(mList.get(position).text);
                 Log.d(TAG, "4)");
             }
             else {
@@ -159,5 +180,13 @@ public class MultiSelectOtherDialog extends DialogFragment {
 
     class Bean implements Serializable {
         boolean isChecked;
+        String text = null;
+
+        Bean () {}
+
+        Bean (String aText) {
+            this.text = aText;
+            isChecked = false;
+        }
     }
 }

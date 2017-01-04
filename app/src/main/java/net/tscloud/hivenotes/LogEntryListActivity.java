@@ -30,6 +30,7 @@ import net.tscloud.hivenotes.db.Notification;
 import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
 
 
 /**
@@ -52,9 +53,10 @@ public class LogEntryListActivity extends AppCompatActivity implements
         LogEntryListFragment.Callbacks,
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
-        LogHiveHealthFragment.OnLogPestMgmntFragmentInteractionListener,
+        LogHiveHealthFragment.OnLogHiveHealthFragmentInteractionListener,
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
-        LogOtherFragment.OnLogOtherFragmentInteractionListener {
+        LogOtherFragment.OnLogOtherFragmentInteractionListener,
+        LogMultiSelectDialog.onLogMultiSelectDialogInteractionListener {
 
     public static final String TAG = "LogEntryListActivity";
 
@@ -274,6 +276,9 @@ public class LogEntryListActivity extends AppCompatActivity implements
         Log.d(TAG, "hivePestToolClickHandler called");
     }
 
+    /*
+    Coming back from LogFragment - set member var
+     */
     @Override
     public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral) {
         Log.d(TAG, "received LogEntryGeneral data object");
@@ -287,7 +292,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogPestMgmtFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth) {
+    public void onLogHiveHealthFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth) {
         Log.d(TAG, "received LogEntryHiveHealth data object");
         mLogEntryHiveHealthData = alogEntryHiveHealth;
     }
@@ -302,6 +307,25 @@ public class LogEntryListActivity extends AppCompatActivity implements
     public void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther) {
         Log.d(TAG, "received LogEntryOther data object");
         mLogEntryOtherData = aLogEntryOther;
+    }
+
+    /*
+    1) Launch Dialogs - Fragment we're coming from will tell us which 1 to throw up
+    2) Come back from Dialogs - via OK or Cancel
+     */
+    @Override
+    public void onLogHiveHealthLaunchDialog(String aCheckedSet, String aTag) {
+
+    }
+
+    @Override
+    public void onLogMultiSelectDialogCancel(String aTag) {
+
+    }
+
+    @Override
+    public void onLogMultiSelectDialogOK(String[] aResults, String aTag) {
+
     }
 
     @Override

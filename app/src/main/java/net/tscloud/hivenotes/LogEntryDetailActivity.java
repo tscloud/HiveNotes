@@ -13,6 +13,7 @@ import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
 
 /**
  * An activity representing a single LogEntryGeneral detail screen. This
@@ -26,15 +27,23 @@ import net.tscloud.hivenotes.db.LogEntryProductivity;
 public class LogEntryDetailActivity extends AppCompatActivity implements
         LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
         LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
-        LogHiveHealthFragment.OnLogPestMgmntFragmentInteractionListener,
+        LogHiveHealthFragment.OnLogHiveHealthFragmentInteractionListener,
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
         LogOtherFragment.OnLogOtherFragmentInteractionListener,
-        LogFragment.PreviousLogDataProvider {
+        LogFragment.PreviousLogDataProvider,
+        LogMultiSelectDialog.onLogMultiSelectDialogInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
 
     // This is what gets returned on call to get getPreviousLogData()
     private HiveNotesLogDO mPreviousLogData;
+
+    // needed for things like Dialog dismissal after its return w/ w/o data
+    private LogMultiSelectDialog diagFragment;
+
+    // Need a reference to the Fragment that we're going to launch as we may need to pass back data
+    //  collected by Dialog
+    private Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +80,6 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                 mPreviousLogData = null;
             }
 
-            Fragment fragment = null;
             String fragTag = null;
 
             switch (argItemId) {
@@ -129,6 +137,9 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         return mPreviousLogData;
     }
 
+    /*
+    Coming back from LogFragment - return w/ DO to LogEntryListActivity
+     */
     @Override
     public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral) {
         Log.d(TAG, "return from LogGeneralNotesFragment...finish LogEntryDetailActivity");
@@ -154,7 +165,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogPestMgmtFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth) {
+    public void onLogHiveHealthFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth) {
         Log.d(TAG, "return from LogPestMgmntFragment...finish LogEntryDetailActivity");
 
         Intent data = new Intent();
@@ -187,6 +198,53 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    /*
+    1) Launch Dialogs - Fragment we're coming from will tell us which 1 to throw up
+    2) Come back from Dialogs - via OK or Cancel
+     */
+    @Override
+    public void onLogHiveHealthLaunchDialog(String aCheckedSet, String aTag) {
+        String title = null;
+        String[] elems = null;
+
+        switch (aTag){
+            case "pests":
+                title = getResources().getString(R.string.hivehealth_notes_string);
+                elems = getResources().getStringArray(R.array.test_array);
+                break;
+            default:
+                Log.d(TAG, "onLogHiveHealthLaunchDialog: unrecognized Dialog type");
+        }
+
+        diagFragment = LogMultiSelectDialog.newInstance(title, elems, aCheckedSet, aTag);
+        diagFragment.show(getSupportFragmentManager(), aTag);
+    };
+
+    @Override
+    public void onLogMultiSelectDialogOK(String[] aResults, String aTag) {
+        Log.d(TAG, "onLogMultiSelectDialogOK: OK button clicked");
+        for (String s: aResults) {
+            Log.d(TAG, s);
+        }
+
+        switch (aTag){
+            case "pests":
+                ((LogHiveHealthFragment)fragment).setDialogData(aResults, aTag);
+                break;
+            default:
+                Log.d(TAG, "onLogHiveHealthLaunchDialog: unrecognized Dialog type");
+        }
+
+
+        diagFragment.dismiss();
+    }
+
+    @Override
+    public void onLogMultiSelectDialogCancel(String aTag) {
+        Log.d(TAG, "onLogMultiSelectDialogCancel: Cancel button clicked");
+        diagFragment.dismiss();
     }
 
     private void onSaveButton() {
