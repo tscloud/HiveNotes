@@ -73,16 +73,7 @@ public class LogMultiSelectDialog extends DialogFragment {
 
             viewholderList.add(holder);
 
-            // Listeners
-            //checkbox
-            //holder.cb.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener() {
-            //    @Override
-            //    public void onCheckedChanged(SmoothCheckBox checkBox, boolean isChecked) {
-            //        checkBox.setChecked(isChecked, true);
-            //    }
-            //});
-
-            //textview
+            //TextView Listener
             holder.tv.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -97,6 +88,10 @@ public class LogMultiSelectDialog extends DialogFragment {
         ViewHolder holder = new ViewHolder();
         View item = View.inflate(getActivity(), R.layout.scb_item_other, null);
         holder.tv = (TextView)item.findViewById(R.id.et);
+
+        // Check to see if we need to populate w/ user entered value
+        ((EditText)holder.tv).setText(fillOther());
+
         holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
         holder.tv.setTag(holder.cb);
         llItems.addView(item);
@@ -160,6 +155,25 @@ public class LogMultiSelectDialog extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private String fillOther() {
+        /**
+         * This is how we fill the user enterable EditText at the end if it necessary.
+         *  Check the last entry in the "checked" set -> if it's <> to anything in the
+         *  "elems" => it was entered by the user & needs to be presented here
+         */
+        Log.d(TAG, "checking for user entered value");
+
+        String reply = null;
+
+        //easier to set the "checkedset"
+        String startString = getArguments().getString("checkedset");
+        String checkString = startString.substring(startString.lastIndexOf(","));
+
+        if (Arrays.asList(getArguments().getStringArray("elems")).contains(checkString)) {
+            reply = checkString;
+        }
     }
 
     class ViewHolder {

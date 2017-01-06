@@ -218,13 +218,9 @@ public class LogHiveHealthFragment extends LogFragment {
                 // Callback to Activity to launch a Dialog
                 if (mListener != null) {
                     String checked = "";
-                    if (mLogEntryHiveHealth != null) {
-                        if (mLogEntryHiveHealth.getPestsDetected() == null) {
-                            checked = "";
-                        }
-                        else {
-                            checked = mLogEntryHiveHealth.getPestsDetected();
-                        }
+                    if (mLogEntryHiveHealth != null &&
+                            mLogEntryHiveHealth.getPestsDetected() != null) {
+                        checked = mLogEntryHiveHealth.getPestsDetected();
                     }
                     // Get the Activity to launch the Dialog for us
                     mListener.onLogLaunchDialog(
