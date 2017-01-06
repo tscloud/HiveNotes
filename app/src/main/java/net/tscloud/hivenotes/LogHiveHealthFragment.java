@@ -23,8 +23,6 @@ import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
 
-import org.jsoup.helper.StringUtil;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -221,9 +219,22 @@ public class LogHiveHealthFragment extends LogFragment {
                 if (mListener != null) {
                     String checked = "";
                     if (mLogEntryHiveHealth != null) {
-                        checked = mLogEntryHiveHealth.getPestsDetected();
+                        if (mLogEntryHiveHealth.getPestsDetected() == null) {
+                            checked = "";
+                        }
+                        else {
+                            checked = mLogEntryHiveHealth.getPestsDetected();
+                        }
                     }
-                    mListener.onLogHiveHealthLaunchDialog(checked, "pests");
+                    // Get the Activity to launch the Dialog for us
+                    mListener.onLogLaunchDialog(
+                            getResources().getString(R.string.hivehealth_notes_string),
+                            getResources().getStringArray(R.array.test_array),
+                            checked,
+                            DIALOG_TAG_PESTS);
+                }
+                else {
+                    Log.d(TAG, "no Listener");
                 }
             }
         });
@@ -380,13 +391,23 @@ public class LogHiveHealthFragment extends LogFragment {
     /**
      * Method that passes data back to Fragment that was collected by Dialog
      */
-    public void setDialogData (String[] aData, String aTag) {
+    @Override
+    public void setDialogData(String[] aResults, String aTag) {
         //may have to create the DO here - if we're a new entry and Dialog work was done before
         // anything else
         if (mLogEntryHiveHealth == null) {
             mLogEntryHiveHealth = new LogEntryHiveHealth();
         }
-        mLogEntryHiveHealth.setPestsDetected(TextUtils.join(",", aData));
+
+        switch (aTag){
+            case DIALOG_TAG_PESTS:
+                mLogEntryHiveHealth.setPestsDetected(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setPestsDetected: " +
+                        mLogEntryHiveHealth.getPestsDetected());
+                break;
+            default:
+                Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
+        }
     }
 
     /**
@@ -396,9 +417,8 @@ public class LogHiveHealthFragment extends LogFragment {
      * activity.
      */
     public interface OnLogHiveHealthFragmentInteractionListener extends
-            LogFragment.PreviousLogDataProvider {
+            LogFragmentActivity {
         void onLogHiveHealthFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth);
-        void onLogHiveHealthLaunchDialog(String aCheckedSet, String aTag);
     }
 
     /** subclass of the GetReminderTimeTask

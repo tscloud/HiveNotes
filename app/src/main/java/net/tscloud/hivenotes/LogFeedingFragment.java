@@ -14,7 +14,6 @@ import android.widget.EditText;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
-import net.tscloud.hivenotes.db.LogEntryGeneral;
 
 
 /**
@@ -219,6 +218,12 @@ public class LogFeedingFragment extends LogFragment {
 
         return reply;
     }
+
+    @Override
+    public void setDialogData(String[] aResults, String aTag) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -226,7 +231,7 @@ public class LogFeedingFragment extends LogFragment {
      * activity.
      */
     public interface OnLogFeedingFragmentInteractionListener extends
-            LogFragment.PreviousLogDataProvider {
+            LogFragmentActivity {
         public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding);
     }
 

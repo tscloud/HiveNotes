@@ -426,6 +426,11 @@ public class LogOtherFragment extends LogFragment {
         return reply;
     }
 
+    @Override
+    public void setDialogData(String[] aResults, String aTag) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -433,7 +438,7 @@ public class LogOtherFragment extends LogFragment {
      * activity.
      */
     public interface OnLogOtherFragmentInteractionListener extends
-            LogFragment.PreviousLogDataProvider {
+            LogFragmentActivity {
         void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther);
     }
 

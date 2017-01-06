@@ -1,6 +1,5 @@
 package net.tscloud.hivenotes;
 
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         LogHiveHealthFragment.OnLogHiveHealthFragmentInteractionListener,
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
         LogOtherFragment.OnLogOtherFragmentInteractionListener,
-        LogFragment.PreviousLogDataProvider,
+        LogFragment.LogFragmentActivity,
         LogMultiSelectDialog.onLogMultiSelectDialogInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
@@ -43,7 +42,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
     // Need a reference to the Fragment that we're going to launch as we may need to pass back data
     //  collected by Dialog
-    private Fragment fragment = null;
+    private LogFragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +107,8 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
                     onSaveButton();
                     break;
                 default:
-                    fragment = new LogEntryDetailFragment();
+                    //fragment = new LogEntryDetailFragment();
+                    Log.d(TAG, "What are you doing ?!  I cannot decipher argItemId into proper Fragment type");
                     break;
             }
 
@@ -205,39 +205,20 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     2) Come back from Dialogs - via OK or Cancel
      */
     @Override
-    public void onLogHiveHealthLaunchDialog(String aCheckedSet, String aTag) {
-        String title = null;
-        String[] elems = null;
-
-        switch (aTag){
-            case "pests":
-                title = getResources().getString(R.string.hivehealth_notes_string);
-                elems = getResources().getStringArray(R.array.test_array);
-                break;
-            default:
-                Log.d(TAG, "onLogHiveHealthLaunchDialog: unrecognized Dialog type");
-        }
-
-        diagFragment = LogMultiSelectDialog.newInstance(title, elems, aCheckedSet, aTag);
+    public void onLogLaunchDialog(String aTitle, String[] aElems, String aCheckedSet, String aTag) {
+        diagFragment = LogMultiSelectDialog.newInstance(aTitle, aElems, aCheckedSet, aTag);
         diagFragment.show(getSupportFragmentManager(), aTag);
     };
 
     @Override
     public void onLogMultiSelectDialogOK(String[] aResults, String aTag) {
         Log.d(TAG, "onLogMultiSelectDialogOK: OK button clicked");
+
         for (String s: aResults) {
             Log.d(TAG, s);
         }
 
-        switch (aTag){
-            case "pests":
-                ((LogHiveHealthFragment)fragment).setDialogData(aResults, aTag);
-                break;
-            default:
-                Log.d(TAG, "onLogHiveHealthLaunchDialog: unrecognized Dialog type");
-        }
-
-
+        fragment.setDialogData(aResults, aTag);
         diagFragment.dismiss();
     }
 

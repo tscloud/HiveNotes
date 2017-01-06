@@ -314,7 +314,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     2) Come back from Dialogs - via OK or Cancel
      */
     @Override
-    public void onLogHiveHealthLaunchDialog(String aCheckedSet, String aTag) {
+    public void onLogLaunchDialog(String aTitle, String[] aElems, String aCheckedSet, String aTag) {
 
     }
 

@@ -26,12 +26,17 @@ public abstract class LogFragment extends Fragment {
     protected static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
     protected final Calendar calendar = Calendar.getInstance();
 
+    // constants used for Dialogs
+    protected static final String DIALOG_TAG_PESTS = "pests";
+
     // abstract methods
     protected abstract HiveNotesLogDO getLogEntryDO();
 
     protected abstract void setLogEntryDO(HiveNotesLogDO aDataObj);
 
     protected abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
+
+    public abstract void setDialogData(String[] aResults, String aTag);
 
     // concrete static methods
     public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate, long aLogEntryID) {
@@ -46,7 +51,7 @@ public abstract class LogFragment extends Fragment {
     }
 
     // concrete methods
-    protected void getLogEntry(PreviousLogDataProvider aListener) {
+    protected void getLogEntry(LogFragmentActivity aListener) {
         Log.d(TAG, "in getLogEntry()");
 
         // log entry may have something in it either already populated or populated from Bundle
@@ -84,7 +89,8 @@ public abstract class LogFragment extends Fragment {
     }
 
     // necessary interfaces
-    public interface PreviousLogDataProvider{
-            HiveNotesLogDO getPreviousLogData();
+    public interface LogFragmentActivity {
+        HiveNotesLogDO getPreviousLogData();
+        void onLogLaunchDialog(String aTitle, String[] aElems, String aCheckedSet, String aTag);
     }
 }

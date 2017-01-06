@@ -1,7 +1,6 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -251,6 +248,11 @@ public class LogGeneralNotesFragment extends LogFragment {
         return reply;
     }
 
+    @Override
+    public void setDialogData(String[] aResults, String aTag) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -258,7 +260,7 @@ public class LogGeneralNotesFragment extends LogFragment {
      * activity.
      */
     public interface OnLogGeneralNotesFragmentInteractionListener extends
-            LogFragment.PreviousLogDataProvider {
+            LogFragmentActivity {
         void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
     }
 
