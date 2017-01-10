@@ -14,6 +14,7 @@ import android.widget.TextView;
 import net.tscloud.hivenotes.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.refactor.library.SmoothCheckBox;
@@ -88,12 +89,12 @@ public class LogMultiSelectDialog extends DialogFragment {
         ViewHolder holder = new ViewHolder();
         View item = View.inflate(getActivity(), R.layout.scb_item_other, null);
         holder.tv = (TextView)item.findViewById(R.id.et);
-
-        // Check to see if we need to populate w/ user entered value
-        ((EditText)holder.tv).setText(fillOther());
-
         holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
         holder.tv.setTag(holder.cb);
+
+        // Check to see if we need to populate w/ user entered value
+        fillOther(holder);
+
         llItems.addView(item);
 
         viewholderList.add(holder);
@@ -157,7 +158,7 @@ public class LogMultiSelectDialog extends DialogFragment {
         mListener = null;
     }
 
-    private String fillOther() {
+    private void fillOther(ViewHolder aHolder) {
         /**
          * This is how we fill the user enterable EditText at the end if it necessary.
          *  Check the last entry in the "checked" set -> if it's <> to anything in the
@@ -168,11 +169,16 @@ public class LogMultiSelectDialog extends DialogFragment {
         String reply = null;
 
         //easier to set the "checkedset"
-        String startString = getArguments().getString("checkedset");
-        String checkString = startString.substring(startString.lastIndexOf(","));
-
-        if (Arrays.asList(getArguments().getStringArray("elems")).contains(checkString)) {
-            reply = checkString;
+        if (getArguments().getString("checkedset") != null &&
+                getArguments().getString("checkedset") != "") {
+            String[] checkArray = getArguments().getString("checkedset").split(",");
+            String checkString = null;
+            //this should be the last entry of "checkedset"
+            checkString = checkArray[checkArray.length - 1];
+            if (!Arrays.asList(getArguments().getStringArray("elems")).contains(checkString)) {
+                aHolder.tv.setText(checkString);
+                aHolder.cb.setChecked(true);
+            }
         }
     }
 
