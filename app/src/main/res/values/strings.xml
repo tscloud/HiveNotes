@@ -84,6 +84,7 @@
     <string name="productivity_american_foulbrood">American Foulbrood</string>
     <string name="productivity_european_foalbrood">European Foulbrood</string>
     <string name="productivity_chalkbrood">Chalkbrood</string>
+    <string name="productivity_nosema">Nosema</string>
     <string name="productivity_other">Other</string>
 
     <string name="pestmgmt_drone_cell_fndn">Drone Cell Foundation</string>
@@ -149,13 +150,17 @@
         <item>Poor Pattern</item>
     </string-array>
 
-    <string-array name="pests_disease_array">
-        <item>@string/productivity_varroa_mite</item>
+    <string-array name="pests_array">
         <item>@string/productivity_small_hive_beetle</item>
         <item>@string/productivity_wax_moth</item>
+    </string-array>
+
+    <string-array name="disease_array">
         <item>@string/productivity_deformed_wing</item>
         <item>@string/productivity_american_foulbrood</item>
         <item>@string/productivity_european_foalbrood</item>
+        <item>@string/productivity_chalkbrood</item>
+        <item>@string/productivity_nosema</item>
     </string-array>
 
     <string-array name="stores_array">
@@ -224,4 +229,6 @@
     <string name="add_photo">Add Photo</string>
     <string name="ok_string">OK</string>
     <string name="cancel_string">Cancel</string>
+    <string name="pests_detected">Pests Detected</string>
+    <string name="disease_detected">Disease Detected</string>
 </resources>

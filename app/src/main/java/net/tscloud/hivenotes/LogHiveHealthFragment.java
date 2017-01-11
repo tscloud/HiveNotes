@@ -104,7 +104,8 @@ public class LogHiveHealthFragment extends LogFragment {
         final Button mitesTrtmntBtn = (Button)v.findViewById(R.id.buttonMitesTrtmnt);
 
         // **TEST**
-        final Button dialogTestBtn = (Button)v.findViewById(R.id.buttonDiagTest);
+        final Button dialogHiveHealthPest = (Button)v.findViewById(R.id.buttonHiveHealthPest);
+        final Button dialogHiveHealthDisease = (Button)v.findViewById(R.id.buttonHiveHealthDisease);
 
         // labels for showing reminder time; be sure to init the tag as this is what goes into the DB
         final TextView droneCellFndnRmndrText = (TextView)v.findViewById(R.id.textViewDroneCellFndnRmndr);
@@ -212,7 +213,7 @@ public class LogHiveHealthFragment extends LogFragment {
             }
         });
 
-        dialogTestBtn.setOnClickListener(new View.OnClickListener() {
+        dialogHiveHealthPest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Callback to Activity to launch a Dialog
@@ -224,10 +225,33 @@ public class LogHiveHealthFragment extends LogFragment {
                     }
                     // Get the Activity to launch the Dialog for us
                     mListener.onLogLaunchDialog(
-                            getResources().getString(R.string.hivehealth_notes_string),
-                            getResources().getStringArray(R.array.test_array),
+                            getResources().getString(R.string.pests_detected),
+                            getResources().getStringArray(R.array.pests_array),
                             checked,
                             DIALOG_TAG_PESTS);
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogHiveHealthDisease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryHiveHealth != null &&
+                            mLogEntryHiveHealth.getDiseaseDetected() != null) {
+                        checked = mLogEntryHiveHealth.getDiseaseDetected();
+                    }
+                    // Get the Activity to launch the Dialog for us
+                    mListener.onLogLaunchDialog(
+                            getResources().getString(R.string.disease_detected),
+                            getResources().getStringArray(R.array.disease_array),
+                            checked,
+                            DIALOG_TAG_DISEASE);
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -400,6 +424,11 @@ public class LogHiveHealthFragment extends LogFragment {
                 mLogEntryHiveHealth.setPestsDetected(TextUtils.join(",", aResults));
                 Log.d(TAG, "onLogLaunchDialog: setPestsDetected: " +
                         mLogEntryHiveHealth.getPestsDetected());
+                break;
+            case DIALOG_TAG_DISEASE:
+                mLogEntryHiveHealth.setDiseaseDetected(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setDiseaseDetected: " +
+                        mLogEntryHiveHealth.getDiseaseDetected());
                 break;
             default:
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");

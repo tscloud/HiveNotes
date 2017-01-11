@@ -28,6 +28,7 @@ public abstract class LogFragment extends Fragment {
 
     // constants used for Dialogs
     protected static final String DIALOG_TAG_PESTS = "pests";
+    protected static final String DIALOG_TAG_DISEASE = "disease";
 
     // abstract methods
     protected abstract HiveNotesLogDO getLogEntryDO();
