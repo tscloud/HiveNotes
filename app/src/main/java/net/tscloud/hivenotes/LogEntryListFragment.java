@@ -112,7 +112,10 @@ public class LogEntryListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setListAdapter(new LogListAdapter(getActivity(), LogEntryNames.ITEMS));
+        // TODO: DO NOT use LogItems put into ArrayList LogEntryNames.ITEMS by static initializer -
+        //          build new LogItems w/ string resources so proper translation can occur
+        //setListAdapter(new LogListAdapter(getActivity(), LogEntryNames.ITEMS));
+        setListAdapter(new LogListAdapter(getActivity(), buildLogEntryNamesItems()));
     }
 
     @Override
@@ -257,6 +260,28 @@ public class LogEntryListFragment extends ListFragment {
             // Serialize and persist the activated item position.
             outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
         }
+    }
+
+    /**
+     * DO NOT use dummy values contained w/in LogEntryNames.ITEMS created by static
+     *  initializer - strings should come from strings.xml or similar resource, keep
+     *  icon name for now but should be replaced w/ image resource references
+     */
+    private ArrayList<LogEntryItem> buildLogEntryNamesItems() {
+        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("1",
+            getResources().getString(R.string.general_notes_string), "general_icon"));
+        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("2",
+            getResources().getString(R.string.productivity_notes_string), "production_icon"));
+        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("3",
+            getResources().getString(R.string.pestmgmt_notes_string), "pest_icon"));
+        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("4",
+            getResources().getString(R.string.feeding_notes_string), "feeding_icon"));
+        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("5",
+            getResources().getString(R.string.other_notes_string), "other_icon"));
+        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("6",
+            getResources().getString(R.string.save_string), "other_icon"));
+
+        return LogEntryNames.ITEMS;
     }
 
     /**

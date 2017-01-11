@@ -26,10 +26,6 @@ public abstract class LogFragment extends Fragment {
     protected static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
     protected final Calendar calendar = Calendar.getInstance();
 
-    // constants used for Dialogs
-    protected static final String DIALOG_TAG_PESTS = "pests";
-    protected static final String DIALOG_TAG_DISEASE = "disease";
-
     // abstract methods
     protected abstract HiveNotesLogDO getLogEntryDO();
 

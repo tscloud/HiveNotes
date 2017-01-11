@@ -51,6 +51,10 @@ public class LogHiveHealthFragment extends LogFragment {
     private GetReminderTimeTask mTaskMites = null;
     private static final int TASK_MITES = 1;
 
+    // constants used for Dialogs
+    protected static final String DIALOG_TAG_PESTS = "pests";
+    protected static final String DIALOG_TAG_DISEASE = "disease";
+
     // Factory method to create a new instance of this fragment using the provided parameters.
     public static LogHiveHealthFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogHiveHealthFragment fragment = new LogHiveHealthFragment();

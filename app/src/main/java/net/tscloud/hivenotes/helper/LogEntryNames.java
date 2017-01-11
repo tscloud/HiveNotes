@@ -14,12 +14,12 @@ import java.util.Map;
 public class LogEntryNames {
 
     /**
-     * An array of sample (dummy) items.
+     * An array of LogEntryItem items.
      */
     public static List<LogEntryItem> ITEMS = new ArrayList<LogEntryItem>();
 
     /**
-     * A map of sample (dummy) items, by ID.
+     * A map of LogEntryItem items, by ID.
      */
     public static Map<String, LogEntryItem> ITEM_MAP = new HashMap<String, LogEntryItem>();
 
@@ -33,13 +33,13 @@ public class LogEntryNames {
         addItem(new LogEntryItem("6", "Save", "other_icon"));
     }
 
-    private static void addItem(LogEntryItem item) {
+    public static void addItem(LogEntryItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
     /**
-     * A dummy item representing a piece of content.
+     * A LogEntryItem item representing a piece of content.
      */
     public static class LogEntryItem {
         private String id;
