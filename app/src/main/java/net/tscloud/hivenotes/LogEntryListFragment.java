@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -267,7 +268,7 @@ public class LogEntryListFragment extends ListFragment {
      *  initializer - strings should come from strings.xml or similar resource, keep
      *  icon name for now but should be replaced w/ image resource references
      */
-    private ArrayList<LogEntryItem> buildLogEntryNamesItems() {
+    private List<LogEntryNames.LogEntryItem> buildLogEntryNamesItems() {
         LogEntryNames.addItem(new LogEntryNames.LogEntryItem("1",
             getResources().getString(R.string.general_notes_string), "general_icon"));
         LogEntryNames.addItem(new LogEntryNames.LogEntryItem("2",

@@ -23,6 +23,7 @@ public class LogEntryNames {
      */
     public static Map<String, LogEntryItem> ITEM_MAP = new HashMap<String, LogEntryItem>();
 
+    /*
     static {
         // Add 3 sample items.
         addItem(new LogEntryItem("1", "General Notes", "general_icon"));
@@ -32,6 +33,7 @@ public class LogEntryNames {
         addItem(new LogEntryItem("5", "Other", "other_icon"));
         addItem(new LogEntryItem("6", "Save", "other_icon"));
     }
+    */
 
     public static void addItem(LogEntryItem item) {
         ITEMS.add(item);
