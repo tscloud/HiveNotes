@@ -46,14 +46,32 @@ public class LogMultiSelectDialog extends DialogFragment {
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.MY_DIALOG);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog d = getDialog();
+        if (d!=null){
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            d.getWindow().setLayout(width, height);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         final ArrayList<ViewHolder> viewholderList = new ArrayList<>();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // get the Dialog Layout
-        View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview3, null);
+        View view = inflater.inflate(R.layout.scb_listview3, null);
 
         // and the LinearLayout inside that Dialog that is functioning as the vertical list
         ViewGroup llItems = (ViewGroup)view.findViewById(R.id.linearLayoutScb);
@@ -134,11 +152,12 @@ public class LogMultiSelectDialog extends DialogFragment {
             }
         });
 
-        builder.setTitle(getArguments().getString("title")).setView(view);
+        //builder.setTitle(getArguments().getString("title")).setView(view);
 
-        AlertDialog diagFragDialog = builder.create();
+        //AlertDialog diagFragDialog = builder.create();
 
-        return diagFragDialog;
+        //return diagFragDialog;
+        return view;
     }
 
     @Override
@@ -158,12 +177,12 @@ public class LogMultiSelectDialog extends DialogFragment {
         mListener = null;
     }
 
+    /**
+     * This is how we fill the user enterable EditText at the end if it necessary.
+     *  Check the last entry in the "checked" set -> if it's <> to anything in the
+     *  "elems" => it was entered by the user & needs to be presented here
+     */
     private void fillOther(ViewHolder aHolder) {
-        /**
-         * This is how we fill the user enterable EditText at the end if it necessary.
-         *  Check the last entry in the "checked" set -> if it's <> to anything in the
-         *  "elems" => it was entered by the user & needs to be presented here
-         */
         Log.d(TAG, "checking for user entered value");
 
         String reply = null;
