@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,7 +45,7 @@ public class LogMultiSelectDialog extends DialogFragment {
         frag.setArguments(args);
         return frag;
     }
-
+/*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +62,9 @@ public class LogMultiSelectDialog extends DialogFragment {
             d.getWindow().setLayout(width, height);
         }
     }
-
+*/
     @Override
+    //public Dialog onCreateDialog(Bundle savedInstanceState) {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -71,6 +73,7 @@ public class LogMultiSelectDialog extends DialogFragment {
         //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // get the Dialog Layout
+        //View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview3, null);
         View view = inflater.inflate(R.layout.scb_listview3, null);
 
         // and the LinearLayout inside that Dialog that is functioning as the vertical list
