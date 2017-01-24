@@ -74,7 +74,7 @@ public class LogMultiSelectDialog extends DialogFragment {
 
         // get the Dialog Layout
         //View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview3, null);
-        View view = inflater.inflate(R.layout.scb_listview3, null);
+        View view = inflater.inflate(R.layout.scb_listview4, null);
 
         // and the LinearLayout inside that Dialog that is functioning as the vertical list
         ViewGroup llItems = (ViewGroup)view.findViewById(R.id.linearLayoutScb);
