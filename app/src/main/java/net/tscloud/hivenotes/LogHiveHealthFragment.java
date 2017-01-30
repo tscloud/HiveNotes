@@ -241,12 +241,15 @@ public class LogHiveHealthFragment extends LogFragment {
                             mLogEntryHiveHealth.getPestsDetected() != null) {
                         checked = mLogEntryHiveHealth.getPestsDetected();
                     }
-                    // Get the Activity to launch the Dialog for us
-                    mListener.onLogLaunchDialog(
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
                             getResources().getString(R.string.pests_detected),
                             getResources().getStringArray(R.array.pests_array),
                             checked,
-                            DIALOG_TAG_PESTS);
+                            DIALOG_TAG_PESTS,
+                            //hasOther yes, hasReminder no, muliselect no
+                            true, false, true));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -264,12 +267,15 @@ public class LogHiveHealthFragment extends LogFragment {
                             mLogEntryHiveHealth.getDiseaseDetected() != null) {
                         checked = mLogEntryHiveHealth.getDiseaseDetected();
                     }
-                    // Get the Activity to launch the Dialog for us
-                    mListener.onLogLaunchDialog(
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
                             getResources().getString(R.string.disease_detected),
                             getResources().getStringArray(R.array.disease_array),
                             checked,
-                            DIALOG_TAG_DISEASE);
+                            DIALOG_TAG_DISEASE,
+                            //hasOther yes, hasReminder no, muliselect yes
+                            true, false, false));
                 }
                 else {
                     Log.d(TAG, "no Listener");

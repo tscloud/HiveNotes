@@ -34,14 +34,16 @@ public class LogMultiSelectDialog extends DialogFragment {
     // need to make a place for Views to go so we can pass values back to caller
     //ArrayList<ViewHolder> viewholderList;
 
-    public static LogMultiSelectDialog newInstance(String aTitle, String[] aElems,
-                                                   String aChecketSet, String aTag) {
+    public static LogMultiSelectDialog newInstance(LogMultiSelectDialogData aData) {
         LogMultiSelectDialog frag = new LogMultiSelectDialog();
         Bundle args = new Bundle();
-        args.putString("title", aTitle);
-        args.putStringArray("elems", aElems);
-        args.putString("checkedset", aChecketSet);
-        args.putString("tag", aTag);
+        args.putString("title", aData.getTile());
+        args.putStringArray("elems", aData.getElems());
+        args.putString("checkedset", aData.getChecketSet());
+        args.putString("tag", aData.getTag());
+        args.putBoolean("hasOther", aData.getHasOther());
+        args.putBoolean("hasReminder", aData.getHasReminder());
+        args.putBoolean("isMultiselect", aData.getIsMultiselect());
         frag.setArguments(args);
         return frag;
     }
@@ -90,6 +92,8 @@ public class LogMultiSelectDialog extends DialogFragment {
             holder.cb.setChecked(getArguments().getString("checkedset").contains(s));
 
             holder.tv.setText(s);
+            //set the TextView's tag to the SmoothCheckBox to facilitate checking
+            // when TextView is clicked
             holder.tv.setTag(holder.cb);
             llItems.addView(item);
 
@@ -99,26 +103,39 @@ public class LogMultiSelectDialog extends DialogFragment {
             holder.tv.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    TextView tv = ((TextView)v);
+                    TextView tv = (TextView)v;
                     SmoothCheckBox scb = (SmoothCheckBox)tv.getTag();
                     scb.setChecked(!scb.isChecked(), true);
                 }
             });
+
+            //Checkbox listener - only do if we are NOT multiselect
+            if (!getArguments().getBoolean("isMultiselect")) {
+                holder.cb.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+                    @Override
+                    public void onCheckedChanged(CompoundButton view, boolean isChecked) {
+                        SmoothCheckBox scb = ((SmoothCheckBox)v);
+                        scb.setChecked(!scb.isChecked(), true);
+                    }
+                });
+            }
         }
 
         // Add the "Other" EditText at the end
-        ViewHolder holder = new ViewHolder();
-        View item = View.inflate(getActivity(), R.layout.scb_item_other, null);
-        holder.tv = (TextView)item.findViewById(R.id.et);
-        holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
-        holder.tv.setTag(holder.cb);
+        if (getArguments().getBoolean("hasOther")) {
+            ViewHolder holder = new ViewHolder();
+            View item = View.inflate(getActivity(), R.layout.scb_item_other, null);
+            holder.tv = (TextView)item.findViewById(R.id.et);
+            holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
+            holder.tv.setTag(holder.cb);
 
-        // Check to see if we need to populate w/ user entered value
-        fillOther(holder);
+            // Check to see if we need to populate w/ user entered value
+            fillOther(holder);
 
-        llItems.addView(item);
+            llItems.addView(item);
 
-        viewholderList.add(holder);
+            viewholderList.add(holder);
+        }
 
         // OK/Cancel button Listeners
         final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
@@ -181,7 +198,7 @@ public class LogMultiSelectDialog extends DialogFragment {
     }
 
     /**
-     * This is how we fill the user enterable EditText at the end if it necessary.
+     * This is how we fill the user enterable EditText at the end if it is necessary.
      *  Check the last entry in the "checked" set -> if it's <> to anything in the
      *  "elems" => it was entered by the user & needs to be presented here
      */

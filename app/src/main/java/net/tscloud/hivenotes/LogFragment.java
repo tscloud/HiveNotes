@@ -88,6 +88,6 @@ public abstract class LogFragment extends Fragment {
     // necessary interfaces
     public interface LogFragmentActivity {
         HiveNotesLogDO getPreviousLogData();
-        void onLogLaunchDialog(String aTitle, String[] aElems, String aCheckedSet, String aTag);
+        void onLogLaunchDialog(LogMultiSelectDialogData aData);
     }
 }

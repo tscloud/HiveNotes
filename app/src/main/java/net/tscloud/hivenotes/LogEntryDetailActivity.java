@@ -211,9 +211,9 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     2) Come back from Dialogs - via OK or Cancel
      */
     @Override
-    public void onLogLaunchDialog(String aTitle, String[] aElems, String aCheckedSet, String aTag) {
-        diagFragment = LogMultiSelectDialog.newInstance(aTitle, aElems, aCheckedSet, aTag);
-        diagFragment.show(getSupportFragmentManager(), aTag);
+    public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
+        diagFragment = LogMultiSelectDialog.newInstance(LogMultiSelectDialogData);
+        diagFragment.show(getSupportFragmentManager(), aData.getTag());
     };
 
     @Override
