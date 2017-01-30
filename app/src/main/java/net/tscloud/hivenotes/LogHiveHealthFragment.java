@@ -107,14 +107,28 @@ public class LogHiveHealthFragment extends LogFragment {
         final Button droneCellFndnBtn = (Button)v.findViewById(R.id.buttonDroneCellFndn);
         final Button mitesTrtmntBtn = (Button)v.findViewById(R.id.buttonMitesTrtmnt);
 
-        // **TEST**
-        final Button dialogHiveHealthPest = (Button)v.findViewById(R.id.buttonHiveHealthPest);
-        final Button dialogHiveHealthDisease = (Button)v.findViewById(R.id.buttonHiveHealthDisease);
+        // get reference to the <include>s -> this is good enough for everything in there will
+        //  act as button
+        final View dialogHiveHealthPest = v.findViewById(R.id.buttonHiveHealthPest);
+        final View dialogHiveHealthDisease = v.findViewById(R.id.buttonHiveHealthDisease);
 
-        // labels for showing reminder time; be sure to init the tag as this is what goes into the DB
-        final TextView droneCellFndnRmndrText = (TextView)v.findViewById(R.id.textViewDroneCellFndnRmndr);
+        // set text of <include>s
+        final TextView pestText =
+                (TextView)dialogHiveHealthPest.findViewById(R.id.dialogLaunchTextView);
+        pestText.setText(R.string.pestmgmt_notes_string);
+
+        final TextView diseaseText =
+                (TextView)dialogHiveHealthDisease.findViewById(R.id.dialogLaunchTextView);
+        diseaseText.setText(R.string.disease_detected);
+
+        // labels for showing reminder time; be sure to init the tag as this is what goes
+        //   into the DB
+        final TextView droneCellFndnRmndrText =
+                (TextView)v.findViewById(R.id.textViewDroneCellFndnRmndr);
         droneCellFndnRmndrText.setTag((long)-1);
-        final TextView mitesTrtmntRmndrText = (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
+
+        final TextView mitesTrtmntRmndrText =
+                (TextView)v.findViewById(R.id.textViewMitesTrtmntRmndr);
         mitesTrtmntRmndrText.setTag((long)-1);
 
         /**

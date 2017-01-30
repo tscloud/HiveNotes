@@ -25,7 +25,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -116,7 +115,7 @@ public class LogEntryListFragment extends ListFragment {
         // TODO: DO NOT use LogItems put into ArrayList LogEntryNames.ITEMS by static initializer -
         //          build new LogItems w/ string resources so proper translation can occur
         //setListAdapter(new LogListAdapter(getActivity(), LogEntryNames.ITEMS));
-        setListAdapter(new LogListAdapter(getActivity(), buildLogEntryNamesItems()));
+        setListAdapter(new LogListAdapter(getActivity(), LogEntryNames.getItems(getActivity())));
     }
 
     @Override
@@ -243,7 +242,7 @@ public class LogEntryListFragment extends ListFragment {
          * OR - indicate to the user that if update after saving -> they will we updating the entry
          *  they just created/updated
          */
-        if (LogEntryNames.ITEMS.get(position).getId().equals("6")) {
+        if (LogEntryNames.getItems(getActivity()).get(position).getId().equals("6")) {
             if (!mTextViewLogDate.getText().toString().contains(getResources().getString(R.string.existing))) {
                 mTextViewLogDate.setText(mTextViewLogDate.getText() + getResources().getString(R.string.existing));
             }
@@ -251,7 +250,7 @@ public class LogEntryListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(LogEntryNames.ITEMS.get(position).getId());
+        mCallbacks.onItemSelected(LogEntryNames.getItems(getActivity()).get(position).getId());
     }
 
     @Override
@@ -268,6 +267,7 @@ public class LogEntryListFragment extends ListFragment {
      *  initializer - strings should come from strings.xml or similar resource, keep
      *  icon name for now but should be replaced w/ image resource references
      */
+    /*
     private List<LogEntryNames.LogEntryItem> buildLogEntryNamesItems() {
         LogEntryNames.addItem(new LogEntryNames.LogEntryItem("1",
             getResources().getString(R.string.general_notes_string), "general_icon"));
@@ -284,6 +284,7 @@ public class LogEntryListFragment extends ListFragment {
 
         return LogEntryNames.ITEMS;
     }
+    */
 
     /**
      * Turns on activate-on-click mode. When this mode is on, list items will be

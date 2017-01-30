@@ -64,17 +64,17 @@ public class LogMultiSelectDialog extends DialogFragment {
     }
 */
     @Override
-    //public Dialog onCreateDialog(Bundle savedInstanceState) {
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    //public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    //                         Bundle savedInstanceState) {
 
         final ArrayList<ViewHolder> viewholderList = new ArrayList<>();
 
-        //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // get the Dialog Layout
-        //View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview3, null);
-        View view = inflater.inflate(R.layout.scb_listview4, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview4, null);
+        //View view = inflater.inflate(R.layout.scb_listview4, null);
 
         // and the LinearLayout inside that Dialog that is functioning as the vertical list
         ViewGroup llItems = (ViewGroup)view.findViewById(R.id.linearLayoutScb);
@@ -155,12 +155,12 @@ public class LogMultiSelectDialog extends DialogFragment {
             }
         });
 
-        //builder.setTitle(getArguments().getString("title")).setView(view);
+        builder.setTitle(getArguments().getString("title")).setView(view);
 
-        //AlertDialog diagFragDialog = builder.create();
+        AlertDialog diagFragDialog = builder.create();
 
-        //return diagFragDialog;
-        return view;
+        return diagFragDialog;
+        //return view;
     }
 
     @Override

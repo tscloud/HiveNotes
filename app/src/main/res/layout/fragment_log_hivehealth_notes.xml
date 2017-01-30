@@ -84,6 +84,21 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <include
+        android:id="@+id/buttonHiveHealthPest"
+        layout="@layout/dialog_launch_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutMitesTrtmntRmndr" />
+
+    <include
+        android:id="@+id/buttonHiveHealthDisease"
+        layout="@layout/dialog_launch_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonHiveHealthPest" />
+
+    <!--
     <Button
         android:text="@string/pestmgmt_notes_string"
         android:layout_width="wrap_content"
@@ -101,5 +116,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/buttonHiveHealthDisease" />
+    -->
 
 </RelativeLayout>

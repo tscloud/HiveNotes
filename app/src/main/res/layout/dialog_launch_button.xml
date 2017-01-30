@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/list_vertical_margin"
+    android:paddingBottom="@dimen/list_vertical_margin"
+    android:background="@drawable/list_divider"
+    android:id="@+id/linearLayoutButton"
+    android:clickable="true">
+    <!-- android:onClick="logListClickHandler" -->
+
+    <TextView
+        android:background="@android:color/transparent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.90"
+        android:text="@string/hello_world"
+        android:id="@+id/dialogLaunchTextView"
+        android:gravity="center_vertical"/>
+
+    <ImageView
+        android:src="@drawable/arrow_right"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.15"
+        android:id="@+id/dialogLaunchArrowImage"
+        android:contentDescription="@string/create_profile_string"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+</LinearLayout>

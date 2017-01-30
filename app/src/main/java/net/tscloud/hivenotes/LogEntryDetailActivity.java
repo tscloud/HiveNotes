@@ -200,6 +200,12 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         finish();
     }
 
+    private void onSaveButton() {
+        Log.d(TAG, "returning to LogEntryListActivity to perform save");
+        setResult(RESULT_OK);
+        finish();
+    }
+
     /*
     1) Launch Dialogs - Fragment we're coming from will tell us which 1 to throw up
     2) Come back from Dialogs - via OK or Cancel
@@ -226,11 +232,5 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     public void onLogMultiSelectDialogCancel(String aTag) {
         Log.d(TAG, "onLogMultiSelectDialogCancel: Cancel button clicked");
         diagFragment.dismiss();
-    }
-
-    private void onSaveButton() {
-        Log.d(TAG, "returning to LogEntryListActivity to perform save");
-        setResult(RESULT_OK);
-        finish();
     }
 }

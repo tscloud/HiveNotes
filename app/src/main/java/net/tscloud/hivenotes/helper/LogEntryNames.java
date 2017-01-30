@@ -1,5 +1,9 @@
 package net.tscloud.hivenotes.helper;
 
+import android.content.Context;
+
+import net.tscloud.hivenotes.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,12 +20,12 @@ public class LogEntryNames {
     /**
      * An array of LogEntryItem items.
      */
-    public static List<LogEntryItem> ITEMS = new ArrayList<LogEntryItem>();
+    private static List<LogEntryItem> ITEMS = new ArrayList<LogEntryItem>();
 
     /**
      * A map of LogEntryItem items, by ID.
      */
-    public static Map<String, LogEntryItem> ITEM_MAP = new HashMap<String, LogEntryItem>();
+    private static Map<String, LogEntryItem> ITEM_MAP = new HashMap<String, LogEntryItem>();
 
     /*
     static {
@@ -34,6 +38,29 @@ public class LogEntryNames {
         addItem(new LogEntryItem("6", "Save", "other_icon"));
     }
     */
+
+    public static List<LogEntryItem> getItems(Context aCtx) {
+        if (ITEMS.isEmpty()) {
+            LogEntryNames.addItem(new LogEntryNames.LogEntryItem("1",
+                    aCtx.getResources().getString(R.string.general_notes_string), "general_icon"));
+            LogEntryNames.addItem(new LogEntryNames.LogEntryItem("2",
+                    aCtx.getResources().getString(R.string.productivity_notes_string), "production_icon"));
+            LogEntryNames.addItem(new LogEntryNames.LogEntryItem("3",
+                    aCtx.getResources().getString(R.string.pestmgmt_notes_string), "pest_icon"));
+            LogEntryNames.addItem(new LogEntryNames.LogEntryItem("4",
+                    aCtx.getResources().getString(R.string.feeding_notes_string), "feeding_icon"));
+            LogEntryNames.addItem(new LogEntryNames.LogEntryItem("5",
+                    aCtx.getResources().getString(R.string.other_notes_string), "other_icon"));
+            LogEntryNames.addItem(new LogEntryNames.LogEntryItem("6",
+                    aCtx.getResources().getString(R.string.save_string), "other_icon"));
+        }
+
+        return ITEMS;
+    }
+
+    public static Map<String, LogEntryItem> getItemMap() {
+        return ITEM_MAP;
+    }
 
     public static void addItem(LogEntryItem item) {
         ITEMS.add(item);
