@@ -75,7 +75,7 @@ public class LogMultiSelectDialog extends DialogFragment {
 
         // get the Dialog Layout
         View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview4, null);
-        //View view = inflater.inflate(R.layout.scb_listview4, null);
+        //View view = inflater.inflate(R.layout.scb_listview4, container, false);
 
         // and the LinearLayout inside that Dialog that is functioning as the vertical list
         ViewGroup llItems = (ViewGroup)view.findViewById(R.id.linearLayoutScb);
@@ -83,7 +83,11 @@ public class LogMultiSelectDialog extends DialogFragment {
         // load the "list"
         for (String s : getArguments().getStringArray("elems")) {
             ViewHolder holder = new ViewHolder();
-            View item = View.inflate(getActivity(), R.layout.scb_item, null);
+
+            // ** inflate test **
+            //View item = View.inflate(getActivity(), R.layout.scb_item, null);
+            View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item, llItems, true);
+
             holder.tv = (TextView)item.findViewById(R.id.tv);
             holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
 
@@ -94,7 +98,9 @@ public class LogMultiSelectDialog extends DialogFragment {
             //set the TextView's tag to the SmoothCheckBox to facilitate checking
             // when TextView is clicked
             holder.tv.setTag(holder.cb);
-            llItems.addView(item);
+
+            // ** inflate test **
+            //llItems.addView(item);
 
             viewholderList.add(holder);
 
@@ -114,10 +120,14 @@ public class LogMultiSelectDialog extends DialogFragment {
             }
         }
 
-        // Add the "Other" EditText at the end
+        // Conditionally add the "Other" EditText at the end of the list
         if (getArguments().getBoolean("hasOther")) {
             ViewHolder holder = new ViewHolder();
-            View item = View.inflate(getActivity(), R.layout.scb_item_other, null);
+
+            // ** inflate test **
+            //View item = View.inflate(getActivity(), R.layout.scb_item_other, null);
+            View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item_other, llItems, true);
+
             holder.tv = (TextView)item.findViewById(R.id.et);
             holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
             holder.tv.setTag(holder.cb);
@@ -125,7 +135,8 @@ public class LogMultiSelectDialog extends DialogFragment {
             // Check to see if we need to populate w/ user entered value
             fillOther(holder);
 
-            llItems.addView(item);
+            // ** inflate test **
+            //llItems.addView(item);
 
             viewholderList.add(holder);
 
@@ -133,6 +144,16 @@ public class LogMultiSelectDialog extends DialogFragment {
             if (!getArguments().getBoolean("isMultiselect")) {
                 setListenerForNonMultiselect(holder.cb, viewholderList);
             }
+        }
+
+        // Conditionally add reminder (will always only be at most 1)
+        if (getArguments().getBoolean("hasReminder")) {
+            // ** inflate test **
+            //View item = View.inflate(getActivity(), R.layout.rmndr_item, null);
+            View item = getActivity().getLayoutInflater().inflate(R.layout.rmndr_item, llItems, true);
+
+            // ** inflate test **
+            //llItems.addView(item);
         }
 
         // OK/Cancel button Listeners
