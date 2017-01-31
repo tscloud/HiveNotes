@@ -31,6 +31,7 @@ import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 
 /**
@@ -314,7 +315,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     2) Come back from Dialogs - via OK or Cancel
      */
     @Override
-    public void onLogLaunchDialog(String aTitle, String[] aElems, String aCheckedSet, String aTag) {
+    public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
 
     }
 

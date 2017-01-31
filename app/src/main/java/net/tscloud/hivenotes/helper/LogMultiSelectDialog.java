@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,13 +36,13 @@ public class LogMultiSelectDialog extends DialogFragment {
     public static LogMultiSelectDialog newInstance(LogMultiSelectDialogData aData) {
         LogMultiSelectDialog frag = new LogMultiSelectDialog();
         Bundle args = new Bundle();
-        args.putString("title", aData.getTile());
+        args.putString("title", aData.getTitle());
         args.putStringArray("elems", aData.getElems());
-        args.putString("checkedset", aData.getChecketSet());
+        args.putString("checkedset", aData.getCheckedSet());
         args.putString("tag", aData.getTag());
-        args.putBoolean("hasOther", aData.getHasOther());
-        args.putBoolean("hasReminder", aData.getHasReminder());
-        args.putBoolean("isMultiselect", aData.getIsMultiselect());
+        args.putBoolean("hasOther", aData.isHasOther());
+        args.putBoolean("hasReminder", aData.isHasReminder());
+        args.putBoolean("isMultiselect", aData.isMultiselect());
         frag.setArguments(args);
         return frag;
     }
@@ -111,13 +110,7 @@ public class LogMultiSelectDialog extends DialogFragment {
 
             //Checkbox listener - only do if we are NOT multiselect
             if (!getArguments().getBoolean("isMultiselect")) {
-                holder.cb.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-                    @Override
-                    public void onCheckedChanged(CompoundButton view, boolean isChecked) {
-                        SmoothCheckBox scb = ((SmoothCheckBox)v);
-                        scb.setChecked(!scb.isChecked(), true);
-                    }
-                });
+                setListenerForNonMultiselect(holder.cb, viewholderList);
             }
         }
 
@@ -135,6 +128,11 @@ public class LogMultiSelectDialog extends DialogFragment {
             llItems.addView(item);
 
             viewholderList.add(holder);
+
+            //Checkbox listener - only do if we are NOT multiselect
+            if (!getArguments().getBoolean("isMultiselect")) {
+                setListenerForNonMultiselect(holder.cb, viewholderList);
+            }
         }
 
         // OK/Cancel button Listeners
@@ -219,6 +217,26 @@ public class LogMultiSelectDialog extends DialogFragment {
                 aHolder.cb.setChecked(true);
             }
         }
+    }
+
+    /**
+     * if doing NOT multiselect => set checkbox listener to unselect all the others
+     */
+    private void setListenerForNonMultiselect(SmoothCheckBox aCheckBox,
+                                              final ArrayList<ViewHolder> aViewholderList) {
+        aCheckBox.setOnCheckedChangeListener(new SmoothCheckBox.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(SmoothCheckBox view, boolean isChecked) {
+                if (isChecked) {
+                    for (ViewHolder vh : aViewholderList) {
+                        if (vh.cb != view) {
+                            vh.cb.setChecked(false);
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     class ViewHolder {

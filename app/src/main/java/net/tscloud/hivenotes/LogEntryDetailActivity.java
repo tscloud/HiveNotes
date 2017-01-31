@@ -13,6 +13,7 @@ import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 /**
  * An activity representing a single LogEntryGeneral detail screen. This
@@ -212,7 +213,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
      */
     @Override
     public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
-        diagFragment = LogMultiSelectDialog.newInstance(LogMultiSelectDialogData);
+        diagFragment = LogMultiSelectDialog.newInstance(aData);
         diagFragment.show(getSupportFragmentManager(), aData.getTag());
     };
 

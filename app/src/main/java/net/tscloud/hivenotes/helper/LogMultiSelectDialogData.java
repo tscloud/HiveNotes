@@ -5,25 +5,53 @@ package net.tscloud.hivenotes.helper;
  */
 public class LogMultiSelectDialogData {
 
-    String title;
-    String[] elems;
-    String checketSet;
-    String tag;
-    boolean hasOther = false;
-    boolean hasReminder = false;
-    boolean isMultiselect = true;
+    private String title;
+    private String[] elems;
+    private String checkedSet;
+    private String tag;
+    private boolean hasOther = false;
+    private boolean hasReminder = false;
+    private boolean isMultiselect = true;
 
     public LogMultiSelectDialogData (String aTitle, String[] aElems,
-                                     String aChecketSet, String aTag,
+                                     String aCheckedSet, String aTag,
                                      boolean aHasOther, boolean aHasReminder,
                                      boolean aIsMultiselect) {
 
         this.title = aTitle;
         this.elems = aElems;
-        this.checketSet = aChecketSet;
+        this.checkedSet = aCheckedSet;
         this.tag = aTag;
         this.hasOther = aHasOther;
         this.hasReminder = aHasReminder;
         this.isMultiselect = aIsMultiselect;
+    }
+
+    public String getCheckedSet() {
+        return checkedSet;
+    }
+
+    public String[] getElems() {
+        return elems;
+    }
+
+    public boolean isHasOther() {
+        return hasOther;
+    }
+
+    public boolean isHasReminder() {
+        return hasReminder;
+    }
+
+    public boolean isMultiselect() {
+        return isMultiselect;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

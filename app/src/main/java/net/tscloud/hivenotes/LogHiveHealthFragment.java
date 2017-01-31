@@ -22,6 +22,7 @@ import net.tscloud.hivenotes.db.LogEntryHiveHealthDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -248,7 +249,7 @@ public class LogHiveHealthFragment extends LogFragment {
                             getResources().getStringArray(R.array.pests_array),
                             checked,
                             DIALOG_TAG_PESTS,
-                            //hasOther yes, hasReminder no, muliselect no
+                            //hasOther yes, hasReminder no, multiselect yes
                             true, false, true));
                 }
                 else {
@@ -274,7 +275,7 @@ public class LogHiveHealthFragment extends LogFragment {
                             getResources().getStringArray(R.array.disease_array),
                             checked,
                             DIALOG_TAG_DISEASE,
-                            //hasOther yes, hasReminder no, muliselect yes
+                            //hasOther yes, hasReminder no, multiselect no
                             true, false, false));
                 }
                 else {

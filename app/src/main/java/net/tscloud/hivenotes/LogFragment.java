@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
