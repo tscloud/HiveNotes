@@ -249,7 +249,7 @@ public class LogHiveHealthFragment extends LogFragment {
                             getResources().getStringArray(R.array.pests_array),
                             checked,
                             DIALOG_TAG_PESTS,
-                            //hasOther yes, hasReminder no, multiselect yes
+                            //hasOther, hasReminder, multiselect
                             true, false, true));
                 }
                 else {
@@ -275,8 +275,8 @@ public class LogHiveHealthFragment extends LogFragment {
                             getResources().getStringArray(R.array.disease_array),
                             checked,
                             DIALOG_TAG_DISEASE,
-                            //hasOther yes, hasReminder no, multiselect no
-                            true, false, false));
+                            //hasOther, hasReminder, multiselect
+                            true, true, false));
                 }
                 else {
                     Log.d(TAG, "no Listener");

@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -86,7 +87,8 @@ public class LogMultiSelectDialog extends DialogFragment {
 
             // ** inflate test **
             //View item = View.inflate(getActivity(), R.layout.scb_item, null);
-            View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item, llItems, true);
+            View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item, llItems,
+                    false);
 
             holder.tv = (TextView)item.findViewById(R.id.tv);
             holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
@@ -100,7 +102,7 @@ public class LogMultiSelectDialog extends DialogFragment {
             holder.tv.setTag(holder.cb);
 
             // ** inflate test **
-            //llItems.addView(item);
+            llItems.addView(item);
 
             viewholderList.add(holder);
 
@@ -126,7 +128,8 @@ public class LogMultiSelectDialog extends DialogFragment {
 
             // ** inflate test **
             //View item = View.inflate(getActivity(), R.layout.scb_item_other, null);
-            View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item_other, llItems, true);
+            View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item_other, llItems,
+                    false);
 
             holder.tv = (TextView)item.findViewById(R.id.et);
             holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
@@ -136,7 +139,7 @@ public class LogMultiSelectDialog extends DialogFragment {
             fillOther(holder);
 
             // ** inflate test **
-            //llItems.addView(item);
+            llItems.addView(item);
 
             viewholderList.add(holder);
 
@@ -148,12 +151,9 @@ public class LogMultiSelectDialog extends DialogFragment {
 
         // Conditionally add reminder (will always only be at most 1)
         if (getArguments().getBoolean("hasReminder")) {
-            // ** inflate test **
-            //View item = View.inflate(getActivity(), R.layout.rmndr_item, null);
-            View item = getActivity().getLayoutInflater().inflate(R.layout.rmndr_item, llItems, true);
+            // get the reminder item view
+            view.findViewById(R.id.reminderItem).setVisibility(View.VISIBLE);
 
-            // ** inflate test **
-            //llItems.addView(item);
         }
 
         // OK/Cancel button Listeners
@@ -194,6 +194,11 @@ public class LogMultiSelectDialog extends DialogFragment {
         builder.setTitle(getArguments().getString("title")).setView(view);
 
         AlertDialog diagFragDialog = builder.create();
+
+        //  ** TEST  **  //
+        diagFragDialog.getWindow().setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //diagFragDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         return diagFragDialog;
         //return view;

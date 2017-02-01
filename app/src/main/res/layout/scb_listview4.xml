@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/rootLayoutScb">
 
     <ScrollView
         android:id="@+id/svScb"
@@ -12,7 +13,7 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:scrollbars="none"
-        android:layout_above="@+id/viewLineHoriz" >
+        android:layout_above="@+id/reminderItem" >
 
         <LinearLayout
             android:orientation="vertical"
@@ -24,10 +25,19 @@
 
     </ScrollView>
 
+    <include
+        android:id="@+id/reminderItem"
+        layout="@layout/rmndr_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_above="@+id/buttonLayoutScb" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttonLayoutScb">
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
@@ -36,7 +46,7 @@
             android:background="?android:attr/dividerVertical"
             android:layout_alignParentTop="true"/>
         <View
-            android:id="@+id/ViewColorPickerHelper"
+            android:id="@+id/VertLine"
             android:layout_width="1dip"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -51,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/ViewColorPickerHelper"
+            android:layout_toLeftOf="@id/VertLine"
             android:background="?android:attr/selectableItemBackground"
             android:text="@android:string/cancel"
             android:layout_alignParentBottom="true"/>
@@ -64,7 +74,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:text="@android:string/ok"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@id/ViewColorPickerHelper"/>
+            android:layout_toRightOf="@id/VertLine"/>
     </RelativeLayout>
 
 </RelativeLayout>
