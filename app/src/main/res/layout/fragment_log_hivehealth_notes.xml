@@ -18,55 +18,19 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <LinearLayout
-        android:id="@+id/linearLayoutDroneCellFndnRmndr"
+    <include
+        android:id="@+id/buttonHiveHealthPest"
+        layout="@layout/dialog_launch_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/textPestMgmt"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_below="@id/textPestMgmt" />
 
-        <TextView
-            android:id="@+id/textViewDroneCellFndnRmndr"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.65"
-            android:text="@string/no_reminder_set"
-            android:ems="10" />
-
-        <Button
-            android:id="@+id/buttonDroneCellFndn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/set_reminder_string" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutMitesTrtmntRmndr"
+    <include
+        android:id="@+id/buttonHiveHealthDisease"
+        layout="@layout/dialog_launch_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutDroneCellFndnRmndr"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <TextView
-            android:id="@+id/textViewMitesTrtmntRmndr"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.65"
-            android:text="@string/no_reminder_set"
-            android:ems="10" />
-
-        <Button
-            android:id="@+id/buttonMitesTrtmnt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/set_reminder_string" />
-
-    </LinearLayout>
+        android:layout_below="@id/buttonHiveHealthPest" />
 
     <include
         android:id="@+id/savePestMgmtButton"
@@ -83,20 +47,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <include
-        android:id="@+id/buttonHiveHealthPest"
-        layout="@layout/dialog_launch_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutMitesTrtmntRmndr" />
-
-    <include
-        android:id="@+id/buttonHiveHealthDisease"
-        layout="@layout/dialog_launch_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonHiveHealthPest" />
 
     <!--
     <Button
