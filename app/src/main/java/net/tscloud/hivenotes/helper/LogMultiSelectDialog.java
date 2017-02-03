@@ -31,6 +31,12 @@ public class LogMultiSelectDialog extends DialogFragment {
     // reference to Activity that should have started me
     private onLogMultiSelectDialogInteractionListener mListener;
 
+    // time/date formatters
+    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    private static final String TIME_PATTERN = "HH:mm";
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    private final Calendar calendar = Calendar.getInstance();
+
     // need to make a place for Views to go so we can pass values back to caller
     //ArrayList<ViewHolder> viewholderList;
 
@@ -41,6 +47,7 @@ public class LogMultiSelectDialog extends DialogFragment {
         args.putStringArray("elems", aData.getElems());
         args.putString("checkedset", aData.getCheckedSet());
         args.putString("tag", aData.getTag());
+        args.putLong("reminderMillis", aData.getReminderMillis());
         args.putBoolean("hasOther", aData.isHasOther());
         args.putBoolean("hasReminder", aData.isHasReminder());
         args.putBoolean("isMultiselect", aData.isMultiselect());
@@ -152,7 +159,11 @@ public class LogMultiSelectDialog extends DialogFragment {
         // Conditionally add reminder (will always only be at most 1)
         if (getArguments().getBoolean("hasReminder")) {
             // get the reminder item view
-            view.findViewById(R.id.reminderItem).setVisibility(View.VISIBLE);
+            final View reminderInclude = view.findViewById(R.id.reminderItem);
+            reminderInclude.setVisibility(View.VISIBLE);
+
+            final TextView reminderText = reminderInclude.findViewById(R.id.textViewDialogRmndr);
+            final Button reminderButton = reminderInclude.findViewById(R.id.buttonDialogRmndr);
 
         }
 
@@ -262,6 +273,12 @@ public class LogMultiSelectDialog extends DialogFragment {
                 }
             }
         });
+    }
+
+    /**
+     * get Reminder stuff
+     */
+    private void getReminder() {
 
     }
 

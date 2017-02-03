@@ -6,22 +6,26 @@ package net.tscloud.hivenotes.helper;
 public class LogMultiSelectDialogData {
 
     private String title;
+    private long hiveID;
     private String[] elems;
     private String checkedSet;
     private String tag;
+    private long reminderMillis = -1;
     private boolean hasOther = false;
     private boolean hasReminder = false;
     private boolean isMultiselect = true;
 
-    public LogMultiSelectDialogData (String aTitle, String[] aElems,
-                                     String aCheckedSet, String aTag,
+    public LogMultiSelectDialogData (String aTitle, long aHiveID, String[] aElems,
+                                     String aCheckedSet, String aTag, long aReminderMillis,
                                      boolean aHasOther, boolean aHasReminder,
                                      boolean aIsMultiselect) {
 
         this.title = aTitle;
+        this.hiveID = aHiveID;
         this.elems = aElems;
         this.checkedSet = aCheckedSet;
         this.tag = aTag;
+        this.reminderMillis = aReminderMillis;
         this.hasOther = aHasOther;
         this.hasReminder = aHasReminder;
         this.isMultiselect = aIsMultiselect;
@@ -53,5 +57,13 @@ public class LogMultiSelectDialogData {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getHiveID() {
+        return hiveID;
+    }
+
+    public long getReminderMillis() {
+        return reminderMillis;
     }
 }

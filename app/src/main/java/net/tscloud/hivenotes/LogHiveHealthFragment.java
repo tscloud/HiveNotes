@@ -238,19 +238,24 @@ public class LogHiveHealthFragment extends LogFragment {
                 // Callback to Activity to launch a Dialog
                 if (mListener != null) {
                     String checked = "";
-                    if (mLogEntryHiveHealth != null &&
-                            mLogEntryHiveHealth.getPestsDetected() != null) {
-                        checked = mLogEntryHiveHealth.getPestsDetected();
+                    long reminderMillis = -1;
+                    if (mLogEntryHiveHealth != null) {
+                            if (mLogEntryHiveHealth.getPestsDetected() != null) {
+                                checked = mLogEntryHiveHealth.getPestsDetected();
+                            }
+                            reminderMillis = mLogEntryHiveHealth.getDroneCellFndnRmndrTime()
                     }
                     /* Get the Activity to launch the Dialog for us
                      */
                     mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
                             getResources().getString(R.string.pests_detected),
+                            mHiveID,
                             getResources().getStringArray(R.array.pests_array),
                             checked,
                             DIALOG_TAG_PESTS,
+                            reminderMillis,
                             //hasOther, hasReminder, multiselect
-                            true, false, true));
+                            true, true, true));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -272,11 +277,13 @@ public class LogHiveHealthFragment extends LogFragment {
                      */
                     mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
                             getResources().getString(R.string.disease_detected),
+                            mHiveID,
                             getResources().getStringArray(R.array.disease_array),
                             checked,
                             DIALOG_TAG_DISEASE,
+                            -1,
                             //hasOther, hasReminder, multiselect
-                            true, true, false));
+                            true, false, false));
                 }
                 else {
                     Log.d(TAG, "no Listener");

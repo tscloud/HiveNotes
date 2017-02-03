@@ -12,6 +12,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * Created by tscloud on 3/31/16.
+ */
+
 public abstract class LogFragment extends Fragment {
 
     public static final String TAG = "LogFragment";
@@ -20,12 +24,6 @@ public abstract class LogFragment extends Fragment {
     protected long mHiveID;
     protected long mLogEntryKey;
     protected long mLogEntryDate;
-
-    // time/date formatters
-    protected static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-    protected static final String TIME_PATTERN = "HH:mm";
-    protected static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
-    protected final Calendar calendar = Calendar.getInstance();
 
     // abstract methods
     protected abstract HiveNotesLogDO getLogEntryDO();
