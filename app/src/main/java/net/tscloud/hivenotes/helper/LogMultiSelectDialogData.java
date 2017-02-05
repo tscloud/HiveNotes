@@ -59,7 +59,7 @@ public class LogMultiSelectDialogData {
         return title;
     }
 
-    public String getHiveID() {
+    public long getHiveID() {
         return hiveID;
     }
 

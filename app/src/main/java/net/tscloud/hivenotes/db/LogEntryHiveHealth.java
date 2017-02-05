@@ -18,8 +18,7 @@ public class LogEntryHiveHealth implements HiveNotesLogDO, Parcelable {
     private String varroaTreatment;
 
     // These hold reminder times -- they will NOT be persisted
-    private long droneCellFndnRmndrTime = -1;
-    private long mitesTrtmntRmndrTime = -1;
+    private long varroaTrtmntRmndrTime = -1;
 
     @Override
     public long getHive() {
@@ -73,20 +72,12 @@ public class LogEntryHiveHealth implements HiveNotesLogDO, Parcelable {
         this.varroaTreatment = varroaTreatment;
     }
 
-    public long getDroneCellFndnRmndrTime() {
-        return droneCellFndnRmndrTime;
+    public long getVarroaTrtmntRmndrTime() {
+        return varroaTrtmntRmndrTime;
     }
 
-    public void setDroneCellFndnRmndrTime(long droneCellFndnRmndrTime) {
-        this.droneCellFndnRmndrTime = droneCellFndnRmndrTime;
-    }
-
-    public long getMitesTrtmntRmndrTime() {
-        return mitesTrtmntRmndrTime;
-    }
-
-    public void setMitesTrtmntRmndrTime(long mitesTrtmntRmndrTime) {
-        this.mitesTrtmntRmndrTime = mitesTrtmntRmndrTime;
+    public void setVarroaTrtmntRmndrTime(long varroaTrtmntRmndrTime) {
+        this.varroaTrtmntRmndrTime = varroaTrtmntRmndrTime;
     }
 
     @Override
@@ -102,8 +93,7 @@ public class LogEntryHiveHealth implements HiveNotesLogDO, Parcelable {
         dest.writeString(this.pestsDetected);
         dest.writeString(this.diseaseDetected);
         dest.writeString(this.varroaTreatment);
-        dest.writeLong(this.droneCellFndnRmndrTime);
-        dest.writeLong(this.mitesTrtmntRmndrTime);
+        dest.writeLong(this.varroaTrtmntRmndrTime);
     }
 
     public LogEntryHiveHealth() {
@@ -116,8 +106,7 @@ public class LogEntryHiveHealth implements HiveNotesLogDO, Parcelable {
         this.pestsDetected = in.readString();
         this.diseaseDetected = in.readString();
         this.varroaTreatment = in.readString();
-        this.droneCellFndnRmndrTime = in.readLong();
-        this.mitesTrtmntRmndrTime = in.readLong();
+        this.varroaTrtmntRmndrTime = in.readLong();
     }
 
     public static final Parcelable.Creator<LogEntryHiveHealth> CREATOR = new Parcelable.Creator<LogEntryHiveHealth>() {

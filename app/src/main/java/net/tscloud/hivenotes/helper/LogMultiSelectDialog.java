@@ -2,21 +2,29 @@ package net.tscloud.hivenotes.helper;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import net.tscloud.hivenotes.R;
+import net.tscloud.hivenotes.db.NotificationType;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import cn.refactor.library.SmoothCheckBox;
 
@@ -31,19 +39,26 @@ public class LogMultiSelectDialog extends DialogFragment {
     // reference to Activity that should have started me
     private onLogMultiSelectDialogInteractionListener mListener;
 
-    // time/date formatters
-    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-    private static final String TIME_PATTERN = "HH:mm";
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
-    private final Calendar calendar = Calendar.getInstance();
+    // the TextEdit that ill hold reminder time
+    TextView mReminderText = null;
 
-    // need to make a place for Views to go so we can pass values back to caller
-    //ArrayList<ViewHolder> viewholderList;
+    // task references - needed to kill tasks on Fragment Destroy
+    private GetReminderTimeTask mTaskDrone = null;
+    private static final int TASK_DRONE = 0;
+
+    // time/date formatters
+    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG,
+            Locale.getDefault());
+    private static final String TIME_PATTERN = "HH:mm";
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN,
+            Locale.getDefault());
+    private final Calendar calendar = Calendar.getInstance();
 
     public static LogMultiSelectDialog newInstance(LogMultiSelectDialogData aData) {
         LogMultiSelectDialog frag = new LogMultiSelectDialog();
         Bundle args = new Bundle();
         args.putString("title", aData.getTitle());
+        args.putLong("hiveid", aData.getHiveID());
         args.putStringArray("elems", aData.getElems());
         args.putString("checkedset", aData.getCheckedSet());
         args.putString("tag", aData.getTag());
@@ -54,28 +69,9 @@ public class LogMultiSelectDialog extends DialogFragment {
         frag.setArguments(args);
         return frag;
     }
-/*
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.MY_DIALOG);
-    }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Dialog d = getDialog();
-        if (d!=null){
-            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            d.getWindow().setLayout(width, height);
-        }
-    }
-*/
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-    //public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    //                         Bundle savedInstanceState) {
 
         final ArrayList<ViewHolder> viewholderList = new ArrayList<>();
 
@@ -83,7 +79,6 @@ public class LogMultiSelectDialog extends DialogFragment {
 
         // get the Dialog Layout
         View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview4, null);
-        //View view = inflater.inflate(R.layout.scb_listview4, container, false);
 
         // and the LinearLayout inside that Dialog that is functioning as the vertical list
         ViewGroup llItems = (ViewGroup)view.findViewById(R.id.linearLayoutScb);
@@ -92,8 +87,6 @@ public class LogMultiSelectDialog extends DialogFragment {
         for (String s : getArguments().getStringArray("elems")) {
             ViewHolder holder = new ViewHolder();
 
-            // ** inflate test **
-            //View item = View.inflate(getActivity(), R.layout.scb_item, null);
             View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item, llItems,
                     false);
 
@@ -108,7 +101,6 @@ public class LogMultiSelectDialog extends DialogFragment {
             // when TextView is clicked
             holder.tv.setTag(holder.cb);
 
-            // ** inflate test **
             llItems.addView(item);
 
             viewholderList.add(holder);
@@ -133,8 +125,6 @@ public class LogMultiSelectDialog extends DialogFragment {
         if (getArguments().getBoolean("hasOther")) {
             ViewHolder holder = new ViewHolder();
 
-            // ** inflate test **
-            //View item = View.inflate(getActivity(), R.layout.scb_item_other, null);
             View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item_other, llItems,
                     false);
 
@@ -145,7 +135,6 @@ public class LogMultiSelectDialog extends DialogFragment {
             // Check to see if we need to populate w/ user entered value
             fillOther(holder);
 
-            // ** inflate test **
             llItems.addView(item);
 
             viewholderList.add(holder);
@@ -162,9 +151,52 @@ public class LogMultiSelectDialog extends DialogFragment {
             final View reminderInclude = view.findViewById(R.id.reminderItem);
             reminderInclude.setVisibility(View.VISIBLE);
 
-            final TextView reminderText = reminderInclude.findViewById(R.id.textViewDialogRmndr);
-            final Button reminderButton = reminderInclude.findViewById(R.id.buttonDialogRmndr);
+            // labels for showing reminder time; be sure to init the tag as this is what goes
+            //   into the DB
+            mReminderText =
+                    (TextView)reminderInclude.findViewById(R.id.textViewDialogRmndr);
+            final Button reminderButton =
+                    (Button) reminderInclude.findViewById(R.id.buttonDialogRmndr);
 
+            // If we have a time --> use it...
+            //  it could be -2 indicating that an UNSET operation has occurred
+            if (getArguments().getLong("reminderMillis") == -2) {
+                mReminderText.setText(R.string.no_reminder_set);
+                // don't forget to set the tag
+                mReminderText.setTag(getArguments().getLong("reminderMillis"));
+            }
+            else if (getArguments().getLong("reminderMillis") != -1) {
+                calendar.setTimeInMillis(getArguments().getLong("reminderMillis"));
+                String droneDate = dateFormat.format(calendar.getTime());
+                String droneTime = timeFormat.format(calendar.getTime());
+                String droneDateTime = droneDate + ' ' + droneTime;
+                mReminderText.setText(droneDateTime);
+                // don't forget to set the tag
+                mReminderText.setTag(getArguments().getLong("reminderMillis"));
+            }
+            else {
+                //disable the button until task is thru
+                reminderButton.setEnabled(false);
+
+                //setup and execute task
+                mTaskDrone = new MyGetReminderTimeTask(
+                        new GetReminderTimeTaskData(reminderButton, mReminderText,
+                                NotificationType.NOTIFY_PEST_REMOVE_DRONE,
+                                getArguments().getLong("hiveid"), TASK_DRONE,
+                                calendar, dateFormat, timeFormat),
+                        getActivity());
+                // All AsynchTasks executed serially on same background Thread
+                mTaskDrone.execute();
+                // Each AsyncTask executes on its own Thread
+                //mTaskDrone.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+
+            reminderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onReminderPressed(mReminderText);
+                }
+            });
         }
 
         // OK/Cancel button Listeners
@@ -174,18 +206,20 @@ public class LogMultiSelectDialog extends DialogFragment {
             public void onClick(View v) {
                 Log.d(TAG, "OK button clicked");
 
+                // get the checked stuff
                 List<String> resultList = new ArrayList<>();
-
                 for (ViewHolder checkEdit:viewholderList) {
                     if (checkEdit.cb.isChecked()) {
                         resultList.add(checkEdit.tv.getText().toString());
                     }
                 }
 
+                // don't forget to get the reminder time from the TextEdit tag
                 if (mListener != null) {
                     String[] result = new String[resultList.size()];
                     result = resultList.toArray(result);
-                    mListener.onLogMultiSelectDialogOK(result, getArguments().getString("tag"));
+                    mListener.onLogMultiSelectDialogOK(result, (long)mReminderText.getTag(),
+                            getArguments().getString("tag"));
                 }
             }
         });
@@ -206,13 +240,7 @@ public class LogMultiSelectDialog extends DialogFragment {
 
         AlertDialog diagFragDialog = builder.create();
 
-        //  ** TEST  **  //
-        diagFragDialog.getWindow().setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //diagFragDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
         return diagFragDialog;
-        //return view;
     }
 
     @Override
@@ -230,6 +258,14 @@ public class LogMultiSelectDialog extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mTaskDrone != null) {
+            mTaskDrone.cancel(false);
+        }
+        super.onDestroy();
     }
 
     /**
@@ -276,10 +312,54 @@ public class LogMultiSelectDialog extends DialogFragment {
     }
 
     /**
-     * get Reminder stuff
+     * throw up the DateTime picker to get a Reminder date/time
      */
-    private void getReminder() {
+    private void onReminderPressed(final TextView timeLbl) {
+        Log.d(TAG, "onReminderPressed");
 
+        final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+
+        dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePicker datePicker = (DatePicker)dialogView.findViewById(R.id.date_picker);
+                TimePicker timePicker = (TimePicker)dialogView.findViewById(R.id.time_picker);
+
+                Calendar calendar = new GregorianCalendar(datePicker.getYear(),
+                        datePicker.getMonth(),
+                        datePicker.getDayOfMonth(),
+                        timePicker.getCurrentHour(),
+                        timePicker.getCurrentMinute());
+
+                long time = calendar.getTimeInMillis();
+                Log.d(TAG, "Time picked: " + time);
+
+                // label has a human readable value; tag has millis value for DB
+                String timeString = dateFormat.format(calendar.getTime()) + ' ' +
+                        timeFormat.format(calendar.getTime());
+                timeLbl.setText(timeString);
+                timeLbl.setTag(time);
+
+                alertDialog.dismiss();
+            }
+        });
+
+        dialogView.findViewById(R.id.date_time_unset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Time UNpicked: ");
+
+                timeLbl.setText(R.string.no_reminder_set);
+                // IMPORTANT: -2 indicator of occurrence of UNSET operation
+                timeLbl.setTag((long)-2);
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.setView(dialogView);
+        alertDialog.show();
     }
 
     class ViewHolder {
@@ -287,11 +367,29 @@ public class LogMultiSelectDialog extends DialogFragment {
         TextView tv;
     }
 
+    /** subclass of the GetReminderTimeTask
+     */
+    class MyGetReminderTimeTask extends GetReminderTimeTask {
+
+        MyGetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
+            super(aData, aCtx);
+        }
+
+        protected void nullifyTaskRef(int taskRef) {
+            Log.d(TAG, "in overridden GetReminderTimeTask.nullifyTaskRef(): taskRef:" + taskRef);
+            switch (taskRef) {
+                case TASK_DRONE:
+                    mTaskDrone = null;
+                    break;
+            }
+        }
+    }
+
     /*
     interface to define in the Activity what should be upon OK/Cancel
      */
     public interface onLogMultiSelectDialogInteractionListener {
-        void onLogMultiSelectDialogOK(String[] aResults, String aTag);
+        void onLogMultiSelectDialogOK(String[] aResults, long aResultRemTime, String aTag);
         void onLogMultiSelectDialogCancel(String aTag);
     }
 }

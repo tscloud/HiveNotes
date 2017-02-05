@@ -25,6 +25,12 @@ public abstract class LogFragment extends Fragment {
     protected long mLogEntryKey;
     protected long mLogEntryDate;
 
+    // time/date formatters
+    protected static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    protected static final String TIME_PATTERN = "HH:mm";
+    protected static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    protected final Calendar calendar = Calendar.getInstance();
+
     // abstract methods
     protected abstract HiveNotesLogDO getLogEntryDO();
 
@@ -32,7 +38,7 @@ public abstract class LogFragment extends Fragment {
 
     protected abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
 
-    public abstract void setDialogData(String[] aResults, String aTag);
+    public abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
 
     // concrete static methods
     public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate, long aLogEntryID) {

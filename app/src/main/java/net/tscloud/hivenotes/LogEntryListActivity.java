@@ -325,7 +325,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogMultiSelectDialogOK(String[] aResults, String aTag) {
+    public void onLogMultiSelectDialogOK(String[] aResults, long aResultRemTime, String aTag) {
 
     }
 
@@ -479,24 +479,16 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 // need to potentially do Notification 1st as its key may need
                 //   creation prior to Log entry write
                 createNotification(
-                        mLogEntryHiveHealthData.getDroneCellFndnRmndrTime(),
+                        mLogEntryHiveHealthData.getVarroaTrtmntRmndrTime(),
                         NotificationType.NOTIFY_PEST_REMOVE_DRONE,
-                        mHiveKey);
-
-                createNotification(
-                        mLogEntryHiveHealthData.getMitesTrtmntRmndrTime(),
-                        NotificationType.NOTIFY_PEST_REMOVE_MITES,
                         mHiveKey);
 
                 // ** Notification time cleanup **
                 //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
                 //  however.  It either needs to be a real time or -1 indicating that a Notification
                 //  table read is necessary as a real time may have been set elsewhere.
-                if (mLogEntryHiveHealthData.getDroneCellFndnRmndrTime() == -2) {
-                    mLogEntryHiveHealthData.setDroneCellFndnRmndrTime(-1);
-                }
-                if (mLogEntryHiveHealthData.getMitesTrtmntRmndrTime() == -2) {
-                    mLogEntryHiveHealthData.setMitesTrtmntRmndrTime(-1);
+                if (mLogEntryHiveHealthData.getVarroaTrtmntRmndrTime() == -2) {
+                    mLogEntryHiveHealthData.setVarroaTrtmntRmndrTime(-1);
                 }
 
                 if (mLogEntryHiveHealthData.getId() == -1) {

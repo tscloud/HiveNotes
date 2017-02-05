@@ -218,14 +218,14 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     };
 
     @Override
-    public void onLogMultiSelectDialogOK(String[] aResults, String aTag) {
+    public void onLogMultiSelectDialogOK(String[] aResults, long aResultRemTime, String aTag) {
         Log.d(TAG, "onLogMultiSelectDialogOK: OK button clicked");
 
         for (String s: aResults) {
             Log.d(TAG, s);
         }
 
-        fragment.setDialogData(aResults, aTag);
+        fragment.setDialogData(aResults, aResultRemTime, aTag);
         diagFragment.dismiss();
     }
 

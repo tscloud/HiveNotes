@@ -209,7 +209,7 @@ public class LogProductivityFragment extends LogFragment {
     }
 
     @Override
-    public void setDialogData(String[] aResults, String aTag) {
+    public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
 
     }
 
