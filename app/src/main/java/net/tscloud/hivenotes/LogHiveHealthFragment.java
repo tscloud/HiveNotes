@@ -49,6 +49,7 @@ public class LogHiveHealthFragment extends LogFragment {
     // constants used for Dialogs
     protected static final String DIALOG_TAG_PESTS = "pests";
     protected static final String DIALOG_TAG_DISEASE = "disease";
+    protected static final String DIALOG_TAG_VARROA = "varroa";
 
     // Factory method to create a new instance of this fragment using the provided parameters.
     public static LogHiveHealthFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
@@ -103,6 +104,7 @@ public class LogHiveHealthFragment extends LogFragment {
         //  act as button
         final View dialogHiveHealthPest = v.findViewById(R.id.buttonHiveHealthPest);
         final View dialogHiveHealthDisease = v.findViewById(R.id.buttonHiveHealthDisease);
+        final View dialogHiveHealthVarroa = v.findViewById(R.id.buttonHiveHealthVarroa);
 
         // set text of <include>s
         final TextView pestText =
@@ -112,6 +114,10 @@ public class LogHiveHealthFragment extends LogFragment {
         final TextView diseaseText =
                 (TextView)dialogHiveHealthDisease.findViewById(R.id.dialogLaunchTextView);
         diseaseText.setText(R.string.disease_detected);
+
+        final TextView varroaText =
+                (TextView)dialogHiveHealthVarroa.findViewById(R.id.dialogLaunchTextView);
+        varroaText.setText(R.string.varroa_treatment);
 
         /**
          * call super method to get DO via best means
@@ -149,7 +155,7 @@ public class LogHiveHealthFragment extends LogFragment {
                             DIALOG_TAG_PESTS,
                             reminderMillis,
                             //hasOther, hasReminder, multiselect
-                            true, true, true));
+                            true, false, true));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -178,6 +184,37 @@ public class LogHiveHealthFragment extends LogFragment {
                             -1,
                             //hasOther, hasReminder, multiselect
                             true, false, false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogHiveHealthVarroa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    long reminderMillis = -1;
+                    if (mLogEntryHiveHealth != null) {
+                        if (mLogEntryHiveHealth.getVarroaTreatment() != null) {
+                            checked = mLogEntryHiveHealth.getVarroaTreatment();
+                        }
+                        reminderMillis = mLogEntryHiveHealth.getVarroaTrtmntRmndrTime();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.varroa_treatment),
+                            mHiveID,
+                            getResources().getStringArray(R.array.varroa_array),
+                            checked,
+                            DIALOG_TAG_VARROA,
+                            reminderMillis,
+                            //hasOther, hasReminder, multiselect
+                            true, true, true));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -278,16 +315,21 @@ public class LogHiveHealthFragment extends LogFragment {
                 mLogEntryHiveHealth.setPestsDetected(TextUtils.join(",", aResults));
                 Log.d(TAG, "onLogLaunchDialog: setPestsDetected: " +
                         mLogEntryHiveHealth.getPestsDetected());
-
-                mLogEntryHiveHealth.setVarroaTrtmntRmndrTime(aResultRemTime);
-                Log.d(TAG, "onLogLaunchDialog: setVarroaTrtmntRmndrTime: " +
-                        mLogEntryHiveHealth.getVarroaTrtmntRmndrTime());
-
                 break;
             case DIALOG_TAG_DISEASE:
                 mLogEntryHiveHealth.setDiseaseDetected(TextUtils.join(",", aResults));
                 Log.d(TAG, "onLogLaunchDialog: setDiseaseDetected: " +
                         mLogEntryHiveHealth.getDiseaseDetected());
+                break;
+            case DIALOG_TAG_VARROA:
+                mLogEntryHiveHealth.setVarroaTreatment(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setVarroaTreatment: " +
+                        mLogEntryHiveHealth.getVarroaTreatment());
+
+                mLogEntryHiveHealth.setVarroaTrtmntRmndrTime(aResultRemTime);
+                Log.d(TAG, "onLogLaunchDialog: setVarroaTrtmntRmndrTime: " +
+                        mLogEntryHiveHealth.getVarroaTrtmntRmndrTime());
+
                 break;
             default:
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");

@@ -180,6 +180,26 @@
         <item>Marked - Blue</item>
     </string-array>
 
+    <string name="varroa_treatment">Varroa Treatment</string>
+
+    <string name="varroa_apivar">Apivar</string>
+    <string name="varroa_checkmite">Checkmite+</string>
+    <string name="varroa_apiguard">Apiguard</string>
+    <string name="varroa_apilifevar">Api Life Var</string>
+    <string name="varroa_miteawayquickstrips">Mite Away Quick Strips</string>
+    <string name="varroa_oxalicacid">Oxalic Acid</string>
+    <string name="varroa_hopeguard">Hopeguard</string>
+
+    <string-array name="varroa_array">
+        <item>@string/varroa_apivar</item>
+        <item>@string/varroa_checkmite</item>
+        <item>@string/varroa_apiguard</item>
+        <item>@string/varroa_apilifevar</item>
+        <item>@string/varroa_miteawayquickstrips</item>
+        <item>@string/varroa_oxalicacid</item>
+        <item>@string/varroa_hopeguard</item>
+    </string-array>
+
     <string-array name="test_array">
         <item>Unmarked - Unmarked</item>
         <item>Unmarked - Marked</item>

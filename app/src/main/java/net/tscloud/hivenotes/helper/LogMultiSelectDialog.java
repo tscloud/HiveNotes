@@ -218,7 +218,12 @@ public class LogMultiSelectDialog extends DialogFragment {
                 if (mListener != null) {
                     String[] result = new String[resultList.size()];
                     result = resultList.toArray(result);
-                    mListener.onLogMultiSelectDialogOK(result, (long)mReminderText.getTag(),
+                    //  BUT ONLY if we're doing reminders
+                    long resultRemMillis = -1;
+                    if (mReminderText != null) {
+                        resultRemMillis = (long)mReminderText.getTag();
+                    }
+                    mListener.onLogMultiSelectDialogOK(result, resultRemMillis,
                             getArguments().getString("tag"));
                 }
             }
@@ -280,7 +285,7 @@ public class LogMultiSelectDialog extends DialogFragment {
 
         //easier to set the "checkedset"
         if (getArguments().getString("checkedset") != null &&
-                getArguments().getString("checkedset") != "") {
+                getArguments().getString("checkedset").length() != 0) {
             String[] checkArray = getArguments().getString("checkedset").split(",");
             String checkString = null;
             //this should be the last entry of "checkedset"

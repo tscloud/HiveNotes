@@ -39,8 +39,8 @@ public class NotificationDAO extends AbstactDAO {
     public Notification createNotification(long apiary, long hive, long eventId, long rmndrType) {
         ContentValues values = new ContentValues();
         // Needed b/c rows in this table can be linked to Apiary OR Hive
-        values.put(COLUMN_NOTIFICATION_APIARY, (apiary == -1) ? null : apiary);
-        values.put(COLUMN_NOTIFICATION_HIVE, (hive == -1) ? null : hive);
+        values.put(COLUMN_NOTIFICATION_APIARY, (apiary < 1) ? null : apiary);
+        values.put(COLUMN_NOTIFICATION_HIVE, (hive < 1) ? null : hive);
         values.put(COLUMN_NOTIFICATION_EVENT_ID, eventId);
         values.put(COLUMN_NOTIFICATION_RMNDR_TYPE, rmndrType);
         long insertId = mDatabase.insert(TABLE_NOTIFICATION, null, values);
@@ -66,8 +66,8 @@ public class NotificationDAO extends AbstactDAO {
                                            long rmndrType) {
         ContentValues values = new ContentValues();
         // Needed b/c rows in this table can be linked to Apiary OR Hive
-        values.put(COLUMN_NOTIFICATION_APIARY, (apiary == -1) ? null : apiary);
-        values.put(COLUMN_NOTIFICATION_HIVE, (hive == -1) ? null : hive);
+        values.put(COLUMN_NOTIFICATION_APIARY, (apiary < 1) ? null : apiary);
+        values.put(COLUMN_NOTIFICATION_HIVE, (hive < 1) ? null : hive);
         values.put(COLUMN_NOTIFICATION_EVENT_ID, eventId);
         values.put(COLUMN_NOTIFICATION_RMNDR_TYPE, rmndrType);
         int rowsUpdated = mDatabase.update(TABLE_NOTIFICATION, values,

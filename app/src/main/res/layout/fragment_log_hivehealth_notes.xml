@@ -33,6 +33,13 @@
         android:layout_below="@id/buttonHiveHealthPest" />
 
     <include
+        android:id="@+id/buttonHiveHealthVarroa"
+        layout="@layout/dialog_launch_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonHiveHealthDisease" />
+
+    <include
         android:id="@+id/savePestMgmtButton"
         layout="@layout/hive_note_button"
         android:layout_width="match_parent"
