@@ -55,24 +55,4 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <!--
-    <Button
-        android:text="@string/pestmgmt_notes_string"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayoutMitesTrtmntRmndr"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/buttonHiveHealthPest" />
-
-    <Button
-        android:text="@string/disease_detected"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonHiveHealthPest"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/buttonHiveHealthDisease" />
-    -->
-
 </RelativeLayout>

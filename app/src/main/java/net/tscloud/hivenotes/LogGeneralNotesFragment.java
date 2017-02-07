@@ -34,6 +34,14 @@ public class LogGeneralNotesFragment extends LogFragment {
     // reference to Activity that should have started me
     private OnLogGeneralNotesFragmentInteractionListener mListener;
 
+    // constants used for Dialogs
+    protected static final String DIALOG_TAG_POPULATION = "population";
+    protected static final String DIALOG_TAG_TEMPERAMENT = "temperament";
+    protected static final String DIALOG_TAG_QUEEN = "queen";
+    protected static final String DIALOG_TAG_BROODPATTERN = "broodpattern";
+    protected static final String DIALOG_TAG_HONEYSTORES = "honeystores";
+    protected static final String DIALOG_TAG_POLLENSTORES = "pollenstores";
+
     // Factory method to create a new instance of this fragment using the provided parameters.
     public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
         LogGeneralNotesFragment fragment = new LogGeneralNotesFragment();
@@ -86,42 +94,48 @@ public class LogGeneralNotesFragment extends LogFragment {
         final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
         hiveNoteBtn.setText(getResources().getString(R.string.done_string));
 
-        final Button addPhotoBtn = (Button)v.findViewById(R.id.buttonAddPhoto);
+        // get reference to the <include>s
+        final View dialogLogPopulation = v.findViewById(R.id.buttonLogPopulation);
+        final View dialogLogTemperament = v.findViewById(R.id.buttonLogTemperament);
+        final View dialogLogQueen = v.findViewById(R.id.buttonLogQueen);
+        final View dialogLogBroodPattern = v.findViewById(R.id.buttonLogBroodPattern);
+        final View dialogLogHoneyStores = v.findViewById(R.id.buttonLogHoneyStores);
+        final View dialogLogPollenStores = v.findViewById(R.id.buttonLogPollenStores);
+        final View dialogAddPhoto = v.findViewById(R.id.buttonAddPhoto);
+
+        // set text of <include>s
+        final TextView populationText =
+                (TextView)dialogLogPopulation.findViewById(R.id.dialogLaunchTextView);
+        populationText.setText(R.string.general_notes_population_text);
+
+        final TextView temperamentText =
+                (TextView)dialogLogTemperament.findViewById(R.id.dialogLaunchTextView);
+        temperamentText.setText(R.string.general_notes_temperament_text);
+
+        final TextView queenText =
+                (TextView)dialogLogQueen.findViewById(R.id.dialogLaunchTextView);
+        queenText.setText(R.string.general_notes_queen_text);
+
+        final TextView broodPatternText =
+                (TextView)dialogLogBroodPattern.findViewById(R.id.dialogLaunchTextView);
+        broodPatternText.setText(R.string.general_notes_broodpattern_text);
+
+        final TextView honeyStoresText =
+                (TextView)dialogLogHoneyStores.findViewById(R.id.dialogLaunchTextView);
+        honeyStoresText.setText(R.string.general_notes_honeystores_text);
+
+        final TextView pollenStoresText =
+                (TextView)dialogLogPollenStores.findViewById(R.id.dialogLaunchTextView);
+        pollenStoresText.setText(R.string.general_notes_pollenstores_text);
+
+        final TextView addPhotoText =
+                (TextView)dialogAddPhoto.findViewById(R.id.dialogLaunchTextView);
+        addPhotoText.setText(R.string.add_photo);
 
         /**
          * call super method to get DO via best means
          */
         getLogEntry(mListener);
-
-        if (mLogEntryGeneral != null) {
-
-            // fill the form
-            final Spinner populationSpinner = (Spinner)v.findViewById(R.id.spinnerPopulation);
-            final Spinner temperamentSpinner = (Spinner)v.findViewById(R.id.spinnerTemperament);
-            final Spinner broodPatternSpinner = (Spinner)v.findViewById(R.id.spinnerBroodPattern);
-            final Spinner queenSpinner = (Spinner)v.findViewById(R.id.spinnerQueen);
-            final Spinner honeyStoresSpinner = (Spinner)v.findViewById(R.id.spinnerHoneyStores);
-            final Spinner pollenStoresSpinner = (Spinner)v.findViewById(R.id.spinnerPollenStores);
-
-            populationSpinner.setSelection(
-                    ((ArrayAdapter) populationSpinner.getAdapter()).getPosition(
-                            mLogEntryGeneral.getPopulation()));
-            temperamentSpinner.setSelection(
-                    ((ArrayAdapter) temperamentSpinner.getAdapter()).getPosition(
-                            mLogEntryGeneral.getTemperament()));
-            broodPatternSpinner.setSelection(
-                    ((ArrayAdapter) broodPatternSpinner.getAdapter()).getPosition(
-                            mLogEntryGeneral.getBroodPattern()));
-            queenSpinner.setSelection(
-                    ((ArrayAdapter) queenSpinner.getAdapter()).getPosition(
-                            mLogEntryGeneral.getQueen()));
-            honeyStoresSpinner.setSelection(
-                    ((ArrayAdapter) honeyStoresSpinner.getAdapter()).getPosition(
-                            mLogEntryGeneral.getHoneyStores()));
-            pollenStoresSpinner.setSelection(
-                    ((ArrayAdapter) pollenStoresSpinner.getAdapter()).getPosition(
-                            mLogEntryGeneral.getPollenStores()));
-        }
 
         // set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
@@ -131,10 +145,181 @@ public class LogGeneralNotesFragment extends LogFragment {
             }
         });
 
-        addPhotoBtn.setOnClickListener(new View.OnClickListener() {
+        dialogAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onAddPhotoBtnButtonPressed();
+            }
+        });
+
+        dialogLogPopulation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryGeneral != null &&
+                            mLogEntryGeneral.getPopulation() != null) {
+                        checked = mLogEntryGeneral.getPopulation();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.general_notes_population_text),
+                            mHiveID,
+                            getResources().getStringArray(R.array.population_array),
+                            checked,
+                            DIALOG_TAG_POPULATION,
+                            -1,
+                            //hasOther, hasReminder, multiselect
+                            false, false, false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogLogTemperament.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryGeneral != null &&
+                            mLogEntryGeneral.getTemperament() != null) {
+                        checked = mLogEntryGeneral.getTemperament();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.general_notes_temperament_text),
+                            mHiveID,
+                            getResources().getStringArray(R.array.temperament_array),
+                            checked,
+                            DIALOG_TAG_TEMPERAMENT,
+                            -1,
+                            //hasOther, hasReminder, multiselect
+                            false, false, false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogLogQueen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    long reminderMillis = -1;
+                    if (mLogEntryGeneral != null) {
+                            if (mLogEntryGeneral.getQueen() != null) {
+                                checked = mLogEntryGeneral.getQueen();
+                            }
+                            reminderMillis = mLogEntryGeneral.getQueenRmndrTime();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.general_notes_queen_text),
+                            mHiveID,
+                            getResources().getStringArray(R.array.queen_array),
+                            checked,
+                            DIALOG_TAG_QUEEN,
+                            reminderMillis,
+                            //hasOther, hasReminder, multiselect
+                            false, true, false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogLogBroodPattern.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryGeneral != null &&
+                            mLogEntryGeneral.getBroodPattern() != null) {
+                        checked = mLogEntryGeneral.getBroodPattern();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.general_notes_broodpattern_text),
+                            mHiveID,
+                            getResources().getStringArray(R.array.brood_pattern_array),
+                            checked,
+                            DIALOG_TAG_BROODPATTERN,
+                            -1,
+                            //hasOther, hasReminder, multiselect
+                            false, false, false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogLogHoneyStores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryGeneral != null &&
+                            mLogEntryGeneral.getHoneyStores() != null) {
+                        checked = mLogEntryGeneral.getHoneyStores();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.general_notes_honeystores_text),
+                            mHiveID,
+                            getResources().getStringArray(R.array.stores_array),
+                            checked,
+                            DIALOG_TAG_HONEYSTORES,
+                            -1,
+                            //hasOther, hasReminder, multiselect
+                            false, false, false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogLogPollenStores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryGeneral != null &&
+                            mLogEntryGeneral.getPollenStores() != null) {
+                        checked = mLogEntryGeneral.getPollenStores();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.general_notes_pollenstores_text),
+                            mHiveID,
+                            getResources().getStringArray(R.array.stores_array),
+                            checked,
+                            DIALOG_TAG_POLLENSTORES,
+                            -1,
+                            //hasOther, hasReminder, multiselect
+                            false, false, false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
             }
         });
 
@@ -146,21 +331,6 @@ public class LogGeneralNotesFragment extends LogFragment {
         Log.d(TAG, "about to persist logentry");
 
         boolean lNewLogEntry = false;
-
-        final Spinner populationSpinner = (Spinner)getView().findViewById(R.id.spinnerPopulation);
-        final Spinner temperamentSpinner = (Spinner)getView().findViewById(R.id.spinnerTemperament);
-        final Spinner broodPatternSpinner = (Spinner)getView().findViewById(R.id.spinnerBroodPattern);
-        final Spinner queenSpinner = (Spinner)getView().findViewById(R.id.spinnerQueen);
-        final Spinner honeyStoresSpinner = (Spinner)getView().findViewById(R.id.spinnerHoneyStores);
-        final Spinner pollenStoresSpinner = (Spinner)getView().findViewById(R.id.spinnerPollenStores);
-
-        String populationText = populationSpinner.getSelectedItem().toString();
-        String temperamentText = temperamentSpinner.getSelectedItem().toString();
-
-        String broodPatternText = broodPatternSpinner.getSelectedItem().toString();
-        String queenText = queenSpinner.getSelectedItem().toString();
-        String honeyStoresText = honeyStoresSpinner.getSelectedItem().toString();
-        String pollenStoresText = pollenStoresSpinner.getSelectedItem().toString();
 
         // check for required values - are there any?
         boolean emptyText = false;
@@ -174,12 +344,6 @@ public class LogGeneralNotesFragment extends LogFragment {
             mLogEntryGeneral.setId(mLogEntryKey);
             mLogEntryGeneral.setHive(mHiveID);
             mLogEntryGeneral.setVisitDate(mLogEntryDate);
-            mLogEntryGeneral.setPopulation(populationText);
-            mLogEntryGeneral.setTemperament(temperamentText);
-            mLogEntryGeneral.setBroodPattern(broodPatternText);
-            mLogEntryGeneral.setQueen(queenText);
-            mLogEntryGeneral.setHoneyStores(honeyStoresText);
-            mLogEntryGeneral.setPollenStores(pollenStoresText);
 
             if (mListener != null) {
                 mListener.onLogGeneralNotesFragmentInteraction(mLogEntryGeneral);
@@ -250,7 +414,51 @@ public class LogGeneralNotesFragment extends LogFragment {
 
     @Override
     public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
+        //may have to create the DO here - if we're a new entry and Dialog work was done before
+        // anything else
+        if (mLogEntryGeneral == null) {
+            mLogEntryGeneral = new LogEntryGeneral();
+        }
 
+        switch (aTag){
+            case DIALOG_TAG_POPULATION:
+                mLogEntryGeneral.setPopulation(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setPopulation: " +
+                        mLogEntryGeneral.getPopulation());
+                break;
+            case DIALOG_TAG_TEMPERAMENT:
+                mLogEntryGeneral.setTemperament(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setTemperament: " +
+                        mLogEntryGeneral.getTemperament());
+                break;
+            case DIALOG_TAG_QUEEN:
+                mLogEntryGeneral.setQueen(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setQueen: " +
+                        mLogEntryGeneral.getQueen());
+
+                mLogEntryGeneral.setQueenRmndrTime(aResultRemTime);
+                Log.d(TAG, "onLogLaunchDialog: setQueenRmndrTime: " +
+                        mLogEntryGeneral.getQueenRmndrTime());
+
+                break;
+            case DIALOG_TAG_BROODPATTERN:
+                mLogEntryGeneral.setBroodPattern(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setBroodPattern: " +
+                        mLogEntryGeneral.getBroodPattern());
+                break;
+            case DIALOG_TAG_HONEYSTORES:
+                mLogEntryGeneral.setHoneyStores(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setHoneyStores: " +
+                        mLogEntryGeneral.getHoneyStores());
+                break;
+            case DIALOG_TAG_POLLENSTORES:
+                mLogEntryGeneral.setPollenStores(TextUtils.join(",", aResults));
+                Log.d(TAG, "onLogLaunchDialog: setPollenStores: " +
+                        mLogEntryGeneral.getPollenStores());
+                break;
+            default:
+                Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
+        }
     }
 
     /**

@@ -27,6 +27,12 @@ public class LogEntryNames {
      */
     private static Map<String, LogEntryItem> ITEM_MAP = new HashMap<String, LogEntryItem>();
 
+    /**
+     * DO NOT use dummy values contained w/in LogEntryNames.ITEMS created by static
+     *  initializer - strings should come from strings.xml or similar resource, keep
+     *  icon name for now but should be replaced w/ image resource references
+     */
+    /*
     /*
     static {
         // Add 3 sample items.
@@ -42,11 +48,11 @@ public class LogEntryNames {
     public static List<LogEntryItem> getItems(Context aCtx) {
         if (ITEMS.isEmpty()) {
             LogEntryNames.addItem(new LogEntryNames.LogEntryItem("1",
-                    aCtx.getResources().getString(R.string.general_notes_string), "general_icon"));
+                    aCtx.getResources().getString(R.string.general_notes_log_string), "general_icon"));
             LogEntryNames.addItem(new LogEntryNames.LogEntryItem("2",
                     aCtx.getResources().getString(R.string.productivity_notes_string), "production_icon"));
             LogEntryNames.addItem(new LogEntryNames.LogEntryItem("3",
-                    aCtx.getResources().getString(R.string.pestmgmt_notes_string), "pest_icon"));
+                    aCtx.getResources().getString(R.string.hivehealth_notes_string), "pest_icon"));
             LogEntryNames.addItem(new LogEntryNames.LogEntryItem("4",
                     aCtx.getResources().getString(R.string.feeding_notes_string), "feeding_icon"));
             LogEntryNames.addItem(new LogEntryNames.LogEntryItem("5",

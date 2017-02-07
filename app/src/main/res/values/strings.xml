@@ -57,7 +57,7 @@
     <string name="save_logentry_string">Save Log Entry</string>
 
     <string name="general_notes_date_text">Date:</string>
-    <string name="general_notes_population_text">Population:</string>
+    <string name="general_notes_population_text">Population</string>
     <string name="general_notes_temperament_text">Temperament:</string>
     <string name="general_notes_pestsdisease_text">Pests/Disease:</string>
     <string name="general_notes_queen_text">Queen:</string>
@@ -213,12 +213,14 @@
     </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="general_notes_string">General Notes</string>
     <string name="pestmgmt_notes_string">Pest Management</string>
-    <string name="hivehealth_notes_string">Hive Health</string>
+
+    <string name="general_notes_log_string">Log</string>
     <string name="productivity_notes_string">Productivity</string>
+    <string name="hivehealth_notes_string">Hive Health</string>
     <string name="feeding_notes_string">Feeding</string>
     <string name="other_notes_string">Other</string>
+
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_apiary_edit_profile">EditApiaryActivity</string>
     <string name="title_hive_single_edit_profile">EditHiveSingleActivity</string>

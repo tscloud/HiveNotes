@@ -100,8 +100,7 @@ public class LogHiveHealthFragment extends LogFragment {
         final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
         hiveNoteBtn.setText(getResources().getString(R.string.done_string));
 
-        // get reference to the <include>s -> this is good enough for everything in there will
-        //  act as button
+        // get reference to the <include>s
         final View dialogHiveHealthPest = v.findViewById(R.id.buttonHiveHealthPest);
         final View dialogHiveHealthDisease = v.findViewById(R.id.buttonHiveHealthDisease);
         final View dialogHiveHealthVarroa = v.findViewById(R.id.buttonHiveHealthVarroa);
@@ -109,7 +108,7 @@ public class LogHiveHealthFragment extends LogFragment {
         // set text of <include>s
         final TextView pestText =
                 (TextView)dialogHiveHealthPest.findViewById(R.id.dialogLaunchTextView);
-        pestText.setText(R.string.pestmgmt_notes_string);
+        pestText.setText(R.string.pests_detected);
 
         final TextView diseaseText =
                 (TextView)dialogHiveHealthDisease.findViewById(R.id.dialogLaunchTextView);

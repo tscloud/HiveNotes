@@ -436,10 +436,25 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             if (mLogEntryGeneralData != null) {
                 Log.d(TAG, "about to persist LogEntryGeneral");
+                LogEntryGeneralDAO mLogEntryGeneralDAO = new LogEntryGeneralDAO(ctx);
                 // set VISIT_DATE mLogDate - this should always be set properly by Fragment?
                 mLogEntryGeneralData.setVisitDate(mLogDate);
 
-                LogEntryGeneralDAO mLogEntryGeneralDAO = new LogEntryGeneralDAO(ctx);
+                // need to potentially do Notification 1st as its key may need
+                //   creation prior to Log entry write
+                createNotification(
+                        mLogEntryGeneralData.getRequeenRmndrTime(),
+                        NotificationType.NOTIFY_GENERAL_QUEEN,
+                        mHiveKey);
+
+                // ** Notification time cleanup **
+                //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
+                //  however.  It either needs to be a real time or -1 indicating that a Notification
+                //  table read is necessary as a real time may have been set elsewhere.
+                if (mLogEntryGeneralData.getQueenRmndrTime() == -2) {
+                    mLogEntryGeneralData.setQueenRmndrTime(-1);
+                }
+
                 if (mLogEntryGeneralData.getId() == -1) {
                     mLogEntryGeneralDAO.createLogEntry(mLogEntryGeneralData);
                 }

@@ -263,30 +263,6 @@ public class LogEntryListFragment extends ListFragment {
     }
 
     /**
-     * DO NOT use dummy values contained w/in LogEntryNames.ITEMS created by static
-     *  initializer - strings should come from strings.xml or similar resource, keep
-     *  icon name for now but should be replaced w/ image resource references
-     */
-    /*
-    private List<LogEntryNames.LogEntryItem> buildLogEntryNamesItems() {
-        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("1",
-            getResources().getString(R.string.general_notes_string), "general_icon"));
-        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("2",
-            getResources().getString(R.string.productivity_notes_string), "production_icon"));
-        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("3",
-            getResources().getString(R.string.pestmgmt_notes_string), "pest_icon"));
-        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("4",
-            getResources().getString(R.string.feeding_notes_string), "feeding_icon"));
-        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("5",
-            getResources().getString(R.string.other_notes_string), "other_icon"));
-        LogEntryNames.addItem(new LogEntryNames.LogEntryItem("6",
-            getResources().getString(R.string.save_string), "other_icon"));
-
-        return LogEntryNames.ITEMS;
-    }
-    */
-
-    /**
      * Turns on activate-on-click mode. When this mode is on, list items will be
      * given the 'activated' state when touched.
      */

@@ -115,6 +115,7 @@ INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (1, 'L
 INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (2, 'LogEntryOther', 'Check on queen release');
 INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (3, 'LogEntryOther', 'Check for swarm laying queen');
 INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (4, 'LogEntryOther', 'Check for split hive laying queen');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (5, 'LogEntryGeneral', 'Check for queen something something');
 
 CREATE TABLE 'Weather'
 (

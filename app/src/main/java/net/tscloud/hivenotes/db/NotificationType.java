@@ -19,6 +19,7 @@ public class NotificationType {
     public static int NOTIFY_OTHER_REQUEEN = 2;
     public static int NOTIFY_OTHER_SWARM = 3;
     public static int NOTIFY_OTHER_SPLIT_HIVE = 4;
+    public static int NOTIFY_GENERAL_QUEEN = 5;
 
     // Notification Descriptions
     private static String NOTIFY_PEST_REMOVE_DRONE_DESC =
@@ -31,6 +32,8 @@ public class NotificationType {
         "Check for swarm laying queen";
     private static String NOTIFY_OTHER_SPLIT_HIVE_DESC =
         "Check for split hive laying queen";
+    private static String NOTIFY_GENERAL_QUEEN_DESC =
+        "Check for queen something something";
 
     private static Map<Integer, String> keyToDesc;
 
@@ -46,6 +49,7 @@ public class NotificationType {
         keyToDesc.put(NOTIFY_OTHER_REQUEEN, NOTIFY_OTHER_REQUEEN_DESC);
         keyToDesc.put(NOTIFY_OTHER_SWARM, NOTIFY_OTHER_SWARM_DESC);
         keyToDesc.put(NOTIFY_OTHER_SPLIT_HIVE, NOTIFY_OTHER_SPLIT_HIVE_DESC);
+        keyToDesc.put(NOTIFY_GENERAL_QUEEN, NOTIFY_GENERAL_QUEEN_DESC);
     }
 
 }

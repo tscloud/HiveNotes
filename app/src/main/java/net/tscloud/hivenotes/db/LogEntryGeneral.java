@@ -20,6 +20,9 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
     private String honeyStores;
     private String pollenStores;
 
+    // These hold reminder times -- they will NOT be persisted
+    private long queenRmndrTime = -1;
+
     public String getBroodPattern() {
         return broodPattern;
     }
@@ -94,6 +97,14 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
 
     public void setVisitDate(long visitDate) {
         this.visitDate = visitDate;
+    }
+
+    public long getQueenRmndrTime() {
+        return queenRmndrTime;
+    }
+
+    public void setQueenRmndrTime(long queenRmndrTime) {
+        this.queenRmndrTime = queenRmndrTime;
     }
 
     @Override
