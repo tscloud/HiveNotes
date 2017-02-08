@@ -110,21 +110,18 @@
     <string name="notes_save_text">Save Notes</string>
 
     <string-array name="foundation_array">
-        <item></item>
         <item>Wax</item>
         <item>Plastic</item>
         <item>Foundationless Bars</item>
     </string-array>
 
     <string-array name="population_array">
-        <item></item>
         <item>Crowded</item>
         <item>Moderate</item>
         <item>Low</item>
     </string-array>
 
     <string-array name="temperament_array">
-        <item></item>
         <item>Calm</item>
         <item>Nervous</item>
         <item>Aggressive</item>
@@ -136,7 +133,6 @@
     </string-array>
 
     <string-array name="queen_array">
-        <item></item>
         <item>Queen Right</item>
         <item>Queen Left</item>
         <item>Unsure</item>
@@ -144,7 +140,6 @@
     </string-array>
 
     <string-array name="brood_pattern_array">
-        <item></item>
         <item>Good Pattern</item>
         <item>Fair Pattern</item>
         <item>Poor Pattern</item>
@@ -164,14 +159,12 @@
     </string-array>
 
     <string-array name="stores_array">
-        <item></item>
         <item>High</item>
         <item>Average</item>
         <item>Low</item>
     </string-array>
 
     <string-array name="requeen_array">
-        <item></item>
         <item>Unmarked</item>
         <item>Marked - White or Grey</item>
         <item>Marked - Yellow</item>
@@ -220,6 +213,7 @@
     <string name="hivehealth_notes_string">Hive Health</string>
     <string name="feeding_notes_string">Feeding</string>
     <string name="other_notes_string">Other</string>
+    <string name="events_notes_string">Events</string>
 
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_apiary_edit_profile">EditApiaryActivity</string>

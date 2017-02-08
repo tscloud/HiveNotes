@@ -3,6 +3,7 @@ package net.tscloud.hivenotes;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,12 +38,12 @@ public class LogGeneralNotesFragment extends LogFragment {
     private OnLogGeneralNotesFragmentInteractionListener mListener;
 
     // constants used for Dialogs
-    protected static final String DIALOG_TAG_POPULATION = "population";
-    protected static final String DIALOG_TAG_TEMPERAMENT = "temperament";
-    protected static final String DIALOG_TAG_QUEEN = "queen";
-    protected static final String DIALOG_TAG_BROODPATTERN = "broodpattern";
-    protected static final String DIALOG_TAG_HONEYSTORES = "honeystores";
-    protected static final String DIALOG_TAG_POLLENSTORES = "pollenstores";
+    public static final String DIALOG_TAG_POPULATION = "population";
+    public static final String DIALOG_TAG_TEMPERAMENT = "temperament";
+    public static final String DIALOG_TAG_QUEEN = "queen";
+    public static final String DIALOG_TAG_BROODPATTERN = "broodpattern";
+    public static final String DIALOG_TAG_HONEYSTORES = "honeystores";
+    public static final String DIALOG_TAG_POLLENSTORES = "pollenstores";
 
     // Factory method to create a new instance of this fragment using the provided parameters.
     public static LogGeneralNotesFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {

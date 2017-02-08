@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import net.tscloud.hivenotes.LogHiveHealthFragment;
 import net.tscloud.hivenotes.R;
 import net.tscloud.hivenotes.db.NotificationType;
 
@@ -25,6 +26,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import cn.refactor.library.SmoothCheckBox;
 
@@ -43,8 +45,8 @@ public class LogMultiSelectDialog extends DialogFragment {
     TextView mReminderText = null;
 
     // task references - needed to kill tasks on Fragment Destroy
-    private GetReminderTimeTask mTaskDrone = null;
-    private static final int TASK_DRONE = 0;
+    private GetReminderTimeTask mTaskId = null;
+    private static final int TASK_ID = 0;
 
     // time/date formatters
     private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG,
@@ -179,14 +181,15 @@ public class LogMultiSelectDialog extends DialogFragment {
                 reminderButton.setEnabled(false);
 
                 //setup and execute task
-                mTaskDrone = new MyGetReminderTimeTask(
+                mTaskId = new MyGetReminderTimeTask(
                         new GetReminderTimeTaskData(reminderButton, mReminderText,
-                                NotificationType.NOTIFY_PEST_REMOVE_DRONE,
-                                getArguments().getLong("hiveid"), TASK_DRONE,
+                                NotificationType.notificationTypeLookup.get(
+                                        getArguments().getString("tag")),
+                                getArguments().getLong("hiveid"), TASK_ID,
                                 calendar, dateFormat, timeFormat),
                         getActivity());
                 // All AsynchTasks executed serially on same background Thread
-                mTaskDrone.execute();
+                mTaskId.execute();
                 // Each AsyncTask executes on its own Thread
                 //mTaskDrone.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
@@ -220,7 +223,7 @@ public class LogMultiSelectDialog extends DialogFragment {
                     result = resultList.toArray(result);
                     //  BUT ONLY if we're doing reminders
                     long resultRemMillis = -1;
-                    if (mReminderText != null) {
+                    if ((mReminderText != null) && (mReminderText.getTag() != null)) {
                         resultRemMillis = (long)mReminderText.getTag();
                     }
                     mListener.onLogMultiSelectDialogOK(result, resultRemMillis,
@@ -267,8 +270,8 @@ public class LogMultiSelectDialog extends DialogFragment {
 
     @Override
     public void onDestroy() {
-        if (mTaskDrone != null) {
-            mTaskDrone.cancel(false);
+        if (mTaskId != null) {
+            mTaskId.cancel(false);
         }
         super.onDestroy();
     }
@@ -383,8 +386,8 @@ public class LogMultiSelectDialog extends DialogFragment {
         protected void nullifyTaskRef(int taskRef) {
             Log.d(TAG, "in overridden GetReminderTimeTask.nullifyTaskRef(): taskRef:" + taskRef);
             switch (taskRef) {
-                case TASK_DRONE:
-                    mTaskDrone = null;
+                case TASK_ID:
+                    mTaskId = null;
                     break;
             }
         }

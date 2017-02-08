@@ -123,6 +123,7 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
         dest.writeString(this.queen);
         dest.writeString(this.honeyStores);
         dest.writeString(this.pollenStores);
+        dest.writeLong(this.queenRmndrTime);
     }
 
     public LogEntryGeneral() {
@@ -138,6 +139,7 @@ public class LogEntryGeneral implements HiveNotesLogDO, Parcelable {
         this.queen = in.readString();
         this.honeyStores = in.readString();
         this.pollenStores = in.readString();
+        this.queenRmndrTime = in.readLong();
     }
 
     public static final Parcelable.Creator<LogEntryGeneral> CREATOR = new Parcelable.Creator<LogEntryGeneral>() {

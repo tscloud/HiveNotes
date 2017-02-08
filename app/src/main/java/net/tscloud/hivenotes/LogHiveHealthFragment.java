@@ -47,9 +47,9 @@ public class LogHiveHealthFragment extends LogFragment {
     private OnLogHiveHealthFragmentInteractionListener mListener;
 
     // constants used for Dialogs
-    protected static final String DIALOG_TAG_PESTS = "pests";
-    protected static final String DIALOG_TAG_DISEASE = "disease";
-    protected static final String DIALOG_TAG_VARROA = "varroa";
+    public static final String DIALOG_TAG_PESTS = "pests";
+    public static final String DIALOG_TAG_DISEASE = "disease";
+    public static final String DIALOG_TAG_VARROA = "varroa";
 
     // Factory method to create a new instance of this fragment using the provided parameters.
     public static LogHiveHealthFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {

@@ -110,12 +110,15 @@ CREATE TABLE 'Notification_Type'
 /* This is where the types of Notifications are defined */
 /* This is NOT a completely externalized definition as code that creates Notifications */
 /*    will have to know Notification type regardless of its definition here */
-INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (0, 'LogEntryPestMgmt', 'Remove drone cell foundation frames');
-INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (1, 'LogEntryPestMgmt', 'Remove mites treatment');
-INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (2, 'LogEntryOther', 'Check on queen release');
-INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (3, 'LogEntryOther', 'Check for swarm laying queen');
-INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (4, 'LogEntryOther', 'Check for split hive laying queen');
-INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (5, 'LogEntryGeneral', 'Check for queen something something');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (0, 'LogEntryOther', 'Add Honey supers');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (1, 'LogEntryOther', 'Remove drone comb');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (2, 'LogEntryFeeding', 'Feed sugar syrup');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (3, 'LogEntryHiveHealth', 'Remove mite treament');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (4, 'LogEntryGeneral', 'Check for laying queen');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (5, 'LogEntryOther', 'Add mouse guard');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (6, 'LogEntryOther', 'Spring inspection');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (7, 'LogEntryOther', 'Treat for mites');
+INSERT INTO 'Notification_Type' ('_ID', 'LOG_TYPE', 'DESCRIPTION') VALUES (8, 'LogEntryOther', 'Other');
 
 CREATE TABLE 'Weather'
 (

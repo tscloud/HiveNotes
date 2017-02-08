@@ -443,8 +443,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 // need to potentially do Notification 1st as its key may need
                 //   creation prior to Log entry write
                 createNotification(
-                        mLogEntryGeneralData.getRequeenRmndrTime(),
-                        NotificationType.NOTIFY_GENERAL_QUEEN,
+                        mLogEntryGeneralData.getQueenRmndrTime(),
+                        NotificationType.NOTIFY_GENERAL_LAYING_QUEEN,
                         mHiveKey);
 
                 // ** Notification time cleanup **
@@ -495,7 +495,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 //   creation prior to Log entry write
                 createNotification(
                         mLogEntryHiveHealthData.getVarroaTrtmntRmndrTime(),
-                        NotificationType.NOTIFY_PEST_REMOVE_DRONE,
+                        NotificationType.NOTIFY_HEALTH_REMOVE_MITE,
                         mHiveKey);
 
                 // ** Notification time cleanup **
@@ -546,17 +546,17 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 //   creation prior to Log entry write
                 createNotification(
                         mLogEntryOtherData.getRequeenRmndrTime(),
-                        NotificationType.NOTIFY_OTHER_REQUEEN,
+                        NotificationType.NOTIFY_OTHER_MOUSE_GUARD,
                         mHiveKey);
 
                 createNotification(
                         mLogEntryOtherData.getSwarmRmndrTime(),
-                        NotificationType.NOTIFY_OTHER_SWARM,
+                        NotificationType.NOTIFY_OTHER_SPRING_INSPECTION,
                         mHiveKey);
 
                 createNotification(
                         mLogEntryOtherData.getSplitHiveRmndrTime(),
-                        NotificationType.NOTIFY_OTHER_SPLIT_HIVE,
+                        NotificationType.NOTIFY_OTHER_TREAT_MITES,
                         mHiveKey);
 
                 // ** Notification time cleanup **

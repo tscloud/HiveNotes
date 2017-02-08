@@ -187,7 +187,7 @@ public class LogOtherFragment extends LogFragment {
             //setup and execute task
             mTaskRequeen = new MyGetReminderTimeTask(
                     new GetReminderTimeTaskData(requeenRmndrBtn, requeenRmndrText,
-                            NotificationType.NOTIFY_OTHER_REQUEEN, mHiveID, TASK_REQUEEN,
+                            NotificationType.NOTIFY_OTHER_MOUSE_GUARD, mHiveID, TASK_REQUEEN,
                             calendar, dateFormat, timeFormat), getActivity());
             // All AsynchTasks executed serially on same background Thread
             //mTaskRequeen.execute();
@@ -202,7 +202,7 @@ public class LogOtherFragment extends LogFragment {
             //setup and execute task
             mTaskSwarm = new MyGetReminderTimeTask(
                     new GetReminderTimeTaskData(swarmRmndrBtn, swarmRmndrText,
-                            NotificationType.NOTIFY_OTHER_SWARM, mHiveID, TASK_SWARM,
+                            NotificationType.NOTIFY_OTHER_SPRING_INSPECTION, mHiveID, TASK_SWARM,
                             calendar, dateFormat, timeFormat), getActivity());
             // All AsynchTasks executed serially on same background Thread
             //mTaskSwarm.execute();
@@ -217,7 +217,7 @@ public class LogOtherFragment extends LogFragment {
             //setup and execute task
             mTaskSplitHive = new MyGetReminderTimeTask(
                     new GetReminderTimeTaskData(splitHiveRmndrBtn, splitHiveRmndrText,
-                            NotificationType.NOTIFY_OTHER_SPLIT_HIVE, mHiveID, TASK_SPLIT,
+                            NotificationType.NOTIFY_OTHER_TREAT_MITES, mHiveID, TASK_SPLIT,
                             calendar, dateFormat, timeFormat), getActivity());
             // All AsynchTasks executed serially on same background Thread
             //mTaskSplitHive.execute();

@@ -56,7 +56,7 @@ public class LogEntryNames {
             LogEntryNames.addItem(new LogEntryNames.LogEntryItem("4",
                     aCtx.getResources().getString(R.string.feeding_notes_string), "feeding_icon"));
             LogEntryNames.addItem(new LogEntryNames.LogEntryItem("5",
-                    aCtx.getResources().getString(R.string.other_notes_string), "other_icon"));
+                    aCtx.getResources().getString(R.string.events_notes_string), "other_icon"));
             LogEntryNames.addItem(new LogEntryNames.LogEntryItem("6",
                     aCtx.getResources().getString(R.string.save_string), "other_icon"));
         }
