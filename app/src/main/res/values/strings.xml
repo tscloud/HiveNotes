@@ -109,6 +109,12 @@
 
     <string name="notes_save_text">Save Notes</string>
 
+    <string-array name="feeding_array">
+        <item>@string/feeding_one_one_sugar</item>
+        <item>@string/feeding_two_one_sugar</item>
+        <item>@string/feeding_pollen_patty</item>
+    </string-array>
+
     <string-array name="foundation_array">
         <item>Wax</item>
         <item>Plastic</item>

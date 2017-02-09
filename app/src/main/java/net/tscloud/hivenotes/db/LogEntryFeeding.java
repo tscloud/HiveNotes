@@ -13,11 +13,7 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
     private long id;
     private long hive;
     private long visitDate;
-    private int oneOneSugarWater;
-    private int twoOneSugarWater;
-    private int pollenPatty;
-    private int other;
-    private String otherType;
+    private String feedingTypes;
 
     @Override
     public long getHive() {
@@ -39,30 +35,6 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
         this.id = id;
     }
 
-    public int getOneOneSugarWater() {
-        return oneOneSugarWater;
-    }
-
-    public void setOneOneSugarWater(int oneOneSugarWater) {
-        this.oneOneSugarWater = oneOneSugarWater;
-    }
-
-    public int getTwoOneSugarWater() {
-        return twoOneSugarWater;
-    }
-
-    public void setTwoOneSugarWater(int twoOneSugarWater) {
-        this.twoOneSugarWater = twoOneSugarWater;
-    }
-
-    public int getOther() {
-        return other;
-    }
-
-    public void setOther(int other) {
-        this.other = other;
-    }
-
     public String getOtherType() {
         return otherType;
     }
@@ -71,20 +43,12 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
         this.otherType = otherType;
     }
 
-    public int getPollenPatty() {
-        return pollenPatty;
+    public long getFeedingTypes() {
+        return feedingTypes;
     }
 
-    public void setPollenPatty(int pollenPatty) {
-        this.pollenPatty = pollenPatty;
-    }
-
-    public long getVisitDate() {
-        return visitDate;
-    }
-
-    public void setVisitDate(long visitDate) {
-        this.visitDate = visitDate;
+    public void setFeedingTypes(long feedingTypes) {
+        this.feedingTypes = feedingTypes;
     }
 
     @Override
@@ -97,11 +61,7 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
         dest.writeLong(this.id);
         dest.writeLong(this.hive);
         dest.writeLong(this.visitDate);
-        dest.writeInt(this.oneOneSugarWater);
-        dest.writeInt(this.twoOneSugarWater);
-        dest.writeInt(this.pollenPatty);
-        dest.writeInt(this.other);
-        dest.writeString(this.otherType);
+        dest.writeString(this.feedingTypes);
     }
 
     public LogEntryFeeding() {
@@ -111,11 +71,7 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
         this.id = in.readLong();
         this.hive = in.readLong();
         this.visitDate = in.readLong();
-        this.oneOneSugarWater = in.readInt();
-        this.twoOneSugarWater = in.readInt();
-        this.pollenPatty = in.readInt();
-        this.other = in.readInt();
-        this.otherType = in.readString();
+        this.feedingTypes = in.readString();
     }
 
     public static final Parcelable.Creator<LogEntryFeeding> CREATOR = new Parcelable.Creator<LogEntryFeeding>() {

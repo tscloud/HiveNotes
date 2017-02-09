@@ -20,17 +20,11 @@ public class LogEntryFeedingDAO extends AbstactDAO {
     public static final String COLUMN_LOGENTRYFEEDING_ID = "_id";
     public static final String COLUMN_LOGENTRYFEEDING_HIVE = "hive";
     public static final String COLUMN_LOGENTRYFEEDING_VISIT_DATE = "visit_date";
-    public static final String COLUMN_LOGENTRYFEEDING_ONE_ONE_SUGAR_WATER = "one_one_sugar_water";
-    public static final String COLUMN_LOGENTRYFEEDING_TWO_ONE_SUGAR_WATER = "two_one_sugar_water";
-    public static final String COLUMN_LOGENTRYFEEDING_POLLEN_PATTY = "pollen_patty";
-    public static final String COLUMN_LOGENTRYFEEDING_OTHER = "other";
-    public static final String COLUMN_LOGENTRYFEEDING_OTHER_TYPE = "other_type";
+    public static final String COLUMN_LOGENTRYFEEDING_FEEDING_TYPES = "feeding_types";
 
     // Database fields
     private String[] mAllColumns = {COLUMN_LOGENTRYFEEDING_ID, COLUMN_LOGENTRYFEEDING_HIVE,
-            COLUMN_LOGENTRYFEEDING_VISIT_DATE, COLUMN_LOGENTRYFEEDING_ONE_ONE_SUGAR_WATER,
-            COLUMN_LOGENTRYFEEDING_TWO_ONE_SUGAR_WATER, COLUMN_LOGENTRYFEEDING_POLLEN_PATTY,
-            COLUMN_LOGENTRYFEEDING_OTHER, COLUMN_LOGENTRYFEEDING_OTHER_TYPE};
+            COLUMN_LOGENTRYFEEDING_VISIT_DATE, COLUMN_LOGENTRYFEEDING_FEEDING_TYPES};
 
     public LogEntryFeedingDAO(Context context) {
         super(context);
@@ -38,16 +32,11 @@ public class LogEntryFeedingDAO extends AbstactDAO {
 
     // --DB access methods--
 
-    public LogEntryFeeding createLogEntry(long hive, long visitDate, int oneOneSugarWater,
-                                          int oneTwoSugarWater, int pollenPatty, int other, String otherType) {
+    public LogEntryFeeding createLogEntry(long hive, long visitDate, String feedingTypes) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYFEEDING_HIVE, hive);
         values.put(COLUMN_LOGENTRYFEEDING_VISIT_DATE, visitDate);
-        values.put(COLUMN_LOGENTRYFEEDING_ONE_ONE_SUGAR_WATER, oneOneSugarWater);
-        values.put(COLUMN_LOGENTRYFEEDING_TWO_ONE_SUGAR_WATER, oneTwoSugarWater);
-        values.put(COLUMN_LOGENTRYFEEDING_POLLEN_PATTY, pollenPatty);
-        values.put(COLUMN_LOGENTRYFEEDING_OTHER, other);
-        values.put(COLUMN_LOGENTRYFEEDING_OTHER_TYPE, otherType);
+        values.put(COLUMN_LOGENTRYFEEDING_FEEDING_TYPES, feedingTypes);
         long insertId = mDatabase.insert(TABLE_LOGENTRYFEEDING, null, values);
 
         LogEntryFeeding newLogEntryFeeding = null;
@@ -63,21 +52,15 @@ public class LogEntryFeedingDAO extends AbstactDAO {
     }
 
     public LogEntryFeeding createLogEntry(LogEntryFeeding aDO) {
-        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getOneOneSugarWater(),
-                aDO.getTwoOneSugarWater(), aDO.getPollenPatty(), aDO.getOther(), aDO.getOtherType());
+        return createLogEntry(aDO.getHive(), aDO.getVisitDate(), aDO.getFeedingTypes());
     }
 
-    public LogEntryFeeding updateLogEntry(long id, long hive, long visitDate, int oneOneSugarWater,
-                                          int oneTwoSugarWater, int pollenPatty, int other, String otherType) {
+    public LogEntryFeeding updateLogEntry(long id, long hive, long visitDate, String feedingTypes) {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_LOGENTRYFEEDING_HIVE, hive);
         values.put(COLUMN_LOGENTRYFEEDING_VISIT_DATE, visitDate);
-        values.put(COLUMN_LOGENTRYFEEDING_ONE_ONE_SUGAR_WATER, oneOneSugarWater);
-        values.put(COLUMN_LOGENTRYFEEDING_TWO_ONE_SUGAR_WATER, oneTwoSugarWater);
-        values.put(COLUMN_LOGENTRYFEEDING_POLLEN_PATTY, pollenPatty);
-        values.put(COLUMN_LOGENTRYFEEDING_OTHER, other);
-        values.put(COLUMN_LOGENTRYFEEDING_OTHER_TYPE, otherType);
+        values.put(COLUMN_LOGENTRYFEEDING_FEEDING_TYPES, feedingTypes);
         int rowsUpdated = mDatabase.update(TABLE_LOGENTRYFEEDING, values,
                 COLUMN_LOGENTRYFEEDING_ID + "=" + id, null);
 
@@ -95,8 +78,7 @@ public class LogEntryFeedingDAO extends AbstactDAO {
     }
 
     public LogEntryFeeding updateLogEntry(LogEntryFeeding aDO) {
-        return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getOneOneSugarWater(),
-                aDO.getTwoOneSugarWater(), aDO.getPollenPatty(), aDO.getOther(), aDO.getOtherType());
+        return updateLogEntry(aDO.getId(), aDO.getHive(), aDO.getVisitDate(), aDO.getFeedingTypes());
     }
 
     public void deleteLogEntry(LogEntryFeeding logEntryFeeding) {
@@ -141,11 +123,7 @@ public class LogEntryFeedingDAO extends AbstactDAO {
         logEntryFeeding.setId(cursor.getLong(0));
         logEntryFeeding.setHive(cursor.getLong(1));
         logEntryFeeding.setVisitDate(cursor.getLong(2));
-        logEntryFeeding.setOneOneSugarWater(cursor.getInt(3));
-        logEntryFeeding.setTwoOneSugarWater(cursor.getInt(4));
-        logEntryFeeding.setPollenPatty(cursor.getInt(5));
-        logEntryFeeding.setOther(cursor.getInt(6));
-        logEntryFeeding.setOtherType(cursor.getString(7));
+        logEntryFeeding.setFeedingTypes(cursor.getString(3));
 
         return logEntryFeeding;
     }
