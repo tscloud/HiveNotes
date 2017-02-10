@@ -34,7 +34,7 @@ import cn.refactor.library.SmoothCheckBox;
  * Created by tscloud on 12/19/16.
  */
 
-public class LogMultiSelectDialog extends DialogFragment {
+public class LogMultiSelectDialog extends LogSuperDialog {
 
     public static final String TAG = "LogMultiSelectDialog";
 
@@ -391,13 +391,5 @@ public class LogMultiSelectDialog extends DialogFragment {
                     break;
             }
         }
-    }
-
-    /*
-    interface to define in the Activity what should be upon OK/Cancel
-     */
-    public interface onLogMultiSelectDialogInteractionListener {
-        void onLogMultiSelectDialogOK(String[] aResults, long aResultRemTime, String aTag);
-        void onLogMultiSelectDialogCancel(String aTag);
     }
 }

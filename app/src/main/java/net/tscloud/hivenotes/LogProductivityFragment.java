@@ -29,6 +29,11 @@ public class LogProductivityFragment extends LogFragment {
     // DO for this particular Fragment
     private LogEntryProductivity mLogEntryProductivity;
 
+    // constants used for Dialogs
+    public static final String DIALOG_TAG_HONEY = "honey";
+    public static final String DIALOG_TAG_POLLEN = "pollen";
+    public static final String DIALOG_TAG_WAX = "wax";
+
     // reference to Activity that should have started me
     private OnLogProductivityFragmentInteractionListener mListener;
 
@@ -81,21 +86,34 @@ public class LogProductivityFragment extends LogFragment {
         final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
         b1.setText(getResources().getString(R.string.done_string));
 
+        // get reference to the <include>s
+        final View dialogProductivityHoney = v.findViewById(R.id.buttonProductivityHoney);
+        final View dialogProductivityPollen = v.findViewById(R.id.buttonProductivityPollen);
+        final View dialogProductivityWax = v.findViewById(R.id.buttonProductivityWax);
+
+        // set text of <include>s
+        final TextView honeyText =
+                (TextView)dialogProductivityHoney.findViewById(R.id.dialogLaunchTextView);
+        honeyText.setText(R.string.productivity_honey);
+
+        final TextView pollenText =
+                (TextView)dialogProductivityPollen.findViewById(R.id.dialogLaunchTextView);
+        pollenText.setText(R.string.productivity_pollen);
+
+        final TextView waxText =
+                (TextView)dialogProductivityWax.findViewById(R.id.dialogLaunchTextView);
+        waxText.setText(R.string.productivity_wax);
+
         /**
          * call super method to get DO via best means
          */
         getLogEntry(mListener);
 
+        // Replace the azrrow in the Dialog button w/ values that may be in DB
         if (mLogEntryProductivity != null) {
-
-            // fill the form
-            final EditText extractedHoneyEdit = (EditText)v.findViewById(R.id.editTextExtractedHoney);
-            final EditText pollenCollectedEdit = (EditText)v.findViewById(R.id.editTextPollenCollected);
-            final EditText beeswaxCollectedEdit = (EditText)v.findViewById(R.id.editTextBeeswaxCollected);
-
-            extractedHoneyEdit.setText(Float.toString(mLogEntryProductivity.getExtractedHoney()));
-            pollenCollectedEdit.setText(Float.toString(mLogEntryProductivity.getPollenCollected()));
-            beeswaxCollectedEdit.setText(Float.toString(mLogEntryProductivity.getBeeswaxCollected()));
+            replaceArrow(mLogEntryProductivity.getExtractedHoney(), dialogProductivityHoney);
+            replaceArrow(mLogEntryProductivity.getPollenCollected(), dialogProductivityPollen);
+            replaceArrow(mLogEntryProductivity.getBeeswaxCollected(), dialogProductivityWax);
         }
 
         // set button listener
@@ -103,6 +121,75 @@ public class LogProductivityFragment extends LogFragment {
             @Override
             public void onClick(View v) {
                 onButtonPressed(mHiveID);
+            }
+        });
+
+        dialogProductivityHoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryProductivity != null &&
+                            mLogEntryProductivity.getExtractedHoney() != null) {
+                        checked = mLogEntryProductivity.getExtractedHoney();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.productivity_honey),
+                            DIALOG_TAG_HONEY,
+                            checked));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogProductivityPollen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryProductivity != null &&
+                            mLogEntryProductivity.getPollenCollected() != null) {
+                        checked = mLogEntryProductivity.getPollenCollected();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.productivity_pollen),
+                            DIALOG_TAG_POLLEN,
+                            checked));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogProductivityWax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mLogEntryProductivity != null &&
+                            mLogEntryProductivity.getBeeswaxCollected() != null) {
+                        checked = mLogEntryProductivity.getBeeswaxCollected();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.productivity_wax),
+                            DIALOG_TAG_WAX,
+                            checked));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
             }
         });
 
@@ -114,28 +201,6 @@ public class LogProductivityFragment extends LogFragment {
         Log.d(TAG, "about to persist logentry");
 
         boolean lNewLogEntry = false;
-
-        final EditText extractedHoneyEdit = (EditText)getView().findViewById(R.id.editTextExtractedHoney);
-        final EditText pollenCollectedEdit = (EditText)getView().findViewById(R.id.editTextPollenCollected);
-        final EditText beeswaxCollectedEdit = (EditText)getView().findViewById(R.id.editTextBeeswaxCollected);
-
-        String extractedHoneyString = extractedHoneyEdit.getText().toString();
-        float extractedHoneyFloat = 0;
-        if (extractedHoneyString.length() != 0) {
-            extractedHoneyFloat = Float.parseFloat(extractedHoneyString);
-        }
-
-        String pollenCollectedString = pollenCollectedEdit.getText().toString();
-        float pollenCollectedFloat = 0;
-        if (pollenCollectedString.length() != 0) {
-            pollenCollectedFloat = Float.parseFloat(pollenCollectedString);
-        }
-
-        String beeswaxCollectedString = beeswaxCollectedEdit.getText().toString();
-        float beeswaxCollectedFloat = 0;
-        if (beeswaxCollectedString.length() != 0) {
-            beeswaxCollectedFloat = Float.parseFloat(beeswaxCollectedString);
-        }
 
         // check for required values - are there any?
         boolean emptyText = false;
@@ -149,9 +214,6 @@ public class LogProductivityFragment extends LogFragment {
             mLogEntryProductivity.setId(mLogEntryKey);
             mLogEntryProductivity.setHive(mHiveID);
             mLogEntryProductivity.setVisitDate(mLogEntryDate);
-            mLogEntryProductivity.setExtractedHoney(extractedHoneyFloat);
-            mLogEntryProductivity.setPollenCollected(pollenCollectedFloat);
-            mLogEntryProductivity.setBeeswaxCollected(beeswaxCollectedFloat);
 
             if (mListener != null) {
                 mListener.onLogProductivityFragmentInteraction(mLogEntryProductivity);
@@ -208,9 +270,48 @@ public class LogProductivityFragment extends LogFragment {
         return reply;
     }
 
+    /**
+     * little routine to replace the dialog button's arrow image w/ data from DB
+     **/
+    private void replaceArrow(float aAmount, View aInclude) {
+        if ((aAmount > 0)) {
+            View replaceMe = aInclude.findViewById(R.id.dialogLaunchArrowImage);
+            ViewGroup parent = (ViewGroup)replaceMe.getParent();
+            int index = parent.indexOfChild(replaceMe);
+            parent.removeView(replaceMe);
+            replaceMe = new TextView(getActivity());
+            replaceMe.setText(Float.toString(aAmount));
+            parent.addView(replaceMe, index);
+        }
+    }
+
     @Override
     public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
+        //may have to create the DO here - if we're a new entry and Dialog work was done before
+        // anything else
+        if (mLogEntryProductivity == null) {
+            mLogEntryProductivity = new mLogEntryProductivity();
+        }
 
+        switch (aTag){
+            case DIALOG_TAG_HONEY:
+                mLogEntryProductivity.setExtractedHoney(aResults[0]);
+                Log.d(TAG, "onLogLaunchDialog: setExtractedHoney: " +
+                        mLogEntryProductivity.getExtractedHoney());
+                break;
+            case DIALOG_TAG_POLLEN:
+                mLogEntryProductivity.setPollenCollected(aResults[0]);
+                Log.d(TAG, "onLogLaunchDialog: setPollenCollected: " +
+                        mLogEntryProductivity.getPollenCollected());
+                break;
+            case DIALOG_TAG_WAX:
+                mLogEntryProductivity.setBeeswaxCollected(aResults[0]);
+                Log.d(TAG, "onLogLaunchDialog: setBeeswaxCollected: " +
+                        mLogEntryProductivity.getBeeswaxCollected());
+                break;
+            default:
+                Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
+        }
     }
 
     /**

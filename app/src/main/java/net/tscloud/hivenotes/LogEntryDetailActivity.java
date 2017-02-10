@@ -39,7 +39,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     private HiveNotesLogDO mPreviousLogData;
 
     // needed for things like Dialog dismissal after its return w/ w/o data
-    private LogMultiSelectDialog diagFragment;
+    private LogSuperDialog diagFragment;
 
     // Need a reference to the Fragment that we're going to launch as we may need to pass back data
     //  collected by Dialog
@@ -211,9 +211,18 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     1) Launch Dialogs - Fragment we're coming from will tell us which 1 to throw up
     2) Come back from Dialogs - via OK or Cancel
      */
+
+    // Dialog w/ checkboxes
     @Override
     public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
         diagFragment = LogMultiSelectDialog.newInstance(aData);
+        diagFragment.show(getSupportFragmentManager(), aData.getTag());
+    };
+
+    // Dialog w/ edittext
+    @Override
+    public void onLogLaunchDialog(LogEditTextDialogData aData) {
+        diagFragment = LogEditTextDialogData.newInstance(aData);
         diagFragment.show(getSupportFragmentManager(), aData.getTag());
     };
 

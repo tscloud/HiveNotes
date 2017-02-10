@@ -172,6 +172,10 @@ public class LogFeedingFragment extends LogFragment {
             default:
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
         }
+
+        if (mListener != null) {
+            mListener.onLogHiveHealthFragmentInteraction(mLogEntryHiveHealth);
+        }
     }
 
     /**
