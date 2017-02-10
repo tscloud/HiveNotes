@@ -35,19 +35,19 @@ public class LogEntryFeeding implements HiveNotesLogDO, Parcelable {
         this.id = id;
     }
 
-    public String getOtherType() {
-        return otherType;
+    public long getVisitDate() {
+        return visitDate;
     }
 
-    public void setOtherType(String otherType) {
-        this.otherType = otherType;
+    public void setVisitDate(long visitDate) {
+        this.visitDate = visitDate;
     }
 
-    public long getFeedingTypes() {
+    public String getFeedingTypes() {
         return feedingTypes;
     }
 
-    public void setFeedingTypes(long feedingTypes) {
+    public void setFeedingTypes(String feedingTypes) {
         this.feedingTypes = feedingTypes;
     }
 

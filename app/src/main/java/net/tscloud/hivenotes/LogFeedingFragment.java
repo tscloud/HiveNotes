@@ -3,6 +3,7 @@ package net.tscloud.hivenotes;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 
 /**
@@ -82,7 +84,7 @@ public class LogFeedingFragment extends LogFragment {
         if (mListener != null) {
             String checked = "";
             if (mLogEntryFeeding != null &&
-                    mLogEntryFeeding.getFeedingTypes != null) {
+                    mLogEntryFeeding.getFeedingTypes() != null) {
                 checked = mLogEntryFeeding.getFeedingTypes();
             }
             /* Get the Activity to launch the Dialog for us
@@ -165,7 +167,7 @@ public class LogFeedingFragment extends LogFragment {
             case DIALOG_TAG_FEEDING:
                 mLogEntryFeeding.setFeedingTypes(TextUtils.join(",", aResults));
                 Log.d(TAG, "onLogLaunchDialog: setFeedingTypes: " +
-                        mLogEntryHiveHealth.getFeedingTypes());
+                        mLogEntryFeeding.getFeedingTypes());
                 break;
             default:
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
