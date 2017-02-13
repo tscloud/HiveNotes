@@ -9,7 +9,7 @@ public class LogEditTextDialogData {
     private String tag;
     private String data;
 
-    public LogMultiSelectDialogData (String aTitle, String aTag, String aData) {
+    public LogEditTextDialogData (String aTitle, String aTag, String aData) {
 
         this.title = aTitle;
         this.tag = aTag;

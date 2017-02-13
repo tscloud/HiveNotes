@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
+import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 import java.text.DateFormat;
@@ -39,6 +40,8 @@ public abstract class LogFragment extends Fragment {
     protected abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
 
     public abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
+
+    public abstract void setDialogDataCancel(String aTag);
 
     // concrete static methods
     public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate, long aLogEntryID) {

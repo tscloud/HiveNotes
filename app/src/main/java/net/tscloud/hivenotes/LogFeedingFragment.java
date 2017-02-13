@@ -173,8 +173,17 @@ public class LogFeedingFragment extends LogFragment {
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
         }
 
+        // This is done in the Feeding Fragment since there's nothing visual to show (no override
+        //  of onCreateView()) so go back to the Activity
         if (mListener != null) {
-            mListener.onLogHiveHealthFragmentInteraction(mLogEntryHiveHealth);
+            mListener.onLogFeedingFragmentInteraction(mLogEntryFeeding);
+        }
+    }
+
+    @Override
+    public void setDialogDataCancel(String aTag) {
+        if (mListener != null) {
+            mListener.onLogFeedingFragmentInteraction(null);
         }
     }
 
@@ -186,7 +195,7 @@ public class LogFeedingFragment extends LogFragment {
      */
     public interface OnLogFeedingFragmentInteractionListener extends
             LogFragmentActivity {
-        public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding);
+        void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding);
     }
 
 }

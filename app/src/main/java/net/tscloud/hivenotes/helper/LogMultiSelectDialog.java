@@ -3,10 +3,12 @@ package net.tscloud.hivenotes.helper;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -70,6 +72,16 @@ public class LogMultiSelectDialog extends LogSuperDialog {
         args.putBoolean("isMultiselect", aData.isMultiselect());
         frag.setArguments(args);
         return frag;
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        Log.d(TAG, "Back button clicked");
+
+        if (mListener != null) {
+            mListener.onLogMultiSelectDialogCancel(getArguments().getString("tag"));
+        }
     }
 
     @Override
@@ -246,7 +258,45 @@ public class LogMultiSelectDialog extends LogSuperDialog {
 
         builder.setTitle(getArguments().getString("title")).setView(view);
 
+        /*
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Log.d(TAG, "Back button clicked");
+            }
+        });
+        */
+
         AlertDialog diagFragDialog = builder.create();
+
+        // Back button Listener - have to do this after the Dialog is created
+        /*
+        diagFragDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog)
+            {
+                Log.d(TAG, "Back button clicked");
+
+                if (mListener != null) {
+                    mListener.onLogMultiSelectDialogCancel(getArguments().getString("tag"));
+                }
+            }
+        });
+        */
+
+        /*
+        diagFragDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey (DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK &&
+                        event.getAction() == KeyEvent.ACTION_UP &&
+                        !event.isCanceled()) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        */
 
         return diagFragDialog;
     }

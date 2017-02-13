@@ -6,11 +6,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -39,7 +41,7 @@ public class LogEditTextDialog extends LogSuperDialog {
     public static final String TAG = "LogEditTextDialog";
 
     // reference to Activity that should have started me
-    private onLogEditTextDialogInteractionListener mListener;
+    private onLogMultiSelectDialogInteractionListener mListener;
 
     public static LogEditTextDialog newInstance(LogEditTextDialogData aData) {
         LogEditTextDialog frag = new LogEditTextDialog();
@@ -54,12 +56,12 @@ public class LogEditTextDialog extends LogSuperDialog {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final ArrayList<ViewHolder> viewholderList = new ArrayList<>();
+        final ArrayList<RecyclerView.ViewHolder> viewholderList = new ArrayList<>();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // get the Dialog Layout
-        View view = getActivity().getLayoutInflater().inflate(R.layout.scb_edittext_view, null);
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.scb_edittext_view, null);
 
         // OK/Cancel button Listeners
         final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
@@ -72,7 +74,7 @@ public class LogEditTextDialog extends LogSuperDialog {
                 if (mListener != null) {
                     final EditText et = (EditText)view.findViewById(R.id.et);
                     String[] result = new String[1];
-                    result[0] = resultList.toArray(et.getText());
+                    result[0] = et.getText().toString();
                     mListener.onLogMultiSelectDialogOK(result, 0,
                             getArguments().getString("tag"));
                 }

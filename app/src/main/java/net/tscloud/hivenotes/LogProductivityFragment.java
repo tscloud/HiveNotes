@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
+import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -130,9 +132,8 @@ public class LogProductivityFragment extends LogFragment {
                 // Callback to Activity to launch a Dialog
                 if (mListener != null) {
                     String checked = "";
-                    if (mLogEntryProductivity != null &&
-                            mLogEntryProductivity.getExtractedHoney() != null) {
-                        checked = mLogEntryProductivity.getExtractedHoney();
+                    if (mLogEntryProductivity != null) {
+                        checked = String.valueOf(mLogEntryProductivity.getExtractedHoney());
                     }
                     /* Get the Activity to launch the Dialog for us
                      */
@@ -153,9 +154,8 @@ public class LogProductivityFragment extends LogFragment {
                 // Callback to Activity to launch a Dialog
                 if (mListener != null) {
                     String checked = "";
-                    if (mLogEntryProductivity != null &&
-                            mLogEntryProductivity.getPollenCollected() != null) {
-                        checked = mLogEntryProductivity.getPollenCollected();
+                    if (mLogEntryProductivity != null) {
+                        checked = String.valueOf(mLogEntryProductivity.getPollenCollected());
                     }
                     /* Get the Activity to launch the Dialog for us
                      */
@@ -176,9 +176,8 @@ public class LogProductivityFragment extends LogFragment {
                 // Callback to Activity to launch a Dialog
                 if (mListener != null) {
                     String checked = "";
-                    if (mLogEntryProductivity != null &&
-                            mLogEntryProductivity.getBeeswaxCollected() != null) {
-                        checked = mLogEntryProductivity.getBeeswaxCollected();
+                    if (mLogEntryProductivity != null) {
+                        checked = String.valueOf(mLogEntryProductivity.getBeeswaxCollected());
                     }
                     /* Get the Activity to launch the Dialog for us
                      */
@@ -280,7 +279,7 @@ public class LogProductivityFragment extends LogFragment {
             int index = parent.indexOfChild(replaceMe);
             parent.removeView(replaceMe);
             replaceMe = new TextView(getActivity());
-            replaceMe.setText(Float.toString(aAmount));
+            ((TextView)replaceMe).setText(Float.toString(aAmount));
             parent.addView(replaceMe, index);
         }
     }
@@ -290,28 +289,33 @@ public class LogProductivityFragment extends LogFragment {
         //may have to create the DO here - if we're a new entry and Dialog work was done before
         // anything else
         if (mLogEntryProductivity == null) {
-            mLogEntryProductivity = new mLogEntryProductivity();
+            mLogEntryProductivity = new LogEntryProductivity();
         }
 
         switch (aTag){
             case DIALOG_TAG_HONEY:
-                mLogEntryProductivity.setExtractedHoney(aResults[0]);
+                mLogEntryProductivity.setExtractedHoney(Long.parseLong(aResults[0]));
                 Log.d(TAG, "onLogLaunchDialog: setExtractedHoney: " +
                         mLogEntryProductivity.getExtractedHoney());
                 break;
             case DIALOG_TAG_POLLEN:
-                mLogEntryProductivity.setPollenCollected(aResults[0]);
+                mLogEntryProductivity.setPollenCollected(Long.parseLong(aResults[0]));
                 Log.d(TAG, "onLogLaunchDialog: setPollenCollected: " +
                         mLogEntryProductivity.getPollenCollected());
                 break;
             case DIALOG_TAG_WAX:
-                mLogEntryProductivity.setBeeswaxCollected(aResults[0]);
+                mLogEntryProductivity.setBeeswaxCollected(Long.parseLong(aResults[0]));
                 Log.d(TAG, "onLogLaunchDialog: setBeeswaxCollected: " +
                         mLogEntryProductivity.getBeeswaxCollected());
                 break;
             default:
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
         }
+    }
+
+    @Override
+    public void setDialogDataCancel(String aTag) {
+        // NOOP - just re-present fragment
     }
 
     /**

@@ -12,8 +12,11 @@ import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
+import net.tscloud.hivenotes.helper.LogEditTextDialog;
+import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
+import net.tscloud.hivenotes.helper.LogSuperDialog;
 
 /**
  * An activity representing a single LogEntryGeneral detail screen. This
@@ -134,6 +137,11 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public HiveNotesLogDO getPreviousLogData() {
         return mPreviousLogData;
     }
@@ -181,12 +189,21 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding) {
         Log.d(TAG, "return from LogFeedingFragment...finish LogEntryDetailActivity");
 
-        Intent data = new Intent();
-        Bundle bundleData = new Bundle();
-        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA, aLogEntryFeeding);
-        data.putExtras(bundleData);
-        setResult(RESULT_OK, data);
-        finish();
+        // LogFeedingFragment is non-visual => don't go back to the fragment, do as through back
+        //  button were pressed here - this should happen on back pressed from Dialog
+        if (aLogEntryFeeding == null) {
+            onBackPressed();
+            //setResult(RESULT_OK);
+            //finish();
+        }
+        else {
+            Intent data = new Intent();
+            Bundle bundleData = new Bundle();
+            bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA, aLogEntryFeeding);
+            data.putExtras(bundleData);
+            setResult(RESULT_OK, data);
+            finish();
+        }
     }
 
     @Override
@@ -222,7 +239,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     // Dialog w/ edittext
     @Override
     public void onLogLaunchDialog(LogEditTextDialogData aData) {
-        diagFragment = LogEditTextDialogData.newInstance(aData);
+        diagFragment = LogEditTextDialog.newInstance(aData);
         diagFragment.show(getSupportFragmentManager(), aData.getTag());
     };
 
@@ -234,13 +251,14 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             Log.d(TAG, s);
         }
 
-        fragment.setDialogData(aResults, aResultRemTime, aTag);
         diagFragment.dismiss();
+        fragment.setDialogData(aResults, aResultRemTime, aTag);
     }
 
     @Override
     public void onLogMultiSelectDialogCancel(String aTag) {
         Log.d(TAG, "onLogMultiSelectDialogCancel: Cancel button clicked");
         diagFragment.dismiss();
+        fragment.setDialogDataCancel(aTag);
     }
 }

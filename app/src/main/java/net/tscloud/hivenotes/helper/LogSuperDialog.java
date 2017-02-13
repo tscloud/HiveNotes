@@ -1,10 +1,12 @@
 package net.tscloud.hivenotes.helper;
 
+import android.support.v4.app.DialogFragment;
+
 /**
  * Created by tscloud on 2/10/17.
  */
 
-public class LogSuperDialog extends DialogFragment {
+public abstract class LogSuperDialog extends DialogFragment {
 
     public static final String TAG = "LogSuperDialog";
 
