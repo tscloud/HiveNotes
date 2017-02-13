@@ -40,9 +40,6 @@ public class LogEditTextDialog extends LogSuperDialog {
 
     public static final String TAG = "LogEditTextDialog";
 
-    // reference to Activity that should have started me
-    private onLogMultiSelectDialogInteractionListener mListener;
-
     public static LogEditTextDialog newInstance(LogEditTextDialogData aData) {
         LogEditTextDialog frag = new LogEditTextDialog();
         Bundle args = new Bundle();
@@ -70,7 +67,6 @@ public class LogEditTextDialog extends LogSuperDialog {
             public void onClick(View v) {
                 Log.d(TAG, "OK button clicked");
 
-                // don't forget to get the reminder time from the TextEdit tag
                 if (mListener != null) {
                     final EditText et = (EditText)view.findViewById(R.id.et);
                     String[] result = new String[1];

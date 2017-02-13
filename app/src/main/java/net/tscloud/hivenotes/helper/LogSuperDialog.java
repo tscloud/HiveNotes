@@ -10,6 +10,19 @@ public abstract class LogSuperDialog extends DialogFragment {
 
     public static final String TAG = "LogSuperDialog";
 
+    // reference to Activity that should have started me
+    private onLogMultiSelectDialogInteractionListener mListener;
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        Log.d(TAG, "Back button clicked");
+
+        if (mListener != null) {
+            mListener.onLogMultiSelectDialogCancel(getArguments().getString("tag"));
+        }
+    }
+
     /*
     interface to define in the Activity what should be upon OK/Cancel
      */
