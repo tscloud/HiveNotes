@@ -41,7 +41,10 @@ public abstract class LogFragment extends Fragment {
 
     public abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
 
-    public abstract void setDialogDataCancel(String aTag);
+    // Override this method if you want a LogFragment to do something on Dialog cancel
+    public void setDialogDataCancel(String aTag) {
+        // NOOP - just re-present fragment
+    }
 
     // concrete static methods
     public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate, long aLogEntryID) {

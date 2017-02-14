@@ -2,6 +2,7 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -102,6 +103,13 @@ public class LogFeedingFragment extends LogFragment {
         else {
             Log.d(TAG, "no Listener");
         }
+    }
+
+    // Is this the proper action to take when Fragment has nothing visual?
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return null;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package net.tscloud.hivenotes.helper;
 
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 
 /**
  * Created by tscloud on 2/10/17.
@@ -11,7 +13,7 @@ public abstract class LogSuperDialog extends DialogFragment {
     public static final String TAG = "LogSuperDialog";
 
     // reference to Activity that should have started me
-    private onLogMultiSelectDialogInteractionListener mListener;
+    protected onLogMultiSelectDialogInteractionListener mListener;
 
     @Override
     public void onCancel(DialogInterface dialog) {
