@@ -100,10 +100,18 @@ public class LogHiveHealthFragment extends LogFragment {
         final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
         hiveNoteBtn.setText(getResources().getString(R.string.done_string));
 
-        // get reference to the <include>s
+        // get reference to the <include>s and...
+        // ...put them in the disable/enable List used by GetLogData AsyncTask
+        ArrayList<View> disEnThese = new ArrayList<View>();
+
         final View dialogHiveHealthPest = v.findViewById(R.id.buttonHiveHealthPest);
+        disEnThese.add(dialogHiveHealthPest);
+
         final View dialogHiveHealthDisease = v.findViewById(R.id.buttonHiveHealthDisease);
+        disEnThese.add(dialogHiveHealthDisease);
+
         final View dialogHiveHealthVarroa = v.findViewById(R.id.buttonHiveHealthVarroa);
+        disEnThese.add(dialogHiveHealthVarroa);
 
         // set text of <include>s
         final TextView pestText =
@@ -121,7 +129,11 @@ public class LogHiveHealthFragment extends LogFragment {
         /**
          * call super method to get DO via best means
          */
-        getLogEntry(mListener);
+        // This method blocks on DB operation
+        //getLogEntry(mListener);
+
+        // This method uses AsyncTask on DB operation
+        getLogEntry(mListener, new LogEntryHiveHealthDAO(getActivity(), disEnThese, getActivity());
 
         // set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
