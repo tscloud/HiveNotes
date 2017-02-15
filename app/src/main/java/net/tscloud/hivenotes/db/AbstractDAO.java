@@ -8,15 +8,15 @@ import android.util.Log;
 /**
  * Created by tscloud on 7/9/16.
  */
-public abstract class AbstactDAO {
+public abstract class AbstractDAO {
 
-    public static final String TAG = "AbstactDAO";
+    public static final String TAG = "AbstractDAO";
 
     protected SQLiteDatabase mDatabase;
     protected MyDBHandler mDbHelper;
     protected Context mContext;
 
-    public AbstactDAO(Context context) {
+    public AbstractDAO(Context context) {
         this.mContext = context;
         mDbHelper = MyDBHandler.getInstance(context);
         // open the database

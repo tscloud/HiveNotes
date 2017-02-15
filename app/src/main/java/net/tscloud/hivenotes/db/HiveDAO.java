@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tscloud on 8/15/15.
  */
-public class HiveDAO extends AbstactDAO {
+public class HiveDAO extends AbstractDAO {
 
     public static final String TAG = "HiveDAO";
 

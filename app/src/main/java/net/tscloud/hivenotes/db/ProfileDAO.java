@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tscloud on 8/15/15.
  */
-public class ProfileDAO extends AbstactDAO {
+public class ProfileDAO extends AbstractDAO {
 
     public static final String TAG = "ProfileDAO";
 

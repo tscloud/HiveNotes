@@ -10,7 +10,7 @@ import android.util.Log;
 /**
  * Created by tscloud on 11/10/15.
  */
-public class LogEntryFeedingDAO extends AbstactDAO {
+public class LogEntryFeedingDAO extends AbstractLogDAO {
 
     public static final String TAG = "LogEntryFeedingDAO";
 

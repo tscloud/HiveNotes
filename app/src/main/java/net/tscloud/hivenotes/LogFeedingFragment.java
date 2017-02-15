@@ -79,7 +79,11 @@ public class LogFeedingFragment extends LogFragment {
         /**
          * call super method to get DO via best means
          */
+        // This method blocks on DB operation
         getLogEntry(mListener);
+
+        // This method uses AsyncTask on DB operation
+        //getLogEntry(mListener, new LogEntryFeedingDAO(getActivity()), null, null);
 
         // Callback to Activity to launch a Dialog
         if (mListener != null) {

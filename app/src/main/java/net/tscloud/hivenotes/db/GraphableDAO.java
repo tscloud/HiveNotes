@@ -13,7 +13,7 @@ import java.util.TreeMap;
 /**
  * Created by tscloud on 7/5/16.
  */
-public abstract class GraphableDAO extends AbstactDAO {
+public abstract class GraphableDAO extends AbstractDAO {
 
     public static final String TAG = "GraphableDAO";
 

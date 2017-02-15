@@ -24,6 +24,7 @@ import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -133,7 +134,7 @@ public class LogHiveHealthFragment extends LogFragment {
         //getLogEntry(mListener);
 
         // This method uses AsyncTask on DB operation
-        getLogEntry(mListener, new LogEntryHiveHealthDAO(getActivity(), disEnThese, getActivity());
+        getLogEntry(mListener, new LogEntryHiveHealthDAO(getActivity()), disEnThese, getActivity());
 
         // set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {

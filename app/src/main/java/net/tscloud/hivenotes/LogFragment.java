@@ -1,9 +1,14 @@
 package net.tscloud.hivenotes;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
 
+import net.tscloud.hivenotes.db.AbstractLogDAO;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
@@ -11,6 +16,7 @@ import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -30,9 +36,11 @@ public abstract class LogFragment extends Fragment {
     private GetLogData mGetLogDataTask = null;
 
     // time/date formatters
-    protected static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+    protected static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG,
+            Locale.getDefault());
     protected static final String TIME_PATTERN = "HH:mm";
-    protected static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
+    protected static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN,
+            Locale.getDefault());
     protected final Calendar calendar = Calendar.getInstance();
 
     // abstract methods
@@ -50,7 +58,8 @@ public abstract class LogFragment extends Fragment {
     }
 
     // concrete static methods
-    public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate, long aLogEntryID) {
+    public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate,
+                                             long aLogEntryID) {
         Log.d(TAG, "in setLogFragArgs()");
 
         Bundle args = new Bundle();
@@ -66,8 +75,8 @@ public abstract class LogFragment extends Fragment {
         Log.d(TAG, "in getLogEntry()");
 
         // log entry may have something in it either already populated or populated from Bundle
-        // if not => 1st check the Activity for previously entered data, if not => potentially read DB
-        //  on id 1st, date 2nd
+        // if not => 1st check the Activity for previously entered data, if not => potentially
+        //  read DB on id 1st, date 2nd
         if (getLogEntryDO() == null) {
             try {
                 setLogEntryDO(aListener.getPreviousLogData());
@@ -88,7 +97,8 @@ public abstract class LogFragment extends Fragment {
         }
     }
 
-    protected void getLogEntry(LogFragmentActivity aListener, AbstractLogDAO aDOA, List<View> aViewList, Context aCtx) {
+    protected void getLogEntry(LogFragmentActivity aListener, AbstractLogDAO aDOA,
+                               List<View> aViewList, Context aCtx) {
         Log.d(TAG, "in getLogEntry()");
 
         if (getLogEntryDO() == null) {
@@ -102,7 +112,7 @@ public abstract class LogFragment extends Fragment {
             }
             if (getLogEntryDO() == null) {
                 mGetLogDataTask = new GetLogData(aDOA, aViewList, aCtx);
-                mTask.execute();
+                mGetLogDataTask.execute();
             }
         }
     }
@@ -138,18 +148,17 @@ public abstract class LogFragment extends Fragment {
      */
     public class GetLogData extends AsyncTask<Void, Void, Void> {
 
-        public static final String TAG = "GetGraphableData";
+        public static final String TAG = "GetLogData";
 
         private Context mCtx;
-        private AbstractLogDAO mDOA;
+        private AbstractLogDAO mDAO;
         private List<View> mViewList;
 
-        private ProgressDialog dialog =
-                new ProgressDialog(mCtx);
+        private ProgressDialog dialog = null;
 
-        public GetLogData(AbstractLogDAO aDOA, List<View> aViewList, aCtx) {
+        GetLogData(AbstractLogDAO aDAO, List<View> aViewList, Context aCtx) {
             Log.d(TAG, "GetLogData("+ Thread.currentThread().getId() + ") : constructor");
-            mDOA = aDOA;
+            mDAO = aDAO;
             mViewList = aViewList;
             mCtx = aCtx;
         }
@@ -163,10 +172,12 @@ public abstract class LogFragment extends Fragment {
                 }
             }
             // ...or throw up a ProgressDialog
-            else {
-                dialog.setMessage("Waiting...");
-                dialog.show();
-            }
+            //else {
+            //    dialog = new ProgressDialog(mCtx);
+            //    dialog.setMessage("Waiting...");
+            //    Log.d(TAG, "about to dialog.show()");
+            //    dialog.show();
+            //}
         }
 
         @Override
@@ -174,13 +185,15 @@ public abstract class LogFragment extends Fragment {
             Log.d(TAG, "GetLogData("+ Thread.currentThread().getId() + ") : doInBackground");
 
             //pause to simulate work
-            //try {
-            //    Thread.sleep(2000);
-            //}
-            //catch (InterruptedException e) {
-            //    Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
-            //        ") : InterruptedException");
-            //}
+            boolean doSleep = false;
+            if (doSleep) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Log.d(TAG, "GetReminderTimeTask(" + mGetLogDataTask + ":" + Thread.currentThread().getId() +
+                            ") : InterruptedException");
+                }
+            }
 
             HiveNotesLogDO reply = null;
 
@@ -215,9 +228,10 @@ public abstract class LogFragment extends Fragment {
             }
 
             // ...or dismiss a ProgressDialog
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
+            //if ((dialog != null) && (dialog.isShowing())) {
+            //    Log.d(TAG, "about to dialog.dismiss()");
+            //    dialog.dismiss();
+            //}
 
             // all we need to do is nullify the Task reference
             mGetLogDataTask = null;

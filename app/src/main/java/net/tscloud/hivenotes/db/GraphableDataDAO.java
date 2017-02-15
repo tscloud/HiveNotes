@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by tscloud on 6/26/16.
  */
-public class GraphableDataDAO extends AbstactDAO {
+public class GraphableDataDAO extends AbstractDAO {
     public static final String TAG = "GraphableDataDAO";
 
     // Database table columns

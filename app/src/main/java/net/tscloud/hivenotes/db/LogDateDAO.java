@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by tscloud on 8/15/15.
  */
-public class LogDateDAO extends AbstactDAO {
+public class LogDateDAO extends AbstractDAO {
 
     public static final String TAG = "LogDateDAO";
 

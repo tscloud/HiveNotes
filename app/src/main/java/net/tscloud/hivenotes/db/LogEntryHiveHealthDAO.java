@@ -7,7 +7,7 @@ import android.database.Cursor;
 /**
  * Created by tscloud on 11/3/15.
  */
-public class LogEntryHiveHealthDAO extends AbstactLogDAO {
+public class LogEntryHiveHealthDAO extends AbstractLogDAO {
 
     public static final String TAG = "LogEntryHiveHealthDAO";
 
