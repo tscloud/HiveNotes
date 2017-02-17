@@ -240,7 +240,12 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     @Override
     public void onLogLaunchDialog(LogEditTextDialogData aData) {
         diagFragment = LogEditTextDialog.newInstance(aData);
-        diagFragment.show(getSupportFragmentManager(), aData.getTag());
+        //diagFragment.show(getSupportFragmentManager(), aData.getTag());
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack(aData.getTag())
+                .replace(R.id.logentry_detail_container, diagFragment, aData.getTag())
+                .commit();
+
     };
 
     @Override
@@ -251,14 +256,16 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             Log.d(TAG, s);
         }
 
-        diagFragment.dismiss();
+        //diagFragment.dismiss();
+        getSupportFragmentManager().popBackStack();
         fragment.setDialogData(aResults, aResultRemTime, aTag);
     }
 
     @Override
     public void onLogMultiSelectDialogCancel(String aTag) {
         Log.d(TAG, "onLogMultiSelectDialogCancel: Cancel button clicked");
-        diagFragment.dismiss();
+        //diagFragment.dismiss();
+        getSupportFragmentManager().popBackStack();
         fragment.setDialogDataCancel(aTag);
     }
 }

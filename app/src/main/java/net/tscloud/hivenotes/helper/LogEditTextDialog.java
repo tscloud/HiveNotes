@@ -36,7 +36,7 @@ import cn.refactor.library.SmoothCheckBox;
  * Created by tscloud on 2/10/17.
  */
 
-public class LogEditTextDialog extends LogSuperDialog {
+public class LogEditTextDialog extends LogSuperDialog2 {
 
     public static final String TAG = "LogEditTextDialog";
 
@@ -51,14 +51,17 @@ public class LogEditTextDialog extends LogSuperDialog {
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    //public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         final ArrayList<RecyclerView.ViewHolder> viewholderList = new ArrayList<>();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // get the Dialog Layout
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.scb_edittext_view, null);
+        //final View view = getActivity().getLayoutInflater().inflate(R.layout.scb_edittext_view, null);
+        final View view = inflater.inflate(R.layout.scb_edittext_view, null);
 
         // OK/Cancel button Listeners
         final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
@@ -89,11 +92,12 @@ public class LogEditTextDialog extends LogSuperDialog {
             }
         });
 
-        builder.setTitle(getArguments().getString("title")).setView(view);
+        //builder.setTitle(getArguments().getString("title")).setView(view);
 
-        AlertDialog diagFragDialog = builder.create();
+        //AlertDialog diagFragDialog = builder.create();
 
-        return diagFragDialog;
+        //return diagFragDialog;
+        return view;
     }
 
     @Override
