@@ -15,15 +15,12 @@ public abstract class LogSuperDialog2 extends Fragment {
     // reference to Activity that should have started me
     protected onLogMultiSelectDialogInteractionListener mListener;
 
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        super.onCancel(dialog);
-        Log.d(TAG, "Back button clicked");
-
-        if (mListener != null) {
-            mListener.onLogMultiSelectDialogCancel(getArguments().getString("tag"));
-        }
-    }
+    /**
+     * This will get called from attached Activity when back button pressed
+     * Note this works ONLY for Fragment; Dialogs intercept their own back
+     *  button pressed events
+     */
+    public abstract boolean onBackPressed();
 
     /*
     interface to define in the Activity what should be upon OK/Cancel

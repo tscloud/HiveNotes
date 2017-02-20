@@ -210,7 +210,7 @@ public class LogMultiSelectDialog extends LogSuperDialog {
 
                 // get the checked stuff
                 List<String> resultList = new ArrayList<>();
-                for (ViewHolder checkEdit:viewholderList) {
+                for (ViewHolder checkEdit : viewholderList) {
                     if (checkEdit.cb.isChecked()) {
                         resultList.add(checkEdit.tv.getText().toString());
                     }

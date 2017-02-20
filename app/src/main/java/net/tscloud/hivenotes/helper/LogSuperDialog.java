@@ -15,6 +15,10 @@ public abstract class LogSuperDialog extends DialogFragment {
     // reference to Activity that should have started me
     protected onLogMultiSelectDialogInteractionListener mListener;
 
+    /**
+     * This gets called in a Dialog when back button pressed
+     * Note this works ONLY for Dialog, DialogFragment, etc. but NOT for Fragment
+     */
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);

@@ -138,7 +138,10 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (diagFragment == null || !diagFragment.onBackPressed()) {
+            // diagFragment did not consume event
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -256,16 +259,17 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             Log.d(TAG, s);
         }
 
+        fragment.setDialogData(aResults, aResultRemTime, aTag);
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
-        fragment.setDialogData(aResults, aResultRemTime, aTag);
     }
 
     @Override
     public void onLogMultiSelectDialogCancel(String aTag) {
         Log.d(TAG, "onLogMultiSelectDialogCancel: Cancel button clicked");
+
+        fragment.setDialogDataCancel(aTag);
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
-        fragment.setDialogDataCancel(aTag);
     }
 }

@@ -68,15 +68,7 @@ public class LogEditTextDialog extends LogSuperDialog2 {
         dialogOKBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "OK button clicked");
-
-                if (mListener != null) {
-                    final EditText et = (EditText)view.findViewById(R.id.et);
-                    String[] result = new String[1];
-                    result[0] = et.getText().toString();
-                    mListener.onLogMultiSelectDialogOK(result, 0,
-                            getArguments().getString("tag"));
-                }
+                onBackPressed();
             }
         });
 
@@ -98,6 +90,23 @@ public class LogEditTextDialog extends LogSuperDialog2 {
 
         //return diagFragDialog;
         return view;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        Log.d(TAG, "Back button clicked...save everything");
+        boolean reply = false;
+
+        if (mListener != null) {
+            final EditText et = (EditText)view.findViewById(R.id.et);
+            String[] result = new String[1];
+            result[0] = et.getText().toString();
+            mListener.onLogMultiSelectDialogOK(result, 0,
+                    getArguments().getString("tag"));
+            reply = true;
+        }
+
+        return reply;
     }
 
     @Override
