@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,12 +37,15 @@ import cn.refactor.library.SmoothCheckBox;
  * Created by tscloud on 2/10/17.
  */
 
-public class LogEditTextDialog extends LogSuperDialog {
+public class LogEditTextDataEntry extends LogSuperDataEntry {
 
-    public static final String TAG = "LogEditTextDialog";
+    public static final String TAG = "LogEditTextDataEntry";
 
-    public static LogEditTextDialog newInstance(LogEditTextDialogData aData) {
-        LogEditTextDialog frag = new LogEditTextDialog();
+    // Needed for onBackPressed() - seperate method that may get called from the Activity
+    EditText et;
+
+    public static LogEditTextDataEntry newInstance(LogEditTextDialogData aData) {
+        LogEditTextDataEntry frag = new LogEditTextDataEntry();
         Bundle args = new Bundle();
         args.putString("title", aData.getTitle());
         args.putString("tag", aData.getTag());
@@ -51,29 +55,28 @@ public class LogEditTextDialog extends LogSuperDialog {
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    //public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         final ArrayList<RecyclerView.ViewHolder> viewholderList = new ArrayList<>();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // get the Dialog Layout
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.scb_edittext_view, null);
+        //final View view = getActivity().getLayoutInflater().inflate(R.layout.scb_edittext_view, null);
+        final View view = inflater.inflate(R.layout.scb_edittext_view, null);
+
+        // Needed for onBackPressed() - seperate method that may get called from the Activity
+        et = (EditText)view.findViewById(R.id.et);
+        et.setText(getArguments().getString("data"));
 
         // OK/Cancel button Listeners
         final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
         dialogOKBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "OK button clicked");
-
-                if (mListener != null) {
-                    final EditText et = (EditText)view.findViewById(R.id.et);
-                    String[] result = new String[1];
-                    result[0] = et.getText().toString();
-                    mListener.onLogMultiSelectDialogOK(result, 0,
-                            getArguments().getString("tag"));
-                }
+                onBackPressed();
             }
         });
 
@@ -89,11 +92,28 @@ public class LogEditTextDialog extends LogSuperDialog {
             }
         });
 
-        builder.setTitle(getArguments().getString("title")).setView(view);
+        //builder.setTitle(getArguments().getString("title")).setView(view);
 
-        AlertDialog diagFragDialog = builder.create();
+        //AlertDialog diagFragDialog = builder.create();
 
-        return diagFragDialog;
+        //return diagFragDialog;
+        return view;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        Log.d(TAG, "Back button clicked...save everything");
+        boolean reply = false;
+
+        if (mListener != null) {
+            String[] result = new String[1];
+            result[0] = et.getText().toString();
+            mListener.onLogMultiSelectDialogOK(result, 0,
+                    getArguments().getString("tag"));
+            reply = true;
+        }
+
+        return reply;
     }
 
     @Override

@@ -71,6 +71,21 @@ public abstract class LogFragment extends Fragment {
     }
 
     // concrete methods
+    protected void setLogEntryDOKeys(HiveNotesLogDO aDataObj) {
+        Log.d(TAG, "in setLogEntryDOKeys()");
+
+        // if we're given an honest to goodness DO => set the keys to the values
+        //  contained therein
+        if (aDataObj != null) {
+            mHiveID = aDataObj.getHive();
+            mLogEntryKey = getId();
+            mLogEntryDate = getVisitDate();
+        }
+
+        // call abstract method to set DO in each individual Fragment
+        setLogEntryDO(aDataObj);
+    }
+
     protected void getLogEntry(LogFragmentActivity aListener) {
         Log.d(TAG, "in getLogEntry()");
 
@@ -79,21 +94,16 @@ public abstract class LogFragment extends Fragment {
         //  read DB on id 1st, date 2nd
         if (getLogEntryDO() == null) {
             try {
-                setLogEntryDO(aListener.getPreviousLogData());
+                setLogEntryDOKeys(aListener.getPreviousLogData());
             }
             catch (ClassCastException e) {
                 // Log the exception but continue w/ NO previous log data
                 Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
-                setLogEntryDO(null);
+                setLogEntryDOKeys(null);
             }
             if (getLogEntryDO() == null) {
-                setLogEntryDO(getLogEntryFromDB(mLogEntryKey, mLogEntryDate));
+                setLogEntryDOKeys(getLogEntryFromDB(mLogEntryKey, mLogEntryDate));
             }
-        }
-
-        // If we got a DO => set the Key
-        if (getLogEntryDO() != null) {
-            mLogEntryKey = getLogEntryDO().getId();
         }
     }
 
@@ -103,12 +113,12 @@ public abstract class LogFragment extends Fragment {
 
         if (getLogEntryDO() == null) {
             try {
-                setLogEntryDO(aListener.getPreviousLogData());
+                setLogEntryDOKeys(aListener.getPreviousLogData());
             }
             catch (ClassCastException e) {
                 // Log the exception but continue w/ NO previous log data
                 Log.e(TAG, "*** Bad Previous Log Data from Activity ***", e);
-                setLogEntryDO(null);
+                setLogEntryDOKeys(null);
             }
             if (getLogEntryDO() == null) {
                 mGetLogDataTask = new GetLogData(aDOA, aViewList, aCtx);
@@ -185,6 +195,7 @@ public abstract class LogFragment extends Fragment {
             Log.d(TAG, "GetLogData("+ Thread.currentThread().getId() + ") : doInBackground");
 
             //pause to simulate work
+            /*
             boolean doSleep = false;
             if (doSleep) {
                 try {
@@ -194,6 +205,7 @@ public abstract class LogFragment extends Fragment {
                             ") : InterruptedException");
                 }
             }
+            */
 
             HiveNotesLogDO reply = null;
 
@@ -206,7 +218,7 @@ public abstract class LogFragment extends Fragment {
 
             mDAO.close();
 
-            setLogEntryDO(reply);
+            setLogEntryDOKeys(reply);
 
             return null;
         }
@@ -214,11 +226,6 @@ public abstract class LogFragment extends Fragment {
         @Override
         protected void onPostExecute(Void unused) {
             Log.d(TAG, "GetLogData("+ Thread.currentThread().getId() + ") : onPostExecute");
-
-            // If we got a DO => set the Key
-            if (getLogEntryDO() != null) {
-                mLogEntryKey = getLogEntryDO().getId();
-            }
 
             // disable all the Views that were passed in...
             if (mViewList != null) {

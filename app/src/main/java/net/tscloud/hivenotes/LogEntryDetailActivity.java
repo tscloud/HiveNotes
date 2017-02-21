@@ -35,8 +35,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
         LogOtherFragment.OnLogOtherFragmentInteractionListener,
         LogFragment.LogFragmentActivity,
-        LogMultiSelectDialog.onLogMultiSelectDialogInteractionListener,
-        LogEditTextDialog.onLogMultiSelectDialogInteractionListener {
+        LogSuperDataEntry.onLogMultiSelectDialogInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
 
@@ -240,13 +239,19 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
         //diagFragment = LogMultiSelectDialog.newInstance(aData);
         //diagFragment.show(getSupportFragmentManager(), aData.getTag());
+        diagFragment = LogMultiSelectDataEntry.newInstance(aData);
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack(aData.getTag())
+                .replace(R.id.logentry_detail_container, diagFragment, aData.getTag())
+                .commit();
     };
 
     // Dialog w/ edittext
     @Override
     public void onLogLaunchDialog(LogEditTextDialogData aData) {
-        diagFragment = LogEditTextDialog.newInstance(aData);
+        //diagFragment = LogEditTextDialog.newInstance(aData);
         //diagFragment.show(getSupportFragmentManager(), aData.getTag());
+        diagFragment = LogEditTextDataEntry.newInstance(aData);
         getSupportFragmentManager().beginTransaction()
                 .addToBackStack(aData.getTag())
                 .replace(R.id.logentry_detail_container, diagFragment, aData.getTag())

@@ -290,14 +290,6 @@ public class LogProductivityFragment extends LogFragment {
         // anything else
         if (mLogEntryProductivity == null) {
             mLogEntryProductivity = new LogEntryProductivity();
-
-            /**
-             * Switch to true Fragment from Dialog - when this Fragment gets popped after "Dialog"
-             *  work this stuff better be set?
-             */
-            mLogEntryProductivity.setId(mLogEntryKey);
-            mLogEntryProductivity.setHive(mHiveID);
-            mLogEntryProductivity.setVisitDate(mLogEntryDate);
         }
 
         switch (aTag){

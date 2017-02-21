@@ -9,4 +9,6 @@ public interface HiveNotesLogDO {
     void setId(long id);
     long getHive();
     void setHive(long hive);
+    long getVisitDate();
+    void setVisitDate(long hive);
 }

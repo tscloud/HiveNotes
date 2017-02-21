@@ -9,9 +9,9 @@ import android.util.Log;
  * Created by tscloud on 2/10/17.
  */
 
-public abstract class LogSuperDialog2 extends Fragment {
+public abstract class LogSuperDataEntry extends Fragment {
 
-    public static final String TAG = "LogSuperDialog";
+    public static final String TAG = "LogSuperDataEntry";
 
     // reference to Activity that should have started me
     protected onLogMultiSelectDialogInteractionListener mListener;
