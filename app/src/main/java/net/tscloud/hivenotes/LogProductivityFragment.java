@@ -111,7 +111,7 @@ public class LogProductivityFragment extends LogFragment {
          */
         getLogEntry(mListener);
 
-        // Replace the azrrow in the Dialog button w/ values that may be in DB
+        // Replace the arrow in the Dialog button w/ values that may be in DB
         if (mLogEntryProductivity != null) {
             replaceArrow(mLogEntryProductivity.getExtractedHoney(), dialogProductivityHoney);
             replaceArrow(mLogEntryProductivity.getPollenCollected(), dialogProductivityPollen);
@@ -290,21 +290,29 @@ public class LogProductivityFragment extends LogFragment {
         // anything else
         if (mLogEntryProductivity == null) {
             mLogEntryProductivity = new LogEntryProductivity();
+
+            /**
+             * Switch to true Fragment from Dialog - when this Fragment gets popped after "Dialog"
+             *  work this stuff better be set?
+             */
+            mLogEntryProductivity.setId(mLogEntryKey);
+            mLogEntryProductivity.setHive(mHiveID);
+            mLogEntryProductivity.setVisitDate(mLogEntryDate);
         }
 
         switch (aTag){
             case DIALOG_TAG_HONEY:
-                mLogEntryProductivity.setExtractedHoney(Long.parseLong(aResults[0]));
+                mLogEntryProductivity.setExtractedHoney(Float.parseFloat(aResults[0]));
                 Log.d(TAG, "onLogLaunchDialog: setExtractedHoney: " +
                         mLogEntryProductivity.getExtractedHoney());
                 break;
             case DIALOG_TAG_POLLEN:
-                mLogEntryProductivity.setPollenCollected(Long.parseLong(aResults[0]));
+                mLogEntryProductivity.setPollenCollected(Float.parseFloat(aResults[0]));
                 Log.d(TAG, "onLogLaunchDialog: setPollenCollected: " +
                         mLogEntryProductivity.getPollenCollected());
                 break;
             case DIALOG_TAG_WAX:
-                mLogEntryProductivity.setBeeswaxCollected(Long.parseLong(aResults[0]));
+                mLogEntryProductivity.setBeeswaxCollected(Float.parseFloat(aResults[0]));
                 Log.d(TAG, "onLogLaunchDialog: setBeeswaxCollected: " +
                         mLogEntryProductivity.getBeeswaxCollected());
                 break;

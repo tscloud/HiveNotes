@@ -29,6 +29,13 @@ public abstract class LogSuperDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Empty method for testing
+     */
+    public boolean onBackPressed() {
+        return false;
+    }
+
     /*
     interface to define in the Activity what should be upon OK/Cancel
      */

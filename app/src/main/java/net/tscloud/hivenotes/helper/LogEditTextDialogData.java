@@ -13,7 +13,7 @@ public class LogEditTextDialogData {
 
         this.title = aTitle;
         this.tag = aTag;
-        this.tag = aData;
+        this.data = aData;
     }
 
     public String getTag() {

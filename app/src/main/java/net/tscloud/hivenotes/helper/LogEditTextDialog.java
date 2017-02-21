@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -40,6 +41,9 @@ public class LogEditTextDialog extends LogSuperDialog2 {
 
     public static final String TAG = "LogEditTextDialog";
 
+    // Needed for onBackPressed() - seperate method that may get called from the Activity
+    EditText et;
+
     public static LogEditTextDialog newInstance(LogEditTextDialogData aData) {
         LogEditTextDialog frag = new LogEditTextDialog();
         Bundle args = new Bundle();
@@ -62,6 +66,10 @@ public class LogEditTextDialog extends LogSuperDialog2 {
         // get the Dialog Layout
         //final View view = getActivity().getLayoutInflater().inflate(R.layout.scb_edittext_view, null);
         final View view = inflater.inflate(R.layout.scb_edittext_view, null);
+
+        // Needed for onBackPressed() - seperate method that may get called from the Activity
+        et = (EditText)view.findViewById(R.id.et);
+        et.setText(getArguments().getString("data"));
 
         // OK/Cancel button Listeners
         final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
@@ -98,7 +106,6 @@ public class LogEditTextDialog extends LogSuperDialog2 {
         boolean reply = false;
 
         if (mListener != null) {
-            final EditText et = (EditText)view.findViewById(R.id.et);
             String[] result = new String[1];
             result[0] = et.getText().toString();
             mListener.onLogMultiSelectDialogOK(result, 0,

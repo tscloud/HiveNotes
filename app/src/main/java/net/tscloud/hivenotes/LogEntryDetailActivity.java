@@ -17,6 +17,7 @@ import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import net.tscloud.hivenotes.helper.LogSuperDialog;
+import net.tscloud.hivenotes.helper.LogSuperDialog2;
 
 /**
  * An activity representing a single LogEntryGeneral detail screen. This
@@ -34,7 +35,8 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
         LogOtherFragment.OnLogOtherFragmentInteractionListener,
         LogFragment.LogFragmentActivity,
-        LogMultiSelectDialog.onLogMultiSelectDialogInteractionListener {
+        LogMultiSelectDialog.onLogMultiSelectDialogInteractionListener,
+        LogEditTextDialog.onLogMultiSelectDialogInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
 
@@ -42,7 +44,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     private HiveNotesLogDO mPreviousLogData;
 
     // needed for things like Dialog dismissal after its return w/ w/o data
-    private LogSuperDialog diagFragment;
+    private LogSuperDialog2 diagFragment;
 
     // Need a reference to the Fragment that we're going to launch as we may need to pass back data
     //  collected by Dialog
@@ -138,6 +140,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
+        // Do the stuff we need to do in the Dialog - essentailly we're done so save everything
         if (diagFragment == null || !diagFragment.onBackPressed()) {
             // diagFragment did not consume event
             super.onBackPressed();
@@ -235,8 +238,8 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     // Dialog w/ checkboxes
     @Override
     public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
-        diagFragment = LogMultiSelectDialog.newInstance(aData);
-        diagFragment.show(getSupportFragmentManager(), aData.getTag());
+        //diagFragment = LogMultiSelectDialog.newInstance(aData);
+        //diagFragment.show(getSupportFragmentManager(), aData.getTag());
     };
 
     // Dialog w/ edittext
