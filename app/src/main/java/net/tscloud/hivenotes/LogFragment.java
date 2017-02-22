@@ -160,7 +160,7 @@ public abstract class LogFragment extends Fragment {
 
         public static final String TAG = "GetLogData";
 
-        private Context mCtx;
+        private Context mCtx; //presence or absence will determine decision to throw up Dialog
         private AbstractLogDAO mDAO;
         private List<View> mViewList;
 
@@ -181,13 +181,13 @@ public abstract class LogFragment extends Fragment {
                     v.setEnabled(false);
                 }
             }
-            // ...or throw up a ProgressDialog
-            //else {
-            //    dialog = new ProgressDialog(mCtx);
-            //    dialog.setMessage("Waiting...");
-            //    Log.d(TAG, "about to dialog.show()");
-            //    dialog.show();
-            //}
+            // ...or MAYBE throw up a ProgressDialog
+            else if (mCtx != null) {
+                dialog = new ProgressDialog(mCtx);
+                dialog.setMessage("Waiting...");
+                Log.d(TAG, "about to dialog.show()");
+                dialog.show();
+            }
         }
 
         @Override
@@ -234,11 +234,11 @@ public abstract class LogFragment extends Fragment {
                 }
             }
 
-            // ...or dismiss a ProgressDialog
-            //if ((dialog != null) && (dialog.isShowing())) {
-            //    Log.d(TAG, "about to dialog.dismiss()");
-            //    dialog.dismiss();
-            //}
+            // ...or MAYBE dismiss a ProgressDialog
+            if ((dialog != null) && (dialog.isShowing())) {
+                Log.d(TAG, "about to dialog.dismiss()");
+                dialog.dismiss();
+            }
 
             // all we need to do is nullify the Task reference
             mGetLogDataTask = null;

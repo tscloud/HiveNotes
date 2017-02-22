@@ -171,6 +171,7 @@ public class LogFeedingFragment extends LogFragment {
             mLogEntryFeeding = new LogEntryFeeding();
         }
 
+        // TODO: do we need to init these values?
         mLogEntryFeeding.setId(mLogEntryKey);
         mLogEntryFeeding.setHive(mHiveID);
         mLogEntryFeeding.setVisitDate(mLogEntryDate);

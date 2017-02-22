@@ -195,6 +195,8 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
         // LogFeedingFragment is non-visual => don't go back to the fragment, do as through back
         //  button were pressed here - this should happen on back pressed from Dialog
+        // TODO: do we not want to do onBackPressed() when the arg DO == null?
+        //  simply legacy of Dialog -> Fragment transition?
         if (aLogEntryFeeding == null) {
             onBackPressed();
             //setResult(RESULT_OK);
@@ -266,6 +268,9 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             Log.d(TAG, s);
         }
 
+        // TODO: nulling the diagFragment necessary/required/desired?
+        diagFragment = null;
+
         fragment.setDialogData(aResults, aResultRemTime, aTag);
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
@@ -274,6 +279,9 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     @Override
     public void onLogMultiSelectDialogCancel(String aTag) {
         Log.d(TAG, "onLogMultiSelectDialogCancel: Cancel button clicked");
+
+        // TODO: nulling the diagFragment necessary/required/desired?
+        diagFragment = null;
 
         fragment.setDialogDataCancel(aTag);
         //diagFragment.dismiss();

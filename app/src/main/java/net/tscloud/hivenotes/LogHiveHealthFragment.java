@@ -134,7 +134,8 @@ public class LogHiveHealthFragment extends LogFragment {
         //getLogEntry(mListener);
 
         // This method uses AsyncTask on DB operation
-        getLogEntry(mListener, new LogEntryHiveHealthDAO(getActivity()), disEnThese, getActivity());
+        getLogEntry(mListener, new LogEntryHiveHealthDAO(getActivity()), disEnThese,
+            getActivity());
 
         // set button listeners
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
