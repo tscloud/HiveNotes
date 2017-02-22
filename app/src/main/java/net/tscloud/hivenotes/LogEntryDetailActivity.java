@@ -12,12 +12,11 @@ import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
-import net.tscloud.hivenotes.helper.LogEditTextDialog;
+import net.tscloud.hivenotes.helper.LogEditTextDataEntry;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
-import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
+import net.tscloud.hivenotes.helper.LogMultiSelectDataEntry;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
-import net.tscloud.hivenotes.helper.LogSuperDialog;
-import net.tscloud.hivenotes.helper.LogSuperDialog2;
+import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 /**
  * An activity representing a single LogEntryGeneral detail screen. This
@@ -43,7 +42,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     private HiveNotesLogDO mPreviousLogData;
 
     // needed for things like Dialog dismissal after its return w/ w/o data
-    private LogSuperDialog2 diagFragment;
+    private LogSuperDataEntry diagFragment;
 
     // Need a reference to the Fragment that we're going to launch as we may need to pass back data
     //  collected by Dialog

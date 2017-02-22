@@ -9,6 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -74,7 +75,8 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -222,11 +224,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
             }
         });
 
-        builder.setTitle(getArguments().getString("title")).setView(view);
-
-        AlertDialog diagFragDialog = builder.create();
-
-        return diagFragDialog;
+        return view;
     }
 
     @Override

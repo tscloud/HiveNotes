@@ -55,16 +55,13 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
     }
 
     @Override
-    //public Dialog onCreateDialog(Bundle savedInstanceState) {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         final ArrayList<RecyclerView.ViewHolder> viewholderList = new ArrayList<>();
 
-        //AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         // get the Dialog Layout
-        //final View view = getActivity().getLayoutInflater().inflate(R.layout.scb_edittext_view, null);
         final View view = inflater.inflate(R.layout.scb_edittext_view, null);
 
         // Needed for onBackPressed() - seperate method that may get called from the Activity
@@ -92,11 +89,6 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
             }
         });
 
-        //builder.setTitle(getArguments().getString("title")).setView(view);
-
-        //AlertDialog diagFragDialog = builder.create();
-
-        //return diagFragDialog;
         return view;
     }
 

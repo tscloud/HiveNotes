@@ -78,8 +78,8 @@ public abstract class LogFragment extends Fragment {
         //  contained therein
         if (aDataObj != null) {
             mHiveID = aDataObj.getHive();
-            mLogEntryKey = getId();
-            mLogEntryDate = getVisitDate();
+            mLogEntryKey = aDataObj.getId();
+            mLogEntryDate = aDataObj.getVisitDate();
         }
 
         // call abstract method to set DO in each individual Fragment
