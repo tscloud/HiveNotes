@@ -292,6 +292,11 @@ public class LogProductivityFragment extends LogFragment {
             mLogEntryProductivity = new LogEntryProductivity();
         }
 
+        //deal w/ numeric data
+        if ((aResults[0] == null) || (aResults[0].length() == 0)) {
+            aResults[0] = "0.0";
+        }
+
         switch (aTag){
             case DIALOG_TAG_HONEY:
                 mLogEntryProductivity.setExtractedHoney(Float.parseFloat(aResults[0]));

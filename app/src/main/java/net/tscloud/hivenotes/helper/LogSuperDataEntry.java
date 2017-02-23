@@ -1,9 +1,6 @@
 package net.tscloud.hivenotes.helper;
 
-import android.content.DialogInterface;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 /**
  * Created by tscloud on 2/10/17.
@@ -14,7 +11,7 @@ public abstract class LogSuperDataEntry extends Fragment {
     public static final String TAG = "LogSuperDataEntry";
 
     // reference to Activity that should have started me
-    protected onLogMultiSelectDialogInteractionListener mListener;
+    protected onLogDataEntryInteractionListener mListener;
 
     /**
      * This will get called from attached Activity when back button pressed
@@ -26,8 +23,8 @@ public abstract class LogSuperDataEntry extends Fragment {
     /*
     interface to define in the Activity what should be upon OK/Cancel
      */
-    public interface onLogMultiSelectDialogInteractionListener {
-        void onLogMultiSelectDialogOK(String[] aResults, long aResultRemTime, String aTag);
-        void onLogMultiSelectDialogCancel(String aTag);
+    public interface onLogDataEntryInteractionListener {
+        void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag);
+        //void onLogMultiSelectDialogCancel(String aTag);
     }
 }

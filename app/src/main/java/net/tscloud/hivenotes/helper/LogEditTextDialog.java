@@ -103,7 +103,7 @@ public class LogEditTextDialog extends LogSuperDialog {
             mListener = (onLogMultiSelectDialogInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement onLogMultiSelectDialogInteractionListener");
+                    + " must implement onLogDataEntryInteractionListener");
         }
     }
 

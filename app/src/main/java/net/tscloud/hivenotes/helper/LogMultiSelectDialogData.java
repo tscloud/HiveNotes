@@ -12,6 +12,7 @@ public class LogMultiSelectDialogData {
     private String tag;
     private long reminderMillis = -1;
     private boolean hasOther = false;
+    private boolean isOtherNum = false; //note default - probably always text
     private boolean hasReminder = false;
     private boolean isMultiselect = true;
 
@@ -31,6 +32,23 @@ public class LogMultiSelectDialogData {
         this.isMultiselect = aIsMultiselect;
     }
 
+    public LogMultiSelectDialogData (String aTitle, long aHiveID, String[] aElems,
+                                     String aCheckedSet, String aTag, long aReminderMillis,
+                                     boolean aHasOther, boolean aIsOtherNum, boolean aHasReminder,
+                                     boolean aIsMultiselect) {
+
+        this.title = aTitle;
+        this.hiveID = aHiveID;
+        this.elems = aElems;
+        this.checkedSet = aCheckedSet;
+        this.tag = aTag;
+        this.reminderMillis = aReminderMillis;
+        this.hasOther = aHasOther;
+        this.isOtherNum = aIsOtherNum;
+        this.hasReminder = aHasReminder;
+        this.isMultiselect = aIsMultiselect;
+    }
+
     public String getCheckedSet() {
         return checkedSet;
     }
@@ -39,11 +57,15 @@ public class LogMultiSelectDialogData {
         return elems;
     }
 
-    public boolean isHasOther() {
+    public boolean hasOther() {
         return hasOther;
     }
 
-    public boolean isHasReminder() {
+    public boolean isOtherNum() {
+        return isOtherNum;
+    }
+
+    public boolean hasReminder() {
         return hasReminder;
     }
 

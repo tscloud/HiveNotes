@@ -34,7 +34,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
         LogOtherFragment.OnLogOtherFragmentInteractionListener,
         LogFragment.LogFragmentActivity,
-        LogSuperDataEntry.onLogMultiSelectDialogInteractionListener {
+        LogSuperDataEntry.onLogDataEntryInteractionListener {
 
     public static final String TAG = "LogEntryDetailActivity";
 
@@ -130,7 +130,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         // Make the Up button perform like the Back button
         switch (item.getItemId()) {
             case android.R.id.home:
-                super.onBackPressed();
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -261,8 +261,8 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     };
 
     @Override
-    public void onLogMultiSelectDialogOK(String[] aResults, long aResultRemTime, String aTag) {
-        Log.d(TAG, "onLogMultiSelectDialogOK: OK button clicked");
+    public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag) {
+        Log.d(TAG, "onLogDataEntryOK: OK button clicked");
 
         for (String s: aResults) {
             Log.d(TAG, s);
@@ -276,6 +276,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         getSupportFragmentManager().popBackStack();
     }
 
+    /*
     @Override
     public void onLogMultiSelectDialogCancel(String aTag) {
         Log.d(TAG, "onLogMultiSelectDialogCancel: Cancel button clicked");
@@ -287,4 +288,5 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
     }
+    */
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:layout_alignParentBottom="true"
+    android:id="@+id/buttonLayoutScb">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginRight="4dip"
+        android:background="?android:attr/dividerVertical"
+        android:layout_alignParentTop="true" />
+
+    <View
+        android:id="@+id/VertLine"
+        android:layout_width="1dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dip"
+        android:layout_marginTop="4dip"
+        android:background="?android:attr/dividerVertical"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/buttonCancelScb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/VertLine"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@android:string/cancel"
+        android:layout_alignParentBottom="true" />
+
+    <Button
+        android:id="@+id/buttonOKScb"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="@android:string/ok"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/VertLine" />
+</RelativeLayout>
+

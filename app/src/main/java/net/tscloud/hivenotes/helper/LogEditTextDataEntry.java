@@ -1,37 +1,18 @@
 package net.tscloud.hivenotes.helper;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
 
-import net.tscloud.hivenotes.LogHiveHealthFragment;
 import net.tscloud.hivenotes.R;
-import net.tscloud.hivenotes.db.NotificationType;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import cn.refactor.library.SmoothCheckBox;
 
 /**
  * Created by tscloud on 2/10/17.
@@ -42,7 +23,7 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
     public static final String TAG = "LogEditTextDataEntry";
 
     // Needed for onBackPressed() - seperate method that may get called from the Activity
-    EditText et;
+    private EditText et;
 
     public static LogEditTextDataEntry newInstance(LogEditTextDialogData aData) {
         LogEditTextDataEntry frag = new LogEditTextDataEntry();
@@ -50,6 +31,7 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
         args.putString("title", aData.getTitle());
         args.putString("tag", aData.getTag());
         args.putString("data", aData.getData());
+        args.putBoolean("isOtherNum", aData.isOtherNum());
         frag.setArguments(args);
         return frag;
     }
@@ -66,9 +48,16 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
 
         // Needed for onBackPressed() - seperate method that may get called from the Activity
         et = (EditText)view.findViewById(R.id.et);
+
+        // if we only want numeric data => make sure that's what we get
+        if (getArguments().getBoolean("isOtherNum")) {
+            et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
+
         et.setText(getArguments().getString("data"));
 
         // OK/Cancel button Listeners
+        /*
         final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
         dialogOKBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +77,7 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
                 }
             }
         });
+        */
 
         return view;
     }
@@ -100,7 +90,7 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
         if (mListener != null) {
             String[] result = new String[1];
             result[0] = et.getText().toString();
-            mListener.onLogMultiSelectDialogOK(result, 0,
+            mListener.onLogDataEntryOK(result, 0,
                     getArguments().getString("tag"));
             reply = true;
         }
@@ -112,10 +102,10 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (onLogMultiSelectDialogInteractionListener) activity;
+            mListener = (onLogDataEntryInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement onLogMultiSelectDialogInteractionListener");
+                    + " must implement onLogDataEntryInteractionListener");
         }
     }
 

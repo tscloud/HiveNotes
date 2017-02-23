@@ -1,14 +1,10 @@
 package net.tscloud.hivenotes.helper;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +13,6 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import net.tscloud.hivenotes.LogHiveHealthFragment;
 import net.tscloud.hivenotes.R;
 import net.tscloud.hivenotes.db.NotificationType;
 
@@ -29,7 +24,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import cn.refactor.library.SmoothCheckBox;
 
@@ -67,8 +61,9 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         args.putString("checkedset", aData.getCheckedSet());
         args.putString("tag", aData.getTag());
         args.putLong("reminderMillis", aData.getReminderMillis());
-        args.putBoolean("hasOther", aData.isHasOther());
-        args.putBoolean("hasReminder", aData.isHasReminder());
+        args.putBoolean("hasOther", aData.hasOther());
+        args.putBoolean("isOtherNum", aData.isOtherNum());
+        args.putBoolean("hasReminder", aData.hasReminder());
         args.putBoolean("isMultiselect", aData.isMultiselect());
         frag.setArguments(args);
         return frag;
@@ -204,6 +199,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         }
 
         // OK/Cancel button Listeners
+        /*
         final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
         dialogOKBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +219,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                 }
             }
         });
+        */
 
         return view;
     }
@@ -249,7 +246,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
             if ((mReminderText != null) && (mReminderText.getTag() != null)) {
                 resultRemMillis = (long)mReminderText.getTag();
             }
-            mListener.onLogMultiSelectDialogOK(result, resultRemMillis,
+            mListener.onLogDataEntryOK(result, resultRemMillis,
                     getArguments().getString("tag"));
             reply = true;
         }
@@ -261,10 +258,10 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (onLogMultiSelectDialogInteractionListener) activity;
+            mListener = (onLogDataEntryInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement onLogMultiSelectDialogInteractionListener");
+                    + " must implement onLogDataEntryInteractionListener");
         }
     }
 
