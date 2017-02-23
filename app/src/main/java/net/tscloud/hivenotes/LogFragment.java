@@ -27,6 +27,9 @@ public abstract class LogFragment extends Fragment {
 
     public static final String TAG = "LogFragment";
 
+    // reference to Activity that should have started me
+    private LogFragmentActivity mListener;
+
     // member vars common to all Log Fragments
     protected long mHiveID;
     protected long mLogEntryKey;
@@ -46,11 +49,15 @@ public abstract class LogFragment extends Fragment {
     // abstract methods
     protected abstract HiveNotesLogDO getLogEntryDO();
 
-    protected abstract void setLogEntryDO(HiveNotesLogDO aDataObj);
+    protected abstract HiveNotesLogDO setLogEntryDO(HiveNotesLogDO aDataObj);
+
+    protected abstract HiveNotesLogDO makeLogEntryDO();
 
     protected abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
 
     public abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
+
+    public abstract String getDOKey();
 
     // Override this method if you want a LogFragment to do something on Dialog cancel
     public void setDialogDataCancel(String aTag) {
@@ -138,6 +145,44 @@ public abstract class LogFragment extends Fragment {
 
     }
 
+    public boolean onFragmentSave() {
+        // get log entry data and put to DB
+        Log.d(TAG, "about to persist logentry");
+        boolean reply = false;
+
+        if (getLogEntryDO() == null) {
+            makeLogEntryDO();
+        }
+
+        getLogEntryDO().setId(mLogEntryKey);
+        getLogEntryDO().setHive(mHiveID);
+        getLogEntryDO().setVisitDate(mLogEntryDate);
+
+        if (mListener != null) {
+            mListener.onLogFragmentInteraction(getDOKey(), getLogEntryDO());
+            reply = true;
+        }
+
+        return reply;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (LogFragmentActivity)activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement LogFragmentActivity");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
     @Override
     public void onDestroy() {
         if (mGetLogDataTask != null) {
@@ -146,11 +191,13 @@ public abstract class LogFragment extends Fragment {
 
         super.onDestroy();
     }
+
     // necessary interfaces
     public interface LogFragmentActivity {
         HiveNotesLogDO getPreviousLogData();
         void onLogLaunchDialog(LogMultiSelectDialogData aData);
         void onLogLaunchDialog(LogEditTextDialogData aData);
+        void onLogFragmentInteraction(String aDOKey, HiveNotesLogDO aLogEntryDO);
     }
 
     /**

@@ -19,9 +19,7 @@ public class LogEditTextDialogData {
 
     public LogEditTextDialogData (String aTitle, String aTag, String aData, boolean aIsOtherNum) {
 
-        this.title = aTitle;
-        this.tag = aTag;
-        this.data = aData;
+        this(aTitle, aTag, aData);
         this.isOtherNum = aIsOtherNum;
     }
 

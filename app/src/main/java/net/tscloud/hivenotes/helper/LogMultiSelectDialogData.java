@@ -37,16 +37,9 @@ public class LogMultiSelectDialogData {
                                      boolean aHasOther, boolean aIsOtherNum, boolean aHasReminder,
                                      boolean aIsMultiselect) {
 
-        this.title = aTitle;
-        this.hiveID = aHiveID;
-        this.elems = aElems;
-        this.checkedSet = aCheckedSet;
-        this.tag = aTag;
-        this.reminderMillis = aReminderMillis;
-        this.hasOther = aHasOther;
+        this(aTitle, aHiveID, aElems, aCheckedSet, aTag, aReminderMillis, aHasOther,
+             aHasReminder, aIsMultiselect);
         this.isOtherNum = aIsOtherNum;
-        this.hasReminder = aHasReminder;
-        this.isMultiselect = aIsMultiselect;
     }
 
     public String getCheckedSet() {

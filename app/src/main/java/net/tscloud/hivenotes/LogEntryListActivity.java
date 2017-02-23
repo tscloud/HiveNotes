@@ -53,12 +53,8 @@ import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
  */
 public class LogEntryListActivity extends AppCompatActivity implements
         LogEntryListFragment.Callbacks,
-        LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
-        LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
-        LogHiveHealthFragment.OnLogHiveHealthFragmentInteractionListener,
-        LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
-        LogOtherFragment.OnLogOtherFragmentInteractionListener,
-        LogMultiSelectDialog.onLogMultiSelectDialogInteractionListener {
+        LogFragment.LogFragmentActivity,
+        LogSuperDataEntry.onLogDataEntryInteractionListener {
 
     public static final String TAG = "LogEntryListActivity";
 
@@ -281,34 +277,33 @@ public class LogEntryListActivity extends AppCompatActivity implements
     /*
     Coming back from LogFragment - set member var
      */
-    @Override
-    public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral) {
-        Log.d(TAG, "received LogEntryGeneral data object");
-        mLogEntryGeneralData = aLogEntryGeneral;
-    }
 
+    //NWO
     @Override
-    public void onLogProductivityFragmentInteraction(LogEntryProductivity aLogEntryProductivity) {
-        Log.d(TAG, "received LogEntryProductivity data object");
-        mLogEntryProductivityData = aLogEntryProductivity;
-    }
+    public void onLogFragmentInteraction(String aDOKey, HiveNotesLogDO aLogEntryDO) {
+        Log.d(TAG, "received LogFragment data object...key: " + aDOKey);
 
-    @Override
-    public void onLogHiveHealthFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth) {
-        Log.d(TAG, "received LogEntryHiveHealth data object");
-        mLogEntryHiveHealthData = alogEntryHiveHealth;
-    }
-
-    @Override
-    public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding) {
-        Log.d(TAG, "received LogEntryFeeding data object");
-        mLogEntryFeedingData = aLogEntryFeeding;
-    }
-
-    @Override
-    public void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther) {
-        Log.d(TAG, "received LogEntryOther data object");
-        mLogEntryOtherData = aLogEntryOther;
+        try {
+            switch (aTag){
+                case INTENT_LOGENTRY_GENERAL_DATA:
+                    mLogEntryGeneralData = (LogEntryGeneral)aLogEntryDO;
+                    break;
+                case INTENT_LOGENTRY_PRODUCTIVITY_DATA:
+                    mLogEntryProductivityData = (LogEntryProductivity)aLogEntryDO;
+                    break;
+                case INTENT_LOGENTRY_PESTMGMT_DATA:
+                    mLogEntryHiveHealthData = (LogEntryHiveHealth)aLogEntryDO;
+                    break;
+                case INTENT_LOGENTRY_FEEDING_DATA:
+                    mLogEntryFeedingData = (LogEntryFeeding)aLogEntryDO;
+                    break;
+                case INTENT_LOGENTRY_OTHER_DATA:
+                    mLogEntryOtherData = (LogEntryOther)aLogEntryDO;
+                    break;
+            }
+        } catch (ClassCastException e) {
+            Log.d(TAG, "you passed me a LogDO w/ a mismatched key...WHAT ARE YOU THINKING?");
+        }
     }
 
     /*
@@ -326,12 +321,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogMultiSelectDialogCancel(String aTag) {
-
-    }
-
-    @Override
-    public void onLogMultiSelectDialogOK(String[] aResults, long aResultRemTime, String aTag) {
+    public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag) {
 
     }
 

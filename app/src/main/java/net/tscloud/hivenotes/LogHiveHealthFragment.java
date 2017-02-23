@@ -30,12 +30,7 @@ import java.util.GregorianCalendar;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnLogHiveHealthFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LogHiveHealthFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A LogFragment subclass.
  */
 public class LogHiveHealthFragment extends LogFragment {
 
@@ -45,7 +40,7 @@ public class LogHiveHealthFragment extends LogFragment {
     private LogEntryHiveHealth mLogEntryHiveHealth;
 
     // reference to Activity that should have started me
-    private OnLogHiveHealthFragmentInteractionListener mListener;
+    private LogFragmentActivity mListener;
 
     // constants used for Dialogs
     public static final String DIALOG_TAG_PESTS = "pests";
@@ -70,8 +65,20 @@ public class LogHiveHealthFragment extends LogFragment {
     }
 
     @Override
-    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected HiveNotesLogDO setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryHiveHealth = (LogEntryHiveHealth)aDataObj;
+        return mLogEntryHiveHealth;
+    }
+
+    @Override
+    protected HiveNotesLogDO makeLogEntryDO() {
+        mLogEntryHiveHealth = new LogEntryHiveHealth();
+        return mLogEntryHiveHealth;
+    }
+
+    @Override
+    protected String getDOKey() {
+        return LogEntryListActivity.INTENT_LOGENTRY_PESTMGMT_DATA;
     }
 
     @Override
@@ -239,45 +246,7 @@ public class LogHiveHealthFragment extends LogFragment {
     }
 
     public void onHiveNoteButtonPressed(long hiveID) {
-        // get log entry data and put to DB
-        Log.d(TAG, "about to persist logentry");
-
-        boolean lNewLogEntry = false;
-
-        // check for required values - are there any?
-        boolean emptyText = false;
-
-        if (!emptyText) {
-            LogEntryHiveHealthDAO logEntryHiveHealthDAO = new LogEntryHiveHealthDAO(getActivity());
-            if (mLogEntryHiveHealth == null) {
-                mLogEntryHiveHealth = new LogEntryHiveHealth();
-            }
-
-            mLogEntryHiveHealth.setId(mLogEntryKey);
-            mLogEntryHiveHealth.setHive(mHiveID);
-            mLogEntryHiveHealth.setVisitDate(mLogEntryDate);
-
-            if (mListener != null) {
-                mListener.onLogHiveHealthFragmentInteraction(mLogEntryHiveHealth);
-            }
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnLogHiveHealthFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnLogHiveHealthFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+        onFragmentSave();
     }
 
     @Override
@@ -347,16 +316,5 @@ public class LogHiveHealthFragment extends LogFragment {
             default:
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
         }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnLogHiveHealthFragmentInteractionListener extends
-            LogFragmentActivity {
-        void onLogHiveHealthFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth);
     }
 }

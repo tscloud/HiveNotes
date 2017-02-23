@@ -20,12 +20,7 @@ import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LogFeedingFragment.OnLogFeedingFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LogFeedingFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A LogFragment subclass.
  */
 public class LogFeedingFragment extends LogFragment {
 
@@ -33,9 +28,6 @@ public class LogFeedingFragment extends LogFragment {
 
     // DO for this particular Fragment
     private LogEntryFeeding mLogEntryFeeding;
-
-    // reference to Activity that should have started me
-    private OnLogFeedingFragmentInteractionListener mListener;
 
     // constants used for Dialogs
     public static final String DIALOG_TAG_FEEDING = "feeding";
@@ -58,8 +50,20 @@ public class LogFeedingFragment extends LogFragment {
     }
 
     @Override
-    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected HiveNotesLogDO setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryFeeding = (LogEntryFeeding) aDataObj;
+        return mLogEntryFeeding;
+    }
+
+    @Override
+    protected HiveNotesLogDO makeLogEntryDO() {
+        mLogEntryFeeding = new LogEntryFeeding();
+        return mLogEntryFeeding;
+    }
+
+    @Override
+    protected String getDOKey() {
+        return LogEntryListActivity.INTENT_LOGENTRY_OTHER_DATA;
     }
 
     @Override
@@ -109,28 +113,13 @@ public class LogFeedingFragment extends LogFragment {
         }
     }
 
-    // Is this the proper action to take when Fragment has nothing visual?
+    /**
+     * Important to return null here on non-visual Fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return null;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnLogFeedingFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnLogFeedingFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -189,26 +178,16 @@ public class LogFeedingFragment extends LogFragment {
         // This is done in the Feeding Fragment since there's nothing visual to show (no override
         //  of onCreateView()) so go back to the Activity
         if (mListener != null) {
-            mListener.onLogFeedingFragmentInteraction(mLogEntryFeeding);
+            mListener.onLogFragmentInteraction(getDOKey(), mLogEntryFeeding);
         }
     }
 
+    /*
     @Override
     public void setDialogDataCancel(String aTag) {
         if (mListener != null) {
-            mListener.onLogFeedingFragmentInteraction(null);
+            mListener.onLogFragmentInteraction(null);
         }
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnLogFeedingFragmentInteractionListener extends
-            LogFragmentActivity {
-        void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding);
-    }
-
+    */
 }

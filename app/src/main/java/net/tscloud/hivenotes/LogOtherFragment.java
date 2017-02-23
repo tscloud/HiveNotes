@@ -29,12 +29,7 @@ import java.util.GregorianCalendar;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnLogOtherFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LogOtherFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A LogFragment subclass.
  */
 public class LogOtherFragment extends LogFragment {
 
@@ -72,8 +67,20 @@ public class LogOtherFragment extends LogFragment {
     }
 
     @Override
-    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected HiveNotesLogDO setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryOther = (LogEntryOther) aDataObj;
+        return mLogEntryOther;
+    }
+
+    @Override
+    protected HiveNotesLogDO makeLogEntryDO() {
+        mLogEntryOther = new LogEntryOther();
+        return mLogEntryOther;
+    }
+
+    @Override
+    protected String getDOKey() {
+        return LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA;
     }
 
     @Override
@@ -229,7 +236,7 @@ public class LogOtherFragment extends LogFragment {
         hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onHiveButtonPressed(mHiveID);
+                onHiveNoteButtonPressed(mHiveID);
             }
         });
 
@@ -257,7 +264,7 @@ public class LogOtherFragment extends LogFragment {
         return v;
     }
 
-    public void onHiveButtonPressed(long hiveID) {
+    public void onHiveNoteButtonPressed(long hiveID) {
         // get log entry data and put to DB
         Log.d(TAG, "about to persist logentry");
 
@@ -293,7 +300,7 @@ public class LogOtherFragment extends LogFragment {
            mLogEntryOther.setSplitHiveRmndrTime(splitHiveRmndrLong);
 
            if (mListener != null) {
-               mListener.onLogOtherFragmentInteraction(mLogEntryOther);
+               mListener.onLogFragmentInteraction(getDOKey, mLogEntryOther);
            }
        }
     }
@@ -429,17 +436,6 @@ public class LogOtherFragment extends LogFragment {
     @Override
     public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
 
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnLogOtherFragmentInteractionListener extends
-            LogFragmentActivity {
-        void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther);
     }
 
     /** subclass of the GetReminderTimeTask

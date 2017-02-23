@@ -28,11 +28,6 @@ import net.tscloud.hivenotes.helper.LogSuperDataEntry;
  * more than a {@link LogEntryDetailFragment}.
  */
 public class LogEntryDetailActivity extends AppCompatActivity implements
-        LogGeneralNotesFragment.OnLogGeneralNotesFragmentInteractionListener,
-        LogProductivityFragment.OnLogProductivityFragmentInteractionListener,
-        LogHiveHealthFragment.OnLogHiveHealthFragmentInteractionListener,
-        LogFeedingFragment.OnLogFeedingFragmentInteractionListener,
-        LogOtherFragment.OnLogOtherFragmentInteractionListener,
         LogFragment.LogFragmentActivity,
         LogSuperDataEntry.onLogDataEntryInteractionListener {
 
@@ -138,10 +133,15 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        // Do the stuff we need to do in the Dialog - essentailly we're done so save everything
+        // Do the stuff we need to do in the dialog - essentially we're done =>
+        //  so save everything
         if (diagFragment == null || !diagFragment.onBackPressed()) {
-            // diagFragment did not consume event
-            super.onBackPressed();
+            // Do the stuff we need to do in the fragment - essentially we're done =>
+            //  so save everything
+            if (fragment == null || !fragment.onFragmentSave()) {
+                // neither dialog nor fragment consumed event
+                super.onBackPressed();
+            }
         }
     }
 
@@ -153,77 +153,23 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     /*
     Coming back from LogFragment - return w/ DO to LogEntryListActivity
      */
+
+    //NWO
     @Override
-    public void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral) {
-        Log.d(TAG, "return from LogGeneralNotesFragment...finish LogEntryDetailActivity");
+    void onLogFragmentInteraction(String aDOKey, HiveNotesLogDO aLogEntryDO) {
+
+        Log.d(TAG, "return from a LogFragment...key: " + aDOKey +
+            "...finish LogEntryDetailActivity");
 
         Intent data = new Intent();
         Bundle bundleData = new Bundle();
-        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_GENERAL_DATA, aLogEntryGeneral);
+        bundleData.putParcelable(aDOKey, aLogEntryDO);
         data.putExtras(bundleData);
         setResult(RESULT_OK, data);
         finish();
     }
 
-    @Override
-    public void onLogProductivityFragmentInteraction(LogEntryProductivity aLogEntryProductivity) {
-        Log.d(TAG, "return from LogProductivityFragment...finish LogEntryDetailActivity");
-
-        Intent data = new Intent();
-        Bundle bundleData = new Bundle();
-        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_PRODUCTIVITY_DATA, aLogEntryProductivity);
-        data.putExtras(bundleData);
-        setResult(RESULT_OK, data);
-        finish();
-    }
-
-    @Override
-    public void onLogHiveHealthFragmentInteraction(LogEntryHiveHealth alogEntryHiveHealth) {
-        Log.d(TAG, "return from LogPestMgmntFragment...finish LogEntryDetailActivity");
-
-        Intent data = new Intent();
-        Bundle bundleData = new Bundle();
-        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_PESTMGMT_DATA, alogEntryHiveHealth);
-        data.putExtras(bundleData);
-        setResult(RESULT_OK, data);
-        finish();
-    }
-
-    @Override
-    public void onLogFeedingFragmentInteraction(LogEntryFeeding aLogEntryFeeding) {
-        Log.d(TAG, "return from LogFeedingFragment...finish LogEntryDetailActivity");
-
-        // LogFeedingFragment is non-visual => don't go back to the fragment, do as through back
-        //  button were pressed here - this should happen on back pressed from Dialog
-        // TODO: do we not want to do onBackPressed() when the arg DO == null?
-        //  simply legacy of Dialog -> Fragment transition?
-        if (aLogEntryFeeding == null) {
-            onBackPressed();
-            //setResult(RESULT_OK);
-            //finish();
-        }
-        else {
-            Intent data = new Intent();
-            Bundle bundleData = new Bundle();
-            bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA, aLogEntryFeeding);
-            data.putExtras(bundleData);
-            setResult(RESULT_OK, data);
-            finish();
-        }
-    }
-
-    @Override
-    public void onLogOtherFragmentInteraction(LogEntryOther aLogEntryOther) {
-        Log.d(TAG, "return from LogOtherFragment...finish LogEntryDetailActivity");
-
-        Intent data = new Intent();
-        Bundle bundleData = new Bundle();
-        bundleData.putParcelable(LogEntryListActivity.INTENT_LOGENTRY_OTHER_DATA, aLogEntryOther);
-        data.putExtras(bundleData);
-        setResult(RESULT_OK, data);
-        finish();
-    }
-
+    // Save button - should we really ever be able to get here?
     private void onSaveButton() {
         Log.d(TAG, "returning to LogEntryListActivity to perform save");
         setResult(RESULT_OK);

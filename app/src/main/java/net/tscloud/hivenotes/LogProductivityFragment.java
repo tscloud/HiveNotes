@@ -17,12 +17,7 @@ import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnLogProductivityFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LogProductivityFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A LogFragment subclass.
  */
 public class LogProductivityFragment extends LogFragment {
 
@@ -37,7 +32,7 @@ public class LogProductivityFragment extends LogFragment {
     public static final String DIALOG_TAG_WAX = "wax";
 
     // reference to Activity that should have started me
-    private OnLogProductivityFragmentInteractionListener mListener;
+    private LogFragmentActivity mListener;
 
     // Factory method to create a new instance of this fragment using the provided parameters.
     public static LogProductivityFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
@@ -57,8 +52,20 @@ public class LogProductivityFragment extends LogFragment {
     }
 
     @Override
-    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected HiveNotesLogDO setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryProductivity = (LogEntryProductivity)aDataObj;
+        return mLogEntryProductivity;
+    }
+
+    @Override
+    protected HiveNotesLogDO makeLogEntryDO() {
+        mLogEntryProductivity = new LogEntryProductivity();
+        return mLogEntryProductivity;
+    }
+
+    @Override
+    protected String getDOKey() {
+        return LogEntryListActivity.INTENT_LOGENTRY_PRODUCTIVITY_DATA;
     }
 
     @Override
@@ -122,7 +129,7 @@ public class LogProductivityFragment extends LogFragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonPressed(mHiveID);
+                onHiveNoteButtonPressed(mHiveID);
             }
         });
 
@@ -195,46 +202,8 @@ public class LogProductivityFragment extends LogFragment {
         return v;
     }
 
-    public void onButtonPressed(long hiveID) {
-        // get log entry data and put to DB
-        Log.d(TAG, "about to persist logentry");
-
-        boolean lNewLogEntry = false;
-
-        // check for required values - are there any?
-        boolean emptyText = false;
-
-        if (!emptyText) {
-            LogEntryProductivityDAO logEntryProductivityDAO = new LogEntryProductivityDAO(getActivity());
-            if (mLogEntryProductivity == null) {
-                mLogEntryProductivity = new LogEntryProductivity();
-            }
-
-            mLogEntryProductivity.setId(mLogEntryKey);
-            mLogEntryProductivity.setHive(mHiveID);
-            mLogEntryProductivity.setVisitDate(mLogEntryDate);
-
-            if (mListener != null) {
-                mListener.onLogProductivityFragmentInteraction(mLogEntryProductivity);
-            }
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnLogProductivityFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnLogProductivityFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onHiveNoteButtonPressed(long hiveID) {
+        onFragmentSave();
     }
 
     @Override
@@ -317,16 +286,4 @@ public class LogProductivityFragment extends LogFragment {
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
         }
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnLogProductivityFragmentInteractionListener extends
-            LogFragmentActivity {
-        public void onLogProductivityFragmentInteraction(LogEntryProductivity aLogEntryProductivity);
-    }
-
 }

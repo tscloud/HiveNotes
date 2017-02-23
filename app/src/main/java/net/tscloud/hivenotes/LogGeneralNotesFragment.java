@@ -20,12 +20,7 @@ import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnLogGeneralNotesFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LogGeneralNotesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A LogFragment subclass.
  */
 public class LogGeneralNotesFragment extends LogFragment {
 
@@ -33,9 +28,6 @@ public class LogGeneralNotesFragment extends LogFragment {
 
     // DO for this particular Fragment
     private LogEntryGeneral mLogEntryGeneral;
-
-    // reference to Activity that should have started me
-    private OnLogGeneralNotesFragmentInteractionListener mListener;
 
     // constants used for Dialogs
     public static final String DIALOG_TAG_POPULATION = "population";
@@ -63,8 +55,20 @@ public class LogGeneralNotesFragment extends LogFragment {
     }
 
     @Override
-    protected void setLogEntryDO(HiveNotesLogDO aDataObj) {
+    protected HiveNotesLogDO setLogEntryDO(HiveNotesLogDO aDataObj) {
         mLogEntryGeneral = (LogEntryGeneral)aDataObj;
+        return mLogEntryGeneral;
+    }
+
+    @Override
+    protected HiveNotesLogDO makeLogEntryDO() {
+        mLogEntryGeneral = new LogEntryGeneral();
+        return mLogEntryGeneral;
+    }
+
+    @Override
+    protected String getDOKey() {
+        return LogEntryListActivity.INTENT_LOGENTRY_GENERAL_DATA;
     }
 
     @Override
@@ -330,49 +334,11 @@ public class LogGeneralNotesFragment extends LogFragment {
     }
 
     private void onHiveNoteBtnButtonPressed() {
-        // get log entry data and put to DB
-        Log.d(TAG, "about to persist logentry");
-
-        boolean lNewLogEntry = false;
-
-        // check for required values - are there any?
-        boolean emptyText = false;
-
-        if (!emptyText) {
-            LogEntryGeneralDAO logEntryGeneralDAO = new LogEntryGeneralDAO(getActivity());
-            if (mLogEntryGeneral == null) {
-                mLogEntryGeneral = new LogEntryGeneral();
-            }
-
-            mLogEntryGeneral.setId(mLogEntryKey);
-            mLogEntryGeneral.setHive(mHiveID);
-            mLogEntryGeneral.setVisitDate(mLogEntryDate);
-
-            if (mListener != null) {
-                mListener.onLogGeneralNotesFragmentInteraction(mLogEntryGeneral);
-            }
-        }
+        onFragmentSave();
     }
 
     private void onAddPhotoBtnButtonPressed() {
         Toast.makeText(getActivity(),"Add Photo button clicked", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnLogGeneralNotesFragmentInteractionListener)activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnLogGeneralNotesFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -463,16 +429,4 @@ public class LogGeneralNotesFragment extends LogFragment {
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
         }
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnLogGeneralNotesFragmentInteractionListener extends
-            LogFragmentActivity {
-        void onLogGeneralNotesFragmentInteraction(LogEntryGeneral aLogEntryGeneral);
-    }
-
 }
