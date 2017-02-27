@@ -1,5 +1,6 @@
 package net.tscloud.hivenotes;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -28,7 +29,7 @@ public abstract class LogFragment extends Fragment {
     public static final String TAG = "LogFragment";
 
     // reference to Activity that should have started me
-    private LogFragmentActivity mListener;
+    protected LogFragmentActivity mListener;
 
     // member vars common to all Log Fragments
     protected long mHiveID;
@@ -55,14 +56,9 @@ public abstract class LogFragment extends Fragment {
 
     protected abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
 
-    public abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
+    protected abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
 
-    public abstract String getDOKey();
-
-    // Override this method if you want a LogFragment to do something on Dialog cancel
-    public void setDialogDataCancel(String aTag) {
-        // NOOP - just re-present fragment
-    }
+    protected abstract String getDOKey();
 
     // concrete static methods
     public static LogFragment setLogFragArgs(LogFragment aFrag, long aHiveID, long aLogEntryDate,
@@ -118,6 +114,7 @@ public abstract class LogFragment extends Fragment {
                                List<View> aViewList, Context aCtx) {
         Log.d(TAG, "in getLogEntry()");
 
+        // essentially the same as the above method but read DB in an AsyncTask
         if (getLogEntryDO() == null) {
             try {
                 setLogEntryDOKeys(aListener.getPreviousLogData());

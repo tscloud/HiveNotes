@@ -1,14 +1,11 @@
 package net.tscloud.hivenotes;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
@@ -30,9 +27,6 @@ public class LogProductivityFragment extends LogFragment {
     public static final String DIALOG_TAG_HONEY = "honey";
     public static final String DIALOG_TAG_POLLEN = "pollen";
     public static final String DIALOG_TAG_WAX = "wax";
-
-    // reference to Activity that should have started me
-    private LogFragmentActivity mListener;
 
     // Factory method to create a new instance of this fragment using the provided parameters.
     public static LogProductivityFragment newInstance(long hiveID, long logEntryDate, long logEntryID) {
@@ -91,10 +85,6 @@ public class LogProductivityFragment extends LogFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log_productivity_notes, container, false);
 
-        // set button listener and text
-        final Button b1 = (Button)v.findViewById(R.id.hiveNoteButtton);
-        b1.setText(getResources().getString(R.string.done_string));
-
         // get reference to the <include>s
         final View dialogProductivityHoney = v.findViewById(R.id.buttonProductivityHoney);
         final View dialogProductivityPollen = v.findViewById(R.id.buttonProductivityPollen);
@@ -124,14 +114,6 @@ public class LogProductivityFragment extends LogFragment {
             replaceArrow(mLogEntryProductivity.getPollenCollected(), dialogProductivityPollen);
             replaceArrow(mLogEntryProductivity.getBeeswaxCollected(), dialogProductivityWax);
         }
-
-        // set button listener
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onHiveNoteButtonPressed(mHiveID);
-            }
-        });
 
         dialogProductivityHoney.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,10 +182,6 @@ public class LogProductivityFragment extends LogFragment {
         });
 
         return v;
-    }
-
-    public void onHiveNoteButtonPressed(long hiveID) {
-        onFragmentSave();
     }
 
     @Override

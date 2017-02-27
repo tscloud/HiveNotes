@@ -39,9 +39,6 @@ public class LogHiveHealthFragment extends LogFragment {
     // DO for this particular Fragment
     private LogEntryHiveHealth mLogEntryHiveHealth;
 
-    // reference to Activity that should have started me
-    private LogFragmentActivity mListener;
-
     // constants used for Dialogs
     public static final String DIALOG_TAG_PESTS = "pests";
     public static final String DIALOG_TAG_DISEASE = "disease";
@@ -104,13 +101,9 @@ public class LogHiveHealthFragment extends LogFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log_hivehealth_notes, container, false);
 
-        // set button listeners and text
-        final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
-        hiveNoteBtn.setText(getResources().getString(R.string.done_string));
-
         // get reference to the <include>s and...
         // ...put them in the disable/enable List used by GetLogData AsyncTask
-        ArrayList<View> disEnThese = new ArrayList<View>();
+        ArrayList<View> disEnThese = new ArrayList<>();
 
         final View dialogHiveHealthPest = v.findViewById(R.id.buttonHiveHealthPest);
         disEnThese.add(dialogHiveHealthPest);
@@ -143,14 +136,6 @@ public class LogHiveHealthFragment extends LogFragment {
         // This method uses AsyncTask on DB operation
         getLogEntry(mListener, new LogEntryHiveHealthDAO(getActivity()), disEnThese,
             getActivity());
-
-        // set button listeners
-        hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onHiveNoteButtonPressed(mHiveID);
-            }
-        });
 
         dialogHiveHealthPest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,10 +228,6 @@ public class LogHiveHealthFragment extends LogFragment {
         });
 
         return v;
-    }
-
-    public void onHiveNoteButtonPressed(long hiveID) {
-        onFragmentSave();
     }
 
     @Override

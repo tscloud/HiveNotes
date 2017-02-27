@@ -5,6 +5,13 @@
     android:orientation="vertical"
     android:id="@+id/rootLayoutScb">
 
+    <TextView
+        android:id="@+id/titleScb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_above="@id/svScb" />
+
     <ScrollView
         android:id="@+id/svScb"
         android:layout_width="match_parent"
@@ -31,6 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:layout_above="@+id/buttonLayoutScb" />
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

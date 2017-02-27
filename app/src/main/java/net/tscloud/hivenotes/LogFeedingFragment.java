@@ -63,7 +63,7 @@ public class LogFeedingFragment extends LogFragment {
 
     @Override
     protected String getDOKey() {
-        return LogEntryListActivity.INTENT_LOGENTRY_OTHER_DATA;
+        return LogEntryListActivity.INTENT_LOGENTRY_FEEDING_DATA;
     }
 
     @Override
@@ -181,13 +181,4 @@ public class LogFeedingFragment extends LogFragment {
             mListener.onLogFragmentInteraction(getDOKey(), mLogEntryFeeding);
         }
     }
-
-    /*
-    @Override
-    public void setDialogDataCancel(String aTag) {
-        if (mListener != null) {
-            mListener.onLogFragmentInteraction(null);
-        }
-    }
-    */
 }

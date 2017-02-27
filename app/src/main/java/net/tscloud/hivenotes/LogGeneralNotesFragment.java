@@ -1,16 +1,12 @@
 package net.tscloud.hivenotes;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,10 +93,6 @@ public class LogGeneralNotesFragment extends LogFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log_general_notes, container, false);
 
-        // set button listener and text
-        final Button hiveNoteBtn = (Button)v.findViewById(R.id.hiveNoteButtton);
-        hiveNoteBtn.setText(getResources().getString(R.string.done_string));
-
         // get reference to the <include>s
         final View dialogLogPopulation = v.findViewById(R.id.buttonLogPopulation);
         final View dialogLogTemperament = v.findViewById(R.id.buttonLogTemperament);
@@ -143,14 +135,6 @@ public class LogGeneralNotesFragment extends LogFragment {
          * call super method to get DO via best means
          */
         getLogEntry(mListener);
-
-        // set button listeners
-        hiveNoteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onHiveNoteBtnButtonPressed();
-            }
-        });
 
         dialogAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -331,10 +315,6 @@ public class LogGeneralNotesFragment extends LogFragment {
         });
 
         return v;
-    }
-
-    private void onHiveNoteBtnButtonPressed() {
-        onFragmentSave();
     }
 
     private void onAddPhotoBtnButtonPressed() {

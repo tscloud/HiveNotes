@@ -2,6 +2,7 @@ package net.tscloud.hivenotes.db;
 
 import net.tscloud.hivenotes.LogGeneralNotesFragment;
 import net.tscloud.hivenotes.LogHiveHealthFragment;
+import net.tscloud.hivenotes.LogOtherFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,5 +73,6 @@ public class NotificationType {
         notificationTypeLookup = new HashMap<String, Integer>();
         notificationTypeLookup.put(LogHiveHealthFragment.DIALOG_TAG_VARROA, NOTIFY_HEALTH_REMOVE_MITE);
         notificationTypeLookup.put(LogGeneralNotesFragment.DIALOG_TAG_QUEEN, NOTIFY_GENERAL_LAYING_QUEEN);
+        notificationTypeLookup.put(LogOtherFragment.DIALOG_TAG_EVENTS, NOTIFY_OTHER_OTHER);
     }
 }

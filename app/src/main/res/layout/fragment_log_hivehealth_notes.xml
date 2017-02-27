@@ -39,20 +39,4 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/buttonHiveHealthDisease" />
 
-    <include
-        android:id="@+id/savePestMgmtButton"
-        layout="@layout/hive_note_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/hiveLine" />
-
-    <View
-        android:id="@+id/hiveLine"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
 </RelativeLayout>

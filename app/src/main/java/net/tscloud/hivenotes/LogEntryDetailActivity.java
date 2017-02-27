@@ -156,7 +156,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
 
     //NWO
     @Override
-    void onLogFragmentInteraction(String aDOKey, HiveNotesLogDO aLogEntryDO) {
+    public void onLogFragmentInteraction(String aDOKey, HiveNotesLogDO aLogEntryDO) {
 
         Log.d(TAG, "return from a LogFragment...key: " + aDOKey +
             "...finish LogEntryDetailActivity");
@@ -221,18 +221,4 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
     }
-
-    /*
-    @Override
-    public void onLogMultiSelectDialogCancel(String aTag) {
-        Log.d(TAG, "onLogMultiSelectDialogCancel: Cancel button clicked");
-
-        // TODO: nulling the diagFragment necessary/required/desired?
-        diagFragment = null;
-
-        fragment.setDialogDataCancel(aTag);
-        //diagFragment.dismiss();
-        getSupportFragmentManager().popBackStack();
-    }
-    */
 }

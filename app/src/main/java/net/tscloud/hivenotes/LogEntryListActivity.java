@@ -33,6 +33,7 @@ import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
+import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 
 /**
@@ -78,15 +79,15 @@ public class LogEntryListActivity extends AppCompatActivity implements
     private long mLogKey;
 
     // Need to a reference to each of the Log Entry data objects
-    public static String INTENT_LOGENTRY_GENERAL_DATA = "logentryGeneralData";
+    public static final String INTENT_LOGENTRY_GENERAL_DATA = "logentryGeneralData";
     private LogEntryGeneral mLogEntryGeneralData;
-    public static String INTENT_LOGENTRY_PRODUCTIVITY_DATA = "logentryProductivityData";
+    public static final String INTENT_LOGENTRY_PRODUCTIVITY_DATA = "logentryProductivityData";
     private LogEntryProductivity mLogEntryProductivityData;
-    public static String INTENT_LOGENTRY_PESTMGMT_DATA = "logentryPestMGMTData";
+    public static final String INTENT_LOGENTRY_PESTMGMT_DATA = "logentryPestMGMTData";
     private LogEntryHiveHealth mLogEntryHiveHealthData;
-    public static String INTENT_LOGENTRY_FEEDING_DATA = "logentryFeedingData";
+    public static final String INTENT_LOGENTRY_FEEDING_DATA = "logentryFeedingData";
     private LogEntryFeeding mLogEntryFeedingData;
-    public static String INTENT_LOGENTRY_OTHER_DATA = "logentryOtherData";
+    public static final String INTENT_LOGENTRY_OTHER_DATA = "logentryOtherData";
     private LogEntryOther mLogEntryOtherData;
 
     // This is what gets returned on call to get getPreviousLogData()
@@ -284,7 +285,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
         Log.d(TAG, "received LogFragment data object...key: " + aDOKey);
 
         try {
-            switch (aTag){
+            switch (aDOKey){
                 case INTENT_LOGENTRY_GENERAL_DATA:
                     mLogEntryGeneralData = (LogEntryGeneral)aLogEntryDO;
                     break;
@@ -342,24 +343,19 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 Bundle bundleData = data.getExtras();
                 if (bundleData.keySet().contains(INTENT_LOGENTRY_GENERAL_DATA)) {
                     Log.d(TAG, "received LogEntryGeneral data object");
-                    mLogEntryGeneralData =
-                            (LogEntryGeneral) bundleData.getParcelable(INTENT_LOGENTRY_GENERAL_DATA);
+                    mLogEntryGeneralData = bundleData.getParcelable(INTENT_LOGENTRY_GENERAL_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_PRODUCTIVITY_DATA)) {
                     Log.d(TAG, "received LogEntryProductivity data object");
-                    mLogEntryProductivityData =
-                            (LogEntryProductivity) bundleData.getParcelable(INTENT_LOGENTRY_PRODUCTIVITY_DATA);
+                    mLogEntryProductivityData = bundleData.getParcelable(INTENT_LOGENTRY_PRODUCTIVITY_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_PESTMGMT_DATA)) {
                     Log.d(TAG, "received LogEntryHiveHealth data object");
-                    mLogEntryHiveHealthData =
-                            (LogEntryHiveHealth) bundleData.getParcelable(INTENT_LOGENTRY_PESTMGMT_DATA);
+                    mLogEntryHiveHealthData = bundleData.getParcelable(INTENT_LOGENTRY_PESTMGMT_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_FEEDING_DATA)) {
                     Log.d(TAG, "received LogEntryFeeding data object");
-                    mLogEntryFeedingData =
-                            (LogEntryFeeding) bundleData.getParcelable(INTENT_LOGENTRY_FEEDING_DATA);
+                    mLogEntryFeedingData = bundleData.getParcelable(INTENT_LOGENTRY_FEEDING_DATA);
                 } else if (bundleData.keySet().contains(INTENT_LOGENTRY_OTHER_DATA)) {
                     Log.d(TAG, "received LogEntryOther data object");
-                    mLogEntryOtherData =
-                            (LogEntryOther) bundleData.getParcelable(INTENT_LOGENTRY_OTHER_DATA);
+                    mLogEntryOtherData = bundleData.getParcelable(INTENT_LOGENTRY_OTHER_DATA);
                 }
             }
         }
@@ -542,17 +538,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 //   creation prior to Log entry write
                 createNotification(
                         mLogEntryOtherData.getRequeenRmndrTime(),
-                        NotificationType.NOTIFY_OTHER_MOUSE_GUARD,
-                        mHiveKey);
-
-                createNotification(
-                        mLogEntryOtherData.getSwarmRmndrTime(),
-                        NotificationType.NOTIFY_OTHER_SPRING_INSPECTION,
-                        mHiveKey);
-
-                createNotification(
-                        mLogEntryOtherData.getSplitHiveRmndrTime(),
-                        NotificationType.NOTIFY_OTHER_TREAT_MITES,
+                        NotificationType.NOTIFY_OTHER_OTHER,
                         mHiveKey);
 
                 // ** Notification time cleanup **
@@ -561,12 +547,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 //  table read is necessary as a real time may have been set elsewhere.
                 if (mLogEntryOtherData.getRequeenRmndrTime() == -2) {
                     mLogEntryOtherData.setRequeenRmndrTime(-1);
-                }
-                if (mLogEntryOtherData.getSwarmRmndrTime() == -2) {
-                    mLogEntryOtherData.setSwarmRmndrTime(-1);
-                }
-                if (mLogEntryOtherData.getSplitHiveRmndrTime() == -2) {
-                    mLogEntryOtherData.setSplitHiveRmndrTime(-1);
                 }
 
                 if (mLogEntryOtherData.getId() == -1) {

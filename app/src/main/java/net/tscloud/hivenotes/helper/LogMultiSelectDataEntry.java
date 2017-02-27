@@ -44,14 +44,6 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
     private GetReminderTimeTask mTaskId = null;
     private static final int TASK_ID = 0;
 
-    // time/date formatters
-    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG,
-            Locale.getDefault());
-    private static final String TIME_PATTERN = "HH:mm";
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN,
-            Locale.getDefault());
-    private final Calendar calendar = Calendar.getInstance();
-
     public static LogMultiSelectDataEntry newInstance(LogMultiSelectDialogData aData) {
         LogMultiSelectDataEntry frag = new LogMultiSelectDataEntry();
         Bundle args = new Bundle();
@@ -73,10 +65,12 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         // get the Dialog Layout
         View view = getActivity().getLayoutInflater().inflate(R.layout.scb_listview4, null);
+
+        // title
+        final TextView title = (TextView)view.findViewById(R.id.titleScb);
+        title.setText(getArguments().getString("title"));
 
         // and the LinearLayout inside that Dialog that is functioning as the vertical list
         ViewGroup llItems = (ViewGroup)view.findViewById(R.id.linearLayoutScb);
@@ -198,35 +192,13 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
             });
         }
 
-        // OK/Cancel button Listeners
-        /*
-        final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
-        dialogOKBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        final Button dialogCancelBtn = (Button)view.findViewById(R.id.buttonCancelScb);
-        dialogCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Cancel button clicked");
-
-                if (mListener != null) {
-                    mListener.onLogMultiSelectDialogCancel(getArguments().getString("tag"));
-                }
-            }
-        });
-        */
-
         return view;
     }
 
     @Override
     public boolean onBackPressed() {
         Log.d(TAG, "Back button clicked...save everything");
+
         boolean reply = false;
 
         // get the checked stuff
@@ -252,23 +224,6 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         }
 
         return reply;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (onLogDataEntryInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement onLogDataEntryInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override

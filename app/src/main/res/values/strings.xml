@@ -201,6 +201,12 @@
         <item>@string/varroa_hopeguard</item>
     </string-array>
 
+    <string-array name="events_array">
+        <item>@string/other_swarm</item>
+        <item>@string/other_split_hive</item>
+        <item>@string/other_requeen</item>
+    </string-array>
+
     <string-array name="test_array">
         <item>Unmarked - Unmarked</item>
         <item>Unmarked - Marked</item>

@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.tscloud.hivenotes.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by tscloud on 2/10/17.
@@ -42,11 +44,21 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
 
         final ArrayList<RecyclerView.ViewHolder> viewholderList = new ArrayList<>();
 
-
         // get the Dialog Layout
         final View view = inflater.inflate(R.layout.scb_edittext_view, null);
 
-        // Needed for onBackPressed() - seperate method that may get called from the Activity
+        // title
+        final TextView title = (TextView)view.findViewById(R.id.texttitle);
+        title.setText(getArguments().getString("title"));
+
+        // deal /w the year in the subtitle if there is 1
+        final TextView subtitle = (TextView)view.findViewById(R.id.textsubtitle);
+        if (subtitle != null) {
+            String subtitleString = subtitle.getText().toString();
+            subtitle.setText(subtitleString.replace("YYYY", Integer.toString(calendar.get(Calendar.YEAR))));
+        }
+
+        // Needed for onBackPressed() - separate method that may get called from the Activity
         et = (EditText)view.findViewById(R.id.et);
 
         // if we only want numeric data => make sure that's what we get
@@ -55,29 +67,6 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
         }
 
         et.setText(getArguments().getString("data"));
-
-        // OK/Cancel button Listeners
-        /*
-        final Button dialogOKBtn = (Button)view.findViewById(R.id.buttonOKScb);
-        dialogOKBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        final Button dialogCancelBtn = (Button)view.findViewById(R.id.buttonCancelScb);
-        dialogCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Cancel button clicked");
-
-                if (mListener != null) {
-                    mListener.onLogMultiSelectDialogCancel(getArguments().getString("tag"));
-                }
-            }
-        });
-        */
 
         return view;
     }
@@ -96,22 +85,5 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
         }
 
         return reply;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (onLogDataEntryInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement onLogDataEntryInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 }
