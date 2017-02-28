@@ -24,7 +24,8 @@ import java.util.Locale;
  * Created by tscloud on 3/31/16.
  */
 
-public abstract class LogFragment extends Fragment {
+public abstract class LogFragment extends Fragment implements
+        LogSuperDataEntry.onLogDataEntrySetData {
 
     public static final String TAG = "LogFragment";
 

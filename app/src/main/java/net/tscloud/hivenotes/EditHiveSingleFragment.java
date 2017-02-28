@@ -27,9 +27,17 @@ import net.tscloud.hivenotes.helper.HiveDeleteDialog;
  * Use the EditHiveSingleFragment#newInstance factory method to
  * create an instance of this fragment.
  */
-public class EditHiveSingleFragment extends Fragment {
+public class EditHiveSingleFragment extends Fragment implements
+        LogSuperDataEntry.onLogDataEntrySetData {
 
     public static final String TAG = "EditHiveSingleFragment";
+
+    // constants used for Dialogs
+    public static final String DIALOG_TAG_NAME = "name";
+    public static final String DIALOG_TAG_SPECIES = "species";
+    public static final String DIALOG_TAG_QUEEN = "queen";
+    public static final String DIALOG_TAG_FOUNDATION = "foundation";
+    public static final String DIALOG_TAG_NOTES = "notes";
 
     // the fragment initialization parameters
     private static final String APIARY_KEY = "apiaryKey";
@@ -92,47 +100,50 @@ public class EditHiveSingleFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_single_hive, container, false);
 
+        // Delete button and title stuff
         final TextView textNew = (TextView)v.findViewById(R.id.textNewHive);
-        final View viewNew = v.findViewById(R.id.newHiveButton);
-        final View viewDelete = v.findViewById(R.id.deleteHiveButton);
-        final Button btnNew = (Button)viewNew.findViewById(R.id.hiveNoteButtton);
         final Button btnDelete = (Button)viewDelete.findViewById(R.id.hiveNoteButtton);
-
         btnDelete.setText(getResources().getString(R.string.delete_hive_string));
+
+        // get reference to the <include>s
+        final View dialogHiveName = v.findViewById(R.id.buttonHiveName);
+        final View dialogHiveSpecies = v.findViewById(R.id.buttonHiveSpecies);
+        final View dialogHiveQueen = v.findViewById(R.id.buttonHiveQueen);
+        final View dialogHiveFoundation = v.findViewById(R.id.buttonHiveFoundation);
+        final View dialogHiveNotes = v.findViewById(R.id.buttonHiveNotes);
+
+        // set text of <include>s
+        final TextView nameText =
+                (TextView)dialogHiveName.findViewById(R.id.dialogLaunchTextView);
+        nameText.setText(R.string.hive_name_string);
+
+        final TextView speciesText =
+                (TextView)dialogHiveSpecies.findViewById(R.id.dialogLaunchTextView);
+        speciesText.setText(R.string.hive_species_string);
+
+        final TextView queenText =
+                (TextView)dialogHiveQueen.findViewById(R.id.dialogLaunchTextView);
+        queenText.setText(R.string.general_notes_queen_text);
+
+        final TextView foundationText =
+                (TextView)dialogHiveFoundation.findViewById(R.id.dialogLaunchTextView);
+        foundationText.setText(R.string.hive_foundation_type_string);
+
+        final TextView notesText =
+                (TextView)dialogHiveNotes.findViewById(R.id.dialogLaunchTextView);
+        notesText.setText(R.string.hive_note_string);
 
         if (mHive != null) {
             Log.d(TAG, "successfully retrieved Hive data");
-            btnNew.setText(getResources().getString(R.string.save_hive_string));
-            textNew.setText(getResources().getString(R.string.update_hive_string));
-
-            // fill the form
-            EditText nameEdit = (EditText)v.findViewById(R.id.editTextHiveName);
-            EditText speciesEdit = (EditText)v.findViewById(R.id.editTextHiveSpecies);
-            Spinner requeenSpinner = (Spinner)v.findViewById(R.id.spinnerHiveRequeen);
-            Spinner foundationTypeSpinner = (Spinner)v.findViewById(R.id.spinnerHiveFoundationType);
-            EditText noteEdit = (EditText)v.findViewById(R.id.editTextHiveNote);
-
-            nameEdit.setText(mHive.getName());
-            speciesEdit.setText(mHive.getSpecies());
-            requeenSpinner.setSelection(((ArrayAdapter) requeenSpinner.getAdapter()).getPosition(mHive.getRequeen()));
-            foundationTypeSpinner.setSelection(((ArrayAdapter) foundationTypeSpinner.getAdapter()).getPosition(mHive.getFoundationType()));
-            noteEdit.setText(mHive.getNote());
         }
         else {
-            btnNew.setText(getResources().getString(R.string.create_hive_string));
+            textNew.setText(getResources().getString(R.string.new_hive_string));
             //get rid of Delete button
             btnDelete.setEnabled(false);
             btnDelete.setTextColor(Color.GRAY);
         }
 
-        // set button listeners
-        btnNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onUpdateButtonPressed();
-            }
-        });
-
+        // set delete button listener
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,72 +151,166 @@ public class EditHiveSingleFragment extends Fragment {
             }
         });
 
+        // set dialog button listener
+        dialogHiveName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mHive != null) {
+                        checked = mHive.getName();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.hive_name_string),
+                            DIALOG_TAG_NAME,
+                            checked));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogHiveSpecies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mHive != null) {
+                        checked = mHive.getSpecies();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.hive_species_string),
+                            DIALOG_TAG_SPECIES,
+                            checked));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogHiveQueen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mHive != null) {
+                        checked = mHive.getRequeen();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.general_notes_queen_text),
+                            DIALOG_TAG_SPECIES,
+                            checked));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogHiveFoundation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mHive != null) {
+                        checked = mHive.getFoundationType();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.hive_foundation_type_string),
+                            DIALOG_TAG_FOUNDATION,
+                            checked));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogHiveNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mHive != null) {
+                        checked = mHive.getNote();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.hive_note_string),
+                            DIALOG_TAG_FOUNDATION,
+                            checked));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
         return v;
     }
 
-    private void onUpdateButtonPressed() {
+    private boolean onFragmentSave() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist hive");
 
+        boolean reply = false;
         boolean lNewHive = false;
 
-        EditText nameEdit = (EditText)getView().findViewById(R.id.editTextHiveName);
-        EditText speciesEdit = (EditText)getView().findViewById(R.id.editTextHiveSpecies);
-        Spinner requeenSpinner = (Spinner)getView().findViewById(R.id.spinnerHiveRequeen);
-        Spinner foundationTypeSpinner = (Spinner)getView().findViewById(R.id.spinnerHiveFoundationType);
-        EditText noteEdit = (EditText)getView().findViewById(R.id.editTextHiveNote);
-
-        String nameText = nameEdit.getText().toString();
-        String speciesText = speciesEdit.getText().toString();
-        String requeenText = requeenSpinner.getSelectedItem().toString();
-        String foundationTypeText = foundationTypeSpinner.getSelectedItem().toString();
-        String noteText = noteEdit.getText().toString();
-
-        // neither EditText can be empty
-        boolean emptyText = false;
-
-        if (nameText.length() == 0){
-            nameEdit.setError("Name cannot be empty");
-            emptyText = true;
-            Log.d(TAG, "Uh oh...Name empty");
+        if (mHive == null) {
+            mHive = new Hive();
         }
 
-        if (speciesText.length() == 0){
-            speciesEdit.setError("Species cannot be empty");
-            emptyText = true;
-            Log.d(TAG, "Uh oh...Species empty");
+        HiveDAO hiveDAO = new HiveDAO(getActivity());
+        Hive hive;
+
+        mHive.setApiary(mApiaryKey);
+
+        if (mHiveKey == -1) {
+            hive = hiveDAO.createHive(mHive);
+            lNewHive = true;
+        }
+        else {
+            mHive.setId(mHiveKey);
+            hive = hiveDAO.updateHive(mHive);
+        }
+        hiveDAO.close();
+
+        if (hive != null) {
+            // Reset Hive instance vars
+            mHive = hive;
+            mHiveKey = hive.getId();
+
+            Log.d(TAG, "Hive Name: " + hive.getName() + " persisted");
+            Log.d(TAG, "Hive Species: " + hive.getSpecies() + " persisted");
+            Log.d(TAG, "Hive Requeen: " + hive.getRequeen() + " persisted");
+            Log.d(TAG, "Hive Foundation Type: " + hive.getFoundationType() + " persisted");
+        }
+        else  {
+            Log.d(TAG, "BAD...Hive update failed");
         }
 
-        if (!emptyText) {
-            HiveDAO hiveDAO = new HiveDAO(getActivity());
-            Hive hive;
-            if (mHiveKey == -1) {
-                hive = hiveDAO.createHive(mApiaryKey, nameText, speciesText, requeenText, foundationTypeText, noteText);
-                lNewHive = true;
-            }
-            else {
-                hive = hiveDAO.updateHive(mHiveKey, mApiaryKey, nameText, speciesText, requeenText, foundationTypeText, noteText);
-            }
-            hiveDAO.close();
-
-            if (hive != null) {
-                // Reset Hive instance vars
-                mHive = hive;
-                mHiveKey = hive.getId();
-
-                Log.d(TAG, "Hive Name: " + hive.getName() + " persisted");
-                Log.d(TAG, "Hive Species: " + hive.getSpecies() + " persisted");
-                Log.d(TAG, "Hive Requeen: " + hive.getRequeen() + " persisted");
-                Log.d(TAG, "Hive Foundation Type: " + hive.getFoundationType() + " persisted");
-            }
-            else  {
-                Log.d(TAG, "BAD...Hive update failed");
-            }
-
-            if (mListener != null) {
-                mListener.onEditHiveSingleFragmentInteraction(hive.getId(), lNewHive, false);
-            }
+        if (mListener != null) {
+            mListener.onEditHiveSingleFragmentInteraction(hive.getId(), lNewHive, false);
+            reply = true;
         }
+
+        return reply;
     }
 
     private void onDeleteButtonPressed() {
@@ -262,6 +367,45 @@ public class EditHiveSingleFragment extends Fragment {
 
     }
 
+    @Override
+    public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
+        //may have to create the DO here - if we're a new entry and Dialog work was done before
+        // anything else
+        if (mHive == null) {
+            mHive = new Hive();
+        }
+
+        switch (aTag){
+            case DIALOG_TAG_NAME:
+                mHive.setName(aResults[0]);
+                Log.d(TAG, "onLogLaunchDialog: setName: " +
+                        mHive.getName());
+                break;
+            case DIALOG_TAG_SPECIES:
+                mHive.setSpecies(aResults[0]);
+                Log.d(TAG, "onLogLaunchDialog: setSpecies: " +
+                        mHive.getSpecies());
+                break;
+            case DIALOG_TAG_QUEEN:
+                mHive.setRequeen(aResults[0]))
+                Log.d(TAG, "onLogLaunchDialog: setRequeen: " +
+                        mHive.getRequeen());
+                break;
+            case DIALOG_TAG_FOUNDATION:
+                mHive.setFoundationType(aResults[0]))
+                Log.d(TAG, "onLogLaunchDialog: setFoundationType: " +
+                        mHive.setFoundationType());
+                break;
+            case DIALOG_TAG_NOTES:
+                mHive.setNote(aResults[0]))
+                Log.d(TAG, "onLogLaunchDialog: setNote: " +
+                        mHive.getNote());
+                break;
+            default:
+                Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -270,6 +414,8 @@ public class EditHiveSingleFragment extends Fragment {
      */
     public interface OnEditHiveSingleFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
+        void onLogLaunchDialog(LogMultiSelectDialogData aData);
+        void onLogLaunchDialog(LogEditTextDialogData aData);
         public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive);
     }
 

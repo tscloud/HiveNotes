@@ -10,157 +10,49 @@
     tools:context="net.tscloud.hivenotes.EditHiveSingleFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/new_hive_string"
+        android:text="@string/update_hive_string"
         android:id="@+id/textNewHive"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <LinearLayout
+    <include
+        android:id="@+id/buttonHiveName"
+        layout="@layout/dialog_launch_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/textNewHive"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutName">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/hive_name_string"
-            android:id="@+id/textHiveName"
-            android:layout_gravity="center_vertical" />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.75"
-            android:id="@+id/editTextHiveName"
-            android:ems="10">
-            <requestFocus/>
-        </EditText>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutName"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutSpecies">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/hive_species_string"
-            android:id="@+id/textHiveSpecies"
-            android:layout_gravity="center_vertical" />
-
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.75"
-            android:id="@+id/editTextHiveSpecies"
-            android:ems="10" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutRequeen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/linearLayoutSpecies"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/general_notes_queen_text"
-            android:id="@+id/textHiveRequeen"
-            android:layout_gravity="center_vertical" />
-
-        <Spinner
-            android:id="@+id/spinnerHiveRequeen"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.50"
-            android:entries="@array/requeen_array"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/linearLayoutFoundation"
-        android:layout_below="@id/linearLayoutRequeen"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/hive_foundation_type_string"
-            android:id="@+id/textHiveFoundationType"
-            android:layout_gravity="center_vertical" />
-
-        <Spinner
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.20"
-            android:entries="@array/foundation_array"
-            android:id="@+id/spinnerHiveFoundationType" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/linearLayoutNote"
-        android:layout_below="@id/linearLayoutFoundation"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/hive_note_string"
-            android:id="@+id/textHiveNote"
-            android:layout_gravity="center_vertical" />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="85dp"
-            android:layout_weight="0.75"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/editTextHiveNote" />
-
-    </LinearLayout>
+        android:layout_below="@id/textNewHive" />
 
     <include
-        android:id="@+id/newHiveButton"
-        layout="@layout/hive_note_button"
+        android:id="@+id/buttonHiveSpecies"
+        layout="@layout/dialog_launch_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/deleteHiveButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@id/buttonHiveName" />
+
+    <include
+        android:id="@+id/buttonHiveQueen"
+        layout="@layout/dialog_launch_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonHiveSpecies" />
+
+    <include
+        android:id="@+id/buttonHiveFoundation"
+        layout="@layout/dialog_launch_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonHiveQueen" />
+
+    <include
+        android:id="@+id/buttonHiveNotes"
+        layout="@layout/dialog_launch_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonHiveQueen" />
 
     <include
         android:id="@+id/deleteHiveButton"
