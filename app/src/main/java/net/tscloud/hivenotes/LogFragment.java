@@ -13,6 +13,7 @@ import net.tscloud.hivenotes.db.AbstractLogDAO;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
+import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,7 +58,7 @@ public abstract class LogFragment extends Fragment implements
 
     protected abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
 
-    protected abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
+    public abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
 
     protected abstract String getDOKey();
 

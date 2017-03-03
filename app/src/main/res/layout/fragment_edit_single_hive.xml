@@ -52,7 +52,7 @@
         layout="@layout/dialog_launch_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonHiveQueen" />
+        android:layout_below="@id/buttonHiveFoundation" />
 
     <include
         android:id="@+id/deleteHiveButton"

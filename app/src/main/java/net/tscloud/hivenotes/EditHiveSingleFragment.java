@@ -8,15 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
 import net.tscloud.hivenotes.helper.HiveDeleteDialog;
+import net.tscloud.hivenotes.helper.LogEditTextDialogData;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
+import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 
 /**
@@ -102,6 +102,7 @@ public class EditHiveSingleFragment extends Fragment implements
 
         // Delete button and title stuff
         final TextView textNew = (TextView)v.findViewById(R.id.textNewHive);
+        final View viewDelete = v.findViewById(R.id.deleteHiveButton);
         final Button btnDelete = (Button)viewDelete.findViewById(R.id.hiveNoteButtton);
         btnDelete.setText(getResources().getString(R.string.delete_hive_string));
 
@@ -151,7 +152,7 @@ public class EditHiveSingleFragment extends Fragment implements
             }
         });
 
-        // set dialog button listener
+        // set dialog button listeners
         dialogHiveName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +167,8 @@ public class EditHiveSingleFragment extends Fragment implements
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.hive_name_string),
                             DIALOG_TAG_NAME,
-                            checked));
+                            checked,
+                            false));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -180,15 +182,21 @@ public class EditHiveSingleFragment extends Fragment implements
                 // Callback to Activity to launch a Dialog
                 if (mListener != null) {
                     String checked = "";
-                    if (mHive != null) {
+                    if (mHive != null &&
+                            mHive.getSpecies() != null) {
                         checked = mHive.getSpecies();
                     }
                     /* Get the Activity to launch the Dialog for us
                      */
-                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
                             getResources().getString(R.string.hive_species_string),
+                            mHiveKey,
+                            getResources().getStringArray(R.array.species_array),
+                            checked,
                             DIALOG_TAG_SPECIES,
-                            checked));
+                            -1,
+                            //hasOther, hasReminder, multiselect
+                            false, false, false));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -202,15 +210,21 @@ public class EditHiveSingleFragment extends Fragment implements
                 // Callback to Activity to launch a Dialog
                 if (mListener != null) {
                     String checked = "";
-                    if (mHive != null) {
+                    if (mHive != null &&
+                            mHive.getRequeen() != null) {
                         checked = mHive.getRequeen();
                     }
                     /* Get the Activity to launch the Dialog for us
                      */
-                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
                             getResources().getString(R.string.general_notes_queen_text),
+                            mHiveKey,
+                            getResources().getStringArray(R.array.requeen_array),
+                            checked,
                             DIALOG_TAG_SPECIES,
-                            checked));
+                            -1,
+                            //hasOther, hasReminder, multiselect
+                            false, false, false));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -224,15 +238,21 @@ public class EditHiveSingleFragment extends Fragment implements
                 // Callback to Activity to launch a Dialog
                 if (mListener != null) {
                     String checked = "";
-                    if (mHive != null) {
+                    if (mHive != null &&
+                            mHive.getFoundationType() != null) {
                         checked = mHive.getFoundationType();
                     }
                     /* Get the Activity to launch the Dialog for us
                      */
-                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
                             getResources().getString(R.string.hive_foundation_type_string),
+                            mHiveKey,
+                            getResources().getStringArray(R.array.foundation_array),
+                            checked,
                             DIALOG_TAG_FOUNDATION,
-                            checked));
+                            -1,
+                            //hasOther, hasReminder, multiselect
+                            false, false, false));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -254,7 +274,8 @@ public class EditHiveSingleFragment extends Fragment implements
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.hive_note_string),
                             DIALOG_TAG_FOUNDATION,
-                            checked));
+                            checked,
+                            false));
                 }
                 else {
                     Log.d(TAG, "no Listener");
@@ -265,7 +286,7 @@ public class EditHiveSingleFragment extends Fragment implements
         return v;
     }
 
-    private boolean onFragmentSave() {
+    public boolean onFragmentSave() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist hive");
 
@@ -387,17 +408,17 @@ public class EditHiveSingleFragment extends Fragment implements
                         mHive.getSpecies());
                 break;
             case DIALOG_TAG_QUEEN:
-                mHive.setRequeen(aResults[0]))
+                mHive.setRequeen(aResults[0]);
                 Log.d(TAG, "onLogLaunchDialog: setRequeen: " +
                         mHive.getRequeen());
                 break;
             case DIALOG_TAG_FOUNDATION:
-                mHive.setFoundationType(aResults[0]))
+                mHive.setFoundationType(aResults[0]);
                 Log.d(TAG, "onLogLaunchDialog: setFoundationType: " +
-                        mHive.setFoundationType());
+                        mHive.getFoundationType());
                 break;
             case DIALOG_TAG_NOTES:
-                mHive.setNote(aResults[0]))
+                mHive.setNote(aResults[0]);
                 Log.d(TAG, "onLogLaunchDialog: setNote: " +
                         mHive.getNote());
                 break;
@@ -416,7 +437,7 @@ public class EditHiveSingleFragment extends Fragment implements
         // For general interaction - really just the return to the Activity
         void onLogLaunchDialog(LogMultiSelectDialogData aData);
         void onLogLaunchDialog(LogEditTextDialogData aData);
-        public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive);
+        void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive);
     }
 
 }

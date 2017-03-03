@@ -63,6 +63,6 @@ public abstract class LogSuperDataEntry extends Fragment {
     interface to define in the Fragment to set the data entered via dialog
      */
     public interface onLogDataEntrySetData {
-        void setDialogData(aResults, aResultRemTime, aTag);
+        void setDialogData(String[] aResults, long aResultRemTime, String aTag);
     }
 }

@@ -34,6 +34,8 @@ import net.tscloud.hivenotes.db.Weather;
 import net.tscloud.hivenotes.db.WeatherDAO;
 import net.tscloud.hivenotes.helper.HivePollen;
 import net.tscloud.hivenotes.helper.HiveWeather;
+import net.tscloud.hivenotes.helper.LogEditTextDialogData;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 public class EditHiveActivity extends AppCompatActivity implements
         EditHiveListFragment.OnEditHiveListFragmentInteractionListener,
@@ -437,5 +439,16 @@ public class EditHiveActivity extends AppCompatActivity implements
             // all we need to do is nullify the Task reference
             mTask = null;
         }
+    }
+
+    /* TESTING */
+    @Override
+    public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
+
+    }
+
+    @Override
+    public void onLogLaunchDialog(LogEditTextDialogData aData) {
+
     }
 }

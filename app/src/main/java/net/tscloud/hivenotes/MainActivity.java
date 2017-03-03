@@ -16,14 +16,16 @@ import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.db.Profile;
 import net.tscloud.hivenotes.db.ProfileDAO;
 import net.tscloud.hivenotes.helper.HiveCalendar;
+import net.tscloud.hivenotes.helper.LogEditTextDialogData;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        EditApiaryFragment.OnEditApiaryFragmentInteractionListener,
-        HomeFragment.OnHomeFragmentInteractionListener,
-        EditProfileFragment.OnEditProfileFragmentInteractionListener,
-        EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
+        //EditApiaryFragment.OnEditApiaryFragmentInteractionListener,
+        HomeFragment.OnHomeFragmentInteractionListener {
+        //EditProfileFragment.OnEditProfileFragmentInteractionListener,
+        //EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
 
     private static final String TAG = "MainActivity";
 
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     @Override
     public void onEditApiaryFragmentInteraction(Apiary aApiary) {
         Log.d(TAG, "MainActivity.onEditApiaryFragmentInteraction called...");
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements
 
         presentHome();
     }
+    */
 
     @Override
     public void onHomeFragmentInteraction(Long apiaryId, boolean deleteDB, boolean editProfile) {
@@ -174,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /*
     @Override
     public void onEditProfileFragmentInteraction(Profile profile) {
         Log.d(TAG, "MainActivity.onEditProfileFragmentInteraction called...");
@@ -184,7 +189,9 @@ public class MainActivity extends AppCompatActivity implements
 
         presentHome();
     }
+    */
 
+    /*
     @Override
     public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive) {
         Log.d(TAG, "MainActivity.onEditHiveSingleFragmentInteraction called...");
@@ -195,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements
         i.putExtra(INTENT_APIARY_KEY, hiveID);
         startActivityForResult(i, HIVE_REQ_CODE);
     }
+    */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -238,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /*
     @Override
     public Profile deliverProfile() {
         Profile reply = mProfile;
@@ -247,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         return reply;
     }
+    */
 
     @Override
     public List<Apiary> deliverApiaryList(long aProfileID) {
@@ -287,4 +297,17 @@ public class MainActivity extends AppCompatActivity implements
 
         return reply;
     }
+
+    /* TESTING */
+    /*
+    @Override
+    public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
+
+    }
+
+    @Override
+    public void onLogLaunchDialog(LogEditTextDialogData aData) {
+
+    }
+    */
 }

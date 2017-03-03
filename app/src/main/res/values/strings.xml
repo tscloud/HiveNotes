@@ -56,6 +56,12 @@
     <string name="create_logentry_string">Create Log Entry</string>
     <string name="save_logentry_string">Save Log Entry</string>
 
+    <string name="hive_species_italian">Italian Bees</string>
+    <string name="hive_species_carniolan">Carniolan Bees</string>
+    <string name="hive_species_caucasian">Caucasian Bees</string>
+    <string name="hive_species_buckfast">Buckfast Bees</string>
+    <string name="hive_species_russian">Russian Bees</string>
+
     <string name="general_notes_date_text">Date:</string>
     <string name="general_notes_population_text">Population</string>
     <string name="general_notes_temperament_text">Temperament:</string>
@@ -110,6 +116,14 @@
     <string name="set_reminder_string">Set Reminder</string>
 
     <string name="notes_save_text">Save Notes</string>
+
+    <string-array name="species_array">
+        <item>@string/hive_species_italian</item>
+        <item>@string/hive_species_carniolan</item>
+        <item>@string/hive_species_caucasian</item>
+        <item>@string/hive_species_buckfast</item>
+        <item>@string/hive_species_russian</item>
+    </string-array>
 
     <string-array name="feeding_array">
         <item>@string/feeding_one_one_sugar</item>
