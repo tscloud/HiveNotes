@@ -27,8 +27,7 @@ import net.tscloud.hivenotes.helper.LogSuperDataEntry;
  * Use the EditHiveSingleFragment#newInstance factory method to
  * create an instance of this fragment.
  */
-public class EditHiveSingleFragment extends Fragment implements
-        LogSuperDataEntry.onLogDataEntrySetData {
+public class EditHiveSingleFragment extends HiveDataEntryFragment {
 
     public static final String TAG = "EditHiveSingleFragment";
 
@@ -352,7 +351,7 @@ public class EditHiveSingleFragment extends Fragment implements
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnEditHiveSingleFragmentInteractionListener)activity;
+            mListener = (EditHiveSingleActivity) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnEditHiveSingleFragmentInteractionListener");
@@ -433,10 +432,11 @@ public class EditHiveSingleFragment extends Fragment implements
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnEditHiveSingleFragmentInteractionListener {
+    public interface OnEditHiveSingleFragmentInteractionListener extends
+        LogSuperDataEntry.onLogDataEntryInteractionListener {
         // For general interaction - really just the return to the Activity
-        void onLogLaunchDialog(LogMultiSelectDialogData aData);
-        void onLogLaunchDialog(LogEditTextDialogData aData);
+        //void onLogLaunchDialog(LogMultiSelectDialogData aData);
+        //void onLogLaunchDialog(LogEditTextDialogData aData);
         void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive);
     }
 

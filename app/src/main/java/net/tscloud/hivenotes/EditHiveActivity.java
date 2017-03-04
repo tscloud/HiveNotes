@@ -38,8 +38,7 @@ import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 public class EditHiveActivity extends AppCompatActivity implements
-        EditHiveListFragment.OnEditHiveListFragmentInteractionListener,
-        EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
+        EditHiveListFragment.OnEditHiveListFragmentInteractionListener {
 
     private static final String TAG = "EditHiveActivity";
 
@@ -235,18 +234,6 @@ public class EditHiveActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive) {
-        Log.d(TAG, "Back from EditHiveSingleFragment: update Apiary");
-
-        //Create List Fragment and present
-        Fragment listFrag = EditHiveListFragment.newInstance(mApiaryKey);
-        getSupportFragmentManager().beginTransaction()
-                //.addToBackStack(null)
-                .replace(R.id.hive_list_container, listFrag)
-                .commit();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -439,16 +426,5 @@ public class EditHiveActivity extends AppCompatActivity implements
             // all we need to do is nullify the Task reference
             mTask = null;
         }
-    }
-
-    /* TESTING */
-    @Override
-    public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
-
-    }
-
-    @Override
-    public void onLogLaunchDialog(LogEditTextDialogData aData) {
-
     }
 }

@@ -57,6 +57,8 @@ public abstract class LogSuperDataEntry extends Fragment {
     public interface onLogDataEntryInteractionListener {
         void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag);
         //void onLogMultiSelectDialogCancel(String aTag);
+        void onLogLaunchDialog(LogMultiSelectDialogData aData);
+        void onLogLaunchDialog(LogEditTextDialogData aData);
     }
 
     /*

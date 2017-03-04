@@ -1,10 +1,8 @@
 package net.tscloud.hivenotes;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,20 +13,19 @@ import net.tscloud.hivenotes.helper.LogMultiSelectDataEntry;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
-public class EditHiveSingleActivity extends AppCompatActivity implements
-        EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener,
-        LogSuperDataEntry.onLogDataEntryInteractionListener {
+public class EditHiveSingleActivity extends HiveDataEntryActivity implements
+        EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
 
     private static final String TAG = "EditHiveSingleActivity";
     private long mApiaryKey = -1;
     private long mHiveKey = -1;
 
     // needed for things like Dialog dismissal after its return w/ w/o data
-    private LogSuperDataEntry diagFragment;
+    //private LogSuperDataEntry diagFragment;
 
     // Need a reference to the Fragment that we're going to launch as we may need to pass back data
     //  collected by Dialog
-    private EditHiveSingleFragment fragment = null;
+    //private EditHiveSingleFragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +47,11 @@ public class EditHiveSingleActivity extends AppCompatActivity implements
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment, fragTag);
         ft.commit();
+    }
+
+    @Override
+    protected int getContainerViewId() {
+        return R.id.fragment_placeholder;
     }
 
     @Override
@@ -89,6 +91,7 @@ public class EditHiveSingleActivity extends AppCompatActivity implements
     }
 
     // Dialog w/ checkboxes
+    /*
     @Override
     public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
         //diagFragment = LogMultiSelectDialog.newInstance(aData);
@@ -128,4 +131,5 @@ public class EditHiveSingleActivity extends AppCompatActivity implements
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
     }
+    */
 }
