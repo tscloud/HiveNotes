@@ -76,6 +76,7 @@ public class EditHiveSingleActivity extends HiveDataEntryActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     @Override
     public void onBackPressed() {
         // Do the stuff we need to do in the dialog - essentially we're done =>
@@ -89,6 +90,7 @@ public class EditHiveSingleActivity extends HiveDataEntryActivity implements
             }
         }
     }
+    */
 
     // Dialog w/ checkboxes
     /*

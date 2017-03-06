@@ -220,7 +220,7 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
                             mHiveKey,
                             getResources().getStringArray(R.array.requeen_array),
                             checked,
-                            DIALOG_TAG_SPECIES,
+                            DIALOG_TAG_QUEEN,
                             -1,
                             //hasOther, hasReminder, multiselect
                             false, false, false));
@@ -272,7 +272,7 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.hive_note_string),
-                            DIALOG_TAG_FOUNDATION,
+                            DIALOG_TAG_NOTES,
                             checked,
                             false));
                 }
@@ -435,8 +435,6 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
     public interface OnEditHiveSingleFragmentInteractionListener extends
         LogSuperDataEntry.onLogDataEntryInteractionListener {
         // For general interaction - really just the return to the Activity
-        //void onLogLaunchDialog(LogMultiSelectDialogData aData);
-        //void onLogLaunchDialog(LogEditTextDialogData aData);
         void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive);
     }
 

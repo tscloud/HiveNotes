@@ -27,7 +27,7 @@ import net.tscloud.hivenotes.helper.LogSuperDataEntry;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link LogEntryDetailFragment}.
  */
-public class LogEntryDetailActivity extends AppCompatActivity implements
+public class LogEntryDetailActivity extends HiveDataEntryActivity implements
         LogFragment.LogFragmentActivity,
         LogSuperDataEntry.onLogDataEntryInteractionListener {
 
@@ -121,6 +121,11 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected int getContainerViewId() {
+        return R.id.logentry_detail_container;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Make the Up button perform like the Back button
         switch (item.getItemId()) {
@@ -131,6 +136,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     @Override
     public void onBackPressed() {
         // Do the stuff we need to do in the dialog - essentially we're done =>
@@ -144,6 +150,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
             }
         }
     }
+    */
 
     @Override
     public HiveNotesLogDO getPreviousLogData() {
@@ -181,6 +188,7 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
     2) Come back from Dialogs - via OK or Cancel
      */
 
+    /*
     // Dialog w/ checkboxes
     @Override
     public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
@@ -221,4 +229,5 @@ public class LogEntryDetailActivity extends AppCompatActivity implements
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
     }
+    */
 }

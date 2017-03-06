@@ -58,7 +58,7 @@ public abstract class LogFragment extends HiveDataEntryFragment implements
 
     protected abstract HiveNotesLogDO getLogEntryFromDB(long aKey, long aDate);
 
-    public abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
+    //public abstract void setDialogData(String[] aResults, long aResultRemTime, String aTag);
 
     protected abstract String getDOKey();
 
@@ -192,17 +192,18 @@ public abstract class LogFragment extends HiveDataEntryFragment implements
     }
 
     // necessary interfaces
-    public interface LogFragmentActivity {
+    public interface LogFragmentActivity extends
+            LogSuperDataEntry.onLogDataEntryInteractionListener {
         HiveNotesLogDO getPreviousLogData();
-        void onLogLaunchDialog(LogMultiSelectDialogData aData);
-        void onLogLaunchDialog(LogEditTextDialogData aData);
+        //void onLogLaunchDialog(LogMultiSelectDialogData aData);
+        //void onLogLaunchDialog(LogEditTextDialogData aData);
         void onLogFragmentInteraction(String aDOKey, HiveNotesLogDO aLogEntryDO);
     }
 
     /**
      * Inner Class - Get Log data AsyncTask
      */
-    public class GetLogData extends AsyncTask<Void, Void, Void> {
+    private class GetLogData extends AsyncTask<Void, Void, Void> {
 
         public static final String TAG = "GetLogData";
 

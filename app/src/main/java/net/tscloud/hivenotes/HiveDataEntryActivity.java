@@ -31,6 +31,20 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
     // Provide a reference to a containerViewId that the dialog will replace
     protected abstract int getContainerViewId();
 
+    @Override
+    public void onBackPressed() {
+        // Do the stuff we need to do in the dialog - essentially we're done =>
+        //  so save everything
+        if (diagFragment == null || !diagFragment.onBackPressed()) {
+            // Do the stuff we need to do in the fragment - essentially we're done =>
+            //  so save everything
+            if (fragment == null || !fragment.onFragmentSave()) {
+                // neither dialog nor fragment consumed event
+                super.onBackPressed();
+            }
+        }
+    }
+
     // Dialog w/ checkboxes
     @Override
     public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
