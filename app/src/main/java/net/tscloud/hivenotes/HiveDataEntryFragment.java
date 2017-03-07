@@ -9,6 +9,4 @@ import net.tscloud.hivenotes.helper.LogSuperDataEntry;
  */
 public abstract class HiveDataEntryFragment extends Fragment implements
         LogSuperDataEntry.onLogDataEntrySetData {
-
-    public abstract boolean onFragmentSave();
 }

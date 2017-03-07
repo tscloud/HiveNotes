@@ -66,5 +66,6 @@ public abstract class LogSuperDataEntry extends Fragment {
      */
     public interface onLogDataEntrySetData {
         void setDialogData(String[] aResults, long aResultRemTime, String aTag);
+        abstract boolean onFragmentSave();
     }
 }

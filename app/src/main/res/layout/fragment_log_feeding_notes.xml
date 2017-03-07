@@ -86,7 +86,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
-            android:text="@string/feeding_other"
+            android:text="@string/other_notes_string"
             android:layout_gravity="center_vertical" />
 
     </LinearLayout>

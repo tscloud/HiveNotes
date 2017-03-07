@@ -25,8 +25,7 @@ import java.util.Locale;
  * Created by tscloud on 3/31/16.
  */
 
-public abstract class LogFragment extends HiveDataEntryFragment implements
-        LogSuperDataEntry.onLogDataEntrySetData {
+public abstract class LogFragment extends HiveDataEntryFragment {
 
     public static final String TAG = "LogFragment";
 

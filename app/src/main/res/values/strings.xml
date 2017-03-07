@@ -1,16 +1,9 @@
 <resources>
     <string name="app_name">HiveNotes</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
     <string name="hello_world">Hello world!</string>
 
     <string name="action_settings">Settings</string>
-    <string name="frag1_text">fragment #1 - init msg</string>
-    <string name="frag2_text">fragment #2 - init msg</string>
-    <string name="frag3_text">fragment #3 - init msg</string>
     <string name="title_activity_main">HiveNotes</string>
 
     <string name="new_apiary_string">New Apiary</string>
@@ -53,7 +46,6 @@
     <string name="title_logentry_list">LogEntries</string>
     <string name="title_logentry_detail">LogEntry Detail</string>
 
-    <string name="create_logentry_string">Create Log Entry</string>
     <string name="save_logentry_string">Save Log Entry</string>
 
     <string name="hive_species_italian">Italian Bees</string>
@@ -62,7 +54,6 @@
     <string name="hive_species_buckfast">Buckfast Bees</string>
     <string name="hive_species_russian">Russian Bees</string>
 
-    <string name="general_notes_date_text">Date:</string>
     <string name="general_notes_population_text">Population</string>
     <string name="general_notes_temperament_text">Temperament:</string>
     <string name="general_notes_pestsdisease_text">Pests/Disease:</string>
@@ -79,10 +70,6 @@
     <string name="productivity_extracted_honey">Extracted Honey:</string>
     <string name="productivity_pollen">Pollen</string>
     <string name="productivity_wax">Wax</string>
-    <string name="productivity_add_trap">Add Trap</string>
-    <string name="productivity_remove_trap">Remove Trap</string>
-    <string name="productivity_pollen_collected">Pollen Collected:</string>
-    <string name="productivity_beeswax_collected">Beeswax Collected:</string>
 
     <string name="productivity_varroa_mite">Varroa Mite</string>
     <string name="productivity_small_hive_beetle">Small Hive Beetle</string>
@@ -92,19 +79,11 @@
     <string name="productivity_european_foalbrood">European Foulbrood</string>
     <string name="productivity_chalkbrood">Chalkbrood</string>
     <string name="productivity_nosema">Nosema</string>
-    <string name="productivity_other">Other</string>
     <string name="productivity_subtitle">YYYY Annual Totals</string>
-
-    <string name="pestmgmt_drone_cell_fndn">Drone Cell Foundation</string>
-    <string name="pestmgmt_small_hive_beetle_trap">Small Hive Beetle Trap</string>
-    <string name="pestmgmt_mites_trtmnt">Mites Treatment</string>
-    <string name="pestmgmt_screened_bottom_board">Screened Bottom Board</string>
-    <string name="pestmgmt_other">Other</string>
 
     <string name="feeding_one_one_sugar">1:1 Sugar Water</string>
     <string name="feeding_two_one_sugar">2:1 Sugar Water</string>
     <string name="feeding_pollen_patty">Pollen Patty</string>
-    <string name="feeding_other">Other</string>
 
     <string name="other_requeen">Requeen</string>
     <string name="other_requeen_rmndr">Check On Queen Release</string>
@@ -114,8 +93,6 @@
     <string name="other_split_hive_rmndr">Check For Laying Queen</string>
 
     <string name="set_reminder_string">Set Reminder</string>
-
-    <string name="notes_save_text">Save Notes</string>
 
     <string-array name="species_array">
         <item>@string/hive_species_italian</item>
