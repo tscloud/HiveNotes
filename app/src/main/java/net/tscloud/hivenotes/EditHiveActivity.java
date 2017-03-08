@@ -1,27 +1,18 @@
 package net.tscloud.hivenotes;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +25,8 @@ import net.tscloud.hivenotes.db.Weather;
 import net.tscloud.hivenotes.db.WeatherDAO;
 import net.tscloud.hivenotes.helper.HivePollen;
 import net.tscloud.hivenotes.helper.HiveWeather;
-import net.tscloud.hivenotes.helper.LogEditTextDialogData;
-import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
+
+import java.util.List;
 
 public class EditHiveActivity extends AppCompatActivity implements
         EditHiveListFragment.OnEditHiveListFragmentInteractionListener {

@@ -56,8 +56,6 @@ public class EditApiaryFragment extends Fragment implements
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @param profileID
-     * @param apiaryID
      */
     public static EditApiaryFragment newInstance(long profileID, long apiaryID) {
         Log.d(TAG, "getting newInstance of EditApiaryFragment...profileID: " + profileID);
@@ -330,7 +328,7 @@ public class EditApiaryFragment extends Fragment implements
             }
         }
         catch (SecurityException e) {
-            Log.d(TAG, "Permission not given for location services", e);
+            Log.d(TAG, "!!!Permission not given for location services!!!", e);
         }
     }
 
@@ -380,9 +378,9 @@ public class EditApiaryFragment extends Fragment implements
         return reply;
     }
 
-    public class HiveApiaryDeleteDialog extends HiveDeleteDialog {
+    private class HiveApiaryDeleteDialog extends HiveDeleteDialog {
 
-        protected HiveApiaryDeleteDialog() {
+        private HiveApiaryDeleteDialog() {
             super(getActivity(), "Are you sure you want to delete this Apiary?");
         }
 

@@ -1,32 +1,19 @@
 package net.tscloud.hivenotes;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryHiveHealthDAO;
-import net.tscloud.hivenotes.db.NotificationType;
-import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
-import net.tscloud.hivenotes.helper.GetReminderTimeTask;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 
 /**

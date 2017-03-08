@@ -2,19 +2,18 @@ package net.tscloud.hivenotes.helper;
 
 import android.util.Log;
 
-import java.util.Date;
-import java.text.ParseException;
-import java.util.NoSuchElementException;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Created by tscloud on 6/13/16.

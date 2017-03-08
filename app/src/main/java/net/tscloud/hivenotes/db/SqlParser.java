@@ -1,7 +1,6 @@
 package net.tscloud.hivenotes.db;
 
 import android.content.res.AssetManager;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;

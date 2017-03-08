@@ -5,14 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
 import net.tscloud.hivenotes.db.AbstractLogDAO;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
-import net.tscloud.hivenotes.helper.LogEditTextDialogData;
-import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 import java.text.DateFormat;

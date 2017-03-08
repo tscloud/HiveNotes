@@ -1,6 +1,5 @@
 package net.tscloud.hivenotes;
 
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -9,8 +8,6 @@ import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDataEntry;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import net.tscloud.hivenotes.helper.LogSuperDataEntry;
-
-import static android.R.attr.fragment;
 
 /**
  * Created by tscloud on 3/3/17.

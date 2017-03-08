@@ -3,11 +3,6 @@ package net.tscloud.hivenotes.helper;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * Created by tscloud on 4/28/16.

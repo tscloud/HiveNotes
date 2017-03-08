@@ -16,14 +16,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.GraphableDataDAO;
-import net.tscloud.hivenotes.helper.HiveUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

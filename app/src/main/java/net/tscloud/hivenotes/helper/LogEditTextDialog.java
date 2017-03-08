@@ -1,36 +1,18 @@
 package net.tscloud.hivenotes.helper;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
 
-import net.tscloud.hivenotes.LogHiveHealthFragment;
 import net.tscloud.hivenotes.R;
-import net.tscloud.hivenotes.db.NotificationType;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import cn.refactor.library.SmoothCheckBox;
 
 /**
  * Created by tscloud on 2/10/17.

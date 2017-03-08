@@ -8,11 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-
 public class LogDateListActivity extends AppCompatActivity implements
         LogDateListFragment.OnLogDateListFragmentListener {
 

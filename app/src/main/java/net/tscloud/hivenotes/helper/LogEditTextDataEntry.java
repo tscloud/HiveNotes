@@ -1,8 +1,6 @@
 package net.tscloud.hivenotes.helper;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +11,6 @@ import android.widget.TextView;
 
 import net.tscloud.hivenotes.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -41,8 +38,6 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        final ArrayList<RecyclerView.ViewHolder> viewholderList = new ArrayList<>();
 
         // get the Dialog Layout
         final View view = inflater.inflate(R.layout.scb_edittext_view, null);

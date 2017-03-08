@@ -1,17 +1,11 @@
 package net.tscloud.hivenotes;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-
-import net.tscloud.hivenotes.helper.LogEditTextDataEntry;
-import net.tscloud.hivenotes.helper.LogEditTextDialogData;
-import net.tscloud.hivenotes.helper.LogMultiSelectDataEntry;
-import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
-import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 public class EditHiveSingleActivity extends HiveDataEntryActivity implements
         EditHiveSingleFragment.OnEditHiveSingleFragmentInteractionListener {
@@ -19,13 +13,6 @@ public class EditHiveSingleActivity extends HiveDataEntryActivity implements
     private static final String TAG = "EditHiveSingleActivity";
     private long mApiaryKey = -1;
     private long mHiveKey = -1;
-
-    // needed for things like Dialog dismissal after its return w/ w/o data
-    //private LogSuperDataEntry diagFragment;
-
-    // Need a reference to the Fragment that we're going to launch as we may need to pass back data
-    //  collected by Dialog
-    //private EditHiveSingleFragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,63 +62,4 @@ public class EditHiveSingleActivity extends HiveDataEntryActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*
-    @Override
-    public void onBackPressed() {
-        // Do the stuff we need to do in the dialog - essentially we're done =>
-        //  so save everything
-        if (diagFragment == null || !diagFragment.onBackPressed()) {
-            // Do the stuff we need to do in the fragment - essentially we're done =>
-            //  so save everything
-            if (fragment == null || !fragment.onFragmentSave()) {
-                // neither dialog nor fragment consumed event
-                super.onBackPressed();
-            }
-        }
-    }
-    */
-
-    // Dialog w/ checkboxes
-    /*
-    @Override
-    public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
-        //diagFragment = LogMultiSelectDialog.newInstance(aData);
-        //diagFragment.show(getSupportFragmentManager(), aData.getTag());
-        diagFragment = LogMultiSelectDataEntry.newInstance(aData);
-        getSupportFragmentManager().beginTransaction()
-                .addToBackStack(aData.getTag())
-                .replace(R.id.fragment_placeholder, diagFragment, aData.getTag())
-                .commit();
-    };
-
-    // Dialog w/ edittext
-    @Override
-    public void onLogLaunchDialog(LogEditTextDialogData aData) {
-        //diagFragment = LogEditTextDialog.newInstance(aData);
-        //diagFragment.show(getSupportFragmentManager(), aData.getTag());
-        diagFragment = LogEditTextDataEntry.newInstance(aData);
-        getSupportFragmentManager().beginTransaction()
-                .addToBackStack(aData.getTag())
-                .replace(R.id.fragment_placeholder, diagFragment, aData.getTag())
-                .commit();
-
-    };
-
-    @Override
-    public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag) {
-        Log.d(TAG, "onLogDataEntryOK: OK button clicked");
-
-        for (String s: aResults) {
-            Log.d(TAG, s);
-        }
-
-        // TODO: nulling the diagFragment necessary/required/desired?
-        diagFragment = null;
-
-        fragment.setDialogData(aResults, aResultRemTime, aTag);
-        //diagFragment.dismiss();
-        getSupportFragmentManager().popBackStack();
-    }
-    */
 }

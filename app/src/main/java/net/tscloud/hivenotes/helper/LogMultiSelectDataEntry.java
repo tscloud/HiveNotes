@@ -1,9 +1,8 @@
 package net.tscloud.hivenotes.helper;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +15,11 @@ import android.widget.TimePicker;
 import net.tscloud.hivenotes.R;
 import net.tscloud.hivenotes.db.NotificationType;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import cn.refactor.library.SmoothCheckBox;
 

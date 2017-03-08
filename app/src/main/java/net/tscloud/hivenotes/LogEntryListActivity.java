@@ -20,10 +20,10 @@ import net.tscloud.hivenotes.db.LogEntryFeeding;
 import net.tscloud.hivenotes.db.LogEntryFeedingDAO;
 import net.tscloud.hivenotes.db.LogEntryGeneral;
 import net.tscloud.hivenotes.db.LogEntryGeneralDAO;
+import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryHiveHealthDAO;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryOtherDAO;
-import net.tscloud.hivenotes.db.LogEntryHiveHealth;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
 import net.tscloud.hivenotes.db.Notification;
@@ -31,7 +31,6 @@ import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
-import net.tscloud.hivenotes.helper.LogMultiSelectDialog;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
@@ -54,8 +53,7 @@ import net.tscloud.hivenotes.helper.LogSuperDataEntry;
  */
 public class LogEntryListActivity extends AppCompatActivity implements
         LogEntryListFragment.Callbacks,
-        LogFragment.LogFragmentActivity,
-        LogSuperDataEntry.onLogDataEntryInteractionListener {
+        LogFragment.LogFragmentActivity {
 
     public static final String TAG = "LogEntryListActivity";
 

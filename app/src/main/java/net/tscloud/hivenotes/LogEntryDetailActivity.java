@@ -1,21 +1,11 @@
 package net.tscloud.hivenotes;
 
-import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
-import net.tscloud.hivenotes.db.LogEntryFeeding;
-import net.tscloud.hivenotes.db.LogEntryGeneral;
-import net.tscloud.hivenotes.db.LogEntryHiveHealth;
-import net.tscloud.hivenotes.db.LogEntryOther;
-import net.tscloud.hivenotes.db.LogEntryProductivity;
-import net.tscloud.hivenotes.helper.LogEditTextDataEntry;
-import net.tscloud.hivenotes.helper.LogEditTextDialogData;
-import net.tscloud.hivenotes.helper.LogMultiSelectDataEntry;
-import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 /**
@@ -37,11 +27,11 @@ public class LogEntryDetailActivity extends HiveDataEntryActivity implements
     private HiveNotesLogDO mPreviousLogData;
 
     // needed for things like Dialog dismissal after its return w/ w/o data
-    private LogSuperDataEntry diagFragment;
+    //private LogSuperDataEntry diagFragment;
 
     // Need a reference to the Fragment that we're going to launch as we may need to pass back data
     //  collected by Dialog
-    private LogFragment fragment = null;
+    //private LogFragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

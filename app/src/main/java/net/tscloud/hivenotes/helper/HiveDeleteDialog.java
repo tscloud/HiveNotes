@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
-import net.tscloud.hivenotes.R;
-
 /**
  * Created by tscloud on 9/16/16.
  */
