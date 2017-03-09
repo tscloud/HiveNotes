@@ -1,5 +1,24 @@
 package net.tscloud.hivenotes.helper;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import net.tscloud.hivenotes.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+
 /**
  * Created by tscloud on 3/8/17.
  */
@@ -7,7 +26,7 @@ package net.tscloud.hivenotes.helper;
 public class LogEditTextDataEntryLocation extends LogSuperDataEntry implements
         TimeoutableLocationListener.LocationTimeoutListener {
 
-    public static final String TAG = "LogEditTextDataEntryLocation";
+    public static final String TAG = "DataEntryLocation";
 
     // Needed for onBackPressed() - seperate method that may get called from the Activity
     private EditText etPostalCode;
@@ -52,11 +71,11 @@ public class LogEditTextDataEntryLocation extends LogSuperDataEntry implements
 
         // data being passed in as CSV string (not the best but hey)
         String dataString = getArguments().getString("data");
-        ArrayList<String> dataList = Arrays.asList(dataString.split(","));
+        ArrayList<String> dataList = new ArrayList<String>(Arrays.asList(dataString.split(",")));
 
-        etPostalCode.setText(dataString.get(0));
-        etLat.setText(dataString.get(1));
-        etLon.setText(dataString.get(2));
+        etPostalCode.setText(dataList.get(0));
+        etLat.setText(dataList.get(1));
+        etLon.setText(dataList.get(2));
 
         // Stuff to set postal code/lat/lon
         final Button locButton = (Button)view.findViewById(R.id.buttonComputeLatLon);
@@ -92,12 +111,15 @@ public class LogEditTextDataEntryLocation extends LogSuperDataEntry implements
     private void onComputeLatLonButtonPressed() {
         Log.d(TAG, "trying to get lat/lon");
         try {
-            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            mLocationManager = (LocationManager)getActivity().getSystemService(
+                    Context.LOCATION_SERVICE);
 
             // Check LastKnownLocation - GPS
-            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location location = mLocationManager.getLastKnownLocation(
+                    LocationManager.GPS_PROVIDER);
             // make sure location is at least somewhat "fresh"
-            if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
+            if (location != null && location.getTime() > Calendar.getInstance().
+                    getTimeInMillis() - 2 * 60 * 1000) {
                 loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
                     "From GPS: ");
             }
@@ -105,9 +127,10 @@ public class LogEditTextDataEntryLocation extends LogSuperDataEntry implements
                 // Check LastKnownLocation - Network
                 location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 // make sure location is at least somewhat "fresh"
-                if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
-                    loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
-                            "From Network: ");
+                if (location != null && location.getTime() > Calendar.getInstance().
+                        getTimeInMillis() - 2 * 60 * 1000) {
+                    loadScreenLatLon((float)location.getLatitude(),
+                            (float)location.getLongitude(), "From Network: ");
                 }
                 else {
                     // Crank up GPS and/or Network
