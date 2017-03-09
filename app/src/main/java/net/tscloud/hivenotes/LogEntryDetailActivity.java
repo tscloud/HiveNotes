@@ -18,8 +18,7 @@ import net.tscloud.hivenotes.helper.LogSuperDataEntry;
  * more than a {@link LogEntryDetailFragment}.
  */
 public class LogEntryDetailActivity extends HiveDataEntryActivity implements
-        LogFragment.LogFragmentActivity,
-        LogSuperDataEntry.onLogDataEntryInteractionListener {
+        LogFragment.LogFragmentActivity {
 
     public static final String TAG = "LogEntryDetailActivity";
 
