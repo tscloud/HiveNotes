@@ -1,30 +1,21 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.helper.HiveDeleteDialog;
-import net.tscloud.hivenotes.helper.TimeoutableLocationListener;
-
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.List;
+import net.tscloud.hivenotes.helper.LogEditTextDialogData;
+import net.tscloud.hivenotes.helper.LogEditTextDialogLocationData;
+import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 
 /**
@@ -35,10 +26,13 @@ import java.util.List;
  * Use the EditApiaryFragment#newInstance factory method to
  * create an instance of this fragment.
  */
-public class EditApiaryFragment extends Fragment implements
-        TimeoutableLocationListener.LocationTimeoutListener {
+public class EditApiaryFragment extends HiveDataEntryFragment {
 
     public static final String TAG = "EditApiaryFragment";
+
+    // constants used for Dialogs
+    public static final String DIALOG_TAG_NAME = "name";
+    public static final String DIALOG_TAG_LOCATION = "location";
 
     // the fragment initialization parameters
     private static final String PROFILE_ID = "param1";
@@ -49,9 +43,6 @@ public class EditApiaryFragment extends Fragment implements
     private Apiary mApiary;
 
     private OnEditApiaryFragmentInteractionListener mListener;
-
-    // Used to get location
-    LocationManager mLocationManager;
 
     /**
      * Use this factory method to create a new instance of
@@ -100,46 +91,35 @@ public class EditApiaryFragment extends Fragment implements
 
         // set button listener and text
         final TextView textNew = (TextView)v.findViewById(R.id.textNewApiary);
-        final View viewNew = v.findViewById(R.id.newApiaryButton);
         final View viewDelete = v.findViewById(R.id.deleteApiaryButton);
-        final Button btnNew = (Button)viewNew.findViewById(R.id.hiveNoteButtton);
         final Button btnDelete = (Button)viewDelete.findViewById(R.id.hiveNoteButtton);
-
-        final Button bComputeLatLon = (Button)v.findViewById(R.id.buttonComputeLatLon);
 
         btnDelete.setText(getResources().getString(R.string.delete_apiary_string));
 
+        // get reference to the <include>s
+        final View dialogApiaryName = v.findViewById(R.id.buttonApiaryName);
+        final View dialogApiaryLocation = v.findViewById(R.id.buttonApiaryLocation);
+
+        // set text of <include>s
+        final TextView nameText =
+                (TextView)dialogApiaryName.findViewById(R.id.dialogLaunchTextView);
+        nameText.setText(R.string.new_apiary_name_string);
+
+        final TextView locationText =
+                (TextView)dialogApiaryLocation.findViewById(R.id.dialogLaunchTextView);
+        locationText.setText(R.string.apiary_location);
+
         if (mApiary != null) {
             Log.d(TAG, "successfully retrieved Apiary data");
-            btnNew.setText(getResources().getString(R.string.save_apiary_string));
             textNew.setText(getResources().getString(R.string.update_apiary_string));
-
-            // fill the form
-            final EditText nameEdit = (EditText)v.findViewById(R.id.editTextApiaryName);
-            final EditText postalCodeEdit = (EditText)v.findViewById(R.id.editTextApiaryPostalCode);
-            final EditText latitudeEdit = (EditText)v.findViewById(R.id.editTextApiaryLatitude);
-            final EditText longitudeEdit = (EditText)v.findViewById(R.id.editTextApiaryLongitude);
-
-            nameEdit.setText(mApiary.getName());
-            postalCodeEdit.setText(mApiary.getPostalCode());
-            latitudeEdit.setText(Float.toString(mApiary.getLatitude()));
-            longitudeEdit.setText(Float.toString(mApiary.getLongitude()));
         }
         else {
-            btnNew.setText(getResources().getString(R.string.create_apiary_string));
             //get rid of Delete button
             btnDelete.setEnabled(false);
             btnDelete.setTextColor(Color.GRAY);
         }
 
-        // set button listeners
-        btnNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onUpdateButtonPressed(mProfileID);
-            }
-        });
-
+        // set delete button listener
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,139 +127,104 @@ public class EditApiaryFragment extends Fragment implements
             }
         });
 
-        bComputeLatLon.setOnClickListener(new View.OnClickListener() {
+        // set dialog button listeners
+        dialogApiaryName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onComputeLatLonButtonPressed(mProfileID);
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mApiary != null) {
+                        checked = mApiary.getName();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.new_apiary_name_string),
+                            DIALOG_TAG_NAME,
+                            checked,
+                            false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogApiaryLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String aPostalCode = "";
+                    float aLat = 0;
+                    float aLon = 0;
+                    if (mApiary != null) {
+                        aPostalCode = mApiary.getPostalCode();
+                        aLat = mApiary.getLatitude();
+                        aLon = mApiary.getLongitude();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogLocationData(
+                            getResources().getString(R.string.apiary_location),
+                            DIALOG_TAG_LOCATION,
+                            aPostalCode,
+                            aLat,
+                            aLon));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
             }
         });
 
         return v;
     }
 
-    private void onUpdateButtonPressed(long profileID) {
+    @Override
+    public boolean onFragmentSave() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist apiary");
 
-        boolean lNewApiary = false;
+        boolean reply = false;
 
-        final EditText nameEdit = (EditText)getView().findViewById(R.id.editTextApiaryName);
-        final EditText postalCodeEdit = (EditText)getView().findViewById(R.id.editTextApiaryPostalCode);
-        final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
-        final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
-
-        String nameText = nameEdit.getText().toString();
-        String postalCodeText = postalCodeEdit.getText().toString();
-
-        String latitudeString = latitudeEdit.getText().toString();
-        float latitudeFloat = 0;
-        if ((latitudeString != null) && (latitudeString.length() != 0)) {
-            latitudeFloat = Float.parseFloat(latitudeString);
+        if (mApiary == null) {
+            mApiary = new Apiary();
         }
 
-        String longitudeString = longitudeEdit.getText().toString();
-        float longitudeFloat = 0;
-        if ((longitudeString != null) && (longitudeString.length() != 0)) {
-            longitudeFloat = Float.parseFloat(longitudeString);
+        ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
+        Apiary apiary;
+
+        mApiary.setProfile(mProfileID);
+
+        if (mApiaryID == -1) {
+            apiary = apiaryDAO.createApiary(mApiary);
+        }
+        else {
+            mApiary.setId(mApiaryID);
+            apiary = apiaryDAO.updateApiary(mApiary);
+        }
+        apiaryDAO.close();
+
+        if (apiary != null) {
+            // Reset Hive instance vars
+            mApiary = apiary;
+            mApiaryID = apiary.getId();
+
+            Log.d(TAG, "Apiary Name: " + apiary.getName() + " persisted");
+            Log.d(TAG, "Apiary Postal Code: " + apiary.getPostalCode() + " persisted");
+        }
+        else {
+            Log.d(TAG, "BAD...Apiary update failed");
         }
 
-        boolean emptyText = false;
-
-        // Name EditText can be empty
-        if (nameText.length() == 0) {
-            nameEdit.setError("Name cannot be empty");
-            emptyText = true;
-            Log.d(TAG, "Uh oh...Name empty");
+        if (mListener != null) {
+            mListener.onEditApiaryFragmentInteraction(apiary);
+            reply = true;
         }
 
-        // Lat/Lon - if we have 1 => we need the other
-        if ((latitudeString.length() != 0) && (longitudeString.length() == 0)) {
-            longitudeEdit.setError("Need lat AND lon");
-            emptyText = true;
-            Log.d(TAG, "Uh oh...Longitude empty");
-        }
-
-        if ((longitudeString.length() != 0) && (latitudeString.length() == 0)) {
-            latitudeEdit.setError("Need lat AND lon");
-            emptyText = true;
-            Log.d(TAG, "Uh oh...Latitude empty");
-        }
-
-        if (!emptyText) {
-
-            /** Before we write the Apiary, we need zip/latlon checks
-             *   if lat/lon => geocode to get zip potentially overwriting an
-             *    existing zip <- these need to match as weather data will be
-             *    got by lat/lon (it may be more accurate) but pollen data can
-             *    only be got by zip
-             *   if zip & no lat/lon => geocode to get lat/lon <- technically not
-             *    necessary but we can consistently retrieve weather by lat/lon
-             */
-
-            if ((latitudeFloat != 0 ) && (longitudeFloat != 0)) {
-                // use lat/lon to get postal code
-                final Geocoder geocoder = new Geocoder(getActivity());
-                try {
-                    List<Address> addresses = geocoder.getFromLocation((double)latitudeFloat,
-                            (double)longitudeFloat, 1);
-                    if (addresses != null && !addresses.isEmpty()) {
-                        Address address = addresses.get(0);
-                        // Use the address as needed
-                        postalCodeText = address.getPostalCode();
-                    } else {
-                        // Display appropriate message when Geocoder services are not available
-                        Log.d(TAG, "no find postal code");
-                    }
-                } catch (IOException e) {
-                    // handle exception
-                    Log.d(TAG, "IOException getting postal code from lat/lon: " + e.getMessage());
-                }
-            }
-            else if (postalCodeText.length() != 0) {
-                // use postal code to get lat/lon
-                final Geocoder geocoder = new Geocoder(getActivity());
-                try {
-                    List<Address> addresses = geocoder.getFromLocationName(postalCodeText, 1);
-                    if (addresses != null && !addresses.isEmpty()) {
-                        Address address = addresses.get(0);
-                        // Use the address as needed
-                        latitudeFloat = (float)address.getLatitude();
-                        longitudeFloat = (float)address.getLongitude();
-                    } else {
-                        // Display appropriate message when Geocoder services are not available
-                        Log.d(TAG, "no find lat/lon");
-                    }
-                } catch (IOException e) {
-                    // handle exception
-                    Log.d(TAG, "IOException getting lat/lon from postal code: " + e.getMessage());
-                }
-            }
-
-            ApiaryDAO apiaryDAO = new ApiaryDAO(getActivity());
-            Apiary apiary;
-            if (mApiaryID == -1) {
-                apiary = apiaryDAO.createApiary(profileID, nameText, postalCodeText, latitudeFloat,
-                        longitudeFloat);
-                lNewApiary = true;
-            }
-            else {
-                apiary = apiaryDAO.updateApiary(mApiaryID, profileID, nameText, postalCodeText,
-                        latitudeFloat, longitudeFloat);
-            }
-            apiaryDAO.close();
-
-            if (apiary != null) {
-                Log.d(TAG, "Apiary Name: " + apiary.getName() + " persisted");
-                Log.d(TAG, "Apiary Postal Code: " + apiary.getPostalCode() + " persisted");
-            }
-            else {
-                Log.d(TAG, "BAD...Apiary update failed");
-            }
-
-            if (mListener != null) {
-                mListener.onEditApiaryFragmentInteraction(apiary);
-            }
-        }
+        return reply;
     }
 
     private void onDeleteButtonPressed() {
@@ -294,59 +239,6 @@ public class EditApiaryFragment extends Fragment implements
         if (mListener != null) {
             // return w/ null => this indicates a delete as apposed to an update
             mListener.onEditApiaryFragmentInteraction(null);
-        }
-    }
-
-    private void onComputeLatLonButtonPressed(long profileID) {
-        Log.d(TAG, "trying to get lat/lon");
-        try {
-            mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-            // Check LastKnownLocation - GPS
-            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            // make sure location is at least somewhat "fresh"
-            if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
-                loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
-                    "From GPS: ");
-            }
-            else {
-                // Check LastKnownLocation - Network
-                location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                // make sure location is at least somewhat "fresh"
-                if (location != null && location.getTime() > Calendar.getInstance().getTimeInMillis() - 2 * 60 * 1000) {
-                    loadScreenLatLon((float)location.getLatitude(), (float)location.getLongitude(),
-                            "From Network: ");
-                }
-                else {
-                    // Crank up GPS and/or Network
-                    TimeoutableLocationListener tLocListner =
-                            new TimeoutableLocationListener(mLocationManager, 1000*5, this);
-                    tLocListner.execute(getActivity());
-                    //loadScreenLatLon((float)tLocListner.mLocation.getLatitude(), (float)tLocListner.mLocation.getLongitude(),
-                    //        tLocListner.mLocation.getProvider());
-                }
-            }
-        }
-        catch (SecurityException e) {
-            Log.d(TAG, "!!!Permission not given for location services!!!", e);
-        }
-    }
-
-    // utility method for loading lat/lon screen fields
-    private void loadScreenLatLon(float aLat, float aLon, String aCaller) {
-        Log.d(TAG, String.format(aCaller + ": Lat: %f, Lon: %f", aLat, aLon));
-        final EditText latitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLatitude);
-        final EditText longitudeEdit = (EditText)getView().findViewById(R.id.editTextApiaryLongitude);
-        latitudeEdit.setText(Float.toString(aLat));
-        longitudeEdit.setText(Float.toString(aLon));
-    }
-
-    @Override
-    public void onLocationTimedout(Location aLocation) {
-        Log.d(TAG, "onLocationTimedout() called");
-        if (aLocation != null) {
-            loadScreenLatLon((float)aLocation.getLatitude(), (float)aLocation.getLongitude(),
-                    aLocation.getProvider());
         }
     }
 
@@ -389,18 +281,41 @@ public class EditApiaryFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
+        //may have to create the DO here - if we're a new entry and Dialog work was done before
+        // anything else
+        if (mApiary == null) {
+            mApiary = new Apiary();
+        }
+
+        switch (aTag){
+            case DIALOG_TAG_NAME:
+                mApiary.setName(aResults[0]);
+                Log.d(TAG, "onLogLaunchDialog: setName: " +
+                        mApiary.getName());
+                break;
+            case DIALOG_TAG_LOCATION:
+                mApiary.setPostalCode(aResults[0]);
+                mApiary.setLatitude(Float.valueOf(aResults[1]));
+                mApiary.setLongitude(Float.valueOf(aResults[2]));
+                Log.d(TAG, "onLogLaunchDialog: setPostalCode: " +
+                        mApiary.getPostalCode());
+                break;
+            default:
+                Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnEditApiaryFragmentInteractionListener {
+    public interface OnEditApiaryFragmentInteractionListener extends
+            LogSuperDataEntry.onLogDataEntryInteractionListener {
         // For general interaction - really just the return to the Activity
         void onEditApiaryFragmentInteraction(Apiary aApiary);
-
-        // For getting Apiary data
-        //List<Apiary> deliverApiaryList(long aProfileID);
     }
-
 }

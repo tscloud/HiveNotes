@@ -14,6 +14,7 @@
     <string name="apiary_list_text">Apiary List:</string>
     <string name="postal_code_string">Postal Code:</string>
     <string name="new_apiary_name_string">Apiary Name:</string>
+    <string name="apiary_location">Location:</string>
     <string name="apiary_latlon">Lat/Lon:</string>
     <string name="apiary_compute_latlon">Lat/Lon from GPS/Network</string>
 

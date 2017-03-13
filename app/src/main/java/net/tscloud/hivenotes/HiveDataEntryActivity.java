@@ -4,7 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import net.tscloud.hivenotes.helper.LogEditTextDataEntry;
+import net.tscloud.hivenotes.helper.LogEditTextDataEntryLocation;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
+import net.tscloud.hivenotes.helper.LogEditTextDialogLocationData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDataEntry;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import net.tscloud.hivenotes.helper.LogSuperDataEntry;
@@ -60,6 +62,18 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
         //diagFragment = LogEditTextDialog.newInstance(aData);
         //diagFragment.show(getSupportFragmentManager(), aData.getTag());
         diagFragment = LogEditTextDataEntry.newInstance(aData);
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack(aData.getTag())
+                .replace(getContainerViewId(), diagFragment, aData.getTag())
+                .commit();
+    };
+
+    // Dialog w/ location getter
+    @Override
+    public void onLogLaunchDialog(LogEditTextDialogLocationData aData) {
+        //diagFragment = LogEditTextDialog.newInstance(aData);
+        //diagFragment.show(getSupportFragmentManager(), aData.getTag());
+        diagFragment = LogEditTextDataEntryLocation.newInstance(aData);
         getSupportFragmentManager().beginTransaction()
                 .addToBackStack(aData.getTag())
                 .replace(getContainerViewId(), diagFragment, aData.getTag())

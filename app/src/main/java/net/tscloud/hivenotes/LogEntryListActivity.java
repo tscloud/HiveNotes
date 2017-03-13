@@ -31,6 +31,7 @@ import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
+import net.tscloud.hivenotes.helper.LogEditTextDialogLocationData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
@@ -316,6 +317,11 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
     @Override
     public void onLogLaunchDialog(LogEditTextDialogData aData) {
+
+    }
+
+    @Override
+    public void onLogLaunchDialog(LogEditTextDialogLocationData aData) {
 
     }
 

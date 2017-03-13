@@ -36,13 +36,14 @@ public class LogEditTextDataEntryLocation extends LogSuperDataEntry implements
     // Used to get location
     LocationManager mLocationManager;
 
-    public static LogEditTextDataEntryLocation newInstance(LogEditTextDialogData aData) {
+    public static LogEditTextDataEntryLocation newInstance(LogEditTextDialogLocationData aData) {
         LogEditTextDataEntryLocation frag = new LogEditTextDataEntryLocation();
         Bundle args = new Bundle();
         args.putString("title", aData.getTitle());
         args.putString("tag", aData.getTag());
-        args.putString("data", aData.getData());
-        args.putBoolean("isOtherNum", aData.isOtherNum());
+        args.putString("postal", aData.getPostalCode());
+        args.putFloat("lat", aData.getLat());
+        args.putFloat("lon", aData.getLon());
         frag.setArguments(args);
         return frag;
     }
@@ -63,19 +64,13 @@ public class LogEditTextDataEntryLocation extends LogSuperDataEntry implements
         etLat = (EditText)view.findViewById(R.id.editTextLatitude);
         etLon = (EditText)view.findViewById(R.id.editTextLongitude);
 
-        // if we only want numeric data => make sure that's what we get
-        if (getArguments().getBoolean("isOtherNum")) {
-            etLat.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            etLon.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        }
+        // we only want numeric data => make sure that's what we get
+        etLat.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        etLon.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-        // data being passed in as CSV string (not the best but hey)
-        String dataString = getArguments().getString("data");
-        ArrayList<String> dataList = new ArrayList<String>(Arrays.asList(dataString.split(",")));
-
-        etPostalCode.setText(dataList.get(0));
-        etLat.setText(dataList.get(1));
-        etLon.setText(dataList.get(2));
+        etPostalCode.setText(getArguments().getString("postal"));
+        etLat.setText(String.valueOf(getArguments().getFloat("lat")));
+        etLon.setText(String.valueOf(getArguments().getFloat("lon")));
 
         // Stuff to set postal code/lat/lon
         final Button locButton = (Button)view.findViewById(R.id.buttonComputeLatLon);

@@ -59,6 +59,7 @@ public abstract class LogSuperDataEntry extends Fragment {
         //void onLogMultiSelectDialogCancel(String aTag);
         void onLogLaunchDialog(LogMultiSelectDialogData aData);
         void onLogLaunchDialog(LogEditTextDialogData aData);
+        void onLogLaunchDialog(LogEditTextDialogLocationData aData);
     }
 
     /*

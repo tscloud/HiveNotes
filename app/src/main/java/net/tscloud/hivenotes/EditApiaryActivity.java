@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 import net.tscloud.hivenotes.db.Apiary;
 
-public class EditApiaryActivity extends AppCompatActivity implements
+public class EditApiaryActivity extends HiveDataEntryActivity implements
         EditApiaryFragment.OnEditApiaryFragmentInteractionListener {
 
     private static final String TAG = "EditApiaryActivity";
@@ -35,12 +35,17 @@ public class EditApiaryActivity extends AppCompatActivity implements
         mProfileKey = intent.getLongExtra(MainActivity.INTENT_PROFILE_KEY, -1);
         mApiaryKey = intent.getLongExtra(MainActivity.INTENT_APIARY_KEY, -1);
 
-        Fragment fragment = EditApiaryFragment.newInstance(mProfileKey, mApiaryKey);
+        fragment = EditApiaryFragment.newInstance(mProfileKey, mApiaryKey);
         String fragTag = "EDIT_PROFILE_FRAG";
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_placeholder, fragment, fragTag);
         ft.commit();
+    }
+
+    @Override
+    protected int getContainerViewId() {
+        return R.id.fragment_placeholder;
     }
 
     @Override

@@ -284,6 +284,7 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
         return v;
     }
 
+    @Override
     public boolean onFragmentSave() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist hive");
@@ -436,5 +437,4 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
         // For general interaction - really just the return to the Activity
         void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive);
     }
-
 }
