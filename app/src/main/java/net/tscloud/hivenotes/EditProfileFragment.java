@@ -23,9 +23,13 @@ import net.tscloud.hivenotes.db.ProfileDAO;
  * Use the EditProfileFragment#newInstance factory method to
  * create an instance of this fragment.
  */
-public class EditProfileFragment extends Fragment {
+public class EditProfileFragment extends HiveDataEntryFragment {
 
     public static final String TAG = "EditProfileFragment";
+
+    // constants used for Dialogs
+    public static final String DIALOG_TAG_NAME = "name";
+    public static final String DIALOG_TAG_EMAIL = "email";
 
     // the fragment initialization parameters
     private static final String PROFILE_ID = "param1";

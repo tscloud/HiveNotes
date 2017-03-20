@@ -11,7 +11,7 @@ import android.util.Log;
 import net.tscloud.hivenotes.db.Profile;
 import net.tscloud.hivenotes.db.ProfileDAO;
 
-public class EditProfileActivity extends AppCompatActivity implements
+public class EditProfileActivity extends HiveDataEntryActivity implements
         EditProfileFragment.OnEditProfileFragmentInteractionListener {
 
     private static final String TAG = "EditProfileActivity";
@@ -31,7 +31,7 @@ public class EditProfileActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         mProfileKey = intent.getLongExtra(MainActivity.INTENT_PROFILE_KEY, -1);
 
-        Fragment fragment = EditProfileFragment.newInstance(mProfileKey);
+        fragment = EditProfileFragment.newInstance(mProfileKey);
         String fragTag = "EDIT_PROFILE_FRAG";
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -50,6 +50,11 @@ public class EditProfileActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected int getContainerViewId() {
+        return R.id.fragment_placeholder;
+    }
+
+    @Override
     public void onEditProfileFragmentInteraction(Profile profile) {
         // don't need to make a new Profile
         // set the instance var w/ the Profile we just made
@@ -61,7 +66,6 @@ public class EditProfileActivity extends AppCompatActivity implements
         data.putExtra(MainActivity.INTENT_PROFILE_KEY, mProfile.getId());
         setResult(RESULT_OK, data);
         finish();
-
     }
 
     // Utility method to get Profile
