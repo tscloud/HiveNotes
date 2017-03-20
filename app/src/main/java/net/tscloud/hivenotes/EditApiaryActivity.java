@@ -39,7 +39,7 @@ public class EditApiaryActivity extends HiveDataEntryActivity implements
         String fragTag = "EDIT_PROFILE_FRAG";
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, fragment, fragTag);
+        ft.replace(getContainerViewId(), fragment, fragTag);
         ft.commit();
     }
 

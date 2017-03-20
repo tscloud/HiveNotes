@@ -1,4 +1,3 @@
-package net.tscloud.hivenotes.db;
 
 /**
  * Created by tscloud on 8/15/15.

@@ -384,7 +384,6 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
         protected void doDelete(){
             onDeleteButtonPressed();
         }
-
     }
 
     @Override

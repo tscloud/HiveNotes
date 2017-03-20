@@ -85,85 +85,119 @@ public class EditProfileFragment extends HiveDataEntryFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
-        final Button b1 = (Button) v.findViewById(R.id.hiveNoteButtton);
-        final TextView t1 = (TextView) v.findViewById(R.id.textNewProfile);
+        // Delete button and title stuff
+        final TextView textNew = (TextView)v.findViewById(R.id.textNewProfile);
+        final View viewDelete = v.findViewById(R.id.deleteProfileButton);
+        final Button btnDelete = (Button)viewDelete.findViewById(R.id.hiveNoteButtton);
+        btnDelete.setText(getResources().getString(R.string.delete_profile_string));
 
-        // set button listener
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onButtonPressed(b1);
-            }
-        });
+        // get reference to the <include>s
+        final View dialogProfileName = v.findViewById(R.id.buttonProfileName);
+        final View dialogProfileEmail = v.findViewById(R.id.buttonProfileEmail);
 
-        /*
-        b1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        // set text of <include>s
+        final TextView nameText =
+                (TextView)dialogProfileName.findViewById(R.id.dialogLaunchTextView);
+        nameText.setText(R.string.new_profile_name_text);
 
-                    // change button background but save original color 1st
-                    drawable = (ColorDrawable)b1.getBackground();
-                    b1.setBackgroundDrawable(new ColorDrawable(Color.GREEN));
-
-                    // call handler
-                    onButtonPressed(b1);
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    b1.setBackgroundDrawable(drawable);
-                }
-                return true;
-            }
-        });
-        */
+        final TextView emailText =
+                (TextView)dialogProfileEmail.findViewById(R.id.dialogLaunchTextView);
+        emailText.setText(R.string.new_profile_email_text);
 
         if (mProfile != null) {
-            // fill the form
-            EditText nameEdit = (EditText)v.findViewById(R.id.editTextName);
-            EditText emailEdit = (EditText)v.findViewById(R.id.editTextEmail);
-
-            nameEdit.setText(mProfile.getName());
-            emailEdit.setText(mProfile.getEmail());
-
-            b1.setText(getResources().getString(R.string.save_profile_string));
-            t1.setText(getResources().getString(R.string.update_profile_string));
+            Log.d(TAG, "successfully retrieved Profile data");
         }
         else {
-            b1.setText(getResources().getString(R.string.create_profile_string));
-
+            textNew.setText(getResources().getString(R.string.new_profile_string));
+            //get rid of Delete button
+            btnDelete.setEnabled(false);
+            btnDelete.setTextColor(Color.GRAY);
         }
+
+        // set delete button listener
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new HiveProfileDeleteDialog().doDeleteDialog();
+            }
+        });
+
+        // set dialog button listeners
+        dialogProfileName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mProfile != null) {
+                        checked = mProfile.getName();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.new_profile_name_text),
+                            DIALOG_TAG_NAME,
+                            checked,
+                            false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
+
+        dialogProfileEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    String checked = "";
+                    if (mProfile != null) {
+                        checked = mProfile.getEmail();
+                    }
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogEditTextDialogData(
+                            getResources().getString(R.string.new_profile_email_text),
+                            DIALOG_TAG_EMAIL,
+                            checked,
+                            false));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
+            }
+        });
 
         return v;
     }
 
-    public void onButtonPressed(Button b) {
+    public void onFragmentSave() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist profile");
 
-        EditText nameEdit = (EditText)getView().findViewById(R.id.editTextName);
-        EditText emailEdit = (EditText)getView().findViewById(R.id.editTextEmail);
-        String nameText = nameEdit.getText().toString();
-        String emailText = emailEdit.getText().toString();
+        boolean reply = false;
 
-        // neither EditText can be empty
-        boolean emptyText = false;
-
-        if (nameText.length() == 0){
-            nameEdit.setError("Name cannot be empty");
-            emptyText = true;
-            Log.d(TAG, "Uh oh...Name empty");
+        if (mProfile == null) {
+            mProfile = new Profile();
         }
 
-        if (emailText.length() == 0){
-            emailEdit.setError("Email cannot be empty");
-            emptyText = true;
-            Log.d(TAG, "Uh oh...Name empty");
-        }
+        ProfileDAO profileDAO = new ProfileDAO(getActivity());
+        Profile profile;
 
-        if (!emptyText) {
-            ProfileDAO profileDAO = new ProfileDAO(getActivity());
-            Profile profile = profileDAO.createProfile(nameText, emailText);
-            profileDAO.close();
+        if (mProfileID == -1) {
+            profile = profileDAO.createProfile(mProfile);
+        }
+        else {
+            mProfile.setId(mProfileID);
+            profile = profileDAO.updateProfile(mProfile);
+        }
+        profileDAO.close();
+
+        if (profile != null) {
+            // Reset Hive instance vars
+            mProfile = profile;
+            mProfileID = profile.getId();
 
             Log.d(TAG, "Profile Name: " + profile.getName() + " persisted");
             Log.d(TAG, "Profile Email: " + profile.getEmail() + " persisted");
@@ -171,6 +205,22 @@ public class EditProfileFragment extends HiveDataEntryFragment {
             if (mListener != null) {
                 mListener.onEditProfileFragmentInteraction(profile);
             }
+        }
+
+        return reply;
+    }
+
+    private void onDeleteButtonPressed() {
+        // delete Profile from DB
+        Log.d(TAG, "about to delete Profile");
+        ProfileDAO profileDAO = new ProfileDAO(getActivity());
+        Profile profile = new Profile();
+        profile.setId(mProfileID);
+        profileDAO.deleteProfile(profile);
+        profileDAO.close();
+
+        if (mListener != null) {
+            mListener.onEditProfileFragmentInteraction(profile);
         }
     }
 
@@ -189,6 +239,41 @@ public class EditProfileFragment extends HiveDataEntryFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public class HiveProfileDeleteDialog extends HiveDeleteDialog {
+
+        protected HiveProfileDeleteDialog() {
+            super(getActivity(), "Are you sure you want to delete this Profile?");
+        }
+
+        protected void doDelete(){
+            onDeleteButtonPressed();
+        }
+    }
+
+    @Override
+    public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
+        //may have to create the DO here - if we're a new entry and Dialog work was done before
+        // anything else
+        if (mProfile == null) {
+            mProfile = new Profile();
+        }
+
+        switch (aTag){
+            case DIALOG_TAG_NAME:
+               mProfile.setName(aResults[0]);
+               Log.d(TAG, "onLogLaunchDialog: setName: " +
+                       mProfile.getName());
+               break;
+            case DIALOG_TAG_EMAIL:
+               mProfile.setEmail(aResults[0]);
+               Log.d(TAG, "onLogLaunchDialog: setEmail: " +
+                       mProfile.getEmail());
+               break;
+            default:
+                Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
+        }
     }
 
     /**

@@ -32,7 +32,7 @@ public class EditHiveSingleActivity extends HiveDataEntryActivity implements
         String fragTag = "EDIT_HIVE_SINGLE_FRAG";
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_placeholder, fragment, fragTag);
+        ft.replace(getContainerViewId(), fragment, fragTag);
         ft.commit();
     }
 

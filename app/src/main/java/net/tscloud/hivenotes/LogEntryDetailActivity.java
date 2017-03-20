@@ -103,7 +103,7 @@ public class LogEntryDetailActivity extends HiveDataEntryActivity implements
             if (fragment != null) {
                 getSupportFragmentManager().beginTransaction()
                         //.addToBackStack(null)
-                        .add(R.id.logentry_detail_container, fragment, fragTag)
+                        .add(getContainerViewId(), fragment, fragTag)
                         .commit();
             }
         }
@@ -171,52 +171,4 @@ public class LogEntryDetailActivity extends HiveDataEntryActivity implements
         setResult(RESULT_OK);
         finish();
     }
-
-    /*
-    1) Launch Dialogs - Fragment we're coming from will tell us which 1 to throw up
-    2) Come back from Dialogs - via OK or Cancel
-     */
-
-    /*
-    // Dialog w/ checkboxes
-    @Override
-    public void onLogLaunchDialog(LogMultiSelectDialogData aData) {
-        //diagFragment = LogMultiSelectDialog.newInstance(aData);
-        //diagFragment.show(getSupportFragmentManager(), aData.getTag());
-        diagFragment = LogMultiSelectDataEntry.newInstance(aData);
-        getSupportFragmentManager().beginTransaction()
-                .addToBackStack(aData.getTag())
-                .replace(R.id.logentry_detail_container, diagFragment, aData.getTag())
-                .commit();
-    };
-
-    // Dialog w/ edittext
-    @Override
-    public void onLogLaunchDialog(LogEditTextDialogData aData) {
-        //diagFragment = LogEditTextDialog.newInstance(aData);
-        //diagFragment.show(getSupportFragmentManager(), aData.getTag());
-        diagFragment = LogEditTextDataEntry.newInstance(aData);
-        getSupportFragmentManager().beginTransaction()
-                .addToBackStack(aData.getTag())
-                .replace(R.id.logentry_detail_container, diagFragment, aData.getTag())
-                .commit();
-
-    };
-
-    @Override
-    public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag) {
-        Log.d(TAG, "onLogDataEntryOK: OK button clicked");
-
-        for (String s: aResults) {
-            Log.d(TAG, s);
-        }
-
-        // TODO: nulling the diagFragment necessary/required/desired?
-        diagFragment = null;
-
-        fragment.setDialogData(aResults, aResultRemTime, aTag);
-        //diagFragment.dismiss();
-        getSupportFragmentManager().popBackStack();
-    }
-    */
 }

@@ -53,7 +53,7 @@
             android:textColor="#FFFFFF"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:text="@string/create_profile"
+            android:text="@string/create_profile_string"
             android:id="@+id/textCreateEdit"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1" />

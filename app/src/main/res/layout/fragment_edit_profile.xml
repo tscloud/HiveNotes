@@ -12,64 +12,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/new_profile_string"
+        android:text="@string/update_profile_string"
         android:id="@+id/textNewProfile"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <LinearLayout
+    <include
+        android:id="@+id/buttonProfileName"
+        layout="@layout/dialog_launch_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/textNewProfile"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutName">
+        android:layout_below="@id/textNewProfile" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/new_profile_name_text"
-            android:id="@+id/textName"
-            android:layout_gravity="center_vertical" />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.75"
-            android:ems="10"
-            android:id="@+id/editTextName">
-            <requestFocus/>
-        </EditText>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <include
+        android:id="@+id/buttonProfileEmail"
+        layout="@layout/dialog_launch_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/linearLayoutName"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/linearLayoutSpecies">
+        android:layout_below="@id/buttonProfileName" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="@string/new_profile_email_text"
-            android:id="@+id/textEMail" />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.75"
-            android:ems="10"
-            android:id="@+id/editTextEmail" />
-
-    </LinearLayout>
+    <include
+        android:id="@+id/deleteProfileButton"
+        layout="@layout/hive_note_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/hiveLine" />
 
     <View
         android:layout_width="match_parent"
@@ -79,12 +47,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <include
-        android:id="@+id/saveGeneralNotesButton"
-        layout="@layout/hive_note_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/hiveLine" />
 
 </RelativeLayout>
