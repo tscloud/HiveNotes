@@ -144,7 +144,7 @@ public class LogDateListFragment extends Fragment {
         super.onDestroy();
     }
 
-    public interface OnLogDateListFragmentListener {
+    interface OnLogDateListFragmentListener {
         public void onLogDateListFragmentInteraction(long logDate);
     }
 

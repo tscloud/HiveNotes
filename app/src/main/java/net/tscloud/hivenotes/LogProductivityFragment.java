@@ -127,6 +127,7 @@ public class LogProductivityFragment extends LogFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.productivity_honey),
+                            getResources().getString(R.string.productivity_subtitle),
                             DIALOG_TAG_HONEY,
                             checked));
                 }
@@ -149,6 +150,7 @@ public class LogProductivityFragment extends LogFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.productivity_pollen),
+                            getResources().getString(R.string.productivity_subtitle),
                             DIALOG_TAG_POLLEN,
                             checked));
                 }
@@ -171,6 +173,7 @@ public class LogProductivityFragment extends LogFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.productivity_wax),
+                            getResources().getString(R.string.productivity_subtitle),
                             DIALOG_TAG_WAX,
                             checked));
                 }

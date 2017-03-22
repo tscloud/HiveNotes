@@ -3,6 +3,7 @@ package net.tscloud.hivenotes;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,6 +165,7 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.hive_name_string),
+                            null,
                             DIALOG_TAG_NAME,
                             checked,
                             false));
@@ -271,6 +273,7 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.hive_note_string),
+                            null,
                             DIALOG_TAG_NOTES,
                             checked,
                             false));
@@ -375,9 +378,9 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
         return reply;
     }
 
-    public class HiveHiveDeleteDialog extends HiveDeleteDialog {
+    private class HiveHiveDeleteDialog extends HiveDeleteDialog {
 
-        protected HiveHiveDeleteDialog() {
+        HiveHiveDeleteDialog() {
             super(getActivity(), "Are you sure you want to delete this Hive?");
         }
 
@@ -401,17 +404,17 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
                         mHive.getName());
                 break;
             case DIALOG_TAG_SPECIES:
-                mHive.setSpecies(aResults[0]);
+                mHive.setSpecies(TextUtils.join(",", aResults));
                 Log.d(TAG, "onLogLaunchDialog: setSpecies: " +
                         mHive.getSpecies());
                 break;
             case DIALOG_TAG_QUEEN:
-                mHive.setRequeen(aResults[0]);
+                mHive.setRequeen(TextUtils.join(",", aResults));
                 Log.d(TAG, "onLogLaunchDialog: setRequeen: " +
                         mHive.getRequeen());
                 break;
             case DIALOG_TAG_FOUNDATION:
-                mHive.setFoundationType(aResults[0]);
+                mHive.setFoundationType(TextUtils.join(",", aResults));
                 Log.d(TAG, "onLogLaunchDialog: setFoundationType: " +
                         mHive.getFoundationType());
                 break;
@@ -431,7 +434,7 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnEditHiveSingleFragmentInteractionListener extends
+    interface OnEditHiveSingleFragmentInteractionListener extends
         LogSuperDataEntry.onLogDataEntryInteractionListener {
         // For general interaction - really just the return to the Activity
         void onEditHiveSingleFragmentInteraction(long hiveID, boolean newHive, boolean deleteHive);

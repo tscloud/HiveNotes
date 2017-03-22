@@ -1,18 +1,20 @@
 package net.tscloud.hivenotes;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.Profile;
 import net.tscloud.hivenotes.db.ProfileDAO;
+import net.tscloud.hivenotes.helper.HiveDeleteDialog;
+import net.tscloud.hivenotes.helper.LogEditTextDialogData;
+import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 
 /**
@@ -45,7 +47,6 @@ public class EditProfileFragment extends HiveDataEntryFragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @param profileID
      */
     public static EditProfileFragment newInstance(long profileID) {
         Log.d(TAG, "getting newInstance of EditProfileFragment...profileID: " + profileID);
@@ -136,6 +137,7 @@ public class EditProfileFragment extends HiveDataEntryFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.new_profile_name_text),
+                            null,
                             DIALOG_TAG_NAME,
                             checked,
                             false));
@@ -159,6 +161,7 @@ public class EditProfileFragment extends HiveDataEntryFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.new_profile_email_text),
+                            null,
                             DIALOG_TAG_EMAIL,
                             checked,
                             false));
@@ -172,7 +175,7 @@ public class EditProfileFragment extends HiveDataEntryFragment {
         return v;
     }
 
-    public void onFragmentSave() {
+    public boolean onFragmentSave() {
         // get name and email and put to DB
         Log.d(TAG, "about to persist profile");
 
@@ -204,6 +207,7 @@ public class EditProfileFragment extends HiveDataEntryFragment {
 
             if (mListener != null) {
                 mListener.onEditProfileFragmentInteraction(profile);
+                reply = true;
             }
         }
 
@@ -241,9 +245,9 @@ public class EditProfileFragment extends HiveDataEntryFragment {
         mListener = null;
     }
 
-    public class HiveProfileDeleteDialog extends HiveDeleteDialog {
+    private class HiveProfileDeleteDialog extends HiveDeleteDialog {
 
-        protected HiveProfileDeleteDialog() {
+        HiveProfileDeleteDialog() {
             super(getActivity(), "Are you sure you want to delete this Profile?");
         }
 
@@ -282,7 +286,8 @@ public class EditProfileFragment extends HiveDataEntryFragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnEditProfileFragmentInteractionListener {
+    interface OnEditProfileFragmentInteractionListener extends
+            LogSuperDataEntry.onLogDataEntryInteractionListener{
         // For general interaction - really just the return to the Activity
         void onEditProfileFragmentInteraction(Profile profile);
 

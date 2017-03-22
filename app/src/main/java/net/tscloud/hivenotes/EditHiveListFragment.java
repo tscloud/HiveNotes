@@ -171,7 +171,7 @@ public class EditHiveListFragment extends Fragment implements AbsListView.OnItem
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnEditHiveListFragmentInteractionListener {
+    interface OnEditHiveListFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
         void onEditHiveListFragmentCreateHive(long hiveID);
         void onEditHiveListFragmentUpdateApiary(long apiaryID);

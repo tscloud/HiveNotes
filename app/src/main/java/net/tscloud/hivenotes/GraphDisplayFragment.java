@@ -548,7 +548,7 @@ public class GraphDisplayFragment extends Fragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnGraphDisplayFragmentInteractionListener {
+    interface OnGraphDisplayFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }

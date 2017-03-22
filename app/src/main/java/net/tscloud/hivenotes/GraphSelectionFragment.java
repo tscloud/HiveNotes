@@ -418,7 +418,7 @@ public class GraphSelectionFragment extends Fragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnGraphSelectionFragmentInteractionListener {
+    interface OnGraphSelectionFragmentInteractionListener {
         void onGraphSelectionFragmentInteraction(
                 List<GraphableData> aToGraphList,
                 long aStartDate,
@@ -428,7 +428,7 @@ public class GraphSelectionFragment extends Fragment {
     /**
      * Inner Class - Get GraphableData AsyncTask
      */
-    public class GetGraphableData extends AsyncTask<Void, Void, Void> {
+    private class GetGraphableData extends AsyncTask<Void, Void, Void> {
 
         public static final String TAG = "GetGraphableData";
 
@@ -436,7 +436,7 @@ public class GraphSelectionFragment extends Fragment {
         private Spinner spinner;
         private Button button;
 
-        public GetGraphableData(Context aCtx, Spinner aSpinner, Button aButton) {
+        GetGraphableData(Context aCtx, Spinner aSpinner, Button aButton) {
             Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : constructor");
             ctx = aCtx;
             spinner = aSpinner;
@@ -475,11 +475,11 @@ public class GraphSelectionFragment extends Fragment {
     /**
      * Inner Class - Custom ArrayAdapter to handle disabled items
      */
-    public class DisableableArrayAdapter<String> extends ArrayAdapter<String> {
+    private class DisableableArrayAdapter<String> extends ArrayAdapter<String> {
 
         HashMap<SpinnerAdapter, Integer> spinnerSelectionHash = new HashMap<>();
 
-        public DisableableArrayAdapter(Context aCtx, int textViewResourceId,
+        DisableableArrayAdapter(Context aCtx, int textViewResourceId,
                                        String[] objects,
                                        HashMap<SpinnerAdapter, Integer> aHash) {
             super(aCtx, textViewResourceId, objects);

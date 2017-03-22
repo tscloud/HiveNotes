@@ -196,7 +196,7 @@ public class HomeFragment extends Fragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnHomeFragmentInteractionListener {
+    interface OnHomeFragmentInteractionListener {
         // For general interaction - really just the return to the Activity
         void onHomeFragmentInteraction(Long apiaryId, boolean deleteDB, boolean editProfile);
 

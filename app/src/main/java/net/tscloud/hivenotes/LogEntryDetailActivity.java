@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
-import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 /**
  * An activity representing a single LogEntryGeneral detail screen. This
@@ -58,7 +57,7 @@ public class LogEntryDetailActivity extends HiveDataEntryActivity implements
             long logEntryDate = getIntent().getLongExtra(LogEntryListActivity.INTENT_LOGENTRY_DATE, -1);
 
             try {
-                mPreviousLogData = (HiveNotesLogDO)getIntent().getParcelableExtra(
+                mPreviousLogData = getIntent().getParcelableExtra(
                         LogEntryListActivity.INTENT_PREVIOUS_DATA);
             }
             catch (ClassCastException e) {
@@ -124,22 +123,6 @@ public class LogEntryDetailActivity extends HiveDataEntryActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*
-    @Override
-    public void onBackPressed() {
-        // Do the stuff we need to do in the dialog - essentially we're done =>
-        //  so save everything
-        if (diagFragment == null || !diagFragment.onBackPressed()) {
-            // Do the stuff we need to do in the fragment - essentially we're done =>
-            //  so save everything
-            if (fragment == null || !fragment.onFragmentSave()) {
-                // neither dialog nor fragment consumed event
-                super.onBackPressed();
-            }
-        }
-    }
-    */
 
     @Override
     public HiveNotesLogDO getPreviousLogData() {

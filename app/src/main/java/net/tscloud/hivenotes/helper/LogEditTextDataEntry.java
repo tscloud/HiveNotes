@@ -28,6 +28,7 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
         LogEditTextDataEntry frag = new LogEditTextDataEntry();
         Bundle args = new Bundle();
         args.putString("title", aData.getTitle());
+        args.putString("subtitle", aData.getSubtitle());
         args.putString("tag", aData.getTag());
         args.putString("data", aData.getData());
         args.putBoolean("isOtherNum", aData.isOtherNum());
@@ -46,11 +47,16 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
         final TextView title = (TextView)view.findViewById(R.id.texttitle);
         title.setText(getArguments().getString("title"));
 
-        // deal /w the year in the subtitle if there is 1
+        // subtitle
         final TextView subtitle = (TextView)view.findViewById(R.id.textsubtitle);
-        if (subtitle != null) {
-            String subtitleString = subtitle.getText().toString();
+        String subtitleString = getArguments().getString("subtitle");
+
+        if (subtitleString != null) {
+            // potentially deal /w the year in the subtitle if there is 1
             subtitle.setText(subtitleString.replace("YYYY", Integer.toString(calendar.get(Calendar.YEAR))));
+        }
+        else {
+            subtitle.setVisibility(View.GONE);
         }
 
         // Needed for onBackPressed() - separate method that may get called from the Activity

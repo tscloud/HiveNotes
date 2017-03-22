@@ -6,20 +6,23 @@ package net.tscloud.hivenotes.helper;
 public class LogEditTextDialogData {
 
     private String title;
+    private String subtitle;
     private String tag;
     private String data;
     private boolean isOtherNum = true; //note default - probably always number
 
-    public LogEditTextDialogData (String aTitle, String aTag, String aData) {
+    public LogEditTextDialogData (String aTitle, String aSubtitle, String aTag, String aData) {
 
         this.title = aTitle;
+        this.subtitle = aSubtitle;
         this.tag = aTag;
         this.data = aData;
     }
 
-    public LogEditTextDialogData (String aTitle, String aTag, String aData, boolean aIsOtherNum) {
+    public LogEditTextDialogData (String aTitle, String aSubtitle, String aTag, String aData,
+                                  boolean aIsOtherNum) {
 
-        this(aTitle, aTag, aData);
+        this(aTitle, aSubtitle, aTag, aData);
         this.isOtherNum = aIsOtherNum;
     }
 
@@ -29,6 +32,10 @@ public class LogEditTextDialogData {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
     }
 
     public String getData() {

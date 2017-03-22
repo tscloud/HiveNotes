@@ -141,6 +141,7 @@ public class EditApiaryFragment extends HiveDataEntryFragment {
                      */
                     mListener.onLogLaunchDialog(new LogEditTextDialogData(
                             getResources().getString(R.string.new_apiary_name_string),
+                            null,
                             DIALOG_TAG_NAME,
                             checked,
                             false));
@@ -272,7 +273,7 @@ public class EditApiaryFragment extends HiveDataEntryFragment {
 
     private class HiveApiaryDeleteDialog extends HiveDeleteDialog {
 
-        private HiveApiaryDeleteDialog() {
+        HiveApiaryDeleteDialog() {
             super(getActivity(), "Are you sure you want to delete this Apiary?");
         }
 
@@ -313,7 +314,7 @@ public class EditApiaryFragment extends HiveDataEntryFragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnEditApiaryFragmentInteractionListener extends
+    interface OnEditApiaryFragmentInteractionListener extends
             LogSuperDataEntry.onLogDataEntryInteractionListener {
         // For general interaction - really just the return to the Activity
         void onEditApiaryFragmentInteraction(Apiary aApiary);
