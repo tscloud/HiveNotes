@@ -55,7 +55,8 @@ public abstract class LogSuperDataEntry extends Fragment {
     interface to define in the Activity what should be upon OK/Cancel
      */
     public interface onLogDataEntryInteractionListener {
-        void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag);
+        void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aResultRemDesc,
+                              String aTag);
         //void onLogMultiSelectDialogCancel(String aTag);
         void onLogLaunchDialog(LogMultiSelectDialogData aData);
         void onLogLaunchDialog(LogEditTextDialogData aData);
@@ -66,7 +67,8 @@ public abstract class LogSuperDataEntry extends Fragment {
     interface to define in the Fragment to set the data entered via dialog
      */
     public interface onLogDataEntrySetData {
-        void setDialogData(String[] aResults, long aResultRemTime, String aTag);
+        void setDialogData(String[] aResults, long aResultRemTime, String aResultRemDesc,
+                           String aTag);
         boolean onFragmentSave();
     }
 }

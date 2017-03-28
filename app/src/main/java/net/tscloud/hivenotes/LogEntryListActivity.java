@@ -33,7 +33,6 @@ import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogEditTextDialogLocationData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
-import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 
 /**
@@ -326,7 +325,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag) {
+    public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aResultRemDesc, String aTag) {
 
     }
 
@@ -441,7 +440,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 createNotification(
                         mLogEntryGeneralData.getQueenRmndrTime(),
                         NotificationType.NOTIFY_GENERAL_LAYING_QUEEN,
-                        mHiveKey);
+                        mHiveKey, null);
 
                 // ** Notification time cleanup **
                 //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
@@ -492,7 +491,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 createNotification(
                         mLogEntryHiveHealthData.getVarroaTrtmntRmndrTime(),
                         NotificationType.NOTIFY_HEALTH_REMOVE_MITE,
-                        mHiveKey);
+                        mHiveKey, null);
 
                 // ** Notification time cleanup **
                 //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
@@ -543,7 +542,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 createNotification(
                         mLogEntryOtherData.getRequeenRmndrTime(),
                         NotificationType.NOTIFY_OTHER_OTHER,
-                        mHiveKey);
+                        mHiveKey,
+                        mLogEntryOtherData.getRequeenRmndrDesc());
 
                 // ** Notification time cleanup **
                 //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
@@ -573,7 +573,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
             return(null);
         }
 
-        private long createNotification(long aStartTime, int aNotType, long aHiveKey) {
+        private long createNotification(long aStartTime, int aNotType, long aHiveKey, String aEventDesc) {
             Log.d(TAG, "in createNotification()");
 
             long notificationId = -1;
@@ -596,12 +596,17 @@ public class LogEntryListActivity extends AppCompatActivity implements
             }
 
             if (aStartTime > -1) {
+                // figure out event description
+                String locEventDesc = NotificationType.getDesc(aNotType);
+                if (aEventDesc != null) {
+                    locEventDesc = aEventDesc;
+                }
                 // create new Event - hardcode endtime
                 eventId = HiveCalendar.addEntryPublic(ctx,
                         aStartTime,
                         aStartTime+600000,
                         NotificationType.NOTIFICATION_TITLE,
-                        NotificationType.getDesc(aNotType),
+                        locEventDesc,
                         mHiveForName.getName());
             }
 

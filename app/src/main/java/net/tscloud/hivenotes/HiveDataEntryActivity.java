@@ -81,7 +81,8 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
     };
 
     @Override
-    public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aTag) {
+    public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aResultRemDesc,
+                                 String aTag) {
         Log.d(TAG, "onLogDataEntryOK: OK button clicked");
 
         for (String s: aResults) {
@@ -91,7 +92,7 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
         // TODO: nulling the diagFragment necessary/required/desired?
         diagFragment = null;
 
-        fragment.setDialogData(aResults, aResultRemTime, aTag);
+        fragment.setDialogData(aResults, aResultRemTime, aResultRemDesc, aTag);
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
     }

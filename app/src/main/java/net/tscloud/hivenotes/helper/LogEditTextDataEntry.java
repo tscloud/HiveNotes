@@ -80,8 +80,9 @@ public class LogEditTextDataEntry extends LogSuperDataEntry {
         if (mListener != null) {
             String[] result = new String[1];
             result[0] = et.getText().toString();
-            mListener.onLogDataEntryOK(result, 0,
-                    getArguments().getString("tag"));
+
+            mListener.onLogDataEntryOK(result, 0, null, getArguments().getString("tag"));
+
             reply = true;
         }
 

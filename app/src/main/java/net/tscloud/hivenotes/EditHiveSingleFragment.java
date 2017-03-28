@@ -390,7 +390,7 @@ public class EditHiveSingleFragment extends HiveDataEntryFragment {
     }
 
     @Override
-    public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
+    public void setDialogData(String[] aResults, long aResultRemTime, String aResultRemDesc, String aTag) {
         //may have to create the DO here - if we're a new entry and Dialog work was done before
         // anything else
         if (mHive == null) {

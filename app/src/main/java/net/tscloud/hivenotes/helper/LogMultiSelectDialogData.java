@@ -12,9 +12,9 @@ public class LogMultiSelectDialogData {
     private String tag;
     private long reminderMillis = -1;
     private boolean hasOther = false;
-    private boolean isOtherNum = false; //note default - probably always text
     private boolean hasReminder = false;
     private boolean isMultiselect = true;
+    private boolean hasRmndrDesc = false;
 
     public LogMultiSelectDialogData (String aTitle, long aHiveID, String[] aElems,
                                      String aCheckedSet, String aTag, long aReminderMillis,
@@ -34,12 +34,12 @@ public class LogMultiSelectDialogData {
 
     public LogMultiSelectDialogData (String aTitle, long aHiveID, String[] aElems,
                                      String aCheckedSet, String aTag, long aReminderMillis,
-                                     boolean aHasOther, boolean aIsOtherNum, boolean aHasReminder,
-                                     boolean aIsMultiselect) {
+                                     boolean aHasOther, boolean aHasReminder,
+                                     boolean aIsMultiselect, boolean aRmndrHasDesc) {
 
         this(aTitle, aHiveID, aElems, aCheckedSet, aTag, aReminderMillis, aHasOther,
              aHasReminder, aIsMultiselect);
-        this.isOtherNum = aIsOtherNum;
+        this.hasRmndrDesc = aRmndrHasDesc;
     }
 
     public String getCheckedSet() {
@@ -52,10 +52,6 @@ public class LogMultiSelectDialogData {
 
     public boolean hasOther() {
         return hasOther;
-    }
-
-    public boolean isOtherNum() {
-        return isOtherNum;
     }
 
     public boolean hasReminder() {
@@ -80,5 +76,9 @@ public class LogMultiSelectDialogData {
 
     public long getReminderMillis() {
         return reminderMillis;
+    }
+
+    public boolean hasRmndrDesc() {
+        return hasRmndrDesc;
     }
 }

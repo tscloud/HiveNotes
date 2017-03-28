@@ -102,8 +102,8 @@ public class LogOtherFragment extends LogFragment {
                     checked,
                     DIALOG_TAG_EVENTS,
                     reminderMillis,
-                    //hasOther, hasReminder, multiselect
-                    true, true, false));
+                    //hasOther, hasReminder, multiselect, rmndrHasDesc
+                    true, true, false, true));
         }
         else {
             Log.d(TAG, "no Listener");
@@ -150,7 +150,8 @@ public class LogOtherFragment extends LogFragment {
     }
 
     @Override
-    public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
+    public void setDialogData(String[] aResults, long aResultRemTime, String aResultRemDesc,
+                              String aTag) {
         //may have to create the DO here - if we're a new entry and Dialog work was done before
         // anything else
         if (mLogEntryOther == null) {
@@ -171,6 +172,10 @@ public class LogOtherFragment extends LogFragment {
                 mLogEntryOther.setRequeenRmndrTime(aResultRemTime);
                 Log.d(TAG, "onLogLaunchDialog: setRequeenRmndrTime: " +
                         mLogEntryOther.getRequeenRmndrTime());
+
+                mLogEntryOther.setRequeenRmndrDesc(aResultRemDesc);
+                Log.d(TAG, "onLogLaunchDialog: setRequeenRmndrDesc: " +
+                        mLogEntryOther.getRequeenRmndrDesc());
 
                 break;
             default:

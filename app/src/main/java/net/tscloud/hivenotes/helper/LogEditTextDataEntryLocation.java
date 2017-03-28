@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import net.tscloud.hivenotes.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -95,8 +93,9 @@ public class LogEditTextDataEntryLocation extends LogSuperDataEntry implements
             result[0] = etPostalCode.getText().toString();
             result[1] = etLat.getText().toString();
             result[2] = etLon.getText().toString();
-            mListener.onLogDataEntryOK(result, 0,
-                    getArguments().getString("tag"));
+
+            mListener.onLogDataEntryOK(result, 0, null, getArguments().getString("tag"));
+
             reply = true;
         }
 

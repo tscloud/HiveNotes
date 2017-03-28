@@ -3,12 +3,14 @@ package net.tscloud.hivenotes.helper;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -23,6 +25,8 @@ import java.util.List;
 
 import cn.refactor.library.SmoothCheckBox;
 
+import static net.tscloud.hivenotes.R.id.et;
+
 /**
  * Created by tscloud on 12/19/16.
  */
@@ -35,6 +39,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
 
     // the TextEdit that will hold reminder time
     TextView mReminderText = null;
+    EditText mReminderDesc = null;
 
     // task references - needed to kill tasks on Fragment Destroy
     private GetReminderTimeTask mTaskId = null;
@@ -50,9 +55,9 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         args.putString("tag", aData.getTag());
         args.putLong("reminderMillis", aData.getReminderMillis());
         args.putBoolean("hasOther", aData.hasOther());
-        args.putBoolean("isOtherNum", aData.isOtherNum());
         args.putBoolean("hasReminder", aData.hasReminder());
         args.putBoolean("isMultiselect", aData.isMultiselect());
+        args.putBoolean("hasRmndrDesc", aData.hasRmndrDesc());
         frag.setArguments(args);
         return frag;
     }
@@ -116,9 +121,14 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
             View item = getActivity().getLayoutInflater().inflate(R.layout.scb_item_other, llItems,
                     false);
 
-            holder.tv = (TextView)item.findViewById(R.id.et);
+            holder.tv = (TextView)item.findViewById(et);
             holder.cb = (SmoothCheckBox)item.findViewById(R.id.scb);
             holder.tv.setTag(holder.cb);
+
+            // if we only want numeric data => make sure that's what we get
+            if (getArguments().getBoolean("isOtherNum")) {
+                holder.tv.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            }
 
             // Check to see if we need to populate w/ user entered value
             fillOther(holder);
@@ -214,8 +224,10 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
             if ((mReminderText != null) && (mReminderText.getTag() != null)) {
                 resultRemMillis = (long)mReminderText.getTag();
             }
-            mListener.onLogDataEntryOK(result, resultRemMillis,
+
+            mListener.onLogDataEntryOK(result, resultRemMillis, mReminderDesc.getText().toString(),
                     getArguments().getString("tag"));
+
             reply = true;
         }
 
@@ -281,6 +293,13 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
 
         final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+
+        // optionally allow user to enter description for reminder
+        if (getArguments().getBoolean("hasRmndrDesc")) {
+            View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
+            linLayRemDesc.setVisibility(View.VISIBLE);
+            mReminderDesc = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
+        }
 
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
             @Override

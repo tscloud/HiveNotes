@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.25"
-                android:text="@string/new_profile_name_text"
+                android:text="@string/desc"
                 android:id="@+id/textReminderDesc"
                 android:layout_gravity="center_vertical" />
 

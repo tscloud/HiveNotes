@@ -24,6 +24,9 @@ public class LogEntryOther implements HiveNotesLogDO, Parcelable {
     private long swarmRmndrTime = -1;
     private long splitHiveRmndrTime = -1;
 
+    // These hold reminder descriptions -- they will NOT be persisted
+    private String requeenRmndrDesc;
+
     @Override
     public long getHive() {
         return hive;
@@ -82,6 +85,14 @@ public class LogEntryOther implements HiveNotesLogDO, Parcelable {
 
     public void setVisitDate(long visitDate) {
         this.visitDate = visitDate;
+    }
+
+    public String getRequeenRmndrDesc() {
+        return requeenRmndrDesc;
+    }
+
+    public void setRequeenRmndrDesc(String requeenRmndrDesc) {
+        this.requeenRmndrDesc = requeenRmndrDesc;
     }
 
     @Override

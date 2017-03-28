@@ -253,7 +253,7 @@ public class LogHiveHealthFragment extends LogFragment {
      * Method that passes data back to Fragment that was collected by Dialog
      */
     @Override
-    public void setDialogData(String[] aResults, long aResultRemTime, String aTag) {
+    public void setDialogData(String[] aResults, long aResultRemTime, String aResultRemDesc, String aTag) {
         //may have to create the DO here - if we're a new entry and Dialog work was done before
         // anything else
         if (mLogEntryHiveHealth == null) {
