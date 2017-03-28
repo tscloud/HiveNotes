@@ -37,7 +37,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
 
     final ArrayList<ViewHolder> mViewholderList = new ArrayList<>();
 
-    // the TextEdit that will hold reminder time
+    // Views that will hold reminder time & description
     TextView mReminderText = null;
     EditText mReminderDesc = null;
 
@@ -225,6 +225,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                 resultRemMillis = (long)mReminderText.getTag();
             }
 
+            // AND the reminder description - should always be something there as there is a default
             mListener.onLogDataEntryOK(result, resultRemMillis, mReminderDesc.getText().toString(),
                     getArguments().getString("tag"));
 

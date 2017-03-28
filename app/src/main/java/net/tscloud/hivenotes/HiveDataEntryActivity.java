@@ -33,10 +33,10 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         // Do the stuff we need to do in the dialog - essentially we're done =>
-        //  so save everything
+        //  so save everything <-- do this when back button pressed from DataEntry dialog
         if (diagFragment == null || !diagFragment.onBackPressed()) {
             // Do the stuff we need to do in the fragment - essentially we're done =>
-            //  so save everything
+            //  so save everything <-- do this when back button pressed from Fragment
             if (fragment == null || !fragment.onFragmentSave()) {
                 // neither dialog nor fragment consumed event
                 super.onBackPressed();

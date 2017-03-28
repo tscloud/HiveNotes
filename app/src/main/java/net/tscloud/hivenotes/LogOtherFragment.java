@@ -152,8 +152,8 @@ public class LogOtherFragment extends LogFragment {
     @Override
     public void setDialogData(String[] aResults, long aResultRemTime, String aResultRemDesc,
                               String aTag) {
-        //may have to create the DO here - if we're a new entry and Dialog work was done before
-        // anything else
+        //may have to create the DO here - if we're a new entry and Dialog work was done
+        // before anything else
         if (mLogEntryOther == null) {
             mLogEntryOther = new LogEntryOther();
         }
@@ -182,8 +182,8 @@ public class LogOtherFragment extends LogFragment {
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
         }
 
-        // This is done in the Feeding Fragment since there's nothing visual to show (no override
-        //  of onCreateView()) so go back to the Activity
+        // This is done in the Other/Event Fragment since there's nothing visual to show
+        //  (no override of onCreateView()) so go back to the Activity
         if (mListener != null) {
             mListener.onLogFragmentInteraction(getDOKey(), mLogEntryOther);
         }

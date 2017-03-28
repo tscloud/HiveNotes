@@ -344,7 +344,7 @@ public class LogDateListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<ParentListItem> dateArray) {
-            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : onPostExecute");
+            Log.d(TAG, "GetDatesTask("+ Thread.currentThread().getId() + ") : onPostExecute");
 
             //Toast.makeText(getApplicationContext(), "DB query complete", Toast.LENGTH_SHORT).show();
 
