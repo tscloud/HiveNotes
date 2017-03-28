@@ -249,11 +249,11 @@ public class HiveCalendar {
         return Long.parseLong(newUri.getLastPathSegment());
     }
 
-    public static long getReminderTime(Context aCtx, int aType, long aHive) {
+    public static String[] getReminderTime(Context aCtx, int aType, long aHive) {
         // Here's the tricky part (and it's a bit cockamamie and may change) -- need to get the
         //  Notifications to get the Events to get the times to display
         Log.d(TAG, "reading Notification table to get Event time by Type and Hive");
-        long reply = -1;
+        String[] reply = new String[2];
 
         NotificationDAO notificationDAO = new NotificationDAO(aCtx);
         Notification wNotification = null;
@@ -261,7 +261,8 @@ public class HiveCalendar {
         wNotification = notificationDAO.getNotificationByTypeAndHive(aType, aHive);
 
         if (wNotification != null) {
-            reply = getEventTime(aCtx, wNotification.getEventId());
+            reply[0] = Long.toString(getEventTime(aCtx, wNotification.getEventId()));
+            reply[1] = wNotification.getRmndrDesc();
         }
 
         return reply;

@@ -573,7 +573,8 @@ public class LogEntryListActivity extends AppCompatActivity implements
             return(null);
         }
 
-        private long createNotification(long aStartTime, int aNotType, long aHiveKey, String aEventDesc) {
+        private long createNotification(long aStartTime, int aNotType, long aHiveKey,
+                                        String aEventDesc) {
             Log.d(TAG, "in createNotification()");
 
             long notificationId = -1;
@@ -595,11 +596,18 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 HiveCalendar.deleteEvent(ctx, wNot.getEventId());
             }
 
+            // Notification/Event Desc -
+            //  being persisted w/ Event in Calendar
+            String locEventDesc = NotificationType.getDesc(aNotType);
+            //  being persisted w/ Notification <-- should be null if user did not
+            //   specify
+            String locNotDesc = null;
+
             if (aStartTime > -1) {
                 // figure out event description
-                String locEventDesc = NotificationType.getDesc(aNotType);
                 if (aEventDesc != null) {
                     locEventDesc = aEventDesc;
+                    locNotDesc = aEventDesc;
                 }
                 // create new Event - hardcode endtime
                 eventId = HiveCalendar.addEntryPublic(ctx,
@@ -614,11 +622,13 @@ public class LogEntryListActivity extends AppCompatActivity implements
             if (wNot == null) {
                 // we don't have a Notification -> make a new one
                 Log.d(TAG, "createNotification(): eventId:" + eventId);
-                wNot = wNotDAO.createNotification(-1, aHiveKey, eventId, aNotType);
+                wNot = wNotDAO.createNotification(-1, aHiveKey, eventId, aNotType,
+                                                  locEventDesc);
             } else if (aStartTime > -1){
                 // we already have a Notification -> update it w/ new event id
                 Log.d(TAG, "updateNotification(): eventId:" + eventId);
                 wNot.setEventId(eventId);
+                wNot.setRmndrDesc(locNotDesc);
                 wNot = wNotDAO.updateNotification(wNot);
             }
             else {

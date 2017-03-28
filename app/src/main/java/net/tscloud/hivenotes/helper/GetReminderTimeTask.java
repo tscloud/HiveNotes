@@ -7,7 +7,7 @@ import android.util.Log;
 /**
  * Created by tscloud on 4/28/16.
  */
-public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
+public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, String[]> {
 
     public static final String TAG = "GetReminderTimeTask";
 
@@ -22,7 +22,7 @@ public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
     }
 
     @Override
-    protected Long doInBackground(Void... unused) {
+    protected String[] doInBackground(Void... unused) {
         Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
             ") : doInBackground");
 
@@ -36,27 +36,32 @@ public abstract class GetReminderTimeTask extends AsyncTask<Void, Void, Long> {
         //}
 
         // perform I/O operation - the reason we're using an AsyncTask
-        long reminderMillis = HiveCalendar.getReminderTime(ctx, data.type, data.hive);
+        String[] reply = HiveCalendar.getReminderTime(ctx, data.type, data.hive);
         Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
-            ") : doInBackground : reminderMillis: " + reminderMillis);
+            ") : doInBackground : reminderMillis: " + reply[0] + " : reminderDesc: " + reply[1]);
 
-        return reminderMillis;
+        return reply;
     }
 
     @Override
-    protected void onPostExecute(Long time) {
+    protected void onPostExecute(String[] time) {
         Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
             ") : onPostExecute");
-        if (time != -1) {
-            data.cal.setTimeInMillis(time);
+
+        if (time[0] != -1) {
+            data.cal.setTimeInMillis(time[0]);
             String fDate = data.dateFormat.format(data.cal.getTime());
             String fTime = data.timeFormat.format(data.cal.getTime());
             String fDateTime = fDate + ' ' + fTime;
             Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
                 ") : onPostExecute : fDateTime: " + fDateTime);
 
-            data.txt.setTag(time);
+            data.txt.setTag(time[0]);
             data.txt.setText(fDateTime);
+        }
+
+        if (time[1] != null) {
+            data.notDesc = time[1];
         }
 
         data.btn.setEnabled(true);

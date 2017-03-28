@@ -13,6 +13,7 @@ import java.util.Calendar;
 public class GetReminderTimeTaskData {
     Button btn;
     TextView txt;
+    String notDesc;
     int type;
     long hive;
     int taskInd;
@@ -21,7 +22,8 @@ public class GetReminderTimeTaskData {
     SimpleDateFormat timeFormat;
 
     public GetReminderTimeTaskData(Button aBtn, TextView aTxt, int aType, long aHive, int aTaskInd,
-                            Calendar aCal, DateFormat aDateFormat, SimpleDateFormat aTimeFormat) {
+                            Calendar aCal, DateFormat aDateFormat, SimpleDateFormat aTimeFormat,
+                            String aNotDesc) {
         this.btn = aBtn;
         this.txt = aTxt;
         this.type = aType;
@@ -30,5 +32,6 @@ public class GetReminderTimeTaskData {
         this.cal = aCal;
         this.dateFormat = aDateFormat;
         this.timeFormat = aTimeFormat;
+        this.notDesc = aNotDesc;
     }
 }

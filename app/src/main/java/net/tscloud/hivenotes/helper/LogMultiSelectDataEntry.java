@@ -37,9 +37,9 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
 
     final ArrayList<ViewHolder> mViewholderList = new ArrayList<>();
 
-    // Views that will hold reminder time & description
+    // View & String that will hold reminder time & description
     TextView mReminderText = null;
-    EditText mReminderDesc = null;
+    String mReminderDesc = null; //<-- used in date/time picker
 
     // task references - needed to kill tasks on Fragment Destroy
     private GetReminderTimeTask mTaskId = null;
@@ -182,7 +182,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                                 NotificationType.notificationTypeLookup.get(
                                         getArguments().getString("tag")),
                                 getArguments().getLong("hiveid"), TASK_ID,
-                                calendar, dateFormat, timeFormat),
+                                calendar, dateFormat, timeFormat, mReminderDesc),
                         getActivity());
                 // All AsynchTasks executed serially on same background Thread
                 mTaskId.execute();
@@ -226,7 +226,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
             }
 
             // AND the reminder description - should always be something there as there is a default
-            mListener.onLogDataEntryOK(result, resultRemMillis, mReminderDesc.getText().toString(),
+            mListener.onLogDataEntryOK(result, resultRemMillis, mReminderDesc,
                     getArguments().getString("tag"));
 
             reply = true;
@@ -299,7 +299,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         if (getArguments().getBoolean("hasRmndrDesc")) {
             View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
             linLayRemDesc.setVisibility(View.VISIBLE);
-            mReminderDesc = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
+            ((EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc)).setText(mReminderText);
         }
 
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {

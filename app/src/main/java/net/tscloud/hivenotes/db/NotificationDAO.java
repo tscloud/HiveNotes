@@ -22,10 +22,12 @@ public class NotificationDAO extends AbstractDAO {
     public static final String COLUMN_NOTIFICATION_HIVE = "hive";
     public static final String COLUMN_NOTIFICATION_EVENT_ID = "event_id";
     public static final String COLUMN_NOTIFICATION_RMNDR_TYPE = "rmndr_type";
+    public static final String COLUMN_NOTIFICATION_RMNDR_DESC = "rmndr_desc";
 
     // Database fields
     private String[] mAllColumns = {COLUMN_NOTIFICATION_ID, COLUMN_NOTIFICATION_APIARY,
-            COLUMN_NOTIFICATION_HIVE, COLUMN_NOTIFICATION_EVENT_ID, COLUMN_NOTIFICATION_RMNDR_TYPE};
+            COLUMN_NOTIFICATION_HIVE, COLUMN_NOTIFICATION_EVENT_ID, COLUMN_NOTIFICATION_RMNDR_TYPE,
+            COLUMN_NOTIFICATION_RMNDR_DESC};
 
     public NotificationDAO(Context context) {
         super(context);
@@ -33,13 +35,15 @@ public class NotificationDAO extends AbstractDAO {
 
     // --DB access methods--
 
-    public Notification createNotification(long apiary, long hive, long eventId, long rmndrType) {
+    public Notification createNotification(long apiary, long hive, long eventId, long rmndrType,
+                                           String rmndrDesc) {
         ContentValues values = new ContentValues();
         // Needed b/c rows in this table can be linked to Apiary OR Hive
         values.put(COLUMN_NOTIFICATION_APIARY, (apiary < 1) ? null : apiary);
         values.put(COLUMN_NOTIFICATION_HIVE, (hive < 1) ? null : hive);
         values.put(COLUMN_NOTIFICATION_EVENT_ID, eventId);
         values.put(COLUMN_NOTIFICATION_RMNDR_TYPE, rmndrType);
+        values.put(COLUMN_NOTIFICATION_RMNDR_DESC, rmndrDesc);
         long insertId = mDatabase.insert(TABLE_NOTIFICATION, null, values);
 
         Notification newNotification = null;
@@ -56,17 +60,19 @@ public class NotificationDAO extends AbstractDAO {
     }
 
     public Notification createNotification(Notification aDO) {
-        return createNotification(aDO.getApiary(), aDO.getHive(), aDO.getEventId(), aDO.getRmndrType());
+        return createNotification(aDO.getApiary(), aDO.getHive(), aDO.getEventId(),
+                                aDO.getRmndrType(), aDO.getRmndrDesc());
     }
 
     public Notification updateNotification(long id, long apiary, long hive, long eventId,
-                                           long rmndrType) {
+                                           long rmndrType, String rmndrDesc) {
         ContentValues values = new ContentValues();
         // Needed b/c rows in this table can be linked to Apiary OR Hive
         values.put(COLUMN_NOTIFICATION_APIARY, (apiary < 1) ? null : apiary);
         values.put(COLUMN_NOTIFICATION_HIVE, (hive < 1) ? null : hive);
         values.put(COLUMN_NOTIFICATION_EVENT_ID, eventId);
         values.put(COLUMN_NOTIFICATION_RMNDR_TYPE, rmndrType);
+        values.put(COLUMN_NOTIFICATION_RMNDR_DESC, rmndrDesc);
         int rowsUpdated = mDatabase.update(TABLE_NOTIFICATION, values,
                 COLUMN_NOTIFICATION_ID + "=" + id, null);
 
@@ -85,7 +91,7 @@ public class NotificationDAO extends AbstractDAO {
 
     public Notification updateNotification(Notification aDO) {
         return updateNotification(aDO.getId(), aDO.getApiary(), aDO.getHive(), aDO.getEventId(),
-                aDO.getRmndrType());
+                aDO.getRmndrType(), aDO.getRmndrDesc());
     }
 
     public void deleteNotification(Notification notification) {
@@ -154,6 +160,7 @@ public class NotificationDAO extends AbstractDAO {
         notification.setHive(cursor.getLong(2));
         notification.setEventId(cursor.getLong(3));
         notification.setRmndrType(cursor.getInt(4));
+        notification.setRmndrDesc(cursor.getString(5));
 
         return notification;
     }

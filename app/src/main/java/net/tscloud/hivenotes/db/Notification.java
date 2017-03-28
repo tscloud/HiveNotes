@@ -16,6 +16,15 @@ public class Notification implements Parcelable {
     private long hive;
     private long eventId;
     private int rmndrType;
+    private String rmndrDesc;
+
+    public String getRmndrDesc() {
+        return rmndrDesc;
+    }
+
+    public void setRmndrDesc(String rmndrDesc) {
+        this.rmndrDesc = rmndrDesc;
+    }
 
     public int getRmndrType() {
         return rmndrType;
