@@ -54,7 +54,7 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
                 .addToBackStack(aData.getTag())
                 .replace(getContainerViewId(), diagFragment, aData.getTag())
                 .commit();
-    };
+    }
 
     // Dialog w/ edittext
     @Override
@@ -66,7 +66,7 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
                 .addToBackStack(aData.getTag())
                 .replace(getContainerViewId(), diagFragment, aData.getTag())
                 .commit();
-    };
+    }
 
     // Dialog w/ location getter
     @Override
@@ -78,7 +78,7 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
                 .addToBackStack(aData.getTag())
                 .replace(getContainerViewId(), diagFragment, aData.getTag())
                 .commit();
-    };
+    }
 
     @Override
     public void onLogDataEntryOK(String[] aResults, long aResultRemTime, String aResultRemDesc,
@@ -96,5 +96,4 @@ public abstract class HiveDataEntryActivity extends AppCompatActivity implements
         //diagFragment.dismiss();
         getSupportFragmentManager().popBackStack();
     }
-
 }

@@ -109,6 +109,7 @@ public class LogEntryOther implements HiveNotesLogDO, Parcelable {
         dest.writeLong(this.requeenRmndrTime);
         dest.writeLong(this.swarmRmndrTime);
         dest.writeLong(this.splitHiveRmndrTime);
+        dest.writeString(this.requeenRmndrDesc);
     }
 
     public LogEntryOther() {
@@ -122,6 +123,7 @@ public class LogEntryOther implements HiveNotesLogDO, Parcelable {
         this.requeenRmndrTime = in.readLong();
         this.swarmRmndrTime = in.readLong();
         this.splitHiveRmndrTime = in.readLong();
+        this.requeenRmndrDesc = in.readString();
     }
 
     public static final Parcelable.Creator<LogEntryOther> CREATOR = new Parcelable.Creator<LogEntryOther>() {

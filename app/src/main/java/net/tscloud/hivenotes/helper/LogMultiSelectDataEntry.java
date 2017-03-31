@@ -39,7 +39,9 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
 
     // View & String that will hold reminder time & description
     TextView mReminderText = null;
-    String mReminderDesc = null; //<-- used in date/time picker
+    String mReminderDesc = ""; //<-- used in date/time picker
+
+    GetReminderTimeTaskData mRemData;
 
     // task references - needed to kill tasks on Fragment Destroy
     private GetReminderTimeTask mTaskId = null;
@@ -57,7 +59,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         args.putBoolean("hasOther", aData.hasOther());
         args.putBoolean("hasReminder", aData.hasReminder());
         args.putBoolean("isMultiselect", aData.isMultiselect());
-        args.putBoolean("hasRmndrDesc", aData.hasRmndrDesc());
+        args.putString("rmndrDesc", aData.getRmndrDesc());
         frag.setArguments(args);
         return frag;
     }
@@ -162,6 +164,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                 mReminderText.setText(R.string.no_reminder_set);
                 // don't forget to set the tag
                 mReminderText.setTag(getArguments().getLong("reminderMillis"));
+                mReminderDesc = getArguments().getString("rmndrDesc");
             }
             else if (getArguments().getLong("reminderMillis") != -1) {
                 calendar.setTimeInMillis(getArguments().getLong("reminderMillis"));
@@ -171,6 +174,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                 mReminderText.setText(droneDateTime);
                 // don't forget to set the tag
                 mReminderText.setTag(getArguments().getLong("reminderMillis"));
+                mReminderDesc = getArguments().getString("rmndrDesc");
             }
             else {
                 //disable the button until task is thru
@@ -182,7 +186,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                                 NotificationType.notificationTypeLookup.get(
                                         getArguments().getString("tag")),
                                 getArguments().getLong("hiveid"), TASK_ID,
-                                calendar, dateFormat, timeFormat, mReminderDesc),
+                                calendar, dateFormat, timeFormat),
                         getActivity());
                 // All AsynchTasks executed serially on same background Thread
                 mTaskId.execute();
@@ -251,8 +255,6 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
     private void fillOther(ViewHolder aHolder) {
         Log.d(TAG, "checking for user entered value");
 
-        String reply = null;
-
         //easier to set the "checkedset"
         if (getArguments().getString("checkedset") != null &&
                 getArguments().getString("checkedset").length() != 0) {
@@ -295,11 +297,13 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
 
+        View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
+        final EditText remDescEdit = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
+        remDescEdit.setText(mReminderDesc);
+
         // optionally allow user to enter description for reminder
         if (getArguments().getBoolean("hasRmndrDesc")) {
-            View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
             linLayRemDesc.setVisibility(View.VISIBLE);
-            ((EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc)).setText(mReminderText);
         }
 
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
@@ -323,6 +327,8 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                 timeLbl.setText(timeString);
                 timeLbl.setTag(time);
 
+                mReminderDesc = remDescEdit.getText().toString();
+
                 alertDialog.dismiss();
             }
         });
@@ -344,19 +350,20 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         alertDialog.show();
     }
 
-    class ViewHolder {
+    private class ViewHolder {
         SmoothCheckBox cb;
         TextView tv;
     }
 
     /** subclass of the GetReminderTimeTask
      */
-    class MyGetReminderTimeTask extends GetReminderTimeTask {
+    private class MyGetReminderTimeTask extends GetReminderTimeTask {
 
         MyGetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
             super(aData, aCtx);
         }
 
+        @Override
         protected void nullifyTaskRef(int taskRef) {
             Log.d(TAG, "in overridden GetReminderTimeTask.nullifyTaskRef(): taskRef:" + taskRef);
             switch (taskRef) {
@@ -364,6 +371,11 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                     mTaskId = null;
                     break;
             }
+        }
+
+        @Override
+        protected void setRemDesc(String aDesc) {
+            mReminderDesc = aDesc;
         }
     }
 }

@@ -35,7 +35,7 @@ public class LogMultiSelectDialog extends LogSuperDialog {
 
     public static final String TAG = "LogMultiSelectDialog";
 
-    // the TextEdit that ill hold reminder time
+    // the TextEdit that will hold reminder time
     TextView mReminderText = null;
 
     // task references - needed to kill tasks on Fragment Destroy
@@ -364,7 +364,7 @@ public class LogMultiSelectDialog extends LogSuperDialog {
         alertDialog.show();
     }
 
-    class ViewHolder {
+    private class ViewHolder {
         SmoothCheckBox cb;
         TextView tv;
     }
@@ -384,6 +384,11 @@ public class LogMultiSelectDialog extends LogSuperDialog {
                     mTaskId = null;
                     break;
             }
+        }
+
+        @Override
+        protected void setRemDesc(String aDesc) {
+            // NOOP - development of this class is discontinued
         }
     }
 }

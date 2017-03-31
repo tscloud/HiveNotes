@@ -78,6 +78,7 @@ public class Notification implements Parcelable {
         dest.writeLong(this.hive);
         dest.writeLong(this.eventId);
         dest.writeInt(this.rmndrType);
+        dest.writeString(this.rmndrDesc);
     }
 
     public Notification() {
@@ -89,9 +90,10 @@ public class Notification implements Parcelable {
         this.hive = in.readLong();
         this.eventId = in.readLong();
         this.rmndrType = in.readInt();
+        this.rmndrDesc = in.readString();
     }
 
-    public static final Parcelable.Creator<Notification> CREATOR = new Parcelable.Creator<Notification>() {
+    public static final Creator<Notification> CREATOR = new Creator<Notification>() {
         @Override
         public Notification createFromParcel(Parcel source) {
             return new Notification(source);

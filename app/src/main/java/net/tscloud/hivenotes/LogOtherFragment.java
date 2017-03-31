@@ -87,11 +87,13 @@ public class LogOtherFragment extends LogFragment {
         if (mListener != null) {
             String checked = "";
             long reminderMillis = -1;
+            String remDesc = null;
             if (mLogEntryOther != null) {
                 if (mLogEntryOther.getRequeen() != null) {
                     checked = mLogEntryOther.getRequeen();
                 }
                 reminderMillis = mLogEntryOther.getRequeenRmndrTime();
+                remDesc = mLogEntryOther.getRequeenRmndrDesc();
             }
             /* Get the Activity to launch the Dialog for us
              */
@@ -102,8 +104,9 @@ public class LogOtherFragment extends LogFragment {
                     checked,
                     DIALOG_TAG_EVENTS,
                     reminderMillis,
+                    remDesc,
                     //hasOther, hasReminder, multiselect, rmndrHasDesc
-                    true, true, false, true));
+                    true, true, false));
         }
         else {
             Log.d(TAG, "no Listener");
@@ -172,6 +175,7 @@ public class LogOtherFragment extends LogFragment {
                 mLogEntryOther.setRequeenRmndrTime(aResultRemTime);
                 Log.d(TAG, "onLogLaunchDialog: setRequeenRmndrTime: " +
                         mLogEntryOther.getRequeenRmndrTime());
+
 
                 mLogEntryOther.setRequeenRmndrDesc(aResultRemDesc);
                 Log.d(TAG, "onLogLaunchDialog: setRequeenRmndrDesc: " +

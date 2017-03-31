@@ -196,7 +196,7 @@ public class HiveCalendar {
     }
 
     /**Helper method to return an event's time*/
-    public static long getEventTime(Context aCtx, long aId) {
+    private static long getEventTime(Context aCtx, long aId) {
         long reply = -1;
         Bundle data = getEventByID(aCtx, aId);
 
@@ -249,7 +249,7 @@ public class HiveCalendar {
         return Long.parseLong(newUri.getLastPathSegment());
     }
 
-    public static String[] getReminderTime(Context aCtx, int aType, long aHive) {
+    public static String[] getReminderTimeAndDesc(Context aCtx, int aType, long aHive) {
         // Here's the tricky part (and it's a bit cockamamie and may change) -- need to get the
         //  Notifications to get the Events to get the times to display
         Log.d(TAG, "reading Notification table to get Event time by Type and Hive");
