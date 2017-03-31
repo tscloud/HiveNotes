@@ -59,6 +59,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         args.putBoolean("hasOther", aData.hasOther());
         args.putBoolean("hasReminder", aData.hasReminder());
         args.putBoolean("isMultiselect", aData.isMultiselect());
+        args.putBoolean("hasRmndrDesc", aData.hasRmndrDesc());
         args.putString("rmndrDesc", aData.getRmndrDesc());
         frag.setArguments(args);
         return frag;
@@ -159,13 +160,14 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                     (Button) reminderInclude.findViewById(R.id.buttonDialogRmndr);
 
             // If we have a time --> use it...
-            //  it could be -2 indicating that an UNSET operation has occurred
+            //  ...it could be -2 indicating that an UNSET operation has occurred...
             if (getArguments().getLong("reminderMillis") == -2) {
                 mReminderText.setText(R.string.no_reminder_set);
                 // don't forget to set the tag
                 mReminderText.setTag(getArguments().getLong("reminderMillis"));
                 mReminderDesc = getArguments().getString("rmndrDesc");
             }
+            // ...if it's not -1 => it should be a real time...
             else if (getArguments().getLong("reminderMillis") != -1) {
                 calendar.setTimeInMillis(getArguments().getLong("reminderMillis"));
                 String droneDate = dateFormat.format(calendar.getTime());
@@ -177,6 +179,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                 mReminderDesc = getArguments().getString("rmndrDesc");
             }
             else {
+                // ...otherwise => read Notification table
                 //disable the button until task is thru
                 reminderButton.setEnabled(false);
 
@@ -297,12 +300,14 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
 
-        View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
-        final EditText remDescEdit = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
-        remDescEdit.setText(mReminderDesc);
-
         // optionally allow user to enter description for reminder
+        //  Display desc possibly previously entered by user
+        final EditText remDescEdit;
         if (getArguments().getBoolean("hasRmndrDesc")) {
+            View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
+            remDescEdit = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
+            remDescEdit.setText(mReminderDesc);
+
             linLayRemDesc.setVisibility(View.VISIBLE);
         }
 
@@ -327,7 +332,11 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
                 timeLbl.setText(timeString);
                 timeLbl.setTag(time);
 
-                mReminderDesc = remDescEdit.getText().toString();
+                // optionally allow user to enter description for reminder
+                //  Set desc possibly entered by user
+                if (getArguments().getBoolean("hasRmndrDesc")) {
+                    mReminderDesc = remDescEdit.getText().toString();
+                }
 
                 alertDialog.dismiss();
             }

@@ -261,7 +261,10 @@ public class HiveCalendar {
         wNotification = notificationDAO.getNotificationByTypeAndHive(aType, aHive);
 
         if (wNotification != null) {
+            // ** call getEventTime() using just retrieved eventId
+            //event time from Android calendar
             reply[0] = Long.toString(getEventTime(aCtx, wNotification.getEventId()));
+            //reminder description from Notification table
             reply[1] = wNotification.getRmndrDesc();
         }
 

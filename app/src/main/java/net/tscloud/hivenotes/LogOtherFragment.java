@@ -104,8 +104,9 @@ public class LogOtherFragment extends LogFragment {
                     checked,
                     DIALOG_TAG_EVENTS,
                     reminderMillis,
+                    true,
                     remDesc,
-                    //hasOther, hasReminder, multiselect, rmndrHasDesc
+                    //hasOther, hasReminder, multiselect
                     true, true, false));
         }
         else {
