@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,9 @@ import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogEditTextDialogLocationData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
+
+import static net.tscloud.hivenotes.LogFragment.dateFormat;
+import static net.tscloud.hivenotes.LogFragment.timeFormat;
 
 
 /**
@@ -241,12 +245,40 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     /**
-     * Toolbar click handlers
+     * Toolbar click handlers - must be handled in Activity
      */
     public void hiveFeedingToolClickHandler (View v) {
         Log.d(TAG, "hiveFeedingToolClickHandler called");
         // Launch the Calendar Intent
-        HiveCalendar.calendarIntent(this, System.currentTimeMillis());
+        //HiveCalendar.calendarIntent(this, System.currentTimeMillis());
+
+        //Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(this, v);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.popup_reminder, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.itemRmndrCalendar:
+                    // launch date/time picker
+                    HiveCalendar.calendarIntent(LogEntryListActivity.this,
+                            System.currentTimeMillis());
+                    break;
+                case R.id.itemRmndrList:
+                    // launch Reminder List
+                    Intent i = new Intent(LogEntryListActivity.this, EventListActivity.class);
+                    i.putExtra(MainActivity.INTENT_HIVE_KEY, mHiveKey);
+                    startActivity(i);
+                    break;
+            }
+
+            return true;
+            }
+        });
+
+        popup.show();//showing popup menu
     }
 
     public void hiveGeneralToolClickHandler (View v) {

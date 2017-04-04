@@ -224,6 +224,7 @@
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_apiary_edit_profile">EditApiaryActivity</string>
     <string name="title_hive_single_edit_profile">EditHiveSingleActivity</string>
+    <string name="title_event_list">EventListActivity</string>
     <string name="hive_note_string">Notes:</string>
     <string name="set">Set</string>
     <string name="unset">Unset</string>
@@ -255,5 +256,14 @@
     <string name="cancel_string">Cancel</string>
     <string name="pests_detected">Pests Detected</string>
     <string name="disease_detected">Disease Detected</string>
+
+    <string name="logdate_enter_date">Enter Date</string>
+    <string name="logdate_select_date_history">Select Date from history</string>
+    <string name="logdate_set_date_current">Set Date to current</string>
+
+    <string name="rmndr_view_calendar">View Calendar</string>
+    <string name="rmndr_view_list">View Reminder List</string>
+    <string name="spring_inspection">Spring Inspection</string>
+    <string name="add_honey_supers">Add Honey Supers</string>
 
 </resources>

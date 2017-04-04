@@ -387,7 +387,7 @@ public class LogMultiSelectDialog extends LogSuperDialog {
         }
 
         @Override
-        protected void setRemDesc(String aDesc) {
+        protected void setRemDesc(String aDesc, int aNotType) {
             // NOOP - development of this class is discontinued
         }
     }

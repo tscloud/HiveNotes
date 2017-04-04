@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/itemRmndrCalendar"
+        android:title="@string/rmndr_view_calendar"/>
+
+    <item
+        android:id="@+id/itemRmndrList"
+        android:title="@string/rmndr_view_list"/>
+
+</menu>

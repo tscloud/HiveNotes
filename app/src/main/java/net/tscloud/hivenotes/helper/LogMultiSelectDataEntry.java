@@ -41,8 +41,6 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
     TextView mReminderText = null;
     String mReminderDesc = ""; //<-- used in date/time picker
 
-    GetReminderTimeTaskData mRemData;
-
     // task references - needed to kill tasks on Fragment Destroy
     private GetReminderTimeTask mTaskId = null;
     private static final int TASK_ID = 0;
@@ -300,14 +298,17 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         final View dialogView = View.inflate(getActivity(), R.layout.date_time_picker, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
 
+        //set title
+        TextView dialogTitle = (TextView) dialogView.findViewById(R.id.titleDTPicker);
+        dialogTitle.setText(getArguments().getString("title"));
+
         // optionally allow user to enter description for reminder
         //  Display desc possibly previously entered by user
-        final EditText remDescEdit;
-        if (getArguments().getBoolean("hasRmndrDesc")) {
-            View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
-            remDescEdit = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
-            remDescEdit.setText(mReminderDesc);
+        View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
+        final EditText remDescEdit = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
+        remDescEdit.setText(mReminderDesc);
 
+        if (getArguments().getBoolean("hasRmndrDesc")) {
             linLayRemDesc.setVisibility(View.VISIBLE);
         }
 
@@ -383,7 +384,7 @@ public class LogMultiSelectDataEntry extends LogSuperDataEntry {
         }
 
         @Override
-        protected void setRemDesc(String aDesc) {
+        protected void setRemDesc(String aDesc, int aNotType) {
             mReminderDesc = aDesc;
         }
     }

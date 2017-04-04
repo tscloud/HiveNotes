@@ -4,26 +4,61 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Created by tscloud on 4/28/16.
  */
-abstract class GetReminderTimeTask extends AsyncTask<Void, Void, String[]> {
+abstract public class GetReminderTimeTask extends AsyncTask<Void, Void, String[][]> {
 
     public static final String TAG = "GetReminderTimeTask";
 
-    private GetReminderTimeTaskData data;
+    private GetReminderTimeTaskRecData[] data;
+    private int taskInd;
+    private long hive;
+    private Calendar cal;
+    private DateFormat dateFormat;
+    private SimpleDateFormat timeFormat;
     private Context ctx;
 
-    GetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
-        this.data = aData;
+    // Legecy Constructor
+    public GetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
+        //make a single data entry
+        GetReminderTimeTaskRecData dataEntry =
+                new GetReminderTimeTaskRecData(aData.btn, aData.txt, aData.type);
+        //create the member data array and add the entry
+        this.data = new GetReminderTimeTaskRecData[1];
+        this.data[0] = dataEntry;
+
+        //set the other stuff
+        this.taskInd = aData.taskInd;
+        this.hive = aData.hive;
+        this.cal = aData.cal;
+        this.dateFormat = aData.dateFormat;
+        this.timeFormat = aData.timeFormat;
         this.ctx = aCtx;
-        Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
+
+        Log.d(TAG, "GetReminderTimeTask(:" + Thread.currentThread().getId() +
             ") : constructor");
     }
 
+    public GetReminderTimeTask(GetReminderTimeTaskRecData[] aData, int aTaskInd, long aHive,
+                               Calendar aCal, DateFormat aDateFormat,
+                               SimpleDateFormat aTimeFormat, Context aCtx) {
+        this.data = aData;
+        this.taskInd = aTaskInd;
+        this.hive = aHive;
+        this.cal = aCal;
+        this.dateFormat = aDateFormat;
+        this.timeFormat = aTimeFormat;
+        this.ctx = aCtx;
+    }
+
     @Override
-    protected String[] doInBackground(Void... unused) {
-        Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
+    protected String[][] doInBackground(Void... unused) {
+        Log.d(TAG, "GetReminderTimeTask(:" + Thread.currentThread().getId() +
             ") : doInBackground");
 
         //pause to simulate work
@@ -36,45 +71,58 @@ abstract class GetReminderTimeTask extends AsyncTask<Void, Void, String[]> {
         //}
 
         // perform I/O operation - the reason we're using an AsyncTask
-        String[] reply = HiveCalendar.getReminderTimeAndDesc(ctx, data.type, data.hive);
-        Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
-            ") : doInBackground : reminderMillis: " + reply[0] + " : reminderDesc: " + reply[1]);
+        //  do so for each entry in the data[]
+        String[][] reply = new String[data.length][2];
+        String[] subReply;
+        int count = 0;
+
+        for (GetReminderTimeTaskRecData aData : data) {
+            subReply = new String[2];
+            subReply = HiveCalendar.getReminderTimeAndDesc(ctx, aData.type, hive);
+            Log.d(TAG, "GetReminderTimeTask(" + taskInd + ":" + Thread.currentThread().getId() +
+                    ") : doInBackground : reminderMillis: " + subReply[0] + " : reminderDesc: " +
+                    subReply[1]);
+            reply[count++] = subReply;
+        }
 
         return reply;
     }
 
     @Override
-    protected void onPostExecute(String[] time) {
-        Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
+    protected void onPostExecute(String[][] timeDesc) {
+        Log.d(TAG, "GetReminderTimeTask(" + Thread.currentThread().getId() +
             ") : onPostExecute");
 
         long longTime = -1;
+        int count = 0;
 
-        try {
-            longTime = Long.parseLong(time[0]);
+        for (GetReminderTimeTaskRecData aData : data) {
+            try {
+                longTime = Long.parseLong(timeDesc[count][0]);
+            } catch (NumberFormatException e) {
+                // NOOP - keep value as -1
+            }
+
+            if (longTime != -1) {
+                cal.setTimeInMillis(longTime);
+                String fDate = dateFormat.format(cal.getTime());
+                String fTime = timeFormat.format(cal.getTime());
+                String fDateTime = fDate + ' ' + fTime;
+                Log.d(TAG, "GetReminderTimeTask(" + Thread.currentThread().getId() +
+                        ") : onPostExecute : fDateTime: " + fDateTime);
+
+                aData.txt.setTag(longTime);
+                aData.txt.setText(fDateTime);
+            }
+
+            // call abstract method to set reminder description & reenable button
+            setRemDesc(timeDesc[count][1], aData.type);
+            aData.btn.setEnabled(true);
+
+            //be sure to reset longTime to default
+            longTime = -1;
         }
-        catch (NumberFormatException e) {
-            // NOOP - keep value as -1
-        }
-
-        if (longTime != -1) {
-            data.cal.setTimeInMillis(longTime);
-            String fDate = data.dateFormat.format(data.cal.getTime());
-            String fTime = data.timeFormat.format(data.cal.getTime());
-            String fDateTime = fDate + ' ' + fTime;
-            Log.d(TAG, "GetReminderTimeTask(" + data.taskInd + ":" + Thread.currentThread().getId() +
-                ") : onPostExecute : fDateTime: " + fDateTime);
-
-            data.txt.setTag(longTime);
-            data.txt.setText(fDateTime);
-        }
-
-        // call abstract method to set reminder description
-        setRemDesc(time[1]);
-
-        data.btn.setEnabled(true);
-
-        nullifyTaskRef(data.taskInd);
+        nullifyTaskRef(taskInd);
     }
 
     /** Override to take care of setting the task referenece maintained in the calling class to null
@@ -83,5 +131,5 @@ abstract class GetReminderTimeTask extends AsyncTask<Void, Void, String[]> {
 
     /** Override to update member var for reminder description
      */
-    protected abstract void setRemDesc(String aDesc);
+    protected abstract void setRemDesc(String aDesc, int aNotType);
 }

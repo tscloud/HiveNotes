@@ -14,7 +14,7 @@ public class LogMultiSelectDialogData {
     private boolean hasOther = false;
     private boolean hasReminder = false;
     private boolean isMultiselect = true;
-    private boolean hasRmndrDesc = true;
+    private boolean hasRmndrDesc = false;
     private String rmndrDesc;
 
     public LogMultiSelectDialogData (String aTitle, long aHiveID, String[] aElems,

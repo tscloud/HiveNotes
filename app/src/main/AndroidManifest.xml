@@ -78,6 +78,14 @@
             android:name=".GraphActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".EventListActivity"
+            android:label="@string/title_event_list"
+            android:parentActivityName=".LogEntryListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.tscloud.hivenotes.LogEntryListActivity" />
+        </activity>
     </application>
 
 </manifest>

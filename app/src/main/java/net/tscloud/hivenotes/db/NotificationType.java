@@ -1,5 +1,6 @@
 package net.tscloud.hivenotes.db;
 
+import net.tscloud.hivenotes.EventListActivity;
 import net.tscloud.hivenotes.LogGeneralNotesFragment;
 import net.tscloud.hivenotes.LogHiveHealthFragment;
 import net.tscloud.hivenotes.LogOtherFragment;
@@ -74,5 +75,7 @@ public class NotificationType {
         notificationTypeLookup.put(LogHiveHealthFragment.DIALOG_TAG_VARROA, NOTIFY_HEALTH_REMOVE_MITE);
         notificationTypeLookup.put(LogGeneralNotesFragment.DIALOG_TAG_QUEEN, NOTIFY_GENERAL_LAYING_QUEEN);
         notificationTypeLookup.put(LogOtherFragment.DIALOG_TAG_EVENTS, NOTIFY_OTHER_OTHER);
+        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_SPRINGINSPECTION, NOTIFY_OTHER_SPRING_INSPECTION);
+        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_ADDHONEYSUPERS, NOTIFY_OTHER_ADD_HONEY_SUPERS);
     }
 }

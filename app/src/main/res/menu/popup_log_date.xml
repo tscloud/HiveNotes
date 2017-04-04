@@ -2,14 +2,14 @@
 
     <item
         android:id="@+id/itemEnterDate"
-        android:title="Enter Date"/>
+        android:title="@string/logdate_enter_date"/>
 
     <item
         android:id="@+id/itemSelectDate"
-        android:title="Select Date from history"/>
+        android:title="@string/logdate_select_date_history"/>
 
     <item
         android:id="@+id/itemSetDateCurrent"
-        android:title="Set Date to current"/>
+        android:title="@string/logdate_set_date_current"/>
 
 </menu>
