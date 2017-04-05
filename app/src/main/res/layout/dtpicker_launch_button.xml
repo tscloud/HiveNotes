@@ -13,8 +13,7 @@
         android:paddingTop="@dimen/list_vertical_margin"
         android:paddingBottom="@dimen/list_vertical_margin"
         android:background="@drawable/list_divider"
-        android:id="@+id/linearLayoutDTPButton"
-        android:clickable="true">
+        android:id="@+id/linearLayoutDTPButton">
         <!-- android:onClick="logListClickHandler" -->
 
         <TextView

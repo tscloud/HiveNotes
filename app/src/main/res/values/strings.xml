@@ -265,5 +265,9 @@
     <string name="rmndr_view_list">View Reminder List</string>
     <string name="spring_inspection">Spring Inspection</string>
     <string name="add_honey_supers">Add Honey Supers</string>
+    <string name="remove_drone_comb">Remove Drone Comb</string>
+    <string name="feed_sugar_syrup">Feed Sugar Syrup</string>
+    <string name="remove_mite_treatment">Remove Mite Treatment</string>
+    <string name="add_mouse_guard">Add Mouse Guard</string>
 
 </resources>

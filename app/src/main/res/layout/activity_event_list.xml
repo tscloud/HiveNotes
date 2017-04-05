@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:text="@string/desc"
+            android:text="@string/reminders"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <include
@@ -28,6 +28,48 @@
 
         <include
             android:id="@+id/buttonEventAddHoneySupers"
+            layout="@layout/dtpicker_launch_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/buttonEventRemoveDroneComb"
+            layout="@layout/dtpicker_launch_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/buttonEventFeedSugarSyrup"
+            layout="@layout/dtpicker_launch_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/buttonEventTreatForMites"
+            layout="@layout/dtpicker_launch_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/buttonEventRemoveMiteTreatment"
+            layout="@layout/dtpicker_launch_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/buttonEventCheckLayingQueen"
+            layout="@layout/dtpicker_launch_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/buttonEventAddMouseGuard"
+            layout="@layout/dtpicker_launch_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/buttonEventOther"
             layout="@layout/dtpicker_launch_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

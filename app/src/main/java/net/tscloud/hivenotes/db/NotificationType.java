@@ -71,11 +71,24 @@ public class NotificationType {
         keyToDesc.put(NOTIFY_OTHER_TREAT_MITES, NOTIFY_OTHER_TREAT_MITES_DESC);
         keyToDesc.put(NOTIFY_OTHER_OTHER, NOTIFY_OTHER_OTHER_DESC);
 
-        notificationTypeLookup = new HashMap<String, Integer>();
-        notificationTypeLookup.put(LogHiveHealthFragment.DIALOG_TAG_VARROA, NOTIFY_HEALTH_REMOVE_MITE);
-        notificationTypeLookup.put(LogGeneralNotesFragment.DIALOG_TAG_QUEEN, NOTIFY_GENERAL_LAYING_QUEEN);
-        notificationTypeLookup.put(LogOtherFragment.DIALOG_TAG_EVENTS, NOTIFY_OTHER_OTHER);
-        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_SPRINGINSPECTION, NOTIFY_OTHER_SPRING_INSPECTION);
-        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_ADDHONEYSUPERS, NOTIFY_OTHER_ADD_HONEY_SUPERS);
+        notificationTypeLookup = new HashMap<>();
+        notificationTypeLookup.put(LogHiveHealthFragment.DIALOG_TAG_VARROA,
+                NOTIFY_HEALTH_REMOVE_MITE);
+        notificationTypeLookup.put(LogGeneralNotesFragment.DIALOG_TAG_QUEEN,
+                NOTIFY_GENERAL_LAYING_QUEEN);
+        notificationTypeLookup.put(LogOtherFragment.DIALOG_TAG_EVENTS,
+                NOTIFY_OTHER_OTHER);
+        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_SPRINGINSPECTION,
+                NOTIFY_OTHER_SPRING_INSPECTION);
+        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_ADDHONEYSUPERS,
+                NOTIFY_OTHER_ADD_HONEY_SUPERS);
+        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_REMOVEDRONECOMB,
+                NOTIFY_OTHER_REMOVE_DRONE_COMB);
+        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_FEEDSUGERSYRUP,
+                NOTIFY_FEEDING_SUGER_SYRUP);
+        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_TREATFORMITES,
+                NOTIFY_OTHER_TREAT_MITES);
+        notificationTypeLookup.put(EventListActivity.DIALOG_TAG_ADDMOUSEGUARD,
+                NOTIFY_OTHER_MOUSE_GUARD);
     }
 }

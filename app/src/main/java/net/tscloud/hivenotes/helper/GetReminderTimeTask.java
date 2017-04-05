@@ -23,7 +23,7 @@ abstract public class GetReminderTimeTask extends AsyncTask<Void, Void, String[]
     private SimpleDateFormat timeFormat;
     private Context ctx;
 
-    // Legecy Constructor
+    // Legacy Constructor
     public GetReminderTimeTask(GetReminderTimeTaskData aData, Context aCtx) {
         //make a single data entry
         GetReminderTimeTaskRecData dataEntry =
