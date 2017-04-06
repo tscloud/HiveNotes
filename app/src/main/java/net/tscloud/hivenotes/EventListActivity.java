@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 
 /**
@@ -72,93 +73,49 @@ public class EventListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mHiveId = intent.getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
 
-        // get reference to the <include>s
-        final View clickEventSpringInspection = findViewById(R.id.buttonEventSpringInspection);
-        final View clickEventAddHoneySupers = findViewById(R.id.buttonEventAddHoneySupers);
-        final View clickEventRemoveDroneComb = findViewById(R.id.buttonEventRemoveDroneComb);
-        final View clickEventFeedSugarSyrup = findViewById(R.id.buttonEventFeedSugarSyrup);
-        final View clickEventTreatForMites = findViewById(R.id.buttonEventTreatForMites);
-        final View clickEventRemoveMiteTreatment = findViewById(R.id.buttonEventRemoveMiteTreatment);
-        final View clickEventCheckLayingQueen = findViewById(R.id.buttonEventCheckLayingQueen);
-        final View clickEventAddMouseGuard = findViewById(R.id.buttonEventAddMouseGuard);
-        final View clickEventOther = findViewById(R.id.buttonEventOther);
+        /* >>> NWO
+         */
+        // this is the big ol' hash that will contain all thgood stuff
+        HashMap<Integer, View> viewHash = new LinkedHashMap<>(9);
 
-        // set text of <include>s
-        final TextView springInspectionText =
-                (TextView)clickEventSpringInspection.findViewById(R.id.dtpLaunchTextView);
-        springInspectionText.setText(R.string.spring_inspection);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(DIALOG_TAG_SPRINGINSPECTION),
+                R.string.spring_inspection, findViewById(R.id.buttonEventSpringInspection));
 
-        final TextView addHoneySupersText =
-                (TextView)clickEventAddHoneySupers.findViewById(R.id.dtpLaunchTextView);
-        addHoneySupersText.setText(R.string.add_honey_supers);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(DIALOG_TAG_ADDHONEYSUPERS),
+                R.string.add_honey_supers, findViewById(R.id.buttonEventAddHoneySupers));
 
-        final TextView removeDroneCombText =
-                (TextView)clickEventRemoveDroneComb.findViewById(R.id.dtpLaunchTextView);
-        removeDroneCombText.setText(R.string.remove_drone_comb);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(DIALOG_TAG_REMOVEDRONECOMB),
+                R.string.remove_drone_comb, findViewById(R.id.buttonEventRemoveDroneComb));
 
-        final TextView feedSugarSyrupText =
-                (TextView)clickEventFeedSugarSyrup.findViewById(R.id.dtpLaunchTextView);
-        feedSugarSyrupText.setText(R.string.feed_sugar_syrup);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(DIALOG_TAG_FEEDSUGERSYRUP),
+                R.string.feed_sugar_syrup, findViewById(R.id.buttonEventFeedSugarSyrup));
 
-        final TextView treatForMitesText =
-                (TextView)clickEventTreatForMites.findViewById(R.id.dtpLaunchTextView);
-        treatForMitesText.setText(R.string.feed_sugar_syrup);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(DIALOG_TAG_TREATFORMITES),
+                R.string.treat_for_mites, findViewById(R.id.buttonEventTreatForMites));
 
-        final TextView removeMiteTreatmentText =
-                (TextView)clickEventRemoveMiteTreatment.findViewById(R.id.dtpLaunchTextView);
-        removeMiteTreatmentText.setText(R.string.remove_mite_treatment);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(LogHiveHealthFragment.DIALOG_TAG_VARROA),
+                R.string.remove_mite_treatment, findViewById(R.id.buttonEventRemoveMiteTreatment));
 
-        final TextView checkLayingQueenText =
-                (TextView)clickEventCheckLayingQueen.findViewById(R.id.dtpLaunchTextView);
-        checkLayingQueenText.setText(R.string.other_split_hive_rmndr);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(LogGeneralNotesFragment.DIALOG_TAG_QUEEN),
+                R.string.other_split_hive_rmndr, findViewById(R.id.buttonEventCheckLayingQueen));
 
-        final TextView addMouseGuardText =
-                (TextView)clickEventAddMouseGuard.findViewById(R.id.dtpLaunchTextView);
-        addMouseGuardText.setText(R.string.add_mouse_guard);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(DIALOG_TAG_ADDMOUSEGUARD),
+                R.string.add_mouse_guard, findViewById(R.id.buttonEventAddMouseGuard));
 
-        final TextView otherText =
-                (TextView)clickEventOther.findViewById(R.id.dtpLaunchTextView);
-        otherText.setText(R.string.other_notes_string);
+        loadViewHash(viewHash,
+                NotificationType.notificationTypeLookup.get(LogOtherFragment.DIALOG_TAG_EVENTS),
+                R.string.other_notes_string, findViewById(R.id.buttonEventOther));
 
-        // get TextViews that will hold time
-        final TextView springInspectionTime =
-                (TextView)clickEventSpringInspection.findViewById(R.id.textDTPTime);
-
-        final TextView addHoneySupersTime =
-                (TextView)clickEventAddHoneySupers.findViewById(R.id.textDTPTime);
-
-        final TextView removeDroneCombTime =
-                (TextView)clickEventRemoveDroneComb.findViewById(R.id.textDTPTime);
-
-        final TextView feedSugarSyrupTime =
-                (TextView)clickEventFeedSugarSyrup.findViewById(R.id.textDTPTime);
-
-        final TextView treatForMitesTime =
-                (TextView)clickEventTreatForMites.findViewById(R.id.textDTPTime);
-
-        final TextView removeMiteTreatmentTime =
-                (TextView)clickEventRemoveMiteTreatment.findViewById(R.id.textDTPTime);
-
-        final TextView checkLayingQueenTime =
-                (TextView)clickEventCheckLayingQueen.findViewById(R.id.textDTPTime);
-
-        final TextView addMouseGuardTime =
-                (TextView)clickEventAddMouseGuard.findViewById(R.id.textDTPTime);
-
-        final TextView otherTime =
-                (TextView)clickEventOther.findViewById(R.id.textDTPTime);
-
-        //disable the button until task is thru
-        clickEventSpringInspection.setEnabled(false);
-        clickEventAddHoneySupers.setEnabled(false);
-        clickEventRemoveDroneComb.setEnabled(false);
-        clickEventFeedSugarSyrup.setEnabled(false);
-        clickEventTreatForMites.setEnabled(false);
-        clickEventRemoveMiteTreatment.setEnabled(false);
-        clickEventCheckLayingQueen.setEnabled(false);
-        clickEventAddMouseGuard.setEnabled(false);
-        clickEventOther.setEnabled(false);
-
+        /* <<< NWO
+         */
         /* setup and execute task
          */
         //create desc map
@@ -167,68 +124,27 @@ public class EventListActivity extends AppCompatActivity {
         //data array to pass to timer task
         GetReminderTimeTaskRecData[] timerDataArray = new GetReminderTimeTaskRecData[9];
 
-        //--spring inspection
-        GetReminderTimeTaskRecData recData1 = new GetReminderTimeTaskRecData(
-                clickEventSpringInspection, springInspectionTime,
-                NotificationType.notificationTypeLookup.get(DIALOG_TAG_SPRINGINSPECTION));
-        //add data to array
-        timerDataArray[0] = recData1;
+        // loop thru the view hash to set up args to GetReminderTimeTask & set listener
+        int count = 0;
+        for (Integer notType : viewHash.keySet()) {
+            //View data
+            View clickView = viewHash.get(notType);
+            final TextView cvTitleText = (TextView)clickView.findViewById(R.id.dtpLaunchTextView);
+            final TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
 
-        //--add honey supers
-        GetReminderTimeTaskRecData recData2 = new GetReminderTimeTaskRecData(
-                clickEventAddHoneySupers, addHoneySupersTime,
-                NotificationType.notificationTypeLookup.get(DIALOG_TAG_ADDHONEYSUPERS));
-        //add data to array
-        timerDataArray[1] = recData2;
+            //build array to ent to timer task
+            GetReminderTimeTaskRecData recData = new GetReminderTimeTaskRecData(
+                    clickView, (TextView)clickView.findViewById(R.id.textDTPTime), notType);
+            timerDataArray[count++] = recData;
 
-        //--remove drone comb
-        GetReminderTimeTaskRecData recData3 = new GetReminderTimeTaskRecData(
-                clickEventRemoveDroneComb, removeDroneCombTime,
-                NotificationType.notificationTypeLookup.get(DIALOG_TAG_REMOVEDRONECOMB));
-        //add data to array
-        timerDataArray[2] = recData3;
-
-        //--feed suger syrup
-        GetReminderTimeTaskRecData recData4 = new GetReminderTimeTaskRecData(
-                clickEventFeedSugarSyrup, feedSugarSyrupTime,
-                NotificationType.notificationTypeLookup.get(DIALOG_TAG_FEEDSUGERSYRUP));
-        //add data to array
-        timerDataArray[3] = recData4;
-
-        //--treat for mites
-        GetReminderTimeTaskRecData recData5 = new GetReminderTimeTaskRecData(
-                clickEventTreatForMites, treatForMitesTime,
-                NotificationType.notificationTypeLookup.get(DIALOG_TAG_TREATFORMITES));
-        //add data to array
-        timerDataArray[4] = recData5;
-
-        //--remove mite treatment
-        GetReminderTimeTaskRecData recData6 = new GetReminderTimeTaskRecData(
-                clickEventRemoveMiteTreatment, removeMiteTreatmentTime,
-                NotificationType.notificationTypeLookup.get(LogHiveHealthFragment.DIALOG_TAG_VARROA));
-        //add data to array
-        timerDataArray[5] = recData6;
-
-        //--check for laying queen
-        GetReminderTimeTaskRecData recData7 = new GetReminderTimeTaskRecData(
-                clickEventCheckLayingQueen, checkLayingQueenTime,
-                NotificationType.notificationTypeLookup.get(LogGeneralNotesFragment.DIALOG_TAG_QUEEN));
-        //add data to array
-        timerDataArray[6] = recData7;
-
-        //--add mouse guard
-        GetReminderTimeTaskRecData recData8 = new GetReminderTimeTaskRecData(
-                clickEventAddMouseGuard, addMouseGuardTime,
-                NotificationType.notificationTypeLookup.get(DIALOG_TAG_ADDMOUSEGUARD));
-        //add data to array
-        timerDataArray[7] = recData8;
-
-        //--other
-        GetReminderTimeTaskRecData recData9 = new GetReminderTimeTaskRecData(
-                clickEventOther, otherTime,
-                NotificationType.notificationTypeLookup.get(LogOtherFragment.DIALOG_TAG_EVENTS));
-        //add data to array
-        timerDataArray[8] = recData9;
+            //set listener
+            clickView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onReminderPressed(cvTimeText, cvTitleText.getText().toString());
+                }
+            });
+        }
 
         /* create task & execute
          */
@@ -238,15 +154,6 @@ public class EventListActivity extends AppCompatActivity {
         mTaskId.execute();
         // Each AsyncTask executes on its own Thread
         //mTaskDrone.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        /* set click listeners
-         */
-        clickEventSpringInspection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onReminderPressed(springInspectionTime, springInspectionText.getText().toString());
-            }
-        });
     }
 
     @Override
@@ -318,6 +225,21 @@ public class EventListActivity extends AppCompatActivity {
 
         alertDialog.setView(dialogView);
         alertDialog.show();
+    }
+
+    /* Utility method to load the view hash
+     */
+    private void loadViewHash(HashMap<Integer, View> aViewHash,
+                              Integer aNotType, Integer aTitleRef, View aView) {
+
+        //set the text of the proper TextView to supplied title
+        ((TextView)aView.findViewById(R.id.dtpLaunchTextView)).setText(aTitleRef);
+
+        //put Hash entry NotificationType -> clickable View
+        aViewHash.put(aNotType, aView);
+
+        //disable the clickable View
+        aView.setEnabled(false);
     }
 
     /** subclass of the GetReminderTimeTask

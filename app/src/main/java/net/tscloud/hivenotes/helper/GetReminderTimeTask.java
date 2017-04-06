@@ -119,8 +119,9 @@ abstract public class GetReminderTimeTask extends AsyncTask<Void, Void, String[]
             setRemDesc(timeDesc[count][1], aData.type);
             aData.btn.setEnabled(true);
 
-            //be sure to reset longTime to default
+            //be sure to reset longTime to default & inc the count
             longTime = -1;
+            count++;
         }
         nullifyTaskRef(taskInd);
     }

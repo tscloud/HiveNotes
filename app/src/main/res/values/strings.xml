@@ -269,5 +269,6 @@
     <string name="feed_sugar_syrup">Feed Sugar Syrup</string>
     <string name="remove_mite_treatment">Remove Mite Treatment</string>
     <string name="add_mouse_guard">Add Mouse Guard</string>
+    <string name="treat_for_mites">Treat For Mites</string>
 
 </resources>
