@@ -8,13 +8,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import net.tscloud.hivenotes.db.Hive;
+import net.tscloud.hivenotes.db.HiveDAO;
 import net.tscloud.hivenotes.db.NotificationType;
+import net.tscloud.hivenotes.helper.CreateNotificationTask;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskData;
 import net.tscloud.hivenotes.helper.GetReminderTimeTask;
 import net.tscloud.hivenotes.helper.GetReminderTimeTaskRecData;
@@ -45,9 +49,11 @@ public class EventListActivity extends AppCompatActivity {
     public static final String DIALOG_TAG_TREATFORMITES = "treatformites";
     public static final String DIALOG_TAG_ADDMOUSEGUARD = "addmouseguard";
 
-    // task references - needed to kill tasks on Fragment Destroy
-    private GetReminderTimeTask mTaskId = null;
-    private static final int TASK_ID = 0;
+    // task references - needed to kill tasks on Activity Destroy
+    private GetReminderTimeTask mGetRemTaskId = null;
+    private CreateNotificationTask mCreateRemTaskId = null;
+    private static final int GET_TASK_ID = 0;
+    private static final int CREATE_TASK_ID = 1;
 
     // Hashmap to keep reminder descriptions
     private SparseArray<String> mRemDescMap;
@@ -126,7 +132,7 @@ public class EventListActivity extends AppCompatActivity {
 
         // loop thru the view hash to set up args to GetReminderTimeTask & set listener
         int count = 0;
-        for (Integer notType : viewHash.keySet()) {
+        for (final Integer notType : viewHash.keySet()) {
             //View data
             View clickView = viewHash.get(notType);
             final TextView cvTitleText = (TextView)clickView.findViewById(R.id.dtpLaunchTextView);
@@ -141,30 +147,53 @@ public class EventListActivity extends AppCompatActivity {
             clickView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onReminderPressed(cvTimeText, cvTitleText.getText().toString());
+                    onReminderPressed(cvTimeText, cvTitleText.getText().toString(),
+                            notType);
                 }
             });
         }
 
         /* create task & execute
          */
-        mTaskId = new MyGetReminderTimeTask(timerDataArray, TASK_ID, mHiveId,
+        mGetRemTaskId = new MyGetReminderTimeTask(timerDataArray, GET_TASK_ID, mHiveId,
                         calendar, dateFormat, timeFormat, this);
         // All AsynchTasks executed serially on same background Thread
-        mTaskId.execute();
+        mGetRemTaskId.execute();
         // Each AsyncTask executes on its own Thread
         //mTaskDrone.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
     public void onDestroy() {
-        if (mTaskId != null) {
-            mTaskId.cancel(false);
+        if (mGetRemTaskId != null) {
+            mGetRemTaskId.cancel(false);
         }
+
+        if (mCreateRemTaskId != null) {
+            mCreateRemTaskId.cancel(false);
+        }
+
         super.onDestroy();
     }
 
-    public void onReminderPressed(final TextView timeLbl, final String title) {
+    // Make the Up button perform like the Back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "Back button clicked...save everything");
+    }
+
+    public void onReminderPressed(final TextView aTimeLbl, final String aTitle,
+                                  final Integer aNotType) {
         Log.d(TAG, "onReminderPressed");
 
         final View dialogView = View.inflate(this, R.layout.date_time_picker, null);
@@ -172,11 +201,17 @@ public class EventListActivity extends AppCompatActivity {
 
         //set title
         TextView dialogTitle = (TextView) dialogView.findViewById(R.id.titleDTPicker);
-        dialogTitle.setText(title);
+        dialogTitle.setText(aTitle);
 
-        // set the text of the "unset" button of our standard date/time picker
-        //Button unsetBtn = (Button)dialogView.findViewById(R.id.date_time_unset);
-        //unsetBtn.setText(getResources().getString(R.string.set_to_current));
+        // optionally allow user to enter description for reminder
+        //  Display desc possibly previously entered by user
+        View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
+        final EditText remDescEdit = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
+        remDescEdit.setText(mRemDescMap.get(aNotType));
+
+        if (mRemDescMap.get(aNotType) != null) {
+            linLayRemDesc.setVisibility(View.VISIBLE);
+        }
 
         dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,10 +230,16 @@ public class EventListActivity extends AppCompatActivity {
                 // label has a human readable value; tag has millis value for DB
                 String timeString = dateFormat.format(calendar.getTime()) + ' ' +
                         timeFormat.format(calendar.getTime());
-                timeLbl.setText(timeString);
-                timeLbl.setTag(time);
+                aTimeLbl.setText(timeString);
+                aTimeLbl.setTag(time);
 
-                Log.d(TAG, title + " : Set to CHOSEN Time: " + timeLbl.getTag());
+                Log.d(TAG, aTitle + " : Set to CHOSEN Time: " + aTimeLbl.getTag());
+
+                // optionally allow user to enter description for reminder
+                //  Set desc possibly entered by user - set the member hash
+                if ((remDescEdit.getText() != null) && (remDescEdit.length() != 0)) {
+                    mRemDescMap.put(aNotType, remDescEdit.getText().toString());
+                }
 
                 alertDialog.dismiss();
             }
@@ -216,8 +257,8 @@ public class EventListActivity extends AppCompatActivity {
                 // label has a human readable value; tag has millis value for DB
                 String timeString = dateFormat.format(calendar.getTime()) + ' ' +
                         timeFormat.format(calendar.getTime());
-                timeLbl.setText(timeString);
-                timeLbl.setTag(time);
+                aTimeLbl.setText(timeString);
+                aTimeLbl.setTag(time);
 
                 alertDialog.dismiss();
             }
@@ -260,8 +301,8 @@ public class EventListActivity extends AppCompatActivity {
         protected void nullifyTaskRef(int taskRef) {
             Log.d(TAG, "in overridden GetReminderTimeTask.nullifyTaskRef(): taskRef:" + taskRef);
             switch (taskRef) {
-                case TASK_ID:
-                    mTaskId = null;
+                case GET_TASK_ID:
+                    mGetRemTaskId = null;
                     break;
             }
         }
@@ -272,4 +313,42 @@ public class EventListActivity extends AppCompatActivity {
         }
     }
 
+    public class MyCreateNotificationTask extends CreateNotificationTask {
+
+        private String mHiveName = null;
+
+        public MyCreateNotificationTask(Context aCtx, int aTaskInd) {
+            super(aCtx, aTaskInd);
+        }
+
+        @Override
+        protected long getHiveId() {
+            return mHiveId;
+        }
+
+        @Override
+        protected String getHiveName() {
+            if (mHiveName == null) {
+                // need the Hive name
+                Log.d(TAG, "reading Hive table");
+                HiveDAO hiveDAO = new HiveDAO(mCtx);
+                Hive hiveForName = hiveDAO.getHiveById(getHiveId());
+                hiveDAO.close();
+
+                mHiveName = hiveForName.getName();
+            }
+
+            return mHiveName;
+        }
+
+        @Override
+        protected void nullifyTaskRef(int taskRef) {
+            Log.d(TAG, "in overridden GetReminderTimeTask.nullifyTaskRef(): taskRef:" + taskRef);
+            switch (taskRef) {
+                case CREATE_TASK_ID:
+                    mCreateRemTaskId = null;
+                    break;
+            }
+        }
+    }
 }
