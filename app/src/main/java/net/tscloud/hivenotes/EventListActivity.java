@@ -55,7 +55,10 @@ public class EventListActivity extends AppCompatActivity {
     private static final int GET_TASK_ID = 0;
     private static final int CREATE_TASK_ID = 1;
 
-    // Hashmap to keep reminder descriptions
+    // Hashmap to keep click views keyed on Notification type
+    private SparseArray<Integer, View> mViewHash;
+
+    // Hashmap to keep reminder descriptions keyed on Notification type
     private SparseArray<String> mRemDescMap;
 
     // time/date formatters
@@ -82,41 +85,41 @@ public class EventListActivity extends AppCompatActivity {
         /* >>> NWO
          */
         // this is the big ol' hash that will contain all thgood stuff
-        HashMap<Integer, View> viewHash = new LinkedHashMap<>(9);
+        mViewHash = new SparseArray<>(9);
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(DIALOG_TAG_SPRINGINSPECTION),
                 R.string.spring_inspection, findViewById(R.id.buttonEventSpringInspection));
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(DIALOG_TAG_ADDHONEYSUPERS),
                 R.string.add_honey_supers, findViewById(R.id.buttonEventAddHoneySupers));
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(DIALOG_TAG_REMOVEDRONECOMB),
                 R.string.remove_drone_comb, findViewById(R.id.buttonEventRemoveDroneComb));
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(DIALOG_TAG_FEEDSUGERSYRUP),
                 R.string.feed_sugar_syrup, findViewById(R.id.buttonEventFeedSugarSyrup));
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(DIALOG_TAG_TREATFORMITES),
                 R.string.treat_for_mites, findViewById(R.id.buttonEventTreatForMites));
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(LogHiveHealthFragment.DIALOG_TAG_VARROA),
                 R.string.remove_mite_treatment, findViewById(R.id.buttonEventRemoveMiteTreatment));
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(LogGeneralNotesFragment.DIALOG_TAG_QUEEN),
                 R.string.other_split_hive_rmndr, findViewById(R.id.buttonEventCheckLayingQueen));
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(DIALOG_TAG_ADDMOUSEGUARD),
                 R.string.add_mouse_guard, findViewById(R.id.buttonEventAddMouseGuard));
 
-        loadViewHash(viewHash,
+        loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(LogOtherFragment.DIALOG_TAG_EVENTS),
                 R.string.other_notes_string, findViewById(R.id.buttonEventOther));
 
@@ -132,9 +135,9 @@ public class EventListActivity extends AppCompatActivity {
 
         // loop thru the view hash to set up args to GetReminderTimeTask & set listener
         int count = 0;
-        for (final Integer notType : viewHash.keySet()) {
+        for (final Integer notType : mViewHash.keySet()) {
             //View data
-            View clickView = viewHash.get(notType);
+            View clickView = mViewHash.get(notType);
             final TextView cvTitleText = (TextView)clickView.findViewById(R.id.dtpLaunchTextView);
             final TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
 
@@ -160,7 +163,7 @@ public class EventListActivity extends AppCompatActivity {
         // All AsynchTasks executed serially on same background Thread
         mGetRemTaskId.execute();
         // Each AsyncTask executes on its own Thread
-        //mTaskDrone.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        //mGetRemTaskId.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -190,6 +193,13 @@ public class EventListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d(TAG, "Back button clicked...save everything");
+
+        mCreateRemTaskId = new MyCreateNotificationTask(this, CREATE_TASK_ID);
+
+        // All AsynchTasks executed serially on same background Thread
+        mCreateRemTaskId.execute();
+        // Each AsyncTask executes on its own Thread
+        //mCreateRemTaskId.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void onReminderPressed(final TextView aTimeLbl, final String aTitle,
@@ -319,6 +329,22 @@ public class EventListActivity extends AppCompatActivity {
 
         public MyCreateNotificationTask(Context aCtx, int aTaskInd) {
             super(aCtx, aTaskInd);
+        }
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            super();
+
+            // loop thru the view hash to call protected createNotification() for each entry
+            int count = 0;
+            for (final Integer notType : mViewHash.keySet()) {
+                final TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
+
+                createNotification(Long.parseLong(cvTimeText.getText().toString()),
+                    notType, mRemDescMap.get(notType));
+            }
+
+            return(null);
         }
 
         @Override

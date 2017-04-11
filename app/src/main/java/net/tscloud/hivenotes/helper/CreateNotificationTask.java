@@ -23,12 +23,12 @@ public abstract class CreateNotificationTask extends AsyncTask<Void, Void, Void>
         mCtx = aCtx;
         mTaskInd = aTaskInd;
 
-        Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : constructor");
+        Log.d(TAG, "CreateNotificationTask("+ Thread.currentThread().getId() + ") : constructor");
     }
 
     @Override
     protected Void doInBackground(Void... unused) {
-        Log.d(TAG, "UpdateDBTask(" + Thread.currentThread().getId() + ") : doInBackground");
+        Log.d(TAG, "CreateNotificationTask(" + Thread.currentThread().getId() + ") : doInBackground");
 
         return(null);
     }
