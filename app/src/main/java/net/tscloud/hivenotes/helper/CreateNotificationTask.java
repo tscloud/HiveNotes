@@ -106,6 +106,11 @@ public abstract class CreateNotificationTask extends AsyncTask<Void, Void, Void>
         return notificationId;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        nullifyTaskRef(mTaskInd);
+    }
+
     protected abstract long getHiveId();
 
     protected abstract String getHiveName();
