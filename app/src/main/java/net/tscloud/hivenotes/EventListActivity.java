@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -28,7 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Locale;
 
 /**
@@ -56,10 +54,10 @@ public class EventListActivity extends AppCompatActivity {
     private static final int CREATE_TASK_ID = 1;
 
     // Hashmap to keep click views keyed on Notification type
-    private SparseArray<Integer, View> mViewHash;
+    private HashMap<Integer, View> mViewHash;
 
     // Hashmap to keep reminder descriptions keyed on Notification type
-    private SparseArray<String> mRemDescMap;
+    private HashMap<Integer, String> mRemDescMap;
 
     // time/date formatters
     protected static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG,
@@ -85,7 +83,7 @@ public class EventListActivity extends AppCompatActivity {
         /* >>> NWO
          */
         // this is the big ol' hash that will contain all thgood stuff
-        mViewHash = new SparseArray<>(9);
+        mViewHash = new HashMap<>(9);
 
         loadViewHash(mViewHash,
                 NotificationType.notificationTypeLookup.get(DIALOG_TAG_SPRINGINSPECTION),
@@ -128,7 +126,7 @@ public class EventListActivity extends AppCompatActivity {
         /* setup and execute task
          */
         //create desc map
-        mRemDescMap = new SparseArray<>();
+        mRemDescMap = new HashMap<>();
 
         //data array to pass to timer task
         GetReminderTimeTaskRecData[] timerDataArray = new GetReminderTimeTaskRecData[9];
@@ -194,12 +192,23 @@ public class EventListActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.d(TAG, "Back button clicked...save everything");
 
-        mCreateRemTaskId = new MyCreateNotificationTask(this, CREATE_TASK_ID);
+        // create arg Hash from View Hash
+        HashMap<Integer, Long> argHash = new HashMap<>(mViewHash.size());
+        for (Integer hashNotType : mViewHash.keySet()) {
+            View clickView = mViewHash.get(hashNotType);
+            TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
+            // remember to only create new Notification if we should
+            argHash.put(hashNotType, (Long)cvTimeText.getTag());
+        }
+
+        //mCreateRemTaskId = new MyCreateNotificationTask(this, CREATE_TASK_ID, argHash);
 
         // All AsynchTasks executed serially on same background Thread
-        mCreateRemTaskId.execute();
+        //mCreateRemTaskId.execute();
         // Each AsyncTask executes on its own Thread
         //mCreateRemTaskId.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        super.onBackPressed();
     }
 
     public void onReminderPressed(final TextView aTimeLbl, final String aTitle,
@@ -260,15 +269,9 @@ public class EventListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "Time UNpicked: ");
 
-                long time = System.currentTimeMillis();
-                calendar.setTimeInMillis(time);
-                Log.d(TAG, "Set to current Time (Dialog): " + time);
-
-                // label has a human readable value; tag has millis value for DB
-                String timeString = dateFormat.format(calendar.getTime()) + ' ' +
-                        timeFormat.format(calendar.getTime());
-                aTimeLbl.setText(timeString);
-                aTimeLbl.setTag(time);
+                aTimeLbl.setText(R.string.no_reminder_set);
+                // IMPORTANT: -2 indicator of occurrence of UNSET operation
+                aTimeLbl.setTag((long)-2);
 
                 alertDialog.dismiss();
             }
@@ -323,24 +326,22 @@ public class EventListActivity extends AppCompatActivity {
         }
     }
 
-    public class MyCreateNotificationTask extends CreateNotificationTask {
+    private class MyCreateNotificationTask extends CreateNotificationTask {
 
         private String mHiveName = null;
+        private HashMap<Integer, Long> mTimeHash;
 
-        public MyCreateNotificationTask(Context aCtx, int aTaskInd) {
+        private MyCreateNotificationTask(Context aCtx, int aTaskInd,
+                                        HashMap<Integer, Long> aTimeHash) {
             super(aCtx, aTaskInd);
+            mTimeHash = aTimeHash;
         }
 
         @Override
         protected Void doInBackground(Void... unused) {
-            super();
-
-            // loop thru the view hash to call protected createNotification() for each entry
-            int count = 0;
-            for (final Integer notType : mViewHash.keySet()) {
-                final TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
-
-                createNotification(Long.parseLong(cvTimeText.getText().toString()),
+            // loop thru the view hash to call super class createNotification() for each entry
+            for (Integer notType : mTimeHash.keySet()) {
+                createNotification(mTimeHash.get(notType),
                     notType, mRemDescMap.get(notType));
             }
 

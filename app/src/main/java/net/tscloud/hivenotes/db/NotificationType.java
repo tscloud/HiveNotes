@@ -60,7 +60,7 @@ public class NotificationType {
 
     static {
         // TODO - use SparseArray
-        keyToDesc = new HashMap<Integer, String>();
+        keyToDesc = new HashMap<>();
         keyToDesc.put(NOTIFY_OTHER_ADD_HONEY_SUPERS, NOTIFY_OTHER_ADD_HONEY_SUPERS_DESC);
         keyToDesc.put(NOTIFY_OTHER_REMOVE_DRONE_COMB, NOTIFY_OTHER_REMOVE_DRONE_COMB_DESC);
         keyToDesc.put(NOTIFY_FEEDING_SUGER_SYRUP, NOTIFY_FEEDING_SUGER_SYRUP_DESC);

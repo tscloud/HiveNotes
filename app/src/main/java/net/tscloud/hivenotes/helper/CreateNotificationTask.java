@@ -26,13 +26,6 @@ public abstract class CreateNotificationTask extends AsyncTask<Void, Void, Void>
         Log.d(TAG, "CreateNotificationTask("+ Thread.currentThread().getId() + ") : constructor");
     }
 
-    @Override
-    protected Void doInBackground(Void... unused) {
-        Log.d(TAG, "CreateNotificationTask(" + Thread.currentThread().getId() + ") : doInBackground");
-
-        return(null);
-    }
-
     protected long createNotification(long aStartTime, int aNotType, String aEventDesc) {
         Log.d(TAG, "in createNotification()");
 
@@ -95,6 +88,8 @@ public abstract class CreateNotificationTask extends AsyncTask<Void, Void, Void>
             Log.d(TAG, "updateNotification(): eventId:" + eventId);
             wNotDAO.deleteNotification(wNot);
         }
+
+        wNotDAO.close();
 
         // return the Notification Id
         if (wNot != null) {
