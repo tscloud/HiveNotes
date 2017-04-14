@@ -54,7 +54,7 @@ public class EventListActivity extends AppCompatActivity {
     private static final int CREATE_TASK_ID = 1;
 
     // Hashmap to keep click views keyed on Notification type
-    private HashMap<Integer, View> mViewHash;
+    private HashMap<Integer, ChangedView> mViewHash;
 
     // Hashmap to keep reminder descriptions keyed on Notification type
     private HashMap<Integer, String> mRemDescMap;
@@ -134,12 +134,13 @@ public class EventListActivity extends AppCompatActivity {
         // loop thru the view hash to set up args to GetReminderTimeTask & set listener
         int count = 0;
         for (final Integer notType : mViewHash.keySet()) {
-            //View data
-            View clickView = mViewHash.get(notType);
-            final TextView cvTitleText = (TextView)clickView.findViewById(R.id.dtpLaunchTextView);
-            final TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
 
-            //build array to ent to timer task
+            //View data
+            final ChangedView clickChangedView = mViewHash.get(notType);
+            final View clickView = clickChangedView.cvView;
+            final TextView cvTitleText = (TextView)clickView.findViewById(R.id.dtpLaunchTextView);
+
+            //build array to send to timer task
             GetReminderTimeTaskRecData recData = new GetReminderTimeTaskRecData(
                     clickView, (TextView)clickView.findViewById(R.id.textDTPTime), notType);
             timerDataArray[count++] = recData;
@@ -148,7 +149,7 @@ public class EventListActivity extends AppCompatActivity {
             clickView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onReminderPressed(cvTimeText, cvTitleText.getText().toString(),
+                    onReminderPressed(clickChangedView, cvTitleText.getText().toString(),
                             notType);
                 }
             });
@@ -195,25 +196,35 @@ public class EventListActivity extends AppCompatActivity {
         // create arg Hash from View Hash
         HashMap<Integer, Long> argHash = new HashMap<>(mViewHash.size());
         for (Integer hashNotType : mViewHash.keySet()) {
-            View clickView = mViewHash.get(hashNotType);
-            TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
+
+            //View data
+            final ChangedView clickChangedView = mViewHash.get(hashNotType);
+            final View clickView = clickChangedView.cvView;
+            final TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
+
             // remember to only create new Notification if we should
-            argHash.put(hashNotType, (Long)cvTimeText.getTag());
+            if (clickChangedView.cvHasChanged) {
+                argHash.put(hashNotType, (Long)cvTimeText.getTag());
+            }
         }
 
-        //mCreateRemTaskId = new MyCreateNotificationTask(this, CREATE_TASK_ID, argHash);
+        /mCreateRemTaskId = new MyCreateNotificationTask(this, CREATE_TASK_ID, argHash);
 
         // All AsynchTasks executed serially on same background Thread
-        //mCreateRemTaskId.execute();
+        mCreateRemTaskId.execute();
         // Each AsyncTask executes on its own Thread
         //mCreateRemTaskId.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         super.onBackPressed();
     }
 
-    public void onReminderPressed(final TextView aTimeLbl, final String aTitle,
+    public void onReminderPressed(final ChangedView aTimeLbl, final String aTitle,
                                   final Integer aNotType) {
         Log.d(TAG, "onReminderPressed");
+
+        //get the stuff we need from the ChangedView passed in
+        final View clickView = aTimeLbl.cvView;
+        final TextView cvTimeText = (TextView)clickView.findViewById(R.id.textDTPTime);
 
         final View dialogView = View.inflate(this, R.layout.date_time_picker, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -249,10 +260,12 @@ public class EventListActivity extends AppCompatActivity {
                 // label has a human readable value; tag has millis value for DB
                 String timeString = dateFormat.format(calendar.getTime()) + ' ' +
                         timeFormat.format(calendar.getTime());
-                aTimeLbl.setText(timeString);
-                aTimeLbl.setTag(time);
+                cvTimeText.setText(timeString);
+                cvTimeText.setTag(time);
+                //don't forget to indicate change
+                aTimeLbl.cvHasChanged = true;
 
-                Log.d(TAG, aTitle + " : Set to CHOSEN Time: " + aTimeLbl.getTag());
+                Log.d(TAG, aTitle + " : Set to CHOSEN Time: " + cvTimeText.getTag());
 
                 // optionally allow user to enter description for reminder
                 //  Set desc possibly entered by user - set the member hash
@@ -269,9 +282,11 @@ public class EventListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "Time UNpicked: ");
 
-                aTimeLbl.setText(R.string.no_reminder_set);
+                cvTimeText.setText(R.string.no_reminder_set);
                 // IMPORTANT: -2 indicator of occurrence of UNSET operation
-                aTimeLbl.setTag((long)-2);
+                cvTimeText.setTag((long)-2);
+                //don't forget to indicate change
+                aTimeLbl.cvHasChanged = true;
 
                 alertDialog.dismiss();
             }
@@ -283,17 +298,29 @@ public class EventListActivity extends AppCompatActivity {
 
     /* Utility method to load the view hash
      */
-    private void loadViewHash(HashMap<Integer, View> aViewHash,
+    private void loadViewHash(HashMap<Integer, ChangedView> aViewHash,
                               Integer aNotType, Integer aTitleRef, View aView) {
 
         //set the text of the proper TextView to supplied title
         ((TextView)aView.findViewById(R.id.dtpLaunchTextView)).setText(aTitleRef);
 
         //put Hash entry NotificationType -> clickable View
-        aViewHash.put(aNotType, aView);
+        aViewHash.put(aNotType, new ChangedView(aView));
 
         //disable the clickable View
         aView.setEnabled(false);
+    }
+
+    /** little class of a View & a boolean that indicates that it has been changed
+     */
+    private class ChangedView {
+
+        private View cvView;
+        private boolean cvHasChanged = false;
+
+        private ChangedView ( View aView) {
+            cvView = aView;
+        }
     }
 
     /** subclass of the GetReminderTimeTask
@@ -326,6 +353,8 @@ public class EventListActivity extends AppCompatActivity {
         }
     }
 
+    /** subclass of the CreateNotificationTask
+     */
     private class MyCreateNotificationTask extends CreateNotificationTask {
 
         private String mHiveName = null;
