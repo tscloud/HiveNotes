@@ -208,7 +208,7 @@ public class EventListActivity extends AppCompatActivity {
             }
         }
 
-        /mCreateRemTaskId = new MyCreateNotificationTask(this, CREATE_TASK_ID, argHash);
+        mCreateRemTaskId = new MyCreateNotificationTask(this, CREATE_TASK_ID, argHash);
 
         // All AsynchTasks executed serially on same background Thread
         mCreateRemTaskId.execute();
@@ -368,6 +368,9 @@ public class EventListActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... unused) {
+            // read to get hive name
+            readHiveName();
+
             // loop thru the view hash to call super class createNotification() for each entry
             for (Integer notType : mTimeHash.keySet()) {
                 createNotification(mTimeHash.get(notType),
@@ -384,16 +387,6 @@ public class EventListActivity extends AppCompatActivity {
 
         @Override
         protected String getHiveName() {
-            if (mHiveName == null) {
-                // need the Hive name
-                Log.d(TAG, "reading Hive table");
-                HiveDAO hiveDAO = new HiveDAO(mCtx);
-                Hive hiveForName = hiveDAO.getHiveById(getHiveId());
-                hiveDAO.close();
-
-                mHiveName = hiveForName.getName();
-            }
-
             return mHiveName;
         }
 
@@ -404,6 +397,21 @@ public class EventListActivity extends AppCompatActivity {
                 case CREATE_TASK_ID:
                     mCreateRemTaskId = null;
                     break;
+            }
+        }
+
+        /** private method to read DB to get hive name - must be done prior to Notification IO
+             as concurrent DAO IO is not possible
+         */
+        private void readHiveName() {
+            if (mHiveName == null) {
+                // need the Hive name
+                Log.d(TAG, "reading Hive table");
+                HiveDAO hiveDAO = new HiveDAO(mCtx);
+                Hive hiveForName = hiveDAO.getHiveById(getHiveId());
+                hiveDAO.close();
+
+                mHiveName = hiveForName.getName();
             }
         }
     }
