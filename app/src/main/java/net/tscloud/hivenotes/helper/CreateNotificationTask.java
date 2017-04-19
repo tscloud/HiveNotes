@@ -75,7 +75,7 @@ public abstract class CreateNotificationTask extends AsyncTask<Void, Void, Void>
             // we don't have a Notification -> make a new one
             Log.d(TAG, "createNotification(): eventId:" + eventId);
             wNot = wNotDAO.createNotification(-1, getHiveId(), eventId, aNotType,
-                    locEventDesc);
+                    locNotDesc);
         } else if (aStartTime > -1){
             // we already have a Notification -> update it w/ new event id
             Log.d(TAG, "updateNotification(): eventId:" + eventId);

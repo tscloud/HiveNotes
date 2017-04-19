@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import net.tscloud.hivenotes.db.HiveNotesLogDO;
 import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryOtherDAO;
+import net.tscloud.hivenotes.db.NotificationType;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
 
 
@@ -74,7 +75,7 @@ public class LogOtherFragment extends LogFragment {
         // save off arguments via super method
         saveOffArgs();
 
-        /**
+        /*
          * call super method to get DO via best means
          */
         // This method blocks on DB operation
@@ -104,6 +105,7 @@ public class LogOtherFragment extends LogFragment {
                     checked,
                     DIALOG_TAG_EVENTS,
                     reminderMillis,
+                    //tribal knowledge - don't have notType
                     true,
                     remDesc,
                     //hasOther, hasReminder, multiselect
@@ -176,7 +178,6 @@ public class LogOtherFragment extends LogFragment {
                 mLogEntryOther.setRequeenRmndrTime(aResultRemTime);
                 Log.d(TAG, "onLogLaunchDialog: setRequeenRmndrTime: " +
                         mLogEntryOther.getRequeenRmndrTime());
-
 
                 mLogEntryOther.setRequeenRmndrDesc(aResultRemDesc);
                 Log.d(TAG, "onLogLaunchDialog: setRequeenRmndrDesc: " +

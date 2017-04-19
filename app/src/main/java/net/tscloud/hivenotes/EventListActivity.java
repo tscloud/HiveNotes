@@ -234,12 +234,12 @@ public class EventListActivity extends AppCompatActivity {
         dialogTitle.setText(aTitle);
 
         // optionally allow user to enter description for reminder
-        //  Display desc possibly previously entered by user
         View linLayRemDesc = dialogView.findViewById(R.id.linearLayoutReminderDesc);
         final EditText remDescEdit = (EditText)linLayRemDesc.findViewById(R.id.editTextReminderDesc);
         remDescEdit.setText(mRemDescMap.get(aNotType));
 
-        if (mRemDescMap.get(aNotType) != null) {
+        // check to see if we want to let the user enter a description
+        if (NotificationType.notTypeDesc.contains(aNotType)) {
             linLayRemDesc.setVisibility(View.VISIBLE);
         }
 
@@ -364,6 +364,8 @@ public class EventListActivity extends AppCompatActivity {
                                         HashMap<Integer, Long> aTimeHash) {
             super(aCtx, aTaskInd);
             mTimeHash = aTimeHash;
+            Log.d(TAG, "MyCreateNotificationTask(" +
+                    Thread.currentThread().getId() + ") : constructor");
         }
 
         @Override
@@ -373,8 +375,7 @@ public class EventListActivity extends AppCompatActivity {
 
             // loop thru the view hash to call super class createNotification() for each entry
             for (Integer notType : mTimeHash.keySet()) {
-                createNotification(mTimeHash.get(notType),
-                    notType, mRemDescMap.get(notType));
+                createNotification(mTimeHash.get(notType), notType, mRemDescMap.get(notType));
             }
 
             return(null);
@@ -392,7 +393,7 @@ public class EventListActivity extends AppCompatActivity {
 
         @Override
         protected void nullifyTaskRef(int taskRef) {
-            Log.d(TAG, "in overridden GetReminderTimeTask.nullifyTaskRef(): taskRef:" + taskRef);
+            Log.d(TAG, "in overridden CreateNotificationTask.nullifyTaskRef(): taskRef:" + taskRef);
             switch (taskRef) {
                 case CREATE_TASK_ID:
                     mCreateRemTaskId = null;

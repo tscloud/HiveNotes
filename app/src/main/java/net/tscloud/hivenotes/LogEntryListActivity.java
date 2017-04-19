@@ -2,7 +2,6 @@ package net.tscloud.hivenotes;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -27,16 +26,12 @@ import net.tscloud.hivenotes.db.LogEntryOther;
 import net.tscloud.hivenotes.db.LogEntryOtherDAO;
 import net.tscloud.hivenotes.db.LogEntryProductivity;
 import net.tscloud.hivenotes.db.LogEntryProductivityDAO;
-import net.tscloud.hivenotes.db.Notification;
-import net.tscloud.hivenotes.db.NotificationDAO;
 import net.tscloud.hivenotes.db.NotificationType;
+import net.tscloud.hivenotes.helper.CreateNotificationTask;
 import net.tscloud.hivenotes.helper.HiveCalendar;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogEditTextDialogLocationData;
 import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
-
-import static net.tscloud.hivenotes.LogFragment.dateFormat;
-import static net.tscloud.hivenotes.LogFragment.timeFormat;
 
 
 /**
@@ -77,9 +72,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
     // set by ListFragment
     private long mLogDate = -1;
 
-    // not currently passed in
-    private long mLogKey;
-
     // Need to a reference to each of the Log Entry data objects
     public static final String INTENT_LOGENTRY_GENERAL_DATA = "logentryGeneralData";
     private LogEntryGeneral mLogEntryGeneralData;
@@ -104,6 +96,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
     // task references - needed to kill tasks on Activity Destroy
     private UpdateDBTask mTask = null;
+    private static final int UPDATE_TASK_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +180,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     break;
                 case "6":
                     // Save button
-                    mTask = new UpdateDBTask(this);
+                    mTask = new UpdateDBTask(this, UPDATE_TASK_ID);
                     mTask.execute();
                     break;
                 default:
@@ -233,7 +226,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     break;
                 case "6":
                     // Save button - do not start Detail activity, just update and screw
-                    mTask = new UpdateDBTask(this);
+                    mTask = new UpdateDBTask(this, UPDATE_TASK_ID);
                     mTask.execute();
                     break;
             }
@@ -397,7 +390,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
     }
 
     @Override
-    /** Used by fragments to get the data w/ which they may have been dealing */
+    /* Used by fragments to get the data w/ which they may have been dealing */
     public HiveNotesLogDO getPreviousLogData() {
         return mPreviousLogData;
     }
@@ -441,15 +434,13 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
     /** do big update of all log tables in background
      */
-    public class UpdateDBTask extends AsyncTask<Void, Void, Void> {
+    private class UpdateDBTask extends CreateNotificationTask {
 
         public static final String TAG = "UpdateDBTask";
 
-        private Context ctx;
-
-        public UpdateDBTask(Context aCtx) {
-            ctx = aCtx;
-            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : constructor");
+        private UpdateDBTask(Context aCtx, int aTaskInd) {
+            super(aCtx, aTaskInd);
+            Log.d(TAG, "UpdateDBTask(" + Thread.currentThread().getId() + ") : constructor");
         }
 
         @Override
@@ -463,7 +454,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             if (mLogEntryGeneralData != null) {
                 Log.d(TAG, "about to persist LogEntryGeneral");
-                LogEntryGeneralDAO mLogEntryGeneralDAO = new LogEntryGeneralDAO(ctx);
                 // set VISIT_DATE mLogDate - this should always be set properly by Fragment?
                 mLogEntryGeneralData.setVisitDate(mLogDate);
 
@@ -472,7 +462,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 createNotification(
                         mLogEntryGeneralData.getQueenRmndrTime(),
                         NotificationType.NOTIFY_GENERAL_LAYING_QUEEN,
-                        mHiveKey, null);
+                        null);
 
                 // ** Notification time cleanup **
                 //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
@@ -482,6 +472,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryGeneralData.setQueenRmndrTime(-1);
                 }
 
+                LogEntryGeneralDAO mLogEntryGeneralDAO = new LogEntryGeneralDAO(mCtx);
                 if (mLogEntryGeneralData.getId() == -1) {
                     mLogEntryGeneralDAO.createLogEntry(mLogEntryGeneralData);
                 }
@@ -496,7 +487,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             if (mLogEntryProductivityData != null) {
                 Log.d(TAG, "about to persist LogEntryProductivity");
-                LogEntryProductivityDAO mLogEntryProductivityDAO = new LogEntryProductivityDAO(ctx);
+                LogEntryProductivityDAO mLogEntryProductivityDAO = new LogEntryProductivityDAO(mCtx);
                 // set VISIT_DATE mLogDate - this should always be set properly by Fragment?
                 mLogEntryProductivityData.setVisitDate(mLogDate);
 
@@ -514,7 +505,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             if (mLogEntryHiveHealthData != null) {
                 Log.d(TAG, "about to persist LogEntryHiveHealth");
-                LogEntryHiveHealthDAO mLogEntryHiveHealthDAO = new LogEntryHiveHealthDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
                 mLogEntryHiveHealthData.setVisitDate(mLogDate);
 
@@ -523,7 +513,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 createNotification(
                         mLogEntryHiveHealthData.getVarroaTrtmntRmndrTime(),
                         NotificationType.NOTIFY_HEALTH_REMOVE_MITE,
-                        mHiveKey, null);
+                        null);
 
                 // ** Notification time cleanup **
                 //  Could be -2 indicating an UNSET operation had occurred. This cannot be persisted
@@ -533,6 +523,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryHiveHealthData.setVarroaTrtmntRmndrTime(-1);
                 }
 
+                LogEntryHiveHealthDAO mLogEntryHiveHealthDAO = new LogEntryHiveHealthDAO(mCtx);
                 if (mLogEntryHiveHealthData.getId() == -1) {
                     mLogEntryHiveHealthDAO.createLogEntry(mLogEntryHiveHealthData);
                 }
@@ -547,7 +538,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             if (mLogEntryFeedingData != null) {
                 Log.d(TAG, "about to persist LogEntryFeeding");
-                LogEntryFeedingDAO mLogEntryFeedingDAO = new LogEntryFeedingDAO(ctx);
+                LogEntryFeedingDAO mLogEntryFeedingDAO = new LogEntryFeedingDAO(mCtx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
                 mLogEntryFeedingData.setVisitDate(mLogDate);
 
@@ -565,7 +556,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
 
             if (mLogEntryOtherData != null) {
                 Log.d(TAG, "about to persist LogEntryOther");
-                LogEntryOtherDAO mLogEntryOtherDAO = new LogEntryOtherDAO(ctx);
                 // set VISIT_DATE to value from LogEntryGeneral or Now
                 mLogEntryOtherData.setVisitDate(mLogDate);
 
@@ -574,7 +564,6 @@ public class LogEntryListActivity extends AppCompatActivity implements
                 createNotification(
                         mLogEntryOtherData.getRequeenRmndrTime(),
                         NotificationType.NOTIFY_OTHER_OTHER,
-                        mHiveKey,
                         mLogEntryOtherData.getRequeenRmndrDesc());
 
                 // ** Notification time cleanup **
@@ -585,6 +574,7 @@ public class LogEntryListActivity extends AppCompatActivity implements
                     mLogEntryOtherData.setRequeenRmndrTime(-1);
                 }
 
+                LogEntryOtherDAO mLogEntryOtherDAO = new LogEntryOtherDAO(mCtx);
                 if (mLogEntryOtherData.getId() == -1) {
                     mLogEntryOtherDAO.createLogEntry(mLogEntryOtherData);
                 }
@@ -605,88 +595,33 @@ public class LogEntryListActivity extends AppCompatActivity implements
             return(null);
         }
 
-        private long createNotification(long aStartTime, int aNotType, long aHiveKey,
-                                        String aEventDesc) {
-            Log.d(TAG, "in createNotification()");
+        @Override
+        protected void onPostExecute(Void unused) {
+            /* This should take care of nullifying the Task reference */
+            super.onPostExecute(unused);
 
-            long notificationId = -1;
-            long eventId = -1;
-
-            // Do the Notification magic
-            Notification wNot;
-            NotificationDAO wNotDAO = new NotificationDAO(ctx);
-
-            // read Notification by Type and Hive Id
-            Log.d(TAG, "getNotificationByTypeAndHive(): aNotType:" + aNotType + " aHiveKey:" + aHiveKey);
-            wNot = wNotDAO.getNotificationByTypeAndHive(aNotType, aHiveKey);
-
-            // delete the corresponding Event <- ** handle errors **
-            // we are doing this indiscriminately as we have to read the Event anyway to determine if
-            // the times match and we can skip the update
-            if ((wNot != null) && (wNot.getEventId() > 0)) {
-                Log.d(TAG, "deleteEvent(): wNot.getEventId():" + wNot.getEventId());
-                HiveCalendar.deleteEvent(ctx, wNot.getEventId());
-            }
-
-            // Notification/Event Desc -
-            //  being persisted w/ Event in Calendar
-            String locEventDesc = NotificationType.getDesc(aNotType);
-            //  being persisted w/ Notification <-- should be null if user did not
-            //   specify
-            String locNotDesc = null;
-
-            if (aStartTime > -1) {
-                // figure out event description
-                if (aEventDesc != null) {
-                    locEventDesc = aEventDesc;
-                    locNotDesc = aEventDesc;
-                }
-                // create new Event - hardcode endtime
-                eventId = HiveCalendar.addEntryPublic(ctx,
-                        aStartTime,
-                        aStartTime+600000,
-                        NotificationType.NOTIFICATION_TITLE,
-                        locEventDesc,
-                        mHiveForName.getName());
-            }
-
-            // create/update/delete Notification
-            if (wNot == null) {
-                // we don't have a Notification -> make a new one
-                Log.d(TAG, "createNotification(): eventId:" + eventId);
-                wNot = wNotDAO.createNotification(-1, aHiveKey, eventId, aNotType,
-                                                  locEventDesc);
-            } else if (aStartTime > -1){
-                // we already have a Notification -> update it w/ new event id
-                Log.d(TAG, "updateNotification(): eventId:" + eventId);
-                wNot.setEventId(eventId);
-                wNot.setRmndrDesc(locNotDesc);
-                wNot = wNotDAO.updateNotification(wNot);
-            }
-            else {
-                // we want to delete the Notification
-                Log.d(TAG, "updateNotification(): eventId:" + eventId);
-                wNotDAO.deleteNotification(wNot);
-            }
-
-            // return the Notification Id
-            if (wNot != null) {
-                notificationId = wNot.getId();
-            }
-
-            Log.d(TAG, "return: notificationId:" + notificationId);
-
-            return notificationId;
+            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : onPostExecute");
+            Toast.makeText(getApplicationContext(), "DB update complete", Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        protected void onPostExecute(Void unused) {
-            Log.d(TAG, "UpdateDBTask("+ Thread.currentThread().getId() + ") : onPostExecute");
+        protected long getHiveId() {
+            return mHiveKey;
+        }
 
-            Toast.makeText(getApplicationContext(), "DB update complete", Toast.LENGTH_SHORT).show();
+        @Override
+        protected String getHiveName() {
+            return mHiveForName.getName();
+        }
 
-            // all we need to do is nullify the Task reference
-            mTask = null;
+        @Override
+        protected void nullifyTaskRef(int taskRef) {
+            Log.d(TAG, "in overridden CreateNotificationTask.nullifyTaskRef(): taskRef:" + taskRef);
+            switch (taskRef) {
+                case UPDATE_TASK_ID:
+                    mTask = null;
+                    break;
+            }
         }
     }
 }
