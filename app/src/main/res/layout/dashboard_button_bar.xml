@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/black"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:weightSum="1">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.33"
+        android:weightSum="1"
+        android:id="@+id/linearLayoutHoney"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:textColor="@android:color/white"
+            android:text="@string/productivity_honey"
+            android:id="@+id/toolbarHomeText"
+            android:gravity="center" />
+
+        <ImageView
+            android:src="@drawable/feeding_icon"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:id="@+id/toolbarHomeImage"
+            android:onClick="hiveFeedingToolClickHandler"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.33"
+        android:weightSum="1"
+        android:id="@+id/linearLayoutBeeswax"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:textColor="@android:color/white"
+            android:text="@string/productivity_beeswax"
+            android:id="@+id/toolbarLogText"
+            android:gravity="center" />
+
+        <ImageView
+            android:src="@drawable/general_icon"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:id="@+id/toolbarLogImage"
+            android:onClick="hiveGeneralToolClickHandler"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="0.33"
+        android:weightSum="1"
+        android:id="@+id/linearLayoutPollen"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.60"
+            android:textColor="@android:color/white"
+            android:text="@string/productivity_pollen"
+            android:id="@+id/toolbarAnalysisText"
+            android:gravity="center" />
+
+        <ImageView
+            android:src="@drawable/other_icon"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.40"
+            android:id="@+id/toolbarAnalysisImage"
+            android:onClick="hiveOtherToolClickHandler"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+</LinearLayout>

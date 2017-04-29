@@ -22,8 +22,6 @@ import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.GraphableDataDAO;
-import net.tscloud.hivenotes.db.Hive;
-import net.tscloud.hivenotes.db.HiveDAO;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,19 +33,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import static android.R.attr.button;
-import static android.R.attr.manageSpaceActivity;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link GraphSelectionFragment.OnGraphSelectionFragmentInteractionListener} interface
+ * {@link GraphSelectionFragmentOLD.OnGraphSelectionFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link GraphSelectionFragment#newInstance} factory method to
+ * Use the {@link GraphSelectionFragmentOLD#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GraphSelectionFragment extends HiveDataEntryFragment {
+public class GraphSelectionFragmentOLD extends Fragment {
 
     public static final String TAG = "GraphSelectionFragment";
 
@@ -61,11 +56,8 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
     private long mApiaryID = -1;
     private long mHiveID = -1;
 
-    // List of potential GraphableData
+    // List pretty names for GraphableData
     private List<GraphableData> mGraphableDataList;
-    // List of potential Hive
-    private List<Hive> mHiveList;
-
     // List of graph directives that have been selected
     private HashMap<SpinnerAdapter, Integer> mSpinnerSelectionHash = new HashMap<>();
     // stack of Spinners used to know which to add after as well as to have
@@ -81,12 +73,14 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     * @param apiaryID
+     * @param hiveID
      */
-    public static GraphSelectionFragment newInstance(long apiaryID, long hiveID) {
+    public static GraphSelectionFragmentOLD newInstance(long apiaryID, long hiveID) {
         Log.d(TAG, "getting newInstance of GraphSelectionFragment...apiaryID: " + apiaryID +
             " : hiveID: " + hiveID);
 
-        GraphSelectionFragment fragment = new GraphSelectionFragment();
+        GraphSelectionFragmentOLD fragment = new GraphSelectionFragmentOLD();
         Bundle args = new Bundle();
 
         args.putLong(APIARY_ID, apiaryID);
@@ -96,7 +90,7 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         return fragment;
     }
 
-    public GraphSelectionFragment() {
+    public GraphSelectionFragmentOLD() {
         // Required empty public constructor
     }
 
@@ -116,65 +110,59 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_graph_selection, container, false);
 
-        // get reference to the <include>s
-        final View buttonBarHive = view.findViewById(R.id.hiveButtons);
-        final View dialogHive = view.findViewById(R.id.buttonSelectHives);
-        final View dialogWeather = view.findViewById(R.id.buttonSelectWeather);
-
-        // get references to buttons of button bar - they will be to the linear layouts
-        final View buttonHoney = buttonBarHive.findViewById(R.id.linearLayoutHoney);
-        final View buttonBeeswax = buttonBarHive.findViewById(R.id.linearLayoutBeeswax);
-        final View buttonPollen = buttonBarHive.findViewById(R.id.linearLayoutPollen);
-
-        // set text of <include>s
-        final TextView hiveText =
-                (TextView)dialogHive.findViewById(R.id.dialogLaunchTextView);
-        hiveText.setText(R.string.select_hive);
-
-        final TextView weatherText =
-                (TextView)dialogWeather.findViewById(R.id.dialogLaunchTextView);
-        weatherText.setText(R.string.select_weather);
-
-        // references to the rest of the stuff
+        // disable the stuff inside the include - let AsyncTask enable after spinner is filled
+        final Spinner spnSelector1 = (Spinner)view.findViewById(R.id.spinnerSelection1);
+        final Button btnSelector1 = (Button)view.findViewById(R.id.buttonSelection1);
+        final Button btnSelector2 = (Button)view.findViewById(R.id.buttonSelection2);
         final ImageButton imgGraphStartDate = (ImageButton) view.findViewById(R.id.imageButtonStartDate);
         final ImageButton imgGraphEndDate = (ImageButton)view.findViewById(R.id.imageButtonEndDate);
         final EditText edtGraphStartDate = (EditText) view.findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText) view.findViewById(R.id.editTextGraphEndDate);
         final Button btnGraph = (Button)view.findViewById(R.id.btnGraph);
+        spnSelector1.setEnabled(false);
+        btnSelector1.setEnabled(false);
 
-        // disable some stuff - let AsyncTask enable after spinner is filled
-        dialogHive.setEnabled(false);
-        dialogWeather.setEnabled(false);
-        btnGraph.setEnabled(false);
+        // push the 1st Spinner onto our save deque
+        mSpinnerIdStack.addFirst(R.id.spinnerSelection1);
 
-        /*
+        /**
          * Listeners
          */
-        // button bar listeners
-        buttonHoney.setOnClickListener(new View.OnClickListener() {
+        btnSelector1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBarButtonPressed(v);
+                // disable the button for we do not want to add any more spinners
+                btnSelector1.setEnabled(false);
+                onSelectorButtonPressed((ViewGroup)view, 2);
             }
         });
 
-        buttonBeeswax.setOnClickListener(new View.OnClickListener() {
+        btnSelector2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBarButtonPressed(v);
+                int spnNum = 3;
+                if (mSpinnerIdStack.contains(R.id.spinnerSelection3)) {
+                    // disable the button for we do not want to add any more spinners
+                    btnSelector2.setEnabled(false);
+                    spnNum = 4;
+                }
+                onSelectorButtonPressed((ViewGroup)view, spnNum);
             }
         });
 
-        buttonPollen.setOnClickListener(new View.OnClickListener() {
+        spnSelector1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                onBarButtonPressed(v);
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                mSpinnerSelectionHash.put(spnSelector1.getAdapter(), position);
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // NOOP
+            }
+
         });
 
-        // selection listeners
-
-        // date and graph button listeners
         imgGraphStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,21 +184,83 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
             }
         });
 
-        /*
+        /**
          * AsyncTask to get pretty names from GraphableData
          */
-        mTask = new GetGraphableData(getActivity(), dialogHive, dialogWeather, btnGraph);
+        mTask = new GetGraphableData(getActivity(), spnSelector1, btnSelector1);
         mTask.execute();
 
         return view;
     }
 
-    /*
+    /**
      * Click Button -
-     *  button bar button clicked
+     *  make new Selector group
      */
-    private void onBarButtonPressed(View clicked) {
+    private void onSelectorButtonPressed(ViewGroup aTopLevelView, int aSpnNumber) {
+        Log.d(TAG, "Creating another Graph Selector");
 
+        /*
+        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(
+                Context.LAYOUT_INFLATER_SERVICE);
+
+        View newSel = inflater.inflate(R.layout.graph_selector, null);
+        */
+
+        // Get reference id for "new" spinner
+        int spnRId = getResources().getIdentifier("spinnerSelection" + aSpnNumber, "id",
+                getContext().getPackageName());
+        final Spinner spnSelectorNew = (Spinner)aTopLevelView.findViewById(spnRId);
+
+        // Set the Spinner id - use local gererator of View Ids - Google does
+        //  not provide one until API 17
+        //newSel.setId(HiveUtil.generateViewId());
+
+        ArrayAdapter<String> spinnerArrayAdapter = new DisableableArrayAdapter<String>
+            (getActivity(), android.R.layout.simple_spinner_dropdown_item,
+                getPrettyNames(mGraphableDataList), mSpinnerSelectionHash);
+
+        spnSelectorNew.setAdapter(spinnerArrayAdapter);
+
+        // determine 1st unused entry of spinner's selected values
+        for (int i = 0; i < mGraphableDataList.size(); i++) {
+            if (!mSpinnerSelectionHash.values().contains(i)) {
+                spnSelectorNew.setSelection(i);
+                break;
+            }
+        }
+
+        // Listener for new Spinner
+        spnSelectorNew.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                mSpinnerSelectionHash.put(spnSelectorNew.getAdapter(), position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // NOOP
+            }
+
+        });
+
+        // Add new Spinner to base RelativeLayout - use LayoutParams to set the
+        //  the stuff normally set up in XML
+        /*
+        RelativeLayout rl = (RelativeLayout)aTopLevelView.findViewById(R.id.relLayGraphSelection);
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.BELOW, mSpinnerIdStack.peekFirst());
+
+        rl.addView(newSel, params);
+        */
+
+        // Make the spinner visible
+        spnSelectorNew.setVisibility(View.VISIBLE);
+
+        // add the spinner to the deque
+        mSpinnerIdStack.addFirst(spnSelectorNew.getId());
     }
 
     /**
@@ -320,7 +370,7 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
 
     /** used by those that need the prettyNames from a List of GraphableData
      */
-    private static String[] getPrettyNames(List<GraphableData> aGraphableDataList) {
+    private String[] getPrettyNames(List<GraphableData> aGraphableDataList) {
         String[] reply = new String[aGraphableDataList.size()];
 
         int i = 0;
@@ -362,16 +412,6 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         super.onDestroy();
     }
 
-    @Override
-    public void setDialogData(String[] aResults, long aResultRemTime, String aResultRemDesc, String aTag) {
-
-    }
-
-    @Override
-    public boolean onFragmentSave() {
-        return false;
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -393,29 +433,23 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         public static final String TAG = "GetGraphableData";
 
         private Context ctx;
-        private View btnHive;
-        private View btnWeather;
-        private View btnGraph;
+        private Spinner spinner;
+        private Button button;
 
-        GetGraphableData(Context aCtx, View aBtnHive, View aBtnWeather, View aBtnGraph) {
+        GetGraphableData(Context aCtx, Spinner aSpinner, Button aButton) {
             Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : constructor");
             ctx = aCtx;
-            btnHive = aBtnHive;
-            btnWeather = aBtnWeather;
-            btnGraph = aBtnGraph;
+            spinner = aSpinner;
+            button = aButton;
         }
 
         @Override
         protected Void doInBackground(Void... unused) {
             Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : doInBackground");
 
-            GraphableDataDAO daoGraphableData = new GraphableDataDAO(ctx);
-            HiveDAO daoHive = new HiveDAO(ctx);
-
+            GraphableDataDAO dao = new GraphableDataDAO(ctx);
             // Set the member var for holding GraphableData List
-            mGraphableDataList = daoGraphableData.getGraphableDataList();
-            // Set the member var for holding Hive List
-            mHiveList = daoHive.getHiveList(mApiaryID);
+            mGraphableDataList = dao.getGraphableDataList();
 
             return null;
         }
@@ -424,12 +458,68 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         protected void onPostExecute(Void unused) {
             Log.d(TAG, "GetGraphableData("+ Thread.currentThread().getId() + ") : onPostExecute");
 
-            btnHive.setEnabled(true);
-            btnWeather.setEnabled(true);
-            btnGraph.setEnabled(true);
+            ArrayAdapter<String> spinnerArrayAdapter = new DisableableArrayAdapter<String>
+                    (ctx, android.R.layout.simple_spinner_dropdown_item,
+                        getPrettyNames(mGraphableDataList), mSpinnerSelectionHash);
+
+            spinner.setAdapter(spinnerArrayAdapter);
+            spinner.setEnabled(true);
+
+            button.setEnabled(true);
 
             // all we need to do is nullify the Task reference
             mTask = null;
+        }
+    }
+
+    /**
+     * Inner Class - Custom ArrayAdapter to handle disabled items
+     */
+    private class DisableableArrayAdapter<String> extends ArrayAdapter<String> {
+
+        HashMap<SpinnerAdapter, Integer> spinnerSelectionHash = new HashMap<>();
+
+        DisableableArrayAdapter(Context aCtx, int textViewResourceId,
+                                       String[] objects,
+                                       HashMap<SpinnerAdapter, Integer> aHash) {
+            super(aCtx, textViewResourceId, objects);
+            spinnerSelectionHash = aHash;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return !checkItemSelected(position);
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View mView;
+
+            mView = super.getDropDownView(position, convertView, parent);
+            TextView mTextView = (TextView) mView;
+            if (checkItemSelected(position)) {
+                mTextView.setTextColor(Color.GRAY);
+            } else {
+                mTextView.setTextColor(Color.BLACK);
+            }
+
+            return mView;
+        }
+
+        /** Checks those values that are selected by other Spinner/SpinnerAdapters
+         */
+        private boolean checkItemSelected(int pos) {
+            boolean reply = false;
+
+            for (SpinnerAdapter a : spinnerSelectionHash.keySet()) {
+                if (a != this) {
+                    if (pos == spinnerSelectionHash.get(a)) {
+                        reply = true;
+                    }
+                }
+            }
+
+            return reply;
         }
     }
 }

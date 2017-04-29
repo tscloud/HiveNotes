@@ -71,6 +71,7 @@
     <string name="productivity_extracted_honey">Extracted Honey:</string>
     <string name="productivity_pollen">Pollen</string>
     <string name="productivity_wax">Wax</string>
+    <string name="productivity_beeswax">Beeswax</string>
 
     <string name="productivity_varroa_mite">Varroa Mite</string>
     <string name="productivity_small_hive_beetle">Small Hive Beetle</string>
@@ -242,6 +243,10 @@
     <string name="end_date">End Date</string>
     <string name="retrieve_graph_data">Please wait...Collecting data to graph</string>
     <string name="retrieve_graph_data_complete">Retrieve graphable data complete...</string>
+    <string name="select_hive">Select Hive</string>
+    <string name="select_weather">Select Weather</string>
+
+
     <string name="welcome_to">Welcome To</string>
     <string name="drop_db">Drop DB</string>
     <string name="hive_notes">Hive Notes</string>

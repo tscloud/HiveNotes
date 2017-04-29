@@ -21,26 +21,86 @@
         android:layout_alignParentStart="true"
         android:singleLine="false" />
 
-    <include
-        android:id="@+id/hiveButtons"
-        layout="@layout/dashboard_button_bar"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textGraphSelection1" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Graph1"
+        android:id="@+id/textViewGraph1"
+        android:layout_below="@+id/textGraphSelection1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <include
-        android:id="@+id/buttonSelectHives"
-        layout="@layout/dialog_launch_button"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/buttonSelection1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/hiveButtons" />
+        android:text="@string/add_graph"
+        android:layout_below="@+id/textViewGraph1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <include
-        android:id="@+id/buttonSelectWeather"
-        layout="@layout/dialog_launch_button"
+    <Spinner
+        android:id="@+id/spinnerSelection1"
+        android:tag="0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/buttonSelectHives" />
+        android:layout_weight="0.70"
+        android:layout_below="@+id/buttonSelection1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Spinner
+        android:id="@+id/spinnerSelection2"
+        android:tag="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.70"
+        android:visibility="invisible"
+        android:layout_below="@+id/spinnerSelection1"
+        android:layout_alignRight="@+id/textViewEndDate"
+        android:layout_alignEnd="@+id/textViewEndDate" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Graph2"
+        android:id="@+id/textViewGraph2"
+        android:layout_below="@+id/spinnerSelection2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/buttonSelection2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_graph"
+        android:layout_below="@+id/textViewGraph2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/spinnerSelection3"
+        android:tag="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.70"
+        android:visibility="invisible"
+        android:layout_below="@+id/buttonSelection2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/spinnerSelection4"
+        android:tag="3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.70"
+        android:visibility="invisible"
+        android:layout_below="@+id/spinnerSelection3"
+        android:layout_alignRight="@+id/textViewEndDate"
+        android:layout_alignEnd="@+id/textViewEndDate" />
 
     <Button
         android:layout_width="wrap_content"
