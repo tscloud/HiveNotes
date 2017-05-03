@@ -56,8 +56,10 @@ public class GraphDisplayFragment extends Fragment {
     private static final String END_DATE = "param3";
     private static final String APIARY_ID = "param4";
     private static final String HIVE_ID = "param5";
+    private static final String HIVE_LIST = "param6";
     // and instance var of same - needed?
     private List<GraphableData> mGraphList;
+    private List<Hive> mHiveList;
     private long mStartDate = -1;
     private long mEndDate = -1;
     private long mApiaryId = -1;
@@ -73,7 +75,7 @@ public class GraphDisplayFragment extends Fragment {
      * this fragment using the provided parameters.
      */
     public static GraphDisplayFragment newInstance(List<GraphableData> aGraphList, long aStartDate,
-                                                   long aEndDate, long aApiary, long aHive) {
+                                                   long aEndDate, long aApiary, List<Hive> aHiveList) {
         Log.d(TAG, "getting newInstance of GraphDisplayFragment...Start Date: " + aStartDate +
                 " : End Date: " + aEndDate);
 
@@ -82,6 +84,7 @@ public class GraphDisplayFragment extends Fragment {
 
         try {
             args.putParcelableArrayList(GRAPH_LIST, (ArrayList)aGraphList);
+            args.putParcelableArrayList(HIVE_LIST, (ArrayList)aHiveList);
         }
         catch (ClassCastException e) {
             Log.d(TAG, "List of stuff to graph passed in as something other that ArrayList");
@@ -105,6 +108,7 @@ public class GraphDisplayFragment extends Fragment {
 
         if (getArguments() != null) {
             mGraphList = getArguments().getParcelableArrayList(GRAPH_LIST);
+            mHiveList = getArguments().getParcelableArrayList(HIVE_LIST);
             mStartDate = getArguments().getLong(START_DATE);
             mEndDate = getArguments().getLong(END_DATE);
             mApiaryId = getArguments().getLong(APIARY_ID);

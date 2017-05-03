@@ -62,16 +62,14 @@ public class GraphActivity extends HiveDataEntryActivity implements
     }
 
     @Override
-    public void onGraphSelectionFragmentInteraction(
-            List<GraphableData> aToGraphList,
-            long aStartDate,
-            long aEndDate) {
+    public void onGraphSelectionFragmentInteraction(List<GraphableData> aToGraphList, List<Hive> aHiveList,
+            long aStartDate, long aEndDate) {
         Log.d(TAG, "back from GraphSelectionFragment...Start Date: " + aStartDate +
             " End Date: " + aEndDate);
 
         // go to the GraphDisplayFragment
         Fragment fragment = GraphDisplayFragment.newInstance(aToGraphList, aStartDate, aEndDate,
-                mApiaryKey, mHiveKey);
+                mApiaryKey, aHiveList);
         String fragTag = "GRAPH_DISPLAY_FRAG";
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

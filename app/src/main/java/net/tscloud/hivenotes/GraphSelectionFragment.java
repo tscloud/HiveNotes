@@ -186,7 +186,7 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
                     mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
                             getResources().getString(R.string.select_weather),
                             mHiveID,
-                            getGraphableDataPrettyNames(mGraphableWeatherList),
+                            getWeatherGraphableDataPrettyNames(mGraphableWeatherList),
                             mWeatherSelected,
                             DIALOG_TAG_WEATHER,
                             reminderMillis,
@@ -259,34 +259,39 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    /**
+    /*
      * Click Button -
      *  go back to Activity w/ relevant data
      */
     private void onGraphButtonPressed() {
         Log.d(TAG, "get ready to go back to Activity w/ data from this form");
 
-        // Have to do load the returnList to get it to the "size" (as opposed to "capacity") we want
-        //  otherwise we'll have an empty List & since we may be adding stuff at specific indecies...
-        int returnListCap = 4; //no ArrayList method that returns capacity
-        List<GraphableData> returnList = new ArrayList<>(returnListCap);
-        while(returnList.size() < returnListCap) returnList.add(null);
+        List<GraphableData> returnList = new ArrayList<>();
+        List<Hive> returnHiveList = new ArrayList<>();
 
         final EditText edtGraphStartDate = (EditText)getView().findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText)getView().findViewById(R.id.editTextGraphEndDate);
 
-        // if the pretty name of the GraphableData matches the Spinner's
-        //  selected item String => save off the GraphableData to send
-        //  back to the Actvity
-        for ( ; !mSpinnerIdStack.isEmpty(); ) {
-            Spinner s = (Spinner)getView().findViewById(mSpinnerIdStack.removeFirst());
-            for (GraphableData g : mGraphableWeatherList) {
-                if (g.getPrettyName().equals(s.getSelectedItem().toString())) {
-                    // Each Spinner has a tag indicating its position and in turn the
-                    //  position the related GraphableData's graph should inhabit
-                    //  in the GraphDisplayFragment. This position is indicated by
-                    //  the GraphableData's position w/in the ArrayList sent back to the Activity
-                    returnList.set(Integer.parseInt((String)s.getTag()), g); //cockammamy cast
+        /** if the pretty name of the GraphableData matches an entry in the list created from user
+             selection => save off the GraphableData to send back to the Actvity - same for Hive List
+        */
+        // Make our CSVs of selected values into Lists to better do comparisons
+        List<String> listWeatherSel = Arrays.asList(mWeatherSelected.split("\\s*,\\s*"));
+        List<String> listHivesSel = Arrays.asList(mHiveSelected.split("\\s*,\\s*"));
+
+        for (GraphableData elemGDWeather : mGraphableWeatherList) {
+            for (String elemSelectedWeather : listWeatherSel) {
+                if (elemSelectedWeather.equals(elemGDWeather.getPrettyName())) {
+                    returnList.add(elemGDWeather);
+                    break;
+                }
+            }
+        }
+
+        for (Hive elemHive : mHiveSelected) {
+            for (String elemSelectedHive : listHivesSel) {
+                if (elemSelectedHive.equals(elemHive.getName())) {
+                    returnHiveList.add(elemHive);
                     break;
                 }
             }
@@ -326,24 +331,26 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
             }
 
             if (!emptyText) {
-                // Need to clear the spinner selection hash so we can start anew upon return from
-                //  backstack, orientation change, etc.
-                mSpinnerSelectionHash.clear();
                 // Back to Activity
-                mListener.onGraphSelectionFragmentInteraction(returnList, startTime, endTime);
+                mListener.onGraphSelectionFragmentInteraction(returnList, returnHiveList,
+                    startTime, endTime);
             }
         }
     }
 
     /** used by those that need the prettyNames from a List of GraphableData or Hive
      */
-    private static String[] getGraphableDataPrettyNames(List<GraphableData> aGraphableDataList) {
-        String[] reply = new String[aGraphableDataList.size()];
+    private static String[] getWeatherGraphableDataPrettyNames(List<GraphableData> aGraphableDataList) {
+        ArrayList<String> replyList = new ArrayList<>();
 
         int i = 0;
         for (GraphableData dataElem : aGraphableDataList) {
-            reply[i++] = dataElem.getPrettyName();
+            if (dataElem.getDirective().equals("WeatherHistory")) {
+                replyList.add(dataElem.getPrettyName());
+            }
         }
+
+        String[] reply = replyList.toArray(new String[replyList.size()]);
 
         return reply;
     }
@@ -414,8 +421,8 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
      */
     interface OnGraphSelectionFragmentInteractionListener extends
             LogSuperDataEntry.onLogDataEntryInteractionListener{
-        void onGraphSelectionFragmentInteraction(List<GraphableData> aToGraphList, long aStartDate,
-                long aEndDate);
+        void onGraphSelectionFragmentInteraction(List<GraphableData> aToGraphList, List<Hive> aHiveList,
+                long aStartDate, long aEndDate);
     }
 
     /**
@@ -448,15 +455,8 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
             // Set the member var for holding GraphableData List
             mGraphableWeatherList = daoGraphableData.getGraphableDataList();
 
-            // get rid of anything that's not weather
-            ArrayList<GraphableData> newList = new ArrayList<>();
-            for (GraphableData data : mGraphableWeatherList) {
-                if (data.getDirective().equals("WeatherHistory")) {
-                    newList.add(data);
-                }
-            }
-            mGraphableWeatherList = newList;
-
+            // Set the member var for holding GraphableData List
+            mGraphableDataList = daoGraphableData.getGraphableDataList();
             // Set the member var for holding Hive List
             mHiveList = daoHive.getHiveList(mApiaryID);
 
