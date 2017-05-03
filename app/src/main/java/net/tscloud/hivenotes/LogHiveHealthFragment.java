@@ -135,7 +135,6 @@ public class LogHiveHealthFragment extends LogFragment {
                             if (mLogEntryHiveHealth.getPestsDetected() != null) {
                                 checked = mLogEntryHiveHealth.getPestsDetected();
                             }
-                            reminderMillis = mLogEntryHiveHealth.getVarroaTrtmntRmndrTime();
                     }
                     /* Get the Activity to launch the Dialog for us
                      */

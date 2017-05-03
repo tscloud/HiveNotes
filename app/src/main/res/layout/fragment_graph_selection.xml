@@ -18,22 +18,35 @@
         android:layout_marginBottom="20dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:singleLine="false" />
+        android:layout_alignParentStart="true" />
 
-    <include
-        android:id="@+id/hiveButtons"
-        layout="@layout/dashboard_button_bar"
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/radioGroupHiveAmounts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textGraphSelection1" />
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_below="@id/textGraphSelection1">
+        <RadioButton android:id="@+id/radioHoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/productivity_honey" />
+        <RadioButton android:id="@+id/radioBeeswax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/productivity_beeswax" />
+        <RadioButton android:id="@+id/radioPollen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/productivity_pollen" />
+    </RadioGroup>
 
     <include
         android:id="@+id/buttonSelectHives"
         layout="@layout/dialog_launch_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/hiveButtons" />
+        android:layout_below="@id/radioGroupHiveAmounts" />
 
     <include
         android:id="@+id/buttonSelectWeather"

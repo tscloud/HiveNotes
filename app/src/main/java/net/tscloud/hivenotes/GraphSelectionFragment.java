@@ -2,16 +2,14 @@ package net.tscloud.hivenotes;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,6 +22,8 @@ import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.GraphableDataDAO;
 import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.HiveDAO;
+import net.tscloud.hivenotes.helper.LogMultiSelectDialogData;
+import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,9 +34,6 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import static android.R.attr.button;
-import static android.R.attr.manageSpaceActivity;
 
 
 /**
@@ -55,14 +52,23 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
     private static final String APIARY_ID = "param1";
     private static final String HIVE_ID = "param2";
 
+    // constants used for Dialogs
+    public static final String DIALOG_TAG_HIVES = "pests";
+    public static final String DIALOG_TAG_WEATHER = "disease";
+
     private static String myFormat = "MM/dd/yy"; //In which you need put here
 
     // and instance var of same - needed?
     private long mApiaryID = -1;
     private long mHiveID = -1;
 
-    // List of potential GraphableData
-    private List<GraphableData> mGraphableDataList;
+    // stuff that was potentially selected via dialogs - should be a collection but dialog class
+    //  requires concatenated String, the construct used by DB DOs
+    private String mHiveSelected = "";
+    private String mWeatherSelected = "";
+
+    // List of potential GraphableData - only weather
+    private List<GraphableData> mGraphableWeatherList;
     // List of potential Hive
     private List<Hive> mHiveList;
 
@@ -117,14 +123,8 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         final View view = inflater.inflate(R.layout.fragment_graph_selection, container, false);
 
         // get reference to the <include>s
-        final View buttonBarHive = view.findViewById(R.id.hiveButtons);
         final View dialogHive = view.findViewById(R.id.buttonSelectHives);
         final View dialogWeather = view.findViewById(R.id.buttonSelectWeather);
-
-        // get references to buttons of button bar - they will be to the linear layouts
-        final View buttonHoney = buttonBarHive.findViewById(R.id.linearLayoutHoney);
-        final View buttonBeeswax = buttonBarHive.findViewById(R.id.linearLayoutBeeswax);
-        final View buttonPollen = buttonBarHive.findViewById(R.id.linearLayoutPollen);
 
         // set text of <include>s
         final TextView hiveText =
@@ -150,29 +150,54 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         /*
          * Listeners
          */
-        // button bar listeners
-        buttonHoney.setOnClickListener(new View.OnClickListener() {
+        // dialog button listeners
+        dialogHive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBarButtonPressed(v);
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    long reminderMillis = -1;
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.select_hive),
+                            mHiveID,
+                            getHivePrettyNames(mHiveList),
+                            mHiveSelected,
+                            DIALOG_TAG_HIVES,
+                            reminderMillis,
+                            //hasOther, hasReminder, multiselect
+                            false, false, true));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
             }
         });
 
-        buttonBeeswax.setOnClickListener(new View.OnClickListener() {
+        dialogWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBarButtonPressed(v);
+                // Callback to Activity to launch a Dialog
+                if (mListener != null) {
+                    long reminderMillis = -1;
+                    /* Get the Activity to launch the Dialog for us
+                     */
+                    mListener.onLogLaunchDialog(new LogMultiSelectDialogData(
+                            getResources().getString(R.string.select_weather),
+                            mHiveID,
+                            getGraphableDataPrettyNames(mGraphableWeatherList),
+                            mWeatherSelected,
+                            DIALOG_TAG_WEATHER,
+                            reminderMillis,
+                            //hasOther, hasReminder, multiselect
+                            false, false, true));
+                }
+                else {
+                    Log.d(TAG, "no Listener");
+                }
             }
         });
-
-        buttonPollen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBarButtonPressed(v);
-            }
-        });
-
-        // selection listeners
 
         // date and graph button listeners
         imgGraphStartDate.setOnClickListener(new View.OnClickListener() {
@@ -203,14 +228,6 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         mTask.execute();
 
         return view;
-    }
-
-    /*
-     * Click Button -
-     *  button bar button clicked
-     */
-    private void onBarButtonPressed(View clicked) {
-
     }
 
     /**
@@ -263,7 +280,7 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         //  back to the Actvity
         for ( ; !mSpinnerIdStack.isEmpty(); ) {
             Spinner s = (Spinner)getView().findViewById(mSpinnerIdStack.removeFirst());
-            for (GraphableData g : mGraphableDataList) {
+            for (GraphableData g : mGraphableWeatherList) {
                 if (g.getPrettyName().equals(s.getSelectedItem().toString())) {
                     // Each Spinner has a tag indicating its position and in turn the
                     //  position the related GraphableData's graph should inhabit
@@ -318,14 +335,25 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         }
     }
 
-    /** used by those that need the prettyNames from a List of GraphableData
+    /** used by those that need the prettyNames from a List of GraphableData or Hive
      */
-    private static String[] getPrettyNames(List<GraphableData> aGraphableDataList) {
+    private static String[] getGraphableDataPrettyNames(List<GraphableData> aGraphableDataList) {
         String[] reply = new String[aGraphableDataList.size()];
 
         int i = 0;
         for (GraphableData dataElem : aGraphableDataList) {
             reply[i++] = dataElem.getPrettyName();
+        }
+
+        return reply;
+    }
+
+    private static String[] getHivePrettyNames(List<Hive> aHiveList) {
+        String[] reply = new String[aHiveList.size()];
+
+        int i = 0;
+        for (Hive dataElem : aHiveList) {
+            reply[i++] = dataElem.getName();
         }
 
         return reply;
@@ -363,8 +391,14 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
     }
 
     @Override
-    public void setDialogData(String[] aResults, long aResultRemTime, String aResultRemDesc, String aTag) {
-
+    public void setDialogData(String[] aResults, long aResultRemTime, String aResultRemDesc,
+                              String aTag) {
+        switch (aTag){
+            case DIALOG_TAG_HIVES:
+                mHiveSelected = TextUtils.join(",", aResults);
+            case DIALOG_TAG_WEATHER:
+                mWeatherSelected = TextUtils.join(",", aResults);
+        }
     }
 
     @Override
@@ -378,10 +412,9 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    interface OnGraphSelectionFragmentInteractionListener {
-        void onGraphSelectionFragmentInteraction(
-                List<GraphableData> aToGraphList,
-                long aStartDate,
+    interface OnGraphSelectionFragmentInteractionListener extends
+            LogSuperDataEntry.onLogDataEntryInteractionListener{
+        void onGraphSelectionFragmentInteraction(List<GraphableData> aToGraphList, long aStartDate,
                 long aEndDate);
     }
 
@@ -413,7 +446,17 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
             HiveDAO daoHive = new HiveDAO(ctx);
 
             // Set the member var for holding GraphableData List
-            mGraphableDataList = daoGraphableData.getGraphableDataList();
+            mGraphableWeatherList = daoGraphableData.getGraphableDataList();
+
+            // get rid of anything that's not weather
+            ArrayList<GraphableData> newList = new ArrayList<>();
+            for (GraphableData data : mGraphableWeatherList) {
+                if (data.getDirective().equals("WeatherHistory")) {
+                    newList.add(data);
+                }
+            }
+            mGraphableWeatherList = newList;
+
             // Set the member var for holding Hive List
             mHiveList = daoHive.getHiveList(mApiaryID);
 

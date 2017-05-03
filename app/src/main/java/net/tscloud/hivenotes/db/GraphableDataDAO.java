@@ -35,7 +35,7 @@ public class GraphableDataDAO extends AbstractDAO {
     // --DB access methods--
 
     public List<GraphableData> getGraphableDataList() {
-        List<GraphableData> listData = new ArrayList<GraphableData>();
+        List<GraphableData> listData = new ArrayList<>();
 
         Cursor cursor = mDatabase.query(TABLE_GRAPHABLEDATA, mAllColumns, null, null, null, null, null);
 

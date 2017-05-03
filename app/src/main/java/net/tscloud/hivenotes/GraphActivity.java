@@ -14,7 +14,7 @@ import net.tscloud.hivenotes.db.GraphableData;
 
 import java.util.List;
 
-public class GraphActivity extends AppCompatActivity implements
+public class GraphActivity extends HiveDataEntryActivity implements
         GraphSelectionFragment.OnGraphSelectionFragmentInteractionListener,
         GraphDisplayFragment.OnGraphDisplayFragmentInteractionListener{
 
@@ -37,12 +37,17 @@ public class GraphActivity extends AppCompatActivity implements
         mHiveKey = intent.getLongExtra(MainActivity.INTENT_HIVE_KEY, -1);
 
         // go to the GraphSelectionFragment
-        Fragment fragment = GraphSelectionFragment.newInstance(mApiaryKey, mHiveKey);
+        fragment = GraphSelectionFragment.newInstance(mApiaryKey, mHiveKey);
         String fragTag = "GRAPH_SELECTION_FRAG";
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.graph_container, fragment, fragTag);
         ft.commit();
+    }
+
+    @Override
+    protected int getContainerViewId() {
+        return R.id.graph_container;
     }
 
     // Make the Up button perform like the Back button
