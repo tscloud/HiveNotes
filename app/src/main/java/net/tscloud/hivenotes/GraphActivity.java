@@ -19,6 +19,17 @@ public class GraphActivity extends HiveDataEntryActivity implements
         GraphDisplayFragment.OnGraphDisplayFragmentInteractionListener{
 
     private static final String TAG = "GraphActivity";
+
+    // Intent data keys
+    public final static String INTENT_GRAPHABLE_LIST = "graphableList";
+    public final static String INTENT_HIVE_LIST = "hiveList";
+    public final static String INTENT_GRAPH_START_DATE = "startDate";
+    public final static String INTENT_GRAPH_END_DATE = "endDate";
+    public final static String INTENT_APIARY_KEY = "apiaryKey";
+
+    // graph display subactivity
+    private static final int GRAPH_DISPLAY_REQ_CODE = 11;
+
     private long mApiaryKey = -1;
     private long mHiveKey = -1;
 
@@ -69,6 +80,7 @@ public class GraphActivity extends HiveDataEntryActivity implements
             " End Date: " + aEndDate);
 
         // go to the GraphDisplayFragment
+        /*
         fragment = GraphDisplayFragment.newInstance(aToGraphList, aStartDate, aEndDate,
                 mApiaryKey, aHiveList);
         String fragTag = "GRAPH_DISPLAY_FRAG";
@@ -76,6 +88,19 @@ public class GraphActivity extends HiveDataEntryActivity implements
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.graph_container, fragment, fragTag).addToBackStack(null);
         ft.commit();
+        */
+
+        // use seperate Activity to display GraphDisplayFragment so we can enforce
+        //  landscape mode
+        Intent i = new Intent(this,GraphDisplayActivity.class);
+        i.putParcelableArrayListExtra(INTENT_GRAPHABLE_LIST, aToGraphList);
+        i.putParcelableArrayListExtra(INTENT_HIVE_LIST, aEndDate);
+        i.putExtra(INTENT_GRAPH_START_DATE, aStartDate);
+        i.putExtra(INTENT_GRAPH_END_DATE, aEndDate);
+        i.putExtra(INTENT_APIARY_KEY, mApiaryKey);
+        //startActivityForResult(i, GRAPH_DISPLAY_REQ_CODE);
+        startActivity(i);
+
     }
 
     @Override

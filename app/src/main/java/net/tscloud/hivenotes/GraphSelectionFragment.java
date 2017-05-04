@@ -47,16 +47,15 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
     // the fragment initialization parameters
     private static final String APIARY_ID = "param1";
     private static final String HIVE_ID = "param2";
+    // and instance var of same - needed?
+    private long mApiaryID = -1;
+    private long mHiveID = -1;
 
     // constants used for Dialogs
     public static final String DIALOG_TAG_HIVES = "pests";
     public static final String DIALOG_TAG_WEATHER = "disease";
 
     private static String myFormat = "MM/dd/yy"; //In which you need put here
-
-    // and instance var of same - needed?
-    private long mApiaryID = -1;
-    private long mHiveID = -1;
 
     // stuff that was potentially selected via dialogs - should be a collection but dialog class
     //  requires concatenated String, the construct used by DB DOs

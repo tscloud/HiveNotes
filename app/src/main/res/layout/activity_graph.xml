@@ -4,7 +4,6 @@
     android:id="@+id/graph_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.tscloud.hivenotes.GraphActivity"
     tools:ignore="MergeRootFrame">
 
 </FrameLayout>
