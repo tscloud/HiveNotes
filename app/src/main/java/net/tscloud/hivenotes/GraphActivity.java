@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
 import net.tscloud.hivenotes.db.GraphableData;
+import net.tscloud.hivenotes.db.Hive;
 
 import java.util.List;
 
@@ -62,8 +62,9 @@ public class GraphActivity extends HiveDataEntryActivity implements
     }
 
     @Override
-    public void onGraphSelectionFragmentInteraction(List<GraphableData> aToGraphList, List<Hive> aHiveList,
-            long aStartDate, long aEndDate) {
+    public void onGraphSelectionFragmentInteraction(List<GraphableData> aToGraphList,
+                                                    List<Hive> aHiveList, long aStartDate,
+                                                    long aEndDate) {
         Log.d(TAG, "back from GraphSelectionFragment...Start Date: " + aStartDate +
             " End Date: " + aEndDate);
 

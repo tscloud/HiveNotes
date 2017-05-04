@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.GraphableData;
@@ -27,11 +25,9 @@ import net.tscloud.hivenotes.helper.LogSuperDataEntry;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Deque;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -71,13 +67,6 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
     private List<GraphableData> mGraphableWeatherList;
     // List of potential Hive
     private List<Hive> mHiveList;
-
-    // List of graph directives that have been selected
-    private HashMap<SpinnerAdapter, Integer> mSpinnerSelectionHash = new HashMap<>();
-    // stack of Spinners used to know which to add after as well as to have
-    //  reference to newly added
-    //private int mAddAfterThisSpinner;
-    private Deque<Integer> mSpinnerIdStack = new ArrayDeque<>();
 
     // task references - needed to kill tasks on Activity Destroy
     private GetGraphableData mTask = null;
@@ -272,7 +261,7 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         final EditText edtGraphStartDate = (EditText)getView().findViewById(R.id.editTextGraphStartDate);
         final EditText edtGraphEndDate = (EditText)getView().findViewById(R.id.editTextGraphEndDate);
 
-        /** if the pretty name of the GraphableData matches an entry in the list created from user
+        /* if the pretty name of the GraphableData matches an entry in the list created from user
              selection => save off the GraphableData to send back to the Actvity - same for Hive List
         */
         // Make our CSVs of selected values into Lists to better do comparisons
@@ -288,7 +277,7 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
             }
         }
 
-        for (Hive elemHive : mHiveSelected) {
+        for (Hive elemHive : mHiveList) {
             for (String elemSelectedHive : listHivesSel) {
                 if (elemSelectedHive.equals(elemHive.getName())) {
                     returnHiveList.add(elemHive);
@@ -343,16 +332,13 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
     private static String[] getWeatherGraphableDataPrettyNames(List<GraphableData> aGraphableDataList) {
         ArrayList<String> replyList = new ArrayList<>();
 
-        int i = 0;
         for (GraphableData dataElem : aGraphableDataList) {
             if (dataElem.getDirective().equals("WeatherHistory")) {
                 replyList.add(dataElem.getPrettyName());
             }
         }
 
-        String[] reply = replyList.toArray(new String[replyList.size()]);
-
-        return reply;
+        return replyList.toArray(new String[replyList.size()]);
     }
 
     private static String[] getHivePrettyNames(List<Hive> aHiveList) {
@@ -403,8 +389,12 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         switch (aTag){
             case DIALOG_TAG_HIVES:
                 mHiveSelected = TextUtils.join(",", aResults);
+                Log.d(TAG, "onLogLaunchDialog: mHiveSelected: " + mHiveSelected);
+                break;
             case DIALOG_TAG_WEATHER:
                 mWeatherSelected = TextUtils.join(",", aResults);
+                Log.d(TAG, "onLogLaunchDialog: mWeatherSelected: " + mWeatherSelected);
+                break;
         }
     }
 
@@ -456,7 +446,7 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
             mGraphableWeatherList = daoGraphableData.getGraphableDataList();
 
             // Set the member var for holding GraphableData List
-            mGraphableDataList = daoGraphableData.getGraphableDataList();
+            mGraphableWeatherList = daoGraphableData.getGraphableDataList();
             // Set the member var for holding Hive List
             mHiveList = daoHive.getHiveList(mApiaryID);
 

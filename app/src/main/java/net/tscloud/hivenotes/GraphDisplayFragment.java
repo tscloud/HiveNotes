@@ -22,6 +22,7 @@ import net.tscloud.hivenotes.db.Apiary;
 import net.tscloud.hivenotes.db.ApiaryDAO;
 import net.tscloud.hivenotes.db.GraphableDAO;
 import net.tscloud.hivenotes.db.GraphableData;
+import net.tscloud.hivenotes.db.Hive;
 import net.tscloud.hivenotes.db.WeatherHistory;
 import net.tscloud.hivenotes.db.WeatherHistoryDAO;
 import net.tscloud.hivenotes.helper.HiveUtil;
@@ -55,8 +56,7 @@ public class GraphDisplayFragment extends Fragment {
     private static final String START_DATE = "param2";
     private static final String END_DATE = "param3";
     private static final String APIARY_ID = "param4";
-    private static final String HIVE_ID = "param5";
-    private static final String HIVE_LIST = "param6";
+    private static final String HIVE_LIST = "param5";
     // and instance var of same - needed?
     private List<GraphableData> mGraphList;
     private List<Hive> mHiveList;
@@ -75,24 +75,24 @@ public class GraphDisplayFragment extends Fragment {
      * this fragment using the provided parameters.
      */
     public static GraphDisplayFragment newInstance(List<GraphableData> aGraphList, long aStartDate,
-                                                   long aEndDate, long aApiary, List<Hive> aHiveList) {
+                                                   long aEndDate, long aApiary,
+                                                   List<Hive> aHiveList) {
         Log.d(TAG, "getting newInstance of GraphDisplayFragment...Start Date: " + aStartDate +
                 " : End Date: " + aEndDate);
 
         GraphDisplayFragment fragment = new GraphDisplayFragment();
         Bundle args = new Bundle();
 
-        try {
+        //try {
             args.putParcelableArrayList(GRAPH_LIST, (ArrayList)aGraphList);
             args.putParcelableArrayList(HIVE_LIST, (ArrayList)aHiveList);
-        }
-        catch (ClassCastException e) {
-            Log.d(TAG, "List of stuff to graph passed in as something other that ArrayList");
-        }
+        //}
+        //catch (ClassCastException e) {
+        //    Log.d(TAG, "List of stuff to graph passed in as something other that ArrayList");
+        //}
         args.putLong(START_DATE, aStartDate);
         args.putLong(END_DATE, aEndDate);
         args.putLong(APIARY_ID, aApiary);
-        args.putLong(HIVE_ID, aHive);
         fragment.setArguments(args);
 
         return fragment;
@@ -112,7 +112,6 @@ public class GraphDisplayFragment extends Fragment {
             mStartDate = getArguments().getLong(START_DATE);
             mEndDate = getArguments().getLong(END_DATE);
             mApiaryId = getArguments().getLong(APIARY_ID);
-            mHiveId = getArguments().getLong(HIVE_ID);
         }
     }
 
@@ -206,7 +205,7 @@ public class GraphDisplayFragment extends Fragment {
 
     /** collect data
      */
-    public class RetrieveDataTask extends AsyncTask<Void, Void, DataPoint[]> {
+    private class RetrieveDataTask extends AsyncTask<Void, Void, DataPoint[]> {
 
         public static final String TAG = "RetrieveDataTask";
 
@@ -218,13 +217,13 @@ public class GraphDisplayFragment extends Fragment {
         private int itemNum = 0;
         private RetrieveDataTask taskRef;
 
-        public void setTaskRef(RetrieveDataTask taskRef) {
-            this.taskRef = taskRef;
+        private void setTaskRef(RetrieveDataTask aTaskRef) {
+            taskRef = aTaskRef;
         }
 
         private ProgressDialog dialog;
 
-        public RetrieveDataTask(Context aCtx, GraphableData aData, long aStartDate, long aEndDate,
+        private RetrieveDataTask(Context aCtx, GraphableData aData, long aStartDate, long aEndDate,
                                 int aItem, View aView) {
             ctx = aCtx;
             data = aData;
@@ -247,7 +246,7 @@ public class GraphDisplayFragment extends Fragment {
         protected DataPoint[] doInBackground(Void... unused) {
             Log.d(TAG, "RetrieveDataTask("+ Thread.currentThread().getId() + ") : doInBackground");
 
-            DataPoint[] pointSet = null;
+            DataPoint[] pointSet;
 
             // Determine the "type" of data we need to gather
             if (data.getDirective().equals("WeatherHistory")) {
@@ -306,17 +305,17 @@ public class GraphDisplayFragment extends Fragment {
             Log.d(TAG, "endDateMN: " + formatter.format(new Date(endDateMN)) +
                     " : " + endDateMN);
 
-            /** read WeatherHistory table to get the data we have
+            /* read WeatherHistory table to get the data we have
              */
             WeatherHistoryDAO myDAO = (WeatherHistoryDAO)GraphableDAO.getGraphableDAO(aData, ctx);
             TreeMap<Long, Double> daoReply = myDAO.getColDataByDateRangeForGraphing(aData.getColumn(),
                     startDateMN, endDateMN, aApiary);
             myDAO.close();
 
-            /** determine where the gaps are
+            /* determine where the gaps are
              */
 
-            /** RESTRICT total # of service calls/session **/
+            /* RESTRICT total # of service calls/session **/
             int GOV_THRESH = 10;
             int callCount = 0;
 
