@@ -69,7 +69,7 @@ public class GraphActivity extends HiveDataEntryActivity implements
             " End Date: " + aEndDate);
 
         // go to the GraphDisplayFragment
-        Fragment fragment = GraphDisplayFragment.newInstance(aToGraphList, aStartDate, aEndDate,
+        fragment = GraphDisplayFragment.newInstance(aToGraphList, aStartDate, aEndDate,
                 mApiaryKey, aHiveList);
         String fragTag = "GRAPH_DISPLAY_FRAG";
 
