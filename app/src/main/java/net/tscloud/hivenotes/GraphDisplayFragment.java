@@ -227,18 +227,21 @@ public class GraphDisplayFragment extends Fragment {
 
         private RetrieveDataTask(Context aCtx, GraphableData aData, long aStartDate, long aEndDate,
                                 long aHiveKey, View aView) {
+            Log.d(TAG, "RetrieveDataTask(" + Thread.currentThread().getId() + ") : constructor");
+
             ctx = aCtx;
             data = aData;
             startDate = aStartDate;
             endDate = aEndDate;
             hiveKey = aHiveKey;
             view = aView;
-            Log.d(TAG, "RetrieveDataTask(" + Thread.currentThread().getId() + ") : constructor");
         }
 
 
         @Override
         protected void onPreExecute() {
+            Log.d(TAG, "RetrieveDataTask(" + Thread.currentThread().getId() + ") : onPreExecute");
+
             dialog = new ProgressDialog(ctx);
             dialog.setMessage(getResources().getString(R.string.retrieve_graph_data));
             dialog.show();
@@ -283,8 +286,7 @@ public class GraphDisplayFragment extends Fragment {
             taskRef = null;
         }
 
-        /**
-         * Set of methods used by RetrieveDataTask
+        /* Set of methods used by RetrieveDataTask
          */
         private DataPoint[] doWeatherHistory(GraphableData aData, long aApiary,
                                            long aStartDate, long aEndDate) {
