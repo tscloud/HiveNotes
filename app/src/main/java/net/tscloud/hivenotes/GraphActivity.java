@@ -3,7 +3,6 @@ package net.tscloud.hivenotes;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -12,11 +11,12 @@ import android.view.MenuItem;
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.Hive;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GraphActivity extends HiveDataEntryActivity implements
         GraphSelectionFragment.OnGraphSelectionFragmentInteractionListener,
-        GraphDisplayFragment.OnGraphDisplayFragmentInteractionListener{
+        GraphDisplayFragment.OnGraphDisplayFragmentInteractionListener {
 
     private static final String TAG = "GraphActivity";
 
@@ -93,8 +93,8 @@ public class GraphActivity extends HiveDataEntryActivity implements
         // use seperate Activity to display GraphDisplayFragment so we can enforce
         //  landscape mode
         Intent i = new Intent(this,GraphDisplayActivity.class);
-        i.putParcelableArrayListExtra(INTENT_GRAPHABLE_LIST, aToGraphList);
-        i.putParcelableArrayListExtra(INTENT_HIVE_LIST, aEndDate);
+        i.putParcelableArrayListExtra(INTENT_GRAPHABLE_LIST, (ArrayList)aToGraphList);
+        i.putParcelableArrayListExtra(INTENT_HIVE_LIST, (ArrayList)aHiveList);
         i.putExtra(INTENT_GRAPH_START_DATE, aStartDate);
         i.putExtra(INTENT_GRAPH_END_DATE, aEndDate);
         i.putExtra(INTENT_APIARY_KEY, mApiaryKey);

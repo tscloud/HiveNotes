@@ -85,7 +85,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.tscloud.hivenotes.GraphActivity" />
         </activity>
-        </activity>
         <activity
             android:name=".EventListActivity"
             android:label="@string/title_event_list"

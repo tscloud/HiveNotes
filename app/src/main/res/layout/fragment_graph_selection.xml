@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/activity_vertical_margin"
+        android:checkedButton="@+id/radioHoney"
         android:layout_below="@id/textGraphSelection1">
         <RadioButton android:id="@+id/radioHoney"
             android:layout_width="wrap_content"

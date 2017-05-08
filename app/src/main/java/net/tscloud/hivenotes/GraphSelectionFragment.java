@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import net.tscloud.hivenotes.db.GraphableData;
@@ -267,15 +269,30 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
         List<String> listWeatherSel = Arrays.asList(mWeatherSelected.split("\\s*,\\s*"));
         List<String> listHivesSel = Arrays.asList(mHiveSelected.split("\\s*,\\s*"));
 
+        // set the GraphableDate entries
+        RadioGroup rg = (RadioGroup)getView().findViewById(R.id.radioGroupHiveAmounts);
+        String radiovalue = ((RadioButton)getView().findViewById(rg.getCheckedRadioButtonId())).
+                getText().toString();
+        Log.d(TAG, "selected radio button: " + radiovalue);
+
         for (GraphableData elemGDWeather : mGraphableWeatherList) {
+            Log.d(TAG, "checking GraphableData: " + elemGDWeather.getPrettyName());
+            //for weather
             for (String elemSelectedWeather : listWeatherSel) {
                 if (elemSelectedWeather.equals(elemGDWeather.getPrettyName())) {
                     returnList.add(elemGDWeather);
                     break;
                 }
             }
+            //for radio selected - but only if at least 1 Hive was selected
+            if (elemGDWeather.getPrettyName().equals(radiovalue)) {
+                if ((mHiveSelected != null) && (mHiveSelected.length() > 0)) {
+                    returnList.add(elemGDWeather);
+                }
+            }
         }
 
+        // set the Hive entries
         for (Hive elemHive : mHiveList) {
             for (String elemSelectedHive : listHivesSel) {
                 if (elemSelectedHive.equals(elemHive.getName())) {
@@ -440,9 +457,6 @@ public class GraphSelectionFragment extends HiveDataEntryFragment {
 
             GraphableDataDAO daoGraphableData = new GraphableDataDAO(ctx);
             HiveDAO daoHive = new HiveDAO(ctx);
-
-            // Set the member var for holding GraphableData List
-            mGraphableWeatherList = daoGraphableData.getGraphableDataList();
 
             // Set the member var for holding GraphableData List
             mGraphableWeatherList = daoGraphableData.getGraphableDataList();

@@ -2,6 +2,7 @@ package net.tscloud.hivenotes;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -63,7 +64,7 @@ public class GraphDisplayFragment extends Fragment {
     private long mStartDate = -1;
     private long mEndDate = -1;
     private long mApiaryId = -1;
-    private long mHiveId = -1;
+    //private long mHiveId = -1;
 
     // task references - needed to kill tasks on Activity Destroy
     private List<RetrieveDataTask> mTaskList = new ArrayList<>();
@@ -124,55 +125,56 @@ public class GraphDisplayFragment extends Fragment {
         // Set up the title(s)
         final TextView textTitle1 = (TextView)v.findViewById(R.id.textTitle1);
         final TextView textTitle2 = (TextView)v.findViewById(R.id.textTitle2);
-        //there can be 1 to 4 graphable things - to set up title(s) we need to
-        //  know where we're at
-        int item = 0;
 
         // Cycle thru our list of GraphableData
         for (GraphableData data : mGraphList) {
-            Log.d(TAG, "about to start RetrieveDataTask AsyncTask");
+            Log.d(TAG, "about to start RetrieveDataTask AsyncTask for..." + data.getPrettyName());
 
-            //this can be null if, for instance, we want to display 1 upper and 1
-            // lower graph
-            if (data == null) {
-                //don't forget to increment the item counter
-                item++;
-                continue;
+            // do the tilte(s)
+            TextView tempTitle;
+            if (data.getDirective().equals("LogEntryProductivity")) {
+                tempTitle = textTitle1;
+            }
+            else {
+                tempTitle = textTitle2;
+                textTitle2.setVisibility(View.VISIBLE);
             }
 
-            // Set up the title(s)
-            switch (item) {
-                case (0):
-                    textTitle1.setText(data.getPrettyName());
-                    break;
-                case (1):
-                    String newText1 = textTitle1.getText() + "/" + data.getPrettyName();
-                    textTitle1.setText(newText1);
-                    break;
-                case (2):
-                    textTitle2.setText(data.getPrettyName());
-                    textTitle2.setVisibility(View.VISIBLE);
-                    break;
-                case (3):
-                    String newText2 = textTitle2.getText() + "/" + data.getPrettyName();
-                    textTitle2.setText(newText2);
+            if ((tempTitle.getText() == null) || (tempTitle.getText() == "")) {
+                tempTitle.setText(data.getPrettyName());
+            } else {
+                String newText1 = tempTitle.getText() + "/" + data.getPrettyName();
+                tempTitle.setText(newText1);
             }
 
-            RetrieveDataTask mTask = new RetrieveDataTask(getActivity(), data, mStartDate,
-                    mEndDate, item, v);
-            // don't forget to set the reference to myself
-            mTask.setTaskRef(mTask);
-            mTaskList.add(mTask);
-            // Could execute on multiple threads but if doing WeatherHistory =>
-            //  we don't want them making redundant calls
-            mTask.execute();
-            //mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-            //don't forget to increment the item counter
-            item++;
+            // spawn task based on type - Apiary or Hive based data to be retrieved
+            switch (data.getKeyLevel()) {
+                case "A":
+                    //just spawn off a RetrieveDataTask
+                    spawnRetrieveDataTask(data, -1, v);
+                    break;
+                case "H":
+                    //cycle thru the Hive list and spawn of a RetrieveDataTask for each
+                    for (Hive h : mHiveList) {
+                        spawnRetrieveDataTask(data, h.getId(), v);
+                    }
+                    break;
+            }
         }
 
         return v;
+    }
+
+    private void spawnRetrieveDataTask(GraphableData aData, long aHiveKey, View aView) {
+        RetrieveDataTask mTask = new RetrieveDataTask(getActivity(), aData, mStartDate,
+                mEndDate, aHiveKey, aView);
+        // don't forget to set the reference to myself
+        mTask.setTaskRef(mTask);
+        mTaskList.add(mTask);
+        // Could execute on multiple threads but if doing WeatherHistory =>
+        //  we don't want them making redundant calls
+        mTask.execute();
+        //mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -214,7 +216,7 @@ public class GraphDisplayFragment extends Fragment {
         private long startDate;
         private long endDate;
         private View view;
-        private int itemNum = 0;
+        private long hiveKey = 0;
         private RetrieveDataTask taskRef;
 
         private void setTaskRef(RetrieveDataTask aTaskRef) {
@@ -224,12 +226,12 @@ public class GraphDisplayFragment extends Fragment {
         private ProgressDialog dialog;
 
         private RetrieveDataTask(Context aCtx, GraphableData aData, long aStartDate, long aEndDate,
-                                int aItem, View aView) {
+                                long aHiveKey, View aView) {
             ctx = aCtx;
             data = aData;
             startDate = aStartDate;
             endDate = aEndDate;
-            itemNum = aItem;
+            hiveKey = aHiveKey;
             view = aView;
             Log.d(TAG, "RetrieveDataTask(" + Thread.currentThread().getId() + ") : constructor");
         }
@@ -254,10 +256,10 @@ public class GraphDisplayFragment extends Fragment {
                 pointSet = doWeatherHistory(data, mApiaryId, startDate, endDate);
             }
             else if (!data.getDirective().equals("N/A")) {
-                pointSet = doStandardDirective(data, mApiaryId, mHiveId, startDate ,endDate);
+                pointSet = doStandardDirective(data, mApiaryId, hiveKey, startDate ,endDate);
             }
             else {
-                pointSet = doSpecialDirective(data, mApiaryId, mHiveId, startDate, endDate);
+                pointSet = doSpecialDirective(data, mApiaryId, hiveKey, startDate, endDate);
             }
 
             return pointSet;
@@ -464,13 +466,11 @@ public class GraphDisplayFragment extends Fragment {
 
             // determine which key to use (Apiary, Hive, ..)
             long readKey = 0;
-            switch (aData.getKeyLevel()) {
-                case "A":
-                    readKey = aApiary;
-                    break;
-                case "H":
-                    readKey = aHive;
-                    break;
+            if (aHive != -1) {
+                readKey = aHive;
+            }
+            else {
+                readKey = aApiary;
             }
 
             // do the read
@@ -506,17 +506,22 @@ public class GraphDisplayFragment extends Fragment {
         private void doGraph(DataPoint[] aPoints) {
             Log.d(TAG, "RetrieveDataTask : doGraph()");
 
-            // determine which graph to draw upon based on item number
+            // determine which graph to draw upon based on GraphableData directive
             //  & make visible even if it already has
             GraphView graph;
-            if (itemNum < 2) {
+            if (data.getDirective().equals("LogEntryProductivity")) {
                 graph = (GraphView)view.findViewById(R.id.graph1);
                 graph.setVisibility(View.VISIBLE);
             }
             else {
                 graph = (GraphView)view.findViewById(R.id.graph2);
                 graph.setVisibility(View.VISIBLE);
+                // we've got 2 graphs so make orientation portrait - being called potentially
+                //  multiple times <- not great
+                //getActivity().setRequestedOrientation(
+                //        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
+
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
 
             series.setDrawDataPoints(true);
