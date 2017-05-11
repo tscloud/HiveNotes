@@ -35,6 +35,8 @@ public class GraphActivity extends HiveDataEntryActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "GraphActivity onCreate()");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
@@ -80,16 +82,15 @@ public class GraphActivity extends HiveDataEntryActivity implements
             " End Date: " + aEndDate);
 
         // go to the GraphDisplayFragment
-        /*
-        fragment = GraphDisplayFragment.newInstance(aToGraphList, aStartDate, aEndDate,
-                mApiaryKey, aHiveList);
+        GraphDisplayFragment fragment = GraphDisplayFragment.newInstance(
+                aToGraphList, aStartDate, aEndDate, mApiaryKey, aHiveList);
         String fragTag = "GRAPH_DISPLAY_FRAG";
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.graph_container, fragment, fragTag).addToBackStack(null);
         ft.commit();
-        */
 
+        /*
         // use seperate Activity to display GraphDisplayFragment so we can enforce
         //  landscape mode
         Intent i = new Intent(this,GraphDisplayActivity.class);
@@ -100,6 +101,7 @@ public class GraphActivity extends HiveDataEntryActivity implements
         i.putExtra(INTENT_APIARY_KEY, mApiaryKey);
         //startActivityForResult(i, GRAPH_DISPLAY_REQ_CODE);
         startActivity(i);
+        */
 
     }
 

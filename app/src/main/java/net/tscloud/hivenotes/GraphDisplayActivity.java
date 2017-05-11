@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import net.tscloud.hivenotes.db.GraphableData;
@@ -57,6 +58,8 @@ public class GraphDisplayActivity extends AppCompatActivity implements
         }
 
         // go to the GraphDisplayFragment
+        Log.d(TAG, "about to get newInstance of GraphDisplayFragment");
+
         Fragment fragment = GraphDisplayFragment.newInstance(iGraphList, iStartDate, iEndDate,
                 iApiary, iHiveList);
 

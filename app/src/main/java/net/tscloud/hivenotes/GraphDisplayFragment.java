@@ -39,6 +39,11 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
+import static android.R.attr.data;
+import static net.tscloud.hivenotes.R.id.graph1;
+import static net.tscloud.hivenotes.R.id.graph2;
+import static net.tscloud.hivenotes.R.string.graph;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -126,18 +131,24 @@ public class GraphDisplayFragment extends Fragment {
         final TextView textTitle1 = (TextView)v.findViewById(R.id.textTitle1);
         final TextView textTitle2 = (TextView)v.findViewById(R.id.textTitle2);
 
+        final GraphView graph1 = (GraphView)v.findViewById(R.id.graph1);
+        final GraphView graph2 = (GraphView)v.findViewById(R.id.graph2);
+
         // Cycle thru our list of GraphableData
         for (GraphableData data : mGraphList) {
             Log.d(TAG, "about to start RetrieveDataTask AsyncTask for..." + data.getPrettyName());
 
-            // do the tilte(s)
+            // do the title(s)
             TextView tempTitle;
             if (data.getDirective().equals("LogEntryProductivity")) {
                 tempTitle = textTitle1;
+                textTitle1.setVisibility(View.VISIBLE);
+                graph1.setVisibility(View.VISIBLE);
             }
             else {
                 tempTitle = textTitle2;
                 textTitle2.setVisibility(View.VISIBLE);
+                graph2.setVisibility(View.VISIBLE);
             }
 
             if ((tempTitle.getText() == null) || (tempTitle.getText() == "")) {
@@ -159,6 +170,16 @@ public class GraphDisplayFragment extends Fragment {
                         spawnRetrieveDataTask(data, h.getId(), v);
                     }
                     break;
+            }
+        }
+
+        getActivity().setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        if ((graph1 != null) && (graph1.getVisibility() == View.VISIBLE)) {
+            if ((graph2 != null) && (graph2.getVisibility() == View.VISIBLE)) {
+                getActivity().setRequestedOrientation(
+                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
         }
 
@@ -512,16 +533,16 @@ public class GraphDisplayFragment extends Fragment {
             //  & make visible even if it already has
             GraphView graph;
             if (data.getDirective().equals("LogEntryProductivity")) {
-                graph = (GraphView)view.findViewById(R.id.graph1);
-                graph.setVisibility(View.VISIBLE);
+                graph = (GraphView)view.findViewById(graph1);
+                //graph.setVisibility(View.VISIBLE);
             }
             else {
-                graph = (GraphView)view.findViewById(R.id.graph2);
-                graph.setVisibility(View.VISIBLE);
+                graph = (GraphView)view.findViewById(graph2);
+                //graph.setVisibility(View.VISIBLE);
                 // we've got 2 graphs so make orientation portrait - being called potentially
                 //  multiple times <- not great
-                //getActivity().setRequestedOrientation(
-                //        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                getActivity().setRequestedOrientation(
+                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
 
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
