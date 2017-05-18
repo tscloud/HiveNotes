@@ -173,6 +173,7 @@ public class GraphDisplayFragment extends Fragment {
             }
         }
 
+        /*
         getActivity().setRequestedOrientation(
                 ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
@@ -182,6 +183,7 @@ public class GraphDisplayFragment extends Fragment {
                         ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
         }
+        */
 
         return v;
     }
@@ -542,7 +544,7 @@ public class GraphDisplayFragment extends Fragment {
                 // we've got 2 graphs so make orientation portrait - being called potentially
                 //  multiple times <- not great
                 getActivity().setRequestedOrientation(
-                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
 
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
