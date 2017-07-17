@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".EditHiveActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan">
             <meta-data
@@ -23,6 +24,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_main"
             android:launchMode="singleTask">
             <intent-filter>
@@ -32,6 +34,7 @@
         </activity>
         <activity
             android:name=".LogEntryListActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_logentry_list">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -39,6 +42,7 @@
         </activity>
         <activity
             android:name=".LogEntryDetailActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_logentry_detail">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -46,6 +50,7 @@
         </activity>
         <activity
             android:name=".EditProfileActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_edit_profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -53,6 +58,7 @@
         </activity>
         <activity
             android:name=".EditApiaryActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_apiary_edit_profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -60,6 +66,7 @@
         </activity>
         <activity
             android:name=".EditHiveSingleActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_hive_single_edit_profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -67,6 +74,7 @@
         </activity>
         <activity
             android:name=".LogDateListActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_log_date_list"
             android:parentActivityName=".EditHiveActivity">
             <meta-data
@@ -74,7 +82,17 @@
                 android:value="net.tscloud.hivenotes.EditHiveActivity" />
         </activity>
         <activity
+            android:name=".EventListActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_event_list"
+            android:parentActivityName=".LogEntryListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.tscloud.hivenotes.LogEntryListActivity" />
+        </activity>
+        <activity
             android:name=".GraphActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_graph"
             android:parentActivityName=".LogEntryListActivity">
             <meta-data
@@ -82,12 +100,11 @@
                 android:value="net.tscloud.hivenotes.LogEntryListActivity" />
         </activity>
         <activity
-            android:name=".EventListActivity"
-            android:label="@string/title_event_list"
-            android:parentActivityName=".LogEntryListActivity">
+            android:name=".GraphDisplayActivity"
+            android:parentActivityName=".GraphActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.tscloud.hivenotes.LogEntryListActivity" />
+                android:value="net.tscloud.hivenotes.GraphActivity" />
         </activity>
     </application>
 

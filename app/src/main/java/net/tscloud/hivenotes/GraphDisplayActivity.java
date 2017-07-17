@@ -42,7 +42,10 @@ public class GraphDisplayActivity extends AppCompatActivity implements
         long iEndDate = intent.getLongExtra(GraphActivity.INTENT_GRAPH_END_DATE, -1);
         long iApiary = intent.getLongExtra(GraphActivity.INTENT_APIARY_KEY, -1);
 
-        // Determine orientation based on types of GraphableDate
+        // Method #1
+        // Determine orientation based on graph types
+        /*
+        boolean stayPortrait = false;
         String firstDir = null;
         for (GraphableData g : iGraphList) {
             if (firstDir == null) {
@@ -50,11 +53,23 @@ public class GraphDisplayActivity extends AppCompatActivity implements
             }
             else {
                 if (!firstDir.equals(g.getDirective())) {
-                    this.setRequestedOrientation(
-                            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    stayPortrait = true;
                     break;
                 }
             }
+        }
+
+        if (!stayPortrait) {
+            this.setRequestedOrientation(
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        */
+
+        // Method #2
+        // Determine orientation based on how many graphs we need to do
+        if ((iGraphList.size() < 2) && (getOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)) {
+            this.setRequestedOrientation(
+                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
         // go to the GraphDisplayFragment
@@ -68,6 +83,14 @@ public class GraphDisplayActivity extends AppCompatActivity implements
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.graph_container, fragment, fragTag);
         ft.commit();
+    }
+
+    // Helper method(s)
+    private int getOrientation() {
+        Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        int orientation = display.getOrientation();
+
+        return orientation;
     }
 
     // Make the Up button perform like the Back button
