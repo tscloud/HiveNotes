@@ -2,6 +2,7 @@ package net.tscloud.hivenotes;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,6 @@ import android.view.MenuItem;
 import net.tscloud.hivenotes.db.GraphableData;
 import net.tscloud.hivenotes.db.Hive;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GraphDisplayActivity extends AppCompatActivity implements
@@ -67,7 +67,8 @@ public class GraphDisplayActivity extends AppCompatActivity implements
 
         // Method #2
         // Determine orientation based on how many graphs we need to do
-        if ((iGraphList.size() < 2) && (getOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)) {
+        if ((iGraphList.size() < 2) &&
+                (orientationChanged(Configuration.ORIENTATION_LANDSCAPE))) {
             this.setRequestedOrientation(
                     ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
@@ -86,11 +87,10 @@ public class GraphDisplayActivity extends AppCompatActivity implements
     }
 
     // Helper method(s)
-    private int getOrientation() {
-        Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-        int orientation = display.getOrientation();
+    private boolean orientationChanged(int checkThis) {
+        int orientation = getResources().getConfiguration().orientation;
 
-        return orientation;
+        return !(orientation == checkThis);
     }
 
     // Make the Up button perform like the Back button
@@ -98,10 +98,22 @@ public class GraphDisplayActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                super.onBackPressed();
+                onBackPressed();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // This should be intercepted when back button pressed from Fragment - always set back
+        //  to PORTRAIT?
+        if (orientationChanged(Configuration.ORIENTATION_LANDSCAPE)) {
+            this.setRequestedOrientation(
+                    ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        super.onBackPressed();
     }
 
     @Override
