@@ -22,6 +22,8 @@ public class GraphDisplayActivity extends AppCompatActivity implements
 
     private static final String TAG = "GraphDisplayActivity";
 
+    private static final String FRAG_TAG = "GRAPH_DISPLAY_FRAG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +78,18 @@ public class GraphDisplayActivity extends AppCompatActivity implements
         // go to the GraphDisplayFragment
         Log.d(TAG, "about to get newInstance of GraphDisplayFragment");
 
-        Fragment fragment = GraphDisplayFragment.newInstance(iGraphList, iStartDate, iEndDate,
+        //<<<<<
+        FragmentManager fm = getFragmentManager();
+        Fragment fragment = (GraphDisplayFragment)fm.findFragmentByTag(FRAG_TAG);
+
+        // If the Fragment is non-null, then it is currently being
+        // retained across a configuration change.
+        if (fragment == null) {
+            fragment = GraphDisplayFragment.newInstance(iGraphList, iStartDate, iEndDate,
                 iApiary, iHiveList);
-
-        String fragTag = "GRAPH_DISPLAY_FRAG";
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.graph_container, fragment, fragTag);
-        ft.commit();
+            fm.beginTransaction().replace(R.id.graph_container, fragment, FRAG_TAG).commit();
+        }
+        //>>>>>
     }
 
     // Helper method(s)
