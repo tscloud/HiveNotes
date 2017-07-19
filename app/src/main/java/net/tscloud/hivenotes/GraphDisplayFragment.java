@@ -40,9 +40,6 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 
 import static android.R.attr.data;
-import static net.tscloud.hivenotes.R.id.graph1;
-import static net.tscloud.hivenotes.R.id.graph2;
-import static net.tscloud.hivenotes.R.string.graph;
 
 
 /**
@@ -112,6 +109,11 @@ public class GraphDisplayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(TAG, "-----GraphDisplayFragment-----onCreate()");
+
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
+
         if (getArguments() != null) {
             mGraphList = getArguments().getParcelableArrayList(GRAPH_LIST);
             mHiveList = getArguments().getParcelableArrayList(HIVE_LIST);
@@ -124,6 +126,8 @@ public class GraphDisplayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "-----GraphDisplayFragment-----onCreateView()");
+
         // Inflate the layout for this fragment
         final View v = inflater.inflate(R.layout.fragment_graph_display, container, false);
 
@@ -172,18 +176,6 @@ public class GraphDisplayFragment extends Fragment {
                     break;
             }
         }
-
-        /*
-        getActivity().setRequestedOrientation(
-                ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-        if ((graph1 != null) && (graph1.getVisibility() == View.VISIBLE)) {
-            if ((graph2 != null) && (graph2.getVisibility() == View.VISIBLE)) {
-                getActivity().setRequestedOrientation(
-                        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-        }
-        */
 
         return v;
     }
@@ -265,9 +257,12 @@ public class GraphDisplayFragment extends Fragment {
         protected void onPreExecute() {
             Log.d(TAG, "RetrieveDataTask(" + Thread.currentThread().getId() + ") : onPreExecute");
 
-            dialog = new ProgressDialog(ctx);
-            dialog.setMessage(getResources().getString(R.string.retrieve_graph_data));
-            dialog.show();
+            //only show Dialog if it not already showing
+            if (dialog == null) {
+                dialog = new ProgressDialog(ctx);
+                dialog.setMessage(getResources().getString(R.string.retrieve_graph_data));
+                dialog.show();
+            }
         }
 
         @Override
@@ -490,7 +485,7 @@ public class GraphDisplayFragment extends Fragment {
             GraphableDAO myDAO = GraphableDAO.getGraphableDAO(aData, ctx);
 
             // determine which key to use (Apiary, Hive, ..)
-            long readKey = 0;
+            long readKey;
             if (aHive != -1) {
                 readKey = aHive;
             }
@@ -535,16 +530,16 @@ public class GraphDisplayFragment extends Fragment {
             //  & make visible even if it already has
             GraphView graph;
             if (data.getDirective().equals("LogEntryProductivity")) {
-                graph = (GraphView)view.findViewById(graph1);
+                graph = (GraphView)view.findViewById(R.id.graph1);
                 //graph.setVisibility(View.VISIBLE);
             }
             else {
-                graph = (GraphView)view.findViewById(graph2);
+                graph = (GraphView)view.findViewById(R.id.graph2);
                 //graph.setVisibility(View.VISIBLE);
                 // we've got 2 graphs so make orientation portrait - being called potentially
                 //  multiple times <- not great
-                getActivity().setRequestedOrientation(
-                        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                //getActivity().setRequestedOrientation(
+                //        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
 
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);

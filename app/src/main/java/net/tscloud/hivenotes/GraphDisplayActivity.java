@@ -1,12 +1,11 @@
 package net.tscloud.hivenotes;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -33,63 +32,41 @@ public class GraphDisplayActivity extends AppCompatActivity implements
         getSupportActionBar().setCustomView(R.layout.abs_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get the apiary and hive key from the Intent data
-        Intent intent = getIntent();
-
-        List<GraphableData> iGraphList =
-                intent.getParcelableArrayListExtra(GraphActivity.INTENT_GRAPHABLE_LIST);
-        List<Hive> iHiveList =
-                intent.getParcelableArrayListExtra(GraphActivity.INTENT_HIVE_LIST);
-        long iStartDate = intent.getLongExtra(GraphActivity.INTENT_GRAPH_START_DATE, -1);
-        long iEndDate = intent.getLongExtra(GraphActivity.INTENT_GRAPH_END_DATE, -1);
-        long iApiary = intent.getLongExtra(GraphActivity.INTENT_APIARY_KEY, -1);
-
-        // Method #1
-        // Determine orientation based on graph types
-        /*
-        boolean stayPortrait = false;
-        String firstDir = null;
-        for (GraphableData g : iGraphList) {
-            if (firstDir == null) {
-                firstDir = g.getDirective();
-            }
-            else {
-                if (!firstDir.equals(g.getDirective())) {
-                    stayPortrait = true;
-                    break;
-                }
-            }
-        }
-
-        if (!stayPortrait) {
-            this.setRequestedOrientation(
-                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        */
-
-        // Method #2
-        // Determine orientation based on how many graphs we need to do
-        if ((iGraphList.size() < 2) &&
-                (orientationChanged(Configuration.ORIENTATION_LANDSCAPE))) {
-            this.setRequestedOrientation(
-                    ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-
         // go to the GraphDisplayFragment
-        Log.d(TAG, "about to get newInstance of GraphDisplayFragment");
-
         //<<<<<
-        FragmentManager fm = getFragmentManager();
-        Fragment fragment = (GraphDisplayFragment)fm.findFragmentByTag(FRAG_TAG);
+        FragmentManager fm = getSupportFragmentManager();
+        GraphDisplayFragment graphFrag = (GraphDisplayFragment)fm.findFragmentByTag(FRAG_TAG);
 
         // If the Fragment is non-null, then it is currently being
         // retained across a configuration change.
-        if (fragment == null) {
-            fragment = GraphDisplayFragment.newInstance(iGraphList, iStartDate, iEndDate,
+        if (graphFrag == null) {
+            Log.d(TAG, "about to create newInstance of GraphDisplayFragment");
+
+            // Get the apiary and hive key from the Intent data
+            Intent intent = getIntent();
+
+            List<GraphableData> iGraphList =
+                    intent.getParcelableArrayListExtra(GraphActivity.INTENT_GRAPHABLE_LIST);
+            List<Hive> iHiveList =
+                    intent.getParcelableArrayListExtra(GraphActivity.INTENT_HIVE_LIST);
+            long iStartDate = intent.getLongExtra(GraphActivity.INTENT_GRAPH_START_DATE, -1);
+            long iEndDate = intent.getLongExtra(GraphActivity.INTENT_GRAPH_END_DATE, -1);
+            long iApiary = intent.getLongExtra(GraphActivity.INTENT_APIARY_KEY, -1);
+
+            // Determine orientation based on how many graphs we need to do
+            if ((iGraphList.size() < 2) &&
+                    (orientationChanged(Configuration.ORIENTATION_LANDSCAPE))) {
+                this.setRequestedOrientation(
+                        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+
+            graphFrag = GraphDisplayFragment.newInstance(iGraphList, iStartDate, iEndDate,
                 iApiary, iHiveList);
-            fm.beginTransaction().replace(R.id.graph_container, fragment, FRAG_TAG).commit();
+            fm.beginTransaction().replace(R.id.graph_container, graphFrag, FRAG_TAG).commit();
         }
-        //>>>>>
+        else {
+            Log.d(TAG, "retained GraphDisplayFragment found");
+        }
     }
 
     // Helper method(s)
