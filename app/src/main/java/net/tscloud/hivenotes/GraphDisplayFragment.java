@@ -68,6 +68,9 @@ public class GraphDisplayFragment extends Fragment {
     private long mApiaryId = -1;
     //private long mHiveId = -1;
 
+    // Map mapping directive -> set of DataPoints
+    private Map<String, DataPoint[]> mDataPointMap;
+
     // task references - needed to kill tasks on Activity Destroy
     private List<RetrieveDataTask> mTaskList = new ArrayList<>();
 
@@ -121,6 +124,30 @@ public class GraphDisplayFragment extends Fragment {
             mEndDate = getArguments().getLong(END_DATE);
             mApiaryId = getArguments().getLong(APIARY_ID);
         }
+
+        //create the data point map
+        if (mDataPointMap == null) {
+            mDataPointMap = new Hashtable<>();
+        }
+
+        // Cycle thru our list of GraphableData
+        for (GraphableData data : mGraphList) {
+            Log.d(TAG, "about to start RetrieveDataTask AsyncTask for..." + data.getPrettyName());
+
+            // spawn task based on type - Apiary or Hive based data to be retrieved
+            switch (data.getKeyLevel()) {
+                case "A":
+                    //just spawn off a RetrieveDataTask
+                    spawnRetrieveDataTask(data, -1, v);
+                    break;
+                case "H":
+                    //cycle thru the Hive list and spawn of a RetrieveDataTask for each
+                    for (Hive h : mHiveList) {
+                        spawnRetrieveDataTask(data, h.getId(), v);
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
@@ -140,7 +167,7 @@ public class GraphDisplayFragment extends Fragment {
 
         // Cycle thru our list of GraphableData
         for (GraphableData data : mGraphList) {
-            Log.d(TAG, "about to start RetrieveDataTask AsyncTask for..." + data.getPrettyName());
+            Log.d(TAG, "setting up graph titles";
 
             // do the title(s)
             TextView tempTitle;
@@ -162,19 +189,7 @@ public class GraphDisplayFragment extends Fragment {
                 tempTitle.setText(newText1);
             }
 
-            // spawn task based on type - Apiary or Hive based data to be retrieved
-            switch (data.getKeyLevel()) {
-                case "A":
-                    //just spawn off a RetrieveDataTask
-                    spawnRetrieveDataTask(data, -1, v);
-                    break;
-                case "H":
-                    //cycle thru the Hive list and spawn of a RetrieveDataTask for each
-                    for (Hive h : mHiveList) {
-                        spawnRetrieveDataTask(data, h.getId(), v);
-                    }
-                    break;
-            }
+            doGraph(data.getDirective(), mDataPointMap.get(data.getDirective()));
         }
 
         return v;
@@ -190,6 +205,48 @@ public class GraphDisplayFragment extends Fragment {
         //  we don't want them making redundant calls
         mTask.execute();
         //mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    private void doGraph(String aDirective, DataPoint[] aPoints) {
+        Log.d(TAG, "RetrieveDataTask : doGraph()");
+
+        // determine which graph to draw upon based on GraphableData directive
+        //  & make visible even if it already has
+        GraphView graph;
+        if (aDirective.equals("LogEntryProductivity")) {
+            graph = (GraphView)view.findViewById(R.id.graph1);
+            //graph.setVisibility(View.VISIBLE);
+        }
+        else {
+            graph = (GraphView)view.findViewById(R.id.graph2);
+            //graph.setVisibility(View.VISIBLE);
+        }
+
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
+
+        series.setDrawDataPoints(true);
+
+        graph.addSeries(series);
+
+        // set date label formatter
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(ctx));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+
+        /**/
+        if (aPoints.length != 0) {
+            // set manual x bounds
+            graph.getViewport().setMinX(aPoints[0].getX());
+            graph.getViewport().setMaxX(aPoints[aPoints.length - 1].getX());
+            graph.getViewport().setXAxisBoundsManual(true);
+
+            // set scrollable viewport
+            //graph.getViewport().setScrollable(true);
+        }
+        /**/
+
+        // as we use dates as labels, the human rounding to nice readable numbers
+        // is not necessary
+        //graph.getGridLabelRenderer().setHumanRounding(false);
     }
 
     @Override
@@ -298,7 +355,9 @@ public class GraphDisplayFragment extends Fragment {
                     Toast.LENGTH_SHORT).show();
 
             // Draw the graph
-            doGraph(aPointSet);
+            //doGraph(aPointSet);
+            // Load the data point table
+            mDataPointMap.put(data.getDirective(), aPointSet);
 
             // all we need to do is nullify the Task reference
             taskRef = null;
@@ -521,52 +580,6 @@ public class GraphDisplayFragment extends Fragment {
             }
 
             return out;
-        }
-
-        private void doGraph(DataPoint[] aPoints) {
-            Log.d(TAG, "RetrieveDataTask : doGraph()");
-
-            // determine which graph to draw upon based on GraphableData directive
-            //  & make visible even if it already has
-            GraphView graph;
-            if (data.getDirective().equals("LogEntryProductivity")) {
-                graph = (GraphView)view.findViewById(R.id.graph1);
-                //graph.setVisibility(View.VISIBLE);
-            }
-            else {
-                graph = (GraphView)view.findViewById(R.id.graph2);
-                //graph.setVisibility(View.VISIBLE);
-                // we've got 2 graphs so make orientation portrait - being called potentially
-                //  multiple times <- not great
-                //getActivity().setRequestedOrientation(
-                //        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            }
-
-            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(aPoints);
-
-            series.setDrawDataPoints(true);
-
-            graph.addSeries(series);
-
-            // set date label formatter
-            graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(ctx));
-            graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
-
-            /**/
-            if (aPoints.length != 0) {
-                // set manual x bounds
-                graph.getViewport().setMinX(aPoints[0].getX());
-                graph.getViewport().setMaxX(aPoints[aPoints.length - 1].getX());
-                graph.getViewport().setXAxisBoundsManual(true);
-
-                // set scrollable viewport
-                //graph.getViewport().setScrollable(true);
-            }
-            /**/
-
-            // as we use dates as labels, the human rounding to nice readable numbers
-            // is not necessary
-            //graph.getGridLabelRenderer().setHumanRounding(false);
         }
     }
 
