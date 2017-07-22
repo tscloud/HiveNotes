@@ -2,7 +2,6 @@ package net.tscloud.hivenotes;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,13 +32,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
-
-import static android.R.attr.data;
 
 
 /**
@@ -138,12 +137,12 @@ public class GraphDisplayFragment extends Fragment {
             switch (data.getKeyLevel()) {
                 case "A":
                     //just spawn off a RetrieveDataTask
-                    spawnRetrieveDataTask(data, -1, v);
+                    spawnRetrieveDataTask(data, -1);
                     break;
                 case "H":
                     //cycle thru the Hive list and spawn of a RetrieveDataTask for each
                     for (Hive h : mHiveList) {
-                        spawnRetrieveDataTask(data, h.getId(), v);
+                        spawnRetrieveDataTask(data, h.getId());
                     }
                     break;
             }
@@ -167,7 +166,7 @@ public class GraphDisplayFragment extends Fragment {
 
         // Cycle thru our list of GraphableData
         for (GraphableData data : mGraphList) {
-            Log.d(TAG, "setting up graph titles";
+            Log.d(TAG, "setting up graph titles");
 
             // do the title(s)
             TextView tempTitle;
@@ -189,15 +188,15 @@ public class GraphDisplayFragment extends Fragment {
                 tempTitle.setText(newText1);
             }
 
-            doGraph(data.getDirective(), mDataPointMap.get(data.getDirective()));
+            doGraph(data.getDirective(), mDataPointMap.get(data.getDirective()), v);
         }
 
         return v;
     }
 
-    private void spawnRetrieveDataTask(GraphableData aData, long aHiveKey, View aView) {
+    private void spawnRetrieveDataTask(GraphableData aData, long aHiveKey) {
         RetrieveDataTask mTask = new RetrieveDataTask(getActivity(), aData, mStartDate,
-                mEndDate, aHiveKey, aView);
+                mEndDate, aHiveKey);
         // don't forget to set the reference to myself
         mTask.setTaskRef(mTask);
         mTaskList.add(mTask);
@@ -207,18 +206,18 @@ public class GraphDisplayFragment extends Fragment {
         //mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void doGraph(String aDirective, DataPoint[] aPoints) {
+    private void doGraph(String aDirective, DataPoint[] aPoints, View aView) {
         Log.d(TAG, "RetrieveDataTask : doGraph()");
 
         // determine which graph to draw upon based on GraphableData directive
         //  & make visible even if it already has
         GraphView graph;
         if (aDirective.equals("LogEntryProductivity")) {
-            graph = (GraphView)view.findViewById(R.id.graph1);
+            graph = (GraphView)aView.findViewById(R.id.graph1);
             //graph.setVisibility(View.VISIBLE);
         }
         else {
-            graph = (GraphView)view.findViewById(R.id.graph2);
+            graph = (GraphView)aView.findViewById(R.id.graph2);
             //graph.setVisibility(View.VISIBLE);
         }
 
@@ -229,7 +228,7 @@ public class GraphDisplayFragment extends Fragment {
         graph.addSeries(series);
 
         // set date label formatter
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(ctx));
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
         graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
         /**/
@@ -287,7 +286,6 @@ public class GraphDisplayFragment extends Fragment {
         private GraphableData data;
         private long startDate;
         private long endDate;
-        private View view;
         private long hiveKey = 0;
         private RetrieveDataTask taskRef;
 
@@ -298,7 +296,7 @@ public class GraphDisplayFragment extends Fragment {
         private ProgressDialog dialog;
 
         private RetrieveDataTask(Context aCtx, GraphableData aData, long aStartDate, long aEndDate,
-                                long aHiveKey, View aView) {
+                                long aHiveKey) {
             Log.d(TAG, "RetrieveDataTask(" + Thread.currentThread().getId() + ") : constructor");
 
             ctx = aCtx;
@@ -306,7 +304,6 @@ public class GraphDisplayFragment extends Fragment {
             startDate = aStartDate;
             endDate = aEndDate;
             hiveKey = aHiveKey;
-            view = aView;
         }
 
 
