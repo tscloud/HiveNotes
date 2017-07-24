@@ -227,7 +227,11 @@ public class GraphDisplayFragment extends Fragment {
     }
 
     private void doGraph(GraphableData aGraphableData, DataPoint[] aPoints) {
-        Log.d(TAG, "RetrieveDataTask : doGraph()");
+        Log.d(TAG, "in doGraph()");
+        Log.d(TAG, "GD pretty name: " + aGraphableData.getPrettyName());
+        for (int i = 0; i < aPoints.length; i++) {
+            Log.d(TAG, "----- " + aPoints[i].toString());
+        }
 
         // determine which graph to draw upon based on GraphableData directive
         //  & make visible even if it already has
