@@ -53,11 +53,24 @@ public class GraphDisplayActivity extends AppCompatActivity implements
             long iEndDate = intent.getLongExtra(GraphActivity.INTENT_GRAPH_END_DATE, -1);
             long iApiary = intent.getLongExtra(GraphActivity.INTENT_APIARY_KEY, -1);
 
-            // Determine orientation based on how many graphs we need to do
-            if ((iGraphList.size() < 2) &&
-                    (orientationChanged(Configuration.ORIENTATION_LANDSCAPE))) {
-                this.setRequestedOrientation(
-                        ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            // Possible orientation change based on whether we have multiple types of graph to do
+            GraphableData prevGData = null;
+            boolean doLandscape = true;
+
+            for (GraphableData gData : iGraphList) {
+                if (prevGData == null) {
+                    prevGData = gData;
+                } else if (!gData.getDirective().equals(prevGData.getDirective())) {
+                    doLandscape = false;
+                    break;
+                }
+            }
+
+            if (doLandscape) {
+                if (orientationChanged(Configuration.ORIENTATION_LANDSCAPE)) {
+                    this.setRequestedOrientation(
+                            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
             }
 
             graphFrag = GraphDisplayFragment.newInstance(iGraphList, iStartDate, iEndDate,

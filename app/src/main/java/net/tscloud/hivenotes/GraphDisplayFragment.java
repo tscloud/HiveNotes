@@ -67,11 +67,22 @@ public class GraphDisplayFragment extends Fragment {
     private long mApiaryId = -1;
     //private long mHiveId = -1;
 
-    // Map mapping directive -> set of DataPoints
-    private Map<String, DataPoint[]> mDataPointMap;
-
     // task references - needed to kill tasks on Activity Destroy
     private List<RetrieveDataTask> mTaskList = new ArrayList<>();
+
+    /*
+    These elements - 2 Graph Views & the data that they are do display - need to externalized
+     do to asyncronous nature of retrieval of data and the existence of View to display
+     said data
+     */
+    // Map GraphData directive -> set of DataPoints
+    private Map<GraphableData, DataPoint[]> mDataPointMap;
+    // Need external references to graphs for possible use by AsyncTask
+    private GraphView mGraph1 = null;
+    private GraphView mGraph2 = null;
+
+    //--TEST--
+    //private ProgressDialog dialog;
 
     private OnGraphDisplayFragmentInteractionListener mListener;
 
@@ -161,24 +172,27 @@ public class GraphDisplayFragment extends Fragment {
         final TextView textTitle1 = (TextView)v.findViewById(R.id.textTitle1);
         final TextView textTitle2 = (TextView)v.findViewById(R.id.textTitle2);
 
-        final GraphView graph1 = (GraphView)v.findViewById(R.id.graph1);
-        final GraphView graph2 = (GraphView)v.findViewById(R.id.graph2);
+        //final GraphView graph1 = (GraphView)v.findViewById(R.id.graph1);
+        //final GraphView graph2 = (GraphView)v.findViewById(R.id.graph2);
+
+        mGraph1 = (GraphView)v.findViewById(R.id.graph1);
+        mGraph2 = (GraphView)v.findViewById(R.id.graph2);
 
         // Cycle thru our list of GraphableData
         for (GraphableData data : mGraphList) {
-            Log.d(TAG, "setting up graph titles");
+            Log.d(TAG, "setting up graph titles using: " + data.getPrettyName());
 
             // do the title(s)
             TextView tempTitle;
             if (data.getDirective().equals("LogEntryProductivity")) {
                 tempTitle = textTitle1;
                 textTitle1.setVisibility(View.VISIBLE);
-                graph1.setVisibility(View.VISIBLE);
+                mGraph1.setVisibility(View.VISIBLE);
             }
             else {
                 tempTitle = textTitle2;
                 textTitle2.setVisibility(View.VISIBLE);
-                graph2.setVisibility(View.VISIBLE);
+                mGraph2.setVisibility(View.VISIBLE);
             }
 
             if ((tempTitle.getText() == null) || (tempTitle.getText() == "")) {
@@ -187,8 +201,14 @@ public class GraphDisplayFragment extends Fragment {
                 String newText1 = tempTitle.getText() + "/" + data.getPrettyName();
                 tempTitle.setText(newText1);
             }
+        }
 
-            doGraph(data.getDirective(), mDataPointMap.get(data.getDirective()), v);
+        // We have data from AsycTask -> do the graph
+        if (!mDataPointMap.isEmpty()) {
+            Log.d(TAG, "-----doGraph() from onCreateView()");
+            for (GraphableData gd : mDataPointMap.keySet()) {
+                doGraph(gd, mDataPointMap.get(gd));
+            }
         }
 
         return v;
@@ -206,18 +226,18 @@ public class GraphDisplayFragment extends Fragment {
         //mTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void doGraph(String aDirective, DataPoint[] aPoints, View aView) {
+    private void doGraph(GraphableData aGraphableData, DataPoint[] aPoints) {
         Log.d(TAG, "RetrieveDataTask : doGraph()");
 
         // determine which graph to draw upon based on GraphableData directive
         //  & make visible even if it already has
         GraphView graph;
-        if (aDirective.equals("LogEntryProductivity")) {
-            graph = (GraphView)aView.findViewById(R.id.graph1);
+        if (aGraphableData.getDirective().equals("LogEntryProductivity")) {
+            graph = mGraph1;
             //graph.setVisibility(View.VISIBLE);
         }
         else {
-            graph = (GraphView)aView.findViewById(R.id.graph2);
+            graph = mGraph2;
             //graph.setVisibility(View.VISIBLE);
         }
 
@@ -311,12 +331,14 @@ public class GraphDisplayFragment extends Fragment {
         protected void onPreExecute() {
             Log.d(TAG, "RetrieveDataTask(" + Thread.currentThread().getId() + ") : onPreExecute");
 
-            //only show Dialog if it not already showing
+            // Have to skip Dialog(?) due to destructive nature of underlying Activity
+            /*
             if (dialog == null) {
                 dialog = new ProgressDialog(ctx);
                 dialog.setMessage(getResources().getString(R.string.retrieve_graph_data));
                 dialog.show();
             }
+            */
         }
 
         @Override
@@ -344,9 +366,13 @@ public class GraphDisplayFragment extends Fragment {
         protected void onPostExecute(DataPoint[] aPointSet) {
             Log.d(TAG, "RetrieveDataTask("+ Thread.currentThread().getId() + ") : onPostExecute");
 
+            // Have to skip Dialog(?) due to destructive nature of underlying Activity
+            /*
             if (dialog.isShowing()) {
                 dialog.dismiss();
+                dialog = null;
             }
+            */
 
             Toast.makeText(ctx, R.string.retrieve_graph_data_complete,
                     Toast.LENGTH_SHORT).show();
@@ -354,7 +380,15 @@ public class GraphDisplayFragment extends Fragment {
             // Draw the graph
             //doGraph(aPointSet);
             // Load the data point table
-            mDataPointMap.put(data.getDirective(), aPointSet);
+            mDataPointMap.put(data, aPointSet);
+
+            // We have Graph Views from onCreateView() -> do the graph
+            if (mGraph1 != null && mGraph2 != null) {
+                Log.d(TAG, "-----doGraph() from onPostExecute()");
+                for (GraphableData gd : mDataPointMap.keySet()) {
+                    doGraph(gd, mDataPointMap.get(gd));
+                }
+            }
 
             // all we need to do is nullify the Task reference
             taskRef = null;
