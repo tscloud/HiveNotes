@@ -91,7 +91,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5ca4e5e2-3ed5-48e4-9429-4e5b4b4764ee" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/net/tscloud/hivenotes/GraphDisplayFragment.java" />
     </list>
     <ignored path="HiveNotes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -3065,6 +3064,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="hivenotes_stuff" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HiveNotes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="HiveNotes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -3695,13 +3708,6 @@
       <option name="presentableId" value="Default" />
       <updated>1439340940336</updated>
     </task>
-    <task id="LOCAL-00132" summary="Log fragment tweaking.">
-      <created>1476851039384</created>
-      <option name="number" value="00132" />
-      <option name="presentableId" value="LOCAL-00132" />
-      <option name="project" value="LOCAL" />
-      <updated>1476851039386</updated>
-    </task>
     <task id="LOCAL-00133" summary="When graphing, throw out null values; be sure to pass hive as well as apiary to graphdisplay and use accordingly; up end graph date bound to make specified date inclusive; fix set chosen log date.">
       <created>1477364917108</created>
       <option name="number" value="00133" />
@@ -4038,7 +4044,14 @@
       <option name="project" value="LOCAL" />
       <updated>1500683408745</updated>
     </task>
-    <option name="localTasksCounter" value="181" />
+    <task id="LOCAL-00181" summary="multiple graphs not being drawn">
+      <created>1501125866054</created>
+      <option name="number" value="00181" />
+      <option name="presentableId" value="LOCAL-00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1501125866054</updated>
+    </task>
+    <option name="localTasksCounter" value="182" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -4123,7 +4136,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
-    <MESSAGE value="Feeding fixing." />
     <MESSAGE value="EditTextDialog fixing and and Dialog cancelling." />
     <MESSAGE value="Concrete-ify setDialogDataCancel() in LogFragment so empty method need not be implemented in subclasses that don't need it." />
     <MESSAGE value="More switch work from Dialog (DialogFragment) to true Fragment." />
@@ -4148,7 +4160,8 @@
     <MESSAGE value="GraphDisplay has some issues." />
     <MESSAGE value="Initial checkin after new laptop" />
     <MESSAGE value="GraphDisplayFrag AsyncTask spawned from onCreate()" />
-    <option name="LAST_COMMIT_MESSAGE" value="GraphDisplayFrag AsyncTask spawned from onCreate()" />
+    <MESSAGE value="multiple graphs not being drawn" />
+    <option name="LAST_COMMIT_MESSAGE" value="multiple graphs not being drawn" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
