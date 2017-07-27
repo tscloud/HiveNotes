@@ -297,15 +297,87 @@ public class EditApiaryFragment extends HiveDataEntryFragment {
                         mApiary.getName());
                 break;
             case DIALOG_TAG_LOCATION:
-                mApiary.setPostalCode(aResults[0]);
-                mApiary.setLatitude(Float.valueOf(aResults[1]));
-                mApiary.setLongitude(Float.valueOf(aResults[2]));
+                /* Before we write the Apiary, we need zip/latlon checks */
+                String[] locData = zipLatLon(aResults[0], aResults[1], aResults[2]);
+
+                mApiary.setPostalCode(locData[0]);
+                mApiary.setLatitude(Float.valueOf(locData[1]));
+                mApiary.setLongitude(Float.valueOf(locData[2]));
+
                 Log.d(TAG, "onLogLaunchDialog: setPostalCode: " +
                         mApiary.getPostalCode());
                 break;
             default:
                 Log.d(TAG, "onLogLaunchDialog: unrecognized Dialog type");
         }
+    }
+
+    /** Before we write the Apiary, we need zip/latlon checks
+     *   if lat/lon => geocode to get zip potentially overwriting an
+     *    existing zip <- these need to match as weather data will be
+     *    got by lat/lon (it may be more accurate) but pollen data can
+     *    only be got by zip
+     *   if zip & no lat/lon => geocode to get lat/lon <- technically not
+     *    necessary but we can consistently retrieve weather by lat/lon
+     */
+    private String[] zipLatLon(String aZip, String aLat, String aLon) {
+        // good thing to init all reply entries to zero?
+        String[] reply = {"0", "0", "0"};
+
+        double latDoub = 0;
+        double lonDoub = 0;
+
+        // should the UI ensure that lat/lon entries passed in always numeric?
+        if ((aLat != null) && (aLat.length() != 0)){
+            latDoub = Double parseDouble(aLat);
+        }
+
+        if ((aLon != null) && (aLon.length() != 0)){
+            lonDoub = Double parseDouble(aLon);
+        }
+
+        if ((latDoub != 0 ) && (lonDoub != 0)) {
+            // use lat/lon to get postal code
+            final Geocoder geocoder = new Geocoder(getActivity());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(latDoub, lonDoub, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    Address address = addresses.get(0);
+                    // Use the address as needed
+                    reply[0] = address.getPostalCode();
+                    reply[1] = aLat;
+                    reply[2] = aLon;
+                } else {
+                    // Display appropriate message when Geocoder services are not available
+                    Log.d(TAG, "no find postal code");
+                }
+            } catch (IOException | IllegalStateException e) {
+                // handle exception
+                Log.d(TAG, "IOException getting postal code from lat/lon: " + e.getMessage());
+            }
+        }
+        else if (aZip.length() != 0) {
+            // use postal code to get lat/lon
+            final Geocoder geocoder = new Geocoder(getActivity());
+            try {
+                List<Address> addresses = geocoder.getFromLocationName(aZip, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    Address address = addresses.get(0);
+                    // Use the address as needed
+                    reply[0] = aZip;
+                    reply[1] = Double.toString(getLatitude());
+                    reply[2] = Double.toString(getLongitude());
+                } else {
+                    // Display appropriate message when Geocoder services are not available
+                    Log.d(TAG, "no find lat/lon");
+                }
+            } catch (IOException | IllegalStateException e) {
+                // handle exception
+                Log.d(TAG, "IOException getting lat/lon from postal code: " + e.getMessage());
+            }
+        }
+
+        return reply;
     }
 
     /**
