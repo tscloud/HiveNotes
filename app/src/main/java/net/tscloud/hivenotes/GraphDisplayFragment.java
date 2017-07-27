@@ -142,8 +142,6 @@ public class GraphDisplayFragment extends Fragment {
 
         // Cycle thru our list of GraphableData
         for (GraphableData data : mGraphList) {
-            Log.d(TAG, "about to start RetrieveDataTask AsyncTask for..." + data.getPrettyName());
-
             // spawn task based on type - Apiary or Hive based data to be retrieved
             switch (data.getKeyLevel()) {
                 case "A":
@@ -215,6 +213,9 @@ public class GraphDisplayFragment extends Fragment {
     }
 
     private void spawnRetrieveDataTask(GraphableData aData, long aHiveKey) {
+        Log.d(TAG, "about to spawnRetrieveDataTask for..." + aData.getPrettyName() +
+                " hive: " + aHiveKey);
+
         RetrieveDataTask mTask = new RetrieveDataTask(getActivity(), aData, mStartDate,
                 mEndDate, aHiveKey);
         // don't forget to set the reference to myself
@@ -229,8 +230,8 @@ public class GraphDisplayFragment extends Fragment {
     private void doGraph(GraphableData aGraphableData, DataPoint[] aPoints) {
         Log.d(TAG, "in doGraph()");
         Log.d(TAG, "GD pretty name: " + aGraphableData.getPrettyName());
-        for (int i = 0; i < aPoints.length; i++) {
-            Log.d(TAG, "----- " + aPoints[i].toString());
+        for (DataPoint dp : aPoints) {
+            Log.d(TAG, "----- " + dp.toString());
         }
 
         // determine which graph to draw upon based on GraphableData directive
@@ -381,17 +382,13 @@ public class GraphDisplayFragment extends Fragment {
             Toast.makeText(ctx, R.string.retrieve_graph_data_complete,
                     Toast.LENGTH_SHORT).show();
 
-            // Draw the graph
-            //doGraph(aPointSet);
             // Load the data point table
             mDataPointMap.put(data, aPointSet);
 
             // We have Graph Views from onCreateView() -> do the graph
             if (mGraph1 != null && mGraph2 != null) {
                 Log.d(TAG, "-----doGraph() from onPostExecute()");
-                for (GraphableData gd : mDataPointMap.keySet()) {
-                    doGraph(gd, mDataPointMap.get(gd));
-                }
+                doGraph(data, aPointSet);
             }
 
             // all we need to do is nullify the Task reference
