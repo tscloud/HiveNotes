@@ -2,6 +2,8 @@ package net.tscloud.hivenotes;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,11 @@ import net.tscloud.hivenotes.helper.HiveDeleteDialog;
 import net.tscloud.hivenotes.helper.LogEditTextDialogData;
 import net.tscloud.hivenotes.helper.LogEditTextDialogLocationData;
 import net.tscloud.hivenotes.helper.LogSuperDataEntry;
+
+import java.io.IOException;
+import java.util.List;
+
+import static java.lang.Double.parseDouble;
 
 
 /**
@@ -329,11 +336,11 @@ public class EditApiaryFragment extends HiveDataEntryFragment {
 
         // should the UI ensure that lat/lon entries passed in always numeric?
         if ((aLat != null) && (aLat.length() != 0)){
-            latDoub = Double parseDouble(aLat);
+            latDoub = Double.parseDouble(aLat);
         }
 
         if ((aLon != null) && (aLon.length() != 0)){
-            lonDoub = Double parseDouble(aLon);
+            lonDoub = Double.parseDouble(aLon);
         }
 
         if ((latDoub != 0 ) && (lonDoub != 0)) {
@@ -365,8 +372,8 @@ public class EditApiaryFragment extends HiveDataEntryFragment {
                     Address address = addresses.get(0);
                     // Use the address as needed
                     reply[0] = aZip;
-                    reply[1] = Double.toString(getLatitude());
-                    reply[2] = Double.toString(getLongitude());
+                    reply[1] = Double.toString(address.getLatitude());
+                    reply[2] = Double.toString(address.getLongitude());
                 } else {
                     // Display appropriate message when Geocoder services are not available
                     Log.d(TAG, "no find lat/lon");
