@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature android:name="android.hardware.camera.any" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/bee_ic_launcher"
@@ -106,6 +108,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.tscloud.hivenotes.GraphActivity" />
         </activity>
+
+        <provider
+            android:name=".helper.LegacyCompatFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
     </application>
 
 </manifest>
